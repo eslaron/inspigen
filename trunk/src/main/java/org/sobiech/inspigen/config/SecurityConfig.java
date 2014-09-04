@@ -25,9 +25,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(UserDetailsService userDetailsService, AuthenticationManagerBuilder auth) throws Exception {
        
     	auth
-    		.userDetailsService(userDetailsService);
-    		/*.and()
-    		.authenticationProvider(daoAuthenticationProvider());	   */      	
+    		.userDetailsService(userDetailsService)
+    		.and()
+    		.authenticationProvider(daoAuthenticationProvider());	
     }
 
     @Override

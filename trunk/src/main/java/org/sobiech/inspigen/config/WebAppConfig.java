@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.dtr.oas"})
+@ComponentScan(basePackages = {"org.sobiech.inspigen"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
     
     @Override
