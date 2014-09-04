@@ -31,6 +31,9 @@
                     <form name="f" data-th-action="@{/login}" method="POST" class="form-horizontal" role="form">
                     <div class="form-group">
                         <div class="col-sm-12">
+                          <div data-th-if="${param.error}" class="alert alert-danger">
+				                    Niepoprawny login lub hasło.
+				          </div>
                             <input type="text" class="form-control" id="username" name="username" placeholder="Nazwa użytkowninika" />
                         </div>
                     </div>
@@ -56,7 +59,7 @@
                     </div>
                     </form>
                 </div>
-                <div class="panel-footer">Nie masz konta? <a href="../signup">Zarejestruj się!</a></div>
+                <div class="panel-footer">Nie masz konta? <a href="signup">Zarejestruj się!</a></div>
             </div>
         </div>
     </div>
