@@ -8,3 +8,10 @@ body {
      margin-left: auto;
      margin-right: auto;
 }
+
+.normalFont {
+	margin-left: 5px;
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+}

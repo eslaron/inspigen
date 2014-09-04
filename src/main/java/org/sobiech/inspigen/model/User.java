@@ -55,7 +55,7 @@ public class User extends BaseEntity implements UserDetails {
     
 	@Column(name = "phoneNumber")
     private String phoneNumber;
-    
+	
 	
 	@OneToOne  
     @JoinTable(name = "ig_user_roles",  
@@ -104,6 +104,8 @@ public class User extends BaseEntity implements UserDetails {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+    
+
 
     public Role getRole() {
         return role;
