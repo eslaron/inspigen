@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.dtr.oas.dao", "com.dtr.oas.model", "com.dtr.oas.service"})
+@ComponentScan(basePackages = {"org.sobiech.inspigen.dao", "org.sobiech.inspigen.model", "org.sobiech.inspigen.service"})
 @PropertySource("classpath:database.properties")
 public class DatabaseConfig {
 
