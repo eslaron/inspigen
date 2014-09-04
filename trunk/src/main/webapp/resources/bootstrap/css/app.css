@@ -1,0 +1,10 @@
+body {
+	margin-top: 150px;
+	background: url(../../images/bg.png);
+}
+
+.center {
+     float: none;
+     margin-left: auto;
+     margin-right: auto;
+}
