@@ -20,14 +20,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @ComponentScan(basePackageClasses=org.sobiech.inspigen.service.UserServiceImpl.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
-
+	
     @Autowired
     public void configureGlobal(UserDetailsService userDetailsService, AuthenticationManagerBuilder auth) throws Exception {
        
     	auth
     		.userDetailsService(userDetailsService)
     		.and()
-    		.authenticationProvider(daoAuthenticationProvider());	
+    		.authenticationProvider(customAuthenticationProvider());	
     }
 
     @Override
@@ -67,9 +67,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     } 
     
     @Bean
-    DaoAuthenticationProvider daoAuthenticationProvider() {
+    CustomDaoAuthenticationProvider customAuthenticationProvider() {
     	
-    	DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    	CustomDaoAuthenticationProvider provider = new CustomDaoAuthenticationProvider();
     	
     	provider.setPasswordEncoder(passwordEncoder());
     	provider.setSaltSource(saltSource());
