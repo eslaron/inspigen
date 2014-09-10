@@ -1,5 +1,7 @@
 package org.sobiech.inspigen.config;
 
+import org.sobiech.inspigen.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -11,6 +13,11 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
 	int i;
 	
+	@Autowired
+	UserService userService;
+	
+	private String username;
+	
 		@Override
 		public Authentication authenticate(Authentication authentication)
 		        throws AuthenticationException {
@@ -20,8 +27,8 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 		      try {
 		        return super.authenticate(authentication);
 		      } catch (BadCredentialsException e) {
-		        System.out.println("Fail "+i++);
-
+		        username = authentication.getName();
+		        userService.updateLoginFailAttempts(username);
 		        throw e;
 		      }
 		}

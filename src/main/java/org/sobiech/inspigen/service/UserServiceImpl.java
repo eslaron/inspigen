@@ -9,10 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.sobiech.inspigen.dao.DuplicateUserException;
 import org.sobiech.inspigen.dao.UserDAO;
 import org.sobiech.inspigen.dao.UserNotFoundException;
+import org.sobiech.inspigen.model.LoginAttempts;
 import org.sobiech.inspigen.model.User;
 
 @Service
@@ -61,4 +61,24 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(e.getMessage());
         }
     }
+
+	@Override
+	public Boolean checkIfUserExists(String username) {
+		return userDAO.checkIfUserExists(username);
+	}
+
+	@Override
+	public void updateLoginFailAttempts(String username) {
+		userDAO.updateLoginFailAttempts(username);		
+	}
+
+	@Override
+	public void resetLoginFailAttempts(String username) {
+		userDAO.resetLoginFailAttempts(username);
+	}
+
+	@Override
+	public LoginAttempts getLoginAttempts(String username) {
+		return userDAO.getLoginAttempts(username);
+	}
 }

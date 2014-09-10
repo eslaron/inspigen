@@ -22,10 +22,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	
     @Autowired
-    public void configureGlobal(UserDetailsService userDetailsService, AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
        
     	auth
-    		.userDetailsService(userDetailsService)
+    		.userDetailsService(customUserDetailsService())
     		.and()
     		.authenticationProvider(customAuthenticationProvider());	
     }
@@ -73,8 +73,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	
     	provider.setPasswordEncoder(passwordEncoder());
     	provider.setSaltSource(saltSource());
-    	provider.setUserDetailsService(userDetailsService());
+    	provider.setUserDetailsService(customUserDetailsService());
     	
     	return provider;
     }
+    
+    @Bean
+    CustomUserDetailsService customUserDetailsService() {
+    	CustomUserDetailsService service = new CustomUserDetailsService();
+    	
+    	return service;
+    }
+    
 }
