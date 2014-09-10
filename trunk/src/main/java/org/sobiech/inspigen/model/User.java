@@ -9,6 +9,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -39,9 +40,12 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
     
     @Column(name = "enabled")
-    private boolean enabled;
+    private Boolean enabled;
     
-    @Column(name = "email")
+    @Column(name = "accountNonLocked", columnDefinition = "TINYINT(1)")
+    private Boolean accountNonLocked;
+    
+	@Column(name = "email")
     private String email;
     
     @Column(name = "firstName")
@@ -57,18 +61,19 @@ public class User extends BaseEntity implements UserDetails {
     private String phoneNumber;
 	
 	
-	@OneToOne  
+	/*@OneToOne  
     @JoinTable(name = "ig_user_roles",  
         joinColumns        = {@JoinColumn(name = "user_id", referencedColumnName = "id")},  
         inverseJoinColumns = {@JoinColumn(name = "role_id",  referencedColumnName = "id")}  
-    )  
+    ) */
 	
+	@Transient
     private Role role;
     
 	public User() {}
 
     public User(String username, String password, String email, String firstName, String lastName, 
-    			String pesel, String phoneNumber, Boolean enabled) {
+    			String pesel, String phoneNumber, boolean enabled) {
     	
     	this.username = username;
     	this.password = password;
@@ -97,16 +102,18 @@ public class User extends BaseEntity implements UserDetails {
         this.password = password;
     }
 
-    public boolean getEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
     
-
-
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+  		this.accountNonLocked = accountNonLocked;
+  	}
+    
     public Role getRole() {
         return role;
     }

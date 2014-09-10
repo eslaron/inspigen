@@ -2,6 +2,7 @@ package org.sobiech.inspigen.dao;
 
 import java.util.List;
 
+import org.sobiech.inspigen.model.LoginAttempts;
 import org.sobiech.inspigen.model.User;
 
 public interface UserDAO {
@@ -17,5 +18,13 @@ public interface UserDAO {
     public void deleteUser(int userId) throws UserNotFoundException;
 
     public List<User> getUsers();
+    
+    public Boolean checkIfUserExists(String username);
+    
+    public void updateLoginFailAttempts(String username);
+    
+    public void resetLoginFailAttempts(String username);
+	
+    public LoginAttempts getLoginAttempts(String username);
 
 }
