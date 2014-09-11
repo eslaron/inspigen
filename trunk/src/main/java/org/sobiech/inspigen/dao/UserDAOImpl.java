@@ -164,11 +164,11 @@ public class UserDAOImpl implements UserDAO {
 
 			}
 						
-		  	else if (loginAttempts.getAttempts() < 3) {
+		  	else if (loginAttempts.getAttempts() < 2) {
 					Query updateAttempts = getCurrentSession().createQuery(
 							"UPDATE LoginAttempts SET attempts = attempts + 1, "
 							+ "lastmodified = :lastModified WHERE username = :userName");
-					updateAttempts.setDate("lastModified", new Date());
+					updateAttempts.setTimestamp("lastModified", new Date());
 					updateAttempts.setString("userName", username);
 					
 					updateAttempts.executeUpdate();
