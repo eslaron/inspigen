@@ -6,12 +6,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Component;
 
 
 public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
-	int i;
 	
 	@Autowired
 	UserService userService;
@@ -19,17 +17,23 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 	private String username;
 	
 		@Override
-		public Authentication authenticate(Authentication authentication)
-		        throws AuthenticationException {
-		      // Could assert pre-conditions here, e.g. rate-limiting
-		      // and throw a custom AuthenticationException if necessary
-
+		public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+		    
+			username = authentication.getName();
+				
 		      try {
-		        return super.authenticate(authentication);
+		    	  	userService.unlockAccount(username);
+		    	  	
+		    	  	if (super.authenticate(authentication).isAuthenticated() == true)
+		    	  	userService.resetLoginFailAttempts(username);
+		    	  	
+		    	  	return super.authenticate(authentication);
+		        
 		      } catch (BadCredentialsException e) {
-		        username = authentication.getName();
-		        userService.updateLoginFailAttempts(username);
-		        throw e;
+		        
+			        userService.updateLoginFailAttempts(username);
+			        
+			        throw e;
 		      }
 		}
 }
