@@ -1,6 +1,8 @@
 package org.sobiech.inspigen.config;
 
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +13,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 
 @Configuration
@@ -18,6 +23,8 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 @ComponentScan(basePackageClasses=org.sobiech.inspigen.service.UserServiceImpl.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
+	@Autowired
+	DataSource dataSource;
 	
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -41,11 +48,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                  .permitAll()
                  .and()
-                 .rememberMe()
+                 .rememberMe().tokenRepository(persistentTokenRepository())
+                 .tokenValiditySeconds(1209600)
                  .and()            
             .logout()
                 .permitAll();
     }
+    
+    @Bean
+	public PersistentTokenRepository persistentTokenRepository() {
+		JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+		db.setDataSource(dataSource);
+		return db;
+	}
+    
+    @Bean
+	public SavedRequestAwareAuthenticationSuccessHandler 
+                savedRequestAwareAuthenticationSuccessHandler() {
+ 
+               SavedRequestAwareAuthenticationSuccessHandler auth 
+                    = new SavedRequestAwareAuthenticationSuccessHandler();
+		auth.setTargetUrlParameter("targetUrl");
+		return auth;
+	}
     
     @Bean
     ReflectionSaltSource saltSource() {
