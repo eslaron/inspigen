@@ -29,4 +29,6 @@ public interface UserService extends UserDetailsService {
     public void resetLoginFailAttempts(String username);
 	
     public LoginAttempts getLoginAttempts(String username);
+    
+    public void unlockAccount(String username);
 }

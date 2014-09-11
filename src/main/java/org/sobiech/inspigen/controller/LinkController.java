@@ -5,18 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
 import org.sobiech.inspigen.dao.DuplicateUserException;
 import org.sobiech.inspigen.model.User;
 import org.sobiech.inspigen.service.UserService;
 
 import java.security.Principal;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 @Controller

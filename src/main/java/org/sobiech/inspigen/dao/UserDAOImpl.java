@@ -1,16 +1,16 @@
 package org.sobiech.inspigen.dao;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -21,6 +21,11 @@ import org.sobiech.inspigen.model.User;
 public class UserDAOImpl implements UserDAO {
 	
 
+	public static final int LOCK_TIME = 15; //czas blokady u¿ytkownika w minutach
+	
+	private static int attempts = 3; //domyœlnie 3 podejœcia podawane w ustawieniach
+	public static final int MAX_ATTEMPTS = attempts-1; //realna liczba podejœæ
+	
     @Autowired
     private SessionFactory sessionFactory;
     
@@ -164,7 +169,7 @@ public class UserDAOImpl implements UserDAO {
 
 			}
 						
-		  	else if (loginAttempts.getAttempts() < 2) {
+		  	else if (loginAttempts.getAttempts() < MAX_ATTEMPTS) {
 					Query updateAttempts = getCurrentSession().createQuery(
 							"UPDATE LoginAttempts SET attempts = attempts + 1, "
 							+ "lastmodified = :lastModified WHERE username = :userName");
@@ -196,7 +201,36 @@ public class UserDAOImpl implements UserDAO {
 		
 		reset.setInteger("reset", 0);
 		reset.setString("userName", username);
-		reset.executeUpdate();
+		reset.executeUpdate();		
+	}
+
+	@Override
+	public void unlockAccount(String username) {
 		
+		Query lastModfied = getCurrentSession().createQuery(
+				"SELECT lastModified FROM LoginAttempts WHERE username = :userName");
+		lastModfied.setString("userName", username);
+			
+		Timestamp stamp = (Timestamp)lastModfied.list().get(0);
+		
+		Date lastModifiedDate = new Date(stamp.getTime());
+		DateFormat format=new SimpleDateFormat("HH:mm:ss");
+		format.format(lastModifiedDate);
+		
+		Calendar cal=Calendar.getInstance();
+		cal=format.getCalendar();		
+		cal.add(Calendar.MINUTE, LOCK_TIME);
+		
+		Calendar unlock = cal; 
+		
+		if(Calendar.getInstance().getTime().after(unlock.getTime()) == true) {
+			
+			Query unlockAccount = getCurrentSession().createQuery(
+					"UPDATE User SET accountNonLocked = :locked WHERE username = :userName");
+			
+			unlockAccount.setBoolean("locked", true);
+			unlockAccount.setString("userName", username);
+			unlockAccount.executeUpdate();
+		}
 	}
 }

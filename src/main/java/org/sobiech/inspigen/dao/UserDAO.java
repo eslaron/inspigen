@@ -26,5 +26,6 @@ public interface UserDAO {
     public void resetLoginFailAttempts(String username);
 	
     public LoginAttempts getLoginAttempts(String username);
-
+    
+    public void unlockAccount(String username);
 }

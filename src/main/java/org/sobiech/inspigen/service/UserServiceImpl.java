@@ -81,4 +81,10 @@ public class UserServiceImpl implements UserService {
 	public LoginAttempts getLoginAttempts(String username) {
 		return userDAO.getLoginAttempts(username);
 	}
+
+	@Override
+	public void unlockAccount(String username) {
+		userDAO.unlockAccount(username);
+		
+	}
 }

@@ -39,7 +39,6 @@ public class CustomUserDetailsService extends JdbcDaoImpl implements UserDetails
 		super.setAuthoritiesByUsernameQuery(queryString);
 	}
  
- 
 	//override to get accountNonLocked  
 	@Override
 	public List<UserDetails> loadUsersByUsername(String username) {
@@ -76,5 +75,4 @@ public class CustomUserDetailsService extends JdbcDaoImpl implements UserDetails
                        userFromUserQuery.isCredentialsNonExpired(),
 			userFromUserQuery.isAccountNonLocked(), combinedAuthorities);
 	}
- 
 }
