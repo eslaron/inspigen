@@ -1,11 +1,13 @@
 package org.sobiech.inspigen.dao;
 
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -23,8 +25,13 @@ public class UserDAOImpl implements UserDAO {
 
 	public static final int LOCK_TIME = 15; //czas blokady u¿ytkownika w minutach
 	
+	public static final int EXPIRATION_TIME = 3; //czas blokady u¿ytkownika w godzinach
+	
 	private static int attempts = 3; //domyœlnie 3 podejœcia podawane w ustawieniach
-	public static final int MAX_ATTEMPTS = attempts-1; //realna liczba podejœæ
+	public static final int MAX_ATTEMPTS = attempts-1; //realna liczba podejœæ n-1
+	
+	private static char[] VALID_CHARACTERS =
+	    	    "abcdefghijklmnopqrstuvwxyz0123456879".toCharArray();
 	
     @Autowired
     private SessionFactory sessionFactory;
@@ -34,8 +41,8 @@ public class UserDAOImpl implements UserDAO {
     
     @Autowired 
     ReflectionSaltSource saltSource;
-    
-      
+        
+   
     private Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }
@@ -119,14 +126,45 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public Boolean checkIfUserExists(String username) {
 		
-	
 		Query query = getCurrentSession().createQuery("from User where username = :usersName ");
 		query.setString("usersName", username);
 		
 		if (query.list().size() == 0 ) {
 			return false;
 		} else return true;
+	}
+	
+	@Override
+	public Boolean checkIfEmailIsRegistered(String email) {
 		
+		Query query = getCurrentSession().createQuery("from User where email = :eMail ");
+		query.setString("eMail", email);
+		
+		if (query.list().size() > 0 ) {
+			return true;
+		} else return false;
+	}
+	
+	@Override
+	public Boolean checkIfPasswordTokenExpired(String token) {
+		
+		Query expiration = getCurrentSession().createQuery(
+				"SELECT tokenExpiration from User where passwordToken = :token ");
+		expiration.setString("token", token);
+		
+		Timestamp stamp = (Timestamp)expiration.list().get(0);
+		
+		Date expirationDate = new Date(stamp.getTime());
+		
+		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		format.format(expirationDate);
+		
+		Calendar expire=Calendar.getInstance();
+		expire = format.getCalendar();		
+		
+		if(Calendar.getInstance().getTime().after(expire.getTime()) == true) {
+			return true;
+		} else return false;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -232,5 +270,64 @@ public class UserDAOImpl implements UserDAO {
 			unlockAccount.setString("userName", username);
 			unlockAccount.executeUpdate();
 		}
+	}
+
+	@Override
+	public void setPasswordToken(int length, String username) {
+
+		 SecureRandom srand = new SecureRandom();
+		    Random random = new Random();
+		    char[] buff = new char[length];
+
+		    for (int i = 0; i < length; ++i) {
+		      // reseed random once you've used up all available entropy bits
+		      if ((i % 10) == 0) {
+		          random.setSeed(srand.nextLong()); // 64 bits of random!
+		      }
+		      buff[i] = VALID_CHARACTERS[random.nextInt(VALID_CHARACTERS.length)];
+		    }
+		    
+		    String token = buff.toString();
+		    
+		    Query setToken = getCurrentSession().createQuery(
+					"UPDATE User SET passwordToken = :token WHERE username = :userName");
+			
+		    setToken.setString("token", token);
+		    setToken.setString("userName", username);
+		    setToken.executeUpdate();		
+	}
+
+
+	@Override
+	public String getPasswordToken(String email) {
+		
+		Query getToken = getCurrentSession().createQuery(
+				"SELECT passwordToken FROM User WHERE email = :eMail");
+		getToken.setString("eMail", email);
+		
+		return getToken.list().get(0).toString();
+	}
+
+
+	@Override
+	public void setPasswordTokenExpirationDate(String email) {
+	
+		Date currentDate = new Date();
+		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		format.format(currentDate);
+		
+		
+		Calendar cal=Calendar.getInstance();
+		cal=format.getCalendar();		
+		cal.add(Calendar.MINUTE, EXPIRATION_TIME);
+		
+		Date expirationDate = cal.getTime();
+		
+		Query setToken = getCurrentSession().createQuery(
+				"UPDATE User SET tokenExpiration = :stamp WHERE email = :eMail");
+
+	    setToken.setTimestamp("stamp", expirationDate);
+	    setToken.setString("eMail", email);
+	    setToken.executeUpdate();				
 	}
 }

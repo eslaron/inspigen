@@ -14,7 +14,6 @@ import org.sobiech.inspigen.service.EmailService;
 import org.sobiech.inspigen.service.UserService;
 
 import java.security.Principal;
-import java.util.Map;
 
 
 @Controller
@@ -60,17 +59,26 @@ public class LinkController {
 	@RequestMapping(value="/resetPassword" , method=RequestMethod.POST)
 	public String resetRequest(@RequestParam(value="email") String email)
 	{
-		//check if the email id is valid and registered with us.
-		mailService.sendMail(email);
+		if (userService.checkIfEmailIsRegistered(email) == true) {
+			
+			String token = userService.getPasswordToken(email);
+			
+			userService.setPasswordTokenExpirationDate(email);
+			mailService.sendMail(email, token);
+		}
 		return "emailSent";
 	}
 	
-	@RequestMapping(value="/newPassword/{email}" )
-	public String resetPassword(@PathVariable String email, Map<String,String> model)
+	@RequestMapping(value="/newPassword/{token}", method = RequestMethod.GET)
+	public String resetPassword(@PathVariable String token)
 	{
-		//check if the email id is valid and registered with us.
-		model.put("emailid", email);
+		try {
+			if (userService.checkIfPasswordTokenExpired(token) == true)
+			return "passwordTokenExpired";
+			else return "newPassword";
 		
-		return "newPassword";
+		} catch(IndexOutOfBoundsException e) {
+			return "invalidResetLink";
+		}
 	}
 }

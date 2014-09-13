@@ -1,5 +1,6 @@
 package org.sobiech.inspigen.model;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -48,18 +49,11 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(name = "email")
     private String email;
     
-    @Column(name = "firstName")
-    private String firstName;
-    
-    @Column(name = "lastName")
-    private String lastName;
- 
-    @Column(name = "pesel")
-    private String pesel;
-    
-	@Column(name = "phoneNumber")
-    private String phoneNumber;
+	@Column(name = "passwordToken")
+	private String passwordToken;
 	
+	@Column(name = "tokenExpiration")
+	private Date tokenExpiration;
 	
 	/*@OneToOne  
     @JoinTable(name = "ig_user_roles",  
@@ -67,21 +61,17 @@ public class User extends BaseEntity implements UserDetails {
         inverseJoinColumns = {@JoinColumn(name = "role_id",  referencedColumnName = "id")}  
     ) */
 	
+
 	@Transient
     private Role role;
     
 	public User() {}
 
-    public User(String username, String password, String email, String firstName, String lastName, 
-    			String pesel, String phoneNumber, boolean enabled) {
+    public User(String username, String password, String email, boolean enabled) {
     	
     	this.username = username;
     	this.password = password;
     	this.email =  email;
-    	this.firstName = firstName;
-    	this.lastName = lastName;
-    	this.pesel = pesel;
-    	this.phoneNumber = phoneNumber;
     	this.enabled = enabled;
     }
     
@@ -129,39 +119,22 @@ public class User extends BaseEntity implements UserDetails {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public String getFirstName() {
-		return firstName;
+		
+	public Date getTokenExpiration() {
+		return tokenExpiration;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-    
-	public String getLastName() {
-		return lastName;
+	public void setTokenExpiration(Date tokenExpiration) {
+		this.tokenExpiration = tokenExpiration;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	
-    public String getPesel() {
-		return pesel;
+	public String getPasswordToken() {
+		return passwordToken;
 	}
 
-	public void setPesel(String pesel) {
-		this.pesel = pesel;
+	public void setPasswordToken(String passwordToken) {
+		this.passwordToken = passwordToken;
 	}
-	
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-	
 	
 	//Czy konto nie wygas³o
     @Override

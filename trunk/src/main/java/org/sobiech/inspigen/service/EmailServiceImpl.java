@@ -14,20 +14,20 @@ public class EmailServiceImpl implements EmailService {
 	
 	@Autowired
 	JavaMailSenderImpl mailSender;
-
+	
 	@Override
-	public void sendMail(String emailId) {
+	public void sendMail(String email, String token) {
 		
 		MimeMessage message =  mailSender.createMimeMessage();
 		MimeMessageHelper mimeHelper;
 		try {
 			mimeHelper = new MimeMessageHelper(message,true);
-			mimeHelper.setTo(emailId);
+			mimeHelper.setTo(email);
 			
 			
 			mimeHelper.setFrom("sebastian.sobiech@gmail.com");
 			mimeHelper.setSubject("Password Reset");
-			mimeHelper.setText("<html><body>hi,<br/><a href='http://localhost:8080/inspigen/newPassword/"+emailId+"/'> Click here</a> to reset password</body></html>",true);
+			mimeHelper.setText("<html><body>hi,<br/><a href='http://localhost:8080/inspigen/newPassword/"+token+"'> Click here</a> to reset password</body></html>",true);
 			mailSender.send(message);
 		} catch (MessagingException e) {
 			System.out.println("Error Sending email "+ e.getMessage());
