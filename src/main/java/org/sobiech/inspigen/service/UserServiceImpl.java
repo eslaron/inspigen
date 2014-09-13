@@ -66,6 +66,16 @@ public class UserServiceImpl implements UserService {
 	public Boolean checkIfUserExists(String username) {
 		return userDAO.checkIfUserExists(username);
 	}
+	
+	@Override
+	public Boolean checkIfEmailIsRegistered(String email) {
+		return userDAO.checkIfEmailIsRegistered(email);
+	}
+
+	@Override
+	public Boolean checkIfPasswordTokenExpired(String token) {
+		return userDAO.checkIfPasswordTokenExpired(token);
+	}
 
 	@Override
 	public void updateLoginFailAttempts(String username) {
@@ -86,5 +96,20 @@ public class UserServiceImpl implements UserService {
 	public void unlockAccount(String username) {
 		userDAO.unlockAccount(username);
 		
+	}
+
+	@Override
+	public void setPasswordToken(int length, String username) {
+		userDAO.setPasswordToken(length, username);
+	}
+
+	@Override
+	public String getPasswordToken(String email) {
+		return userDAO.getPasswordToken(email);
+	}
+
+	@Override
+	public void setPasswordTokenExpirationDate(String email) {
+		userDAO.setPasswordTokenExpirationDate(email);
 	}
 }

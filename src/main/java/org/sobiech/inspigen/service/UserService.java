@@ -10,6 +10,9 @@ import org.sobiech.inspigen.model.User;
 
 public interface UserService extends UserDetailsService {
 
+	
+	//U¿ytkownik
+	
     public void addUser(User user) throws DuplicateUserException;
 
     public User getUser(int userId) throws UserNotFoundException;
@@ -22,7 +25,15 @@ public interface UserService extends UserDetailsService {
 
     public List<User> getUsers();
     
+    //Sprawdzanie
+    
     public Boolean checkIfUserExists(String username);
+    
+    public Boolean checkIfEmailIsRegistered(String email);
+    
+    public Boolean checkIfPasswordTokenExpired(String token);
+    
+    //Tymczasowe blokowanie kont
     
     public void updateLoginFailAttempts(String username);
     
@@ -31,4 +42,12 @@ public interface UserService extends UserDetailsService {
     public LoginAttempts getLoginAttempts(String username);
     
     public void unlockAccount(String username);
+    
+    //Resetowanie hase³
+    
+    public void setPasswordTokenExpirationDate(String email);
+    
+    public void setPasswordToken(int length, String username);
+    
+    public String getPasswordToken(String email);
 }
