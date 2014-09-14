@@ -25,6 +25,8 @@ public class LinkController {
 	@Autowired
 	EmailService mailService;
 	
+	private String errorMessage;
+	private String successMessage;
 	
     @RequestMapping(value = "/")
     public String mainPage() {
@@ -65,20 +67,45 @@ public class LinkController {
 			
 			userService.setPasswordTokenExpirationDate(email);
 			mailService.sendMail(email, token);
+			
+			successMessage="resetLinkSent";
+			return "forgotPassword";
 		}
-		return "emailSent";
+		else {
+			
+			errorMessage = "emailNotRegistered";
+			return "forgotPasswordError";
+		}
+	}
+	
+	@RequestMapping(value = "/forgotPasswordError", method = RequestMethod.GET)
+	@ResponseBody
+	public String resetPasswordError(String error) { 
+		 return errorMessage;
+	}
+	
+	@RequestMapping(value = "*/resetLinkError", method = RequestMethod.GET)
+	@ResponseBody
+	public String resetLinkError(String error) { 
+		 return errorMessage;
 	}
 	
 	@RequestMapping(value="/newPassword/{token}", method = RequestMethod.GET)
 	public String resetPassword(@PathVariable String token)
 	{
 		try {
-			if (userService.checkIfPasswordTokenExpired(token) == true)
-			return "passwordTokenExpired";
+			if (userService.checkIfPasswordTokenExpired(token) == true) {
+				
+				errorMessage = "resetLinkExpired";
+				return "resetLinkError";
+			}
+			
 			else return "newPassword";
 		
 		} catch(IndexOutOfBoundsException e) {
-			return "invalidResetLink";
+			
+			errorMessage = "invalidResetLink";
+			return "resetLinkError";
 		}
 	}
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" ng-app="AngularSpringApp">
 
 <head>
     <meta charset="utf-8" />
@@ -27,7 +27,7 @@
     <title data-th-text="#{forgotPassword.page.title}">Login Page</title>
 </head>
 
-<body>
+<body ng-controller="PasswordResetController">
 
 <div class="container">
     <div class="row">
@@ -39,7 +39,7 @@
                 <div class="panel-body">
              	
              		<div class="alert alert-danger">
-				                    Nieprawidłowy link resetujący hasło.
+				                   {{errorMessage}}
 				    </div>
                 </div>
                 
@@ -48,7 +48,14 @@
     </div>
 </div>
 
+<!-- AngularJS -->
 
+	<script src="../resources/js/lib/angular/angular.js"></script>
+	<script src="../resources/js/app.js"></script>
+	<script src="../resources/js/services.js"></script>
+	<script src="../resources/js/filters.js"></script>
+	<script src="../resources/js/directives.js"></script>      
+	<script src="../resources/js/controllers/PasswordResetController.js"></script>
 
 
 </body>
