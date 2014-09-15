@@ -31,7 +31,7 @@ public class LinkController {
     public String mainPage() {
         return "home";
     }
-    
+  
     @RequestMapping(value = "/signup")
     public String signUp() {
         return "signup";
@@ -41,6 +41,14 @@ public class LinkController {
     @ResponseBody
     public String currentUserName(Principal principal) {
         return principal.getName();
+    }
+    
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @ResponseBody
+    public String getIndexPath(String path) {
+    	
+    	path = "/inspigen";
+        return path;
     }
     
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
@@ -54,6 +62,7 @@ public class LinkController {
     @RequestMapping(value="/forgotPassword")
 	public String forgotPassword()
 	{
+    	message = "";
 		return "forgotPassword"; 
 	}
     
