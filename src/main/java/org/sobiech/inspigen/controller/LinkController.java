@@ -25,8 +25,7 @@ public class LinkController {
 	@Autowired
 	EmailService mailService;
 	
-	private String errorMessage;
-	private String successMessage;
+	private String message;
 	
     @RequestMapping(value = "/")
     public String mainPage() {
@@ -57,10 +56,24 @@ public class LinkController {
 	{
 		return "forgotPassword"; 
 	}
+    
+	@RequestMapping(value = "/forgotPassowordMessage", method = RequestMethod.GET)
+	@ResponseBody
+	public String forgotPasswordMessage(String error) { 
+		 return message;
+	}
+	
+	@RequestMapping(value = "*/resetLinkError", method = RequestMethod.GET)
+	@ResponseBody
+	public String resetLinkError(String error) { 
+		 return message;
+	}
 	
 	@RequestMapping(value="/resetPassword" , method=RequestMethod.POST)
 	public String resetRequest(@RequestParam(value="email") String email)
-	{
+	{	
+		message = "";
+		
 		if (userService.checkIfEmailIsRegistered(email) == true) {
 			
 			String token = userService.getPasswordToken(email);
@@ -68,26 +81,14 @@ public class LinkController {
 			userService.setPasswordTokenExpirationDate(email);
 			mailService.sendMail(email, token);
 			
-			successMessage="resetLinkSent";
+			message = "resetLinkSent";
 			return "forgotPassword";
 		}
 		else {
 			
-			errorMessage = "emailNotRegistered";
-			return "forgotPasswordError";
-		}
-	}
-	
-	@RequestMapping(value = "/forgotPasswordError", method = RequestMethod.GET)
-	@ResponseBody
-	public String resetPasswordError(String error) { 
-		 return errorMessage;
-	}
-	
-	@RequestMapping(value = "*/resetLinkError", method = RequestMethod.GET)
-	@ResponseBody
-	public String resetLinkError(String error) { 
-		 return errorMessage;
+			message = "emailNotRegistered";
+			return "forgotPassword";
+		}		
 	}
 	
 	@RequestMapping(value="/newPassword/{token}", method = RequestMethod.GET)
@@ -96,7 +97,7 @@ public class LinkController {
 		try {
 			if (userService.checkIfPasswordTokenExpired(token) == true) {
 				
-				errorMessage = "resetLinkExpired";
+				message = "resetLinkExpired";
 				return "resetLinkError";
 			}
 			
@@ -104,7 +105,7 @@ public class LinkController {
 		
 		} catch(IndexOutOfBoundsException e) {
 			
-			errorMessage = "invalidResetLink";
+			message = "invalidResetLink";
 			return "resetLinkError";
 		}
 	}
