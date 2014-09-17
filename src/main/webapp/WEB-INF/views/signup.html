@@ -1,34 +1,149 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" ng-app="AngularSpringApp">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Core CSS - Include with every page -->
-    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" 
-        data-th-href="@{resources/bootstrap/css/bootstrap.css}" />
-        
-    <link type="text/css" rel="stylesheet" href="resources/font-awesome/css/font-awesome.css" 
-        data-th-href="@{resources/font-awesome/css/font-awesome.css}" />
-        
-    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/app.css" 
-        data-th-href="@{resources/bootstrap/css/app.css}" />
-       
-    <title data-th-text="#{signup.page.title}">Signup Page</title>
+<div ng-include src="'partials/common-view.html'"></div>
+   
+		<title data-th-text="#{admin.page.title}">Title</title>
 </head>
+<body ng-controller="RegistrationFormController">
 
-<body>
+<div class="container">
+
+	<div class="row">
+        <div class="col-md-3 center">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-lock"></span> Rejestracja
+                </div>
+            <div class="panel-body">
+				<form name="signup_form" class="form-horizontal input-border" role="form" novalidate ng-submit="signupForm()">
+ 
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="Nazwa użytkownika" 
+            						name="username" 
+            						ng-model="signup.username" 
+            						ng-minlength=3 
+            						ng-maxlength=20 
+            						ensure-unique="username" 
+            						ng-model-options="{ updateOn: 'blur' }"
+            						required />
+  							<div class="error-container" ng-show="signup_form.username.$dirty 
+  							&& signup_form.username.$invalid">
+							    <small class="validation-message" ng-show="signup_form.username.$error.required">
+							    	Please input a username</small>
+							    <small class="validation-message" ng-show="signup_form.username.$error.minlength">
+							    	Your username is required to be at least 3 characters</small>
+							    <small class="validation-message" ng-show="signup_form.username.$error.maxlength">
+							    	Your username cannot be longer than 20 characters</small>
+							    <small class="validation-message" ng-show="signup_form.username.$error.unique">
+							    	That username is taken, please try another</small>
+  							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="password" 
+            						placeholder="Hasło" 
+            						name="password" 
+            						ng-model="signup.password" 
+            						ng-minlength=6
+            						ng-maxlength=16
+            						ng-model-options="{ updateOn: 'blur' }"
+            						required />
+  							<div class="error-container" ng-show="signup_form.password.$dirty 
+  							&& signup_form.password.$invalid">
+							    <small class="validation-message" ng-show="signup_form.password.$error.required">
+							    	Please input a username</small>
+							    <small class="validation-message" ng-show="signup_form.password.$error.minlength">
+							    	Your username is required to be at least 3 characters</small>
+							    <small class="validation-message" ng-show="signup_form.password.$error.maxlength">
+							    	Your username cannot be longer than 20 characters</small>
+							    <small class="validation-message" ng-show="signup_form.password.$error.unique">
+							    	That username is taken, please try another</small>
+  							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input 
+    								class="form-control" 
+    								type="text" 
+            						placeholder="Powtórz hasło" 
+            						name="repeatPassword" 
+            						ng-model="signup.repeatPassword" 
+            						ng-minlength=6
+            						ng-maxlength=16
+            						ng-model-options="{ updateOn: 'blur' }"
+            					 	required />
+  							<div class="error-container" ng-show="signup_form.repeatPassword.$dirty 
+  							&& signup_form.repeatPassword.$invalid">
+							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.required">
+							    	Please input a username</small>
+							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.minlength">
+							    	Your username is required to be at least 3 characters</small>
+							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.maxlength">
+							    	Your username cannot be longer than 20 characters</small>
+							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.unique">
+							    	That username is taken, please try another</small>
+  							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control"
+      								type="email" 
+      								placeholder="Email" 
+      								name="email" 
+      								ng-model="signup.email" 
+      								ng-minlength=3 
+      								ng-maxlength=20 
+      								ng-model-options="{ updateOn: 'blur' }"
+      								required />
+    						<div class="error-container" ng-show="signup_form.email.$dirty 
+    						&& signup_form.email.$invalid">
+      							<small class=validation-message" ng-show="signup_form.email.$error.required">
+             						Your email is required.</small>
+      							<small class="validation-message" ng-show="signup_form.email.$error.minlength">
+              						Your email is required to be at least 3 characters</small>
+      							<small class="validation-message" ng-show="signup_form.email.$error.email">
+             						That is not a valid email. Please input a valid email.</small>
+      							<small class="validation-message" ng-show="signup_form.email.$error.maxlength">
+              						Your email cannot be longer than 20 characters</small>
+    						</div>
+						</div>
+					</div> 
+
+    <button type="submit" class="btn btn-success btn-sm" ng-disabled="signup_form.$invalid">Zarejestruj</button>
+
+</form>
 
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script type="text/javascript" src="resources/js/jquery-2.1.1.min.js" 
-        data-th-src="@{resources/js/jquery-2.1.1.min.js}"></script>
-        
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js" 
-        data-th-src="@{resources/bootstrap/js/bootstrap.min.js}"></script>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+
+<!-- AngularJS -->
+
+	<script src="resources/js/lib/angular/angular.js"></script>
+	<script src="resources/js/lib/angular/angular-messages.js"></script>
+	<script src="resources/js/app.js"></script>
+	<script src="resources/js/services.js"></script>
+	<script src="resources/js/filters.js"></script>
+	<script src="resources/js/directives.js"></script>      
+	<script src="resources/js/controllers/RegistrationFormController.js"></script>
 
 </body>
 </html>

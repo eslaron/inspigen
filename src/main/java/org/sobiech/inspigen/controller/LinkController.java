@@ -36,6 +36,11 @@ public class LinkController {
     public String signUp() {
         return "signup";
     }
+    
+    @RequestMapping(value = "/partials/common-view")
+    public String common() {
+        return "partials/common-view";
+    }
    
     @RequestMapping(value = "/username", method = RequestMethod.GET)
     @ResponseBody

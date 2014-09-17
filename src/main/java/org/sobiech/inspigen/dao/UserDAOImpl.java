@@ -25,7 +25,7 @@ public class UserDAOImpl implements UserDAO {
 
 	public static final int LOCK_TIME = 15; //czas blokady u¿ytkownika w minutach
 	
-	public static final int EXPIRATION_TIME = 3; //czas blokady u¿ytkownika w godzinach
+	public static final int EXPIRATION_TIME = 720; //czas po którym wygaœnie link (minuty)
 	
 	private static int attempts = 3; //domyœlnie 3 podejœcia podawane w ustawieniach
 	public static final int MAX_ATTEMPTS = attempts-1; //realna liczba podejœæ n-1
