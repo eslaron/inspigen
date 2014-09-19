@@ -55,7 +55,7 @@ public class LinkController {
     	path = "/inspigen";
         return path;
     }
-    
+        
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public @ResponseBody String addUser(@RequestBody User user) throws DuplicateUserException {
     	
@@ -76,6 +76,15 @@ public class LinkController {
 	public String forgotPasswordMessage(String error) { 
 		 return message;
 	}
+	
+    @RequestMapping(value="/findUser/{username}", method = RequestMethod.GET)
+    @ResponseBody
+    public String findUser(@PathVariable String username)
+	{	
+    	if (userService.checkIfUserExists(username)==true)
+    	return username;
+    	else return "noUser";
+    }
 	
 	@RequestMapping(value = "*/resetLinkError", method = RequestMethod.GET)
 	@ResponseBody
