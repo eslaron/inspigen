@@ -77,13 +77,15 @@ public class LinkController {
 		 return message;
 	}
 	
-    @RequestMapping(value="/findUser/{username}", method = RequestMethod.GET)
+    @RequestMapping(value="/isUnique", method = RequestMethod.POST)
     @ResponseBody
-    public String findUser(@PathVariable String username)
+    public String findUser(@RequestBody String value)
 	{	
-    	if (userService.checkIfUserExists(username)==true)
-    	return username;
-    	else return "noUser";
+    	if (userService.checkIfUserExists(value)==true) 
+    		return value;
+    	else if(userService.checkIfEmailIsRegistered(value)==true) 
+    		return value;
+    	else return "valueNotFound";
     }
 	
 	@RequestMapping(value = "*/resetLinkError", method = RequestMethod.GET)
