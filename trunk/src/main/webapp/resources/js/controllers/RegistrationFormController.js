@@ -6,37 +6,36 @@
  */
 App.controller('RegistrationFormController', function($scope, $http) {
 	
-	    
-	$scope.submitted = false;
-	
-	  $scope.signupForm = function() {
-	    
-		  if ($scope.signup_form.$valid) {
-	      // Submit as normal
-	    } else {
-	      $scope.signup_form.submitted = true;
-	    }
-	  }
-	  
-  });
-
-/*App.directive('ensureUnique', ['$http', function($http) {
-	  return {
-	    require: 'ngModel',
-	    link: function(scope, ele, attrs, c) {
-	      scope.$watch(attrs.ngModel, function() {
-	        $http({
-	          method: 'POST',
-	          url: '/api/check/' + attrs.ensureUnique,
-	          data: {'field': attrs.ensureUnique}
-	        }).success(function(data, status, headers, cfg) {
-	          c.$setValidity('unique', data.isUnique);
-	        }).error(function(data, status, headers, cfg) {
-	          c.$setValidity('unique', false);
-	        });
-	      });
-	    }
-	  }
-	}]);
-
-*/
+		  
+  })
+  
+.directive('ngMatch', function() {
+return {
+	require: 'ngModel',
+	link : 
+			function(scope, element, attrs, ngModel) {
+				ngModel.$parsers.push(function(value) {
+					ngModel.$setValidity('match', value == scope.$eval(attrs.ngMatch));
+				return value;
+				});
+    		}
+   		}	
+})
+ .directive('ngUnique', function ($http){ 
+   return {
+      require: 'ngModel',
+      link: function(scope, elem, attrs, ngModel) {
+  
+	          ngModel.$parsers.push(function(value) {
+	     
+	        	  if(value != null) {
+	        		  $http.get('findUser/' + value)
+	        		  .success(function(response){
+	            		  ngModel.$setValidity('unique', value != scope.$eval(attrs.ngUnique)); 
+	        		  })
+	          	   }  
+	        		  return value;
+	          })
+    	  }       
+      }
+});

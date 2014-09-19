@@ -2,7 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" ng-app="AngularSpringApp">
 
 <head>
-<div ng-include src="'partials/common-view.html'"></div>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" 
+        data-th-href="@{resources/bootstrap/css/bootstrap.css}" />
+        
+    <link type="text/css" rel="stylesheet" href="resources/font-awesome/css/font-awesome.css" 
+        data-th-href="@{resources/font-awesome/css/font-awesome.css}" />
+        
+    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/app.css" 
+        data-th-href="@{resources/bootstrap/css/app.css}" />
    
 		<title data-th-text="#{admin.page.title}">Title</title>
 </head>
@@ -14,10 +26,10 @@
         <div class="col-md-3 center">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <span class="glyphicon glyphicon-lock"></span> Rejestracja
+                    <span class="glyphicon glyphicon-user"></span> Rejestracja
                 </div>
             <div class="panel-body">
-				<form name="signup_form" class="form-horizontal input-border" role="form" novalidate ng-submit="signupForm()">
+				<form name="signup_form" class="form-horizontal input-border" role="form" novalidate >
  
 					<div class="form-group">
 						<div class="col-sm-12">
@@ -27,21 +39,28 @@
             						placeholder="Nazwa użytkownika" 
             						name="username" 
             						ng-model="signup.username" 
-            						ng-minlength=3 
-            						ng-maxlength=20 
-            						ensure-unique="username" 
+            						ng-minlength=5 
+            						ng-maxlength=12 
+            						ng-pattern="/^[A-z][A-z0-9]*$/"
+            						ng-unique="signup.username"
             						ng-model-options="{ updateOn: 'blur' }"
             						required />
-  							<div class="error-container" ng-show="signup_form.username.$dirty 
-  							&& signup_form.username.$invalid">
+            						
+  							<div class="error-container" ng-show="signup_form.username.$dirty && signup_form.username.$invalid">
 							    <small class="validation-message" ng-show="signup_form.username.$error.required">
-							    	Please input a username</small>
-							    <small class="validation-message" ng-show="signup_form.username.$error.minlength">
-							    	Your username is required to be at least 3 characters</small>
-							    <small class="validation-message" ng-show="signup_form.username.$error.maxlength">
-							    	Your username cannot be longer than 20 characters</small>
+							    	Nazwa użytkownika nie może być pusta.</small>
+							    <small class="validation-message" ng-show="
+							    !signup_form.username.$error.minlength
+							    && !signup_form.username.$error.maxlength
+							    && signup_form.username.$error.pattern">
+							    	Musi zaczynać się od litery oraz zawierać tylko litery i cyfry</small>	
+							    <small class="validation-message" ng-show="
+							    	!signup_form.username.$error.required 
+							    	&& signup_form.username.$error.minlength
+									|| signup_form.username.$error.maxlength">
+							    	Nazwa użytkownika musi się składać z przynajmniej 5 i niewięcej niż 12 znaków.</small>
 							    <small class="validation-message" ng-show="signup_form.username.$error.unique">
-							    	That username is taken, please try another</small>
+							    	Ta nazwa jest już zajęta.</small>
   							</div>
 						</div>
 					</div>
@@ -56,18 +75,19 @@
             						ng-model="signup.password" 
             						ng-minlength=6
             						ng-maxlength=16
+            						ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/"
             						ng-model-options="{ updateOn: 'blur' }"
             						required />
   							<div class="error-container" ng-show="signup_form.password.$dirty 
   							&& signup_form.password.$invalid">
 							    <small class="validation-message" ng-show="signup_form.password.$error.required">
-							    	Please input a username</small>
+							    	Wprowadź hasło.</small>
 							    <small class="validation-message" ng-show="signup_form.password.$error.minlength">
-							    	Your username is required to be at least 3 characters</small>
+							    	Hasło musi mieć przynajmniej 6 znaków.</small>
 							    <small class="validation-message" ng-show="signup_form.password.$error.maxlength">
-							    	Your username cannot be longer than 20 characters</small>
-							    <small class="validation-message" ng-show="signup_form.password.$error.unique">
-							    	That username is taken, please try another</small>
+							    	Hasło nie może przekraczać 16 znaków.</small>
+							    <small class="validation-message" ng-show="signup_form.password.$error.pattern">
+									Hasło musi zawierać przynajmniej jedną dużą literę i cyfrę.</small>
   							</div>
 						</div>
 					</div>
@@ -76,24 +96,28 @@
 						<div class="col-sm-12">
     						<input 
     								class="form-control" 
-    								type="text" 
+    								type="password" 
             						placeholder="Powtórz hasło" 
             						name="repeatPassword" 
             						ng-model="signup.repeatPassword" 
             						ng-minlength=6
             						ng-maxlength=16
+            						ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/"
+             						ng-match="signup.password"
             						ng-model-options="{ updateOn: 'blur' }"
             					 	required />
   							<div class="error-container" ng-show="signup_form.repeatPassword.$dirty 
   							&& signup_form.repeatPassword.$invalid">
 							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.required">
-							    	Please input a username</small>
+							    	Wprowadź hasło.</small>
 							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.minlength">
-							    	Your username is required to be at least 3 characters</small>
+							    	Hasło musi mieć przynajmniej 6 znaków.</small>
 							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.maxlength">
-							    	Your username cannot be longer than 20 characters</small>
-							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.unique">
-							    	That username is taken, please try another</small>
+							    	Hasło nie może przekraczać 16 znaków.</small>
+							   	<small class="validation-message" ng-show="signup_form.repeatPassword.$error.pattern">
+									Hasło musi zawierać przynajmniej jedną dużą literę i cyfrę.</small>
+							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.match">
+							    	Hasła się nie zgadzają.</small>
   							</div>
 						</div>
 					</div>
