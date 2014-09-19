@@ -23,32 +23,28 @@ return {
    		}	
 })
 
-.directive('ngUnique', function ($http, $timeout){ 
-	 
-	 var checking = null;
-	 
-   return {
-      require: 'ngModel',
-      link: function(scope, elem, attrs, ngModel) {
-  
-	          ngModel.$parsers.push(function(value) {
-	     
-	        	  if(value != null) {
-	        		  
-	        		  if (!checking) {
-	        			  checking = $timeout(function() {
-			        		  $http.post('isUnique', value)
-			        		  .success(function(response){
-			            		  ngModel.$setValidity('unique', value != response); 
-			            		  checking = null;
-			        		  }).error(function() {
-			        			  checking = null;
-			        		  });
-	        			 }, 250);
-	        		  }
-	          	   }  
-	        		  return value;
-	          })
-    	  }       
-      }
+.directive('ngUnique', function ($http, $timeout) {  
+   return {   
+	   		require: 'ngModel',
+	   		link: function(scope, elem, attrs, ngModel) { 	  
+	   			ngModel.$parsers.push(function(value) {		
+	   				if(value != null) {		
+	   					scope.loading = true;
+	   					scope.loadingStyle="neutral-message";
+	   					scope.loadingMessage ="Sprawdzam...";
+	   					$http.post('isUnique', value, {timeout: 30000})
+		        		  .success(function(response){
+		            		  ngModel.$setValidity('unique', value != response);   	
+		            		  scope.loading = false;
+		        		  }).error(function() {
+		        			  scope.loadingStyle="error-message";
+		        			  scope.loadingMessage = "Serwer zbyt długo nie odpowiada. Spróbuj za parę minut."
+		        		  });
+	   				}
+	   				return value;
+	   			})	    	  
+	   		}     
+	      }
 });
+
+

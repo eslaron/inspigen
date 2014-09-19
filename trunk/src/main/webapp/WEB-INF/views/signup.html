@@ -45,21 +45,32 @@
             						ng-unique="signup.username"
             						ng-model-options="{ updateOn: 'blur' }"
             						required />
-            						
+        	
+        							<small class="success-message" ng-if="
+        							signup_form.username.$dirty && !loading && !signup_form.username.$error.unique">
+    									Nazwa dostępna.
+									</small>
+        	
+            					   <small class="error-message" ng-if="signup_form.username.$dirty &&
+            					   !signup_form.username.$error.required && loading" ng-class="loadingStyle">
+    									{{loadingMessage}}
+									</small>	
   							<div class="error-container" ng-show="signup_form.username.$dirty && signup_form.username.$invalid">
-							    <small class="validation-message" ng-show="signup_form.username.$error.required">
+							    
+							 	
+							    <small class="error-message" ng-show="signup_form.username.$error.required">
 							    	Nazwa użytkownika nie może być pusta.</small>
-							    <small class="validation-message" ng-show="
+							    <small class="error-message" ng-show="
 							    !signup_form.username.$error.minlength
 							    && !signup_form.username.$error.maxlength
 							    && signup_form.username.$error.pattern">
 							    	Musi zaczynać się od litery oraz zawierać tylko litery i cyfry</small>	
-							    <small class="validation-message" ng-show="
+							    <small class="error-message" ng-show="
 							    	!signup_form.username.$error.required 
 							    	&& signup_form.username.$error.minlength
 									|| signup_form.username.$error.maxlength">
 							    	Nazwa użytkownika musi się składać z przynajmniej 5 i niewięcej niż 12 znaków.</small>
-							    <small class="validation-message" ng-show="signup_form.username.$error.unique">
+							    <small class="error-message" ng-show="signup_form.username.$error.unique">
 							    	Nazwa użytkownika jest już zajęta.</small>
   							</div>
 						</div>
@@ -81,14 +92,14 @@
   							<div class="error-container" ng-show="signup_form.password.$dirty 
   							&& signup_form.password.$invalid">
   							
-  							 <small class="validation-message" ng-show="signup_form.password.$error.required">
+  							 <small class="error-message" ng-show="signup_form.password.$error.required">
 							    	Wprowadź hasło.</small>
-							    <small class="validation-message" ng-show="
+							    <small class="error-message" ng-show="
 							    !signup_form.password.$error.minlength
 							    && !signup_form.password.$error.maxlength
 							    && signup_form.password.$error.pattern">
 							    	Hasło musi zawierać przynajmniej jedną dużą literę i cyfrę.</small>	
-							    <small class="validation-message" ng-show="
+							    <small class="error-message" ng-show="
 							    	!signup_form.password.$error.required 
 							    	&& signup_form.password.$error.minlength
 									|| signup_form.password.$error.maxlength">
@@ -110,9 +121,9 @@
             					 	required />
   							<div class="error-container" ng-show="signup_form.confirmPassword.$dirty 
   							&& signup_form.confirmPassword.$invalid">
-							    <small class="validation-message" ng-show="signup_form.confirmPassword.$error.required">
+							    <small class="error-message" ng-show="signup_form.confirmPassword.$error.required">
 							    	Potwierdź hasło.</small>
-							    <small class="validation-message" ng-show="
+							    <small class="error-message" ng-show="
 							    !signup_form.confirmPassword.$error.required
 							    && signup_form.confirmPassword.$error.match">
 							    	Hasła się nie zgadzają.</small>
@@ -133,21 +144,32 @@
       								ng-unique="signup.email"
       								ng-model-options="{ updateOn: 'blur' }"
       								required />
+      						
+      						
+      						<small class="success-message" ng-if="
+        							signup_form.email.$dirty && !loading && !signup_form.email.$error.unique">
+    									Możesz wykorzystać ten adres do rejestracji.
+							</small>		
+      						<small class="error-message" ng-if="!signup_form.email.$error.required 
+      						&& signup_form.email.$dirty && loading" ng-class="loadingStyle">
+    							{{loadingMessage}}
+								</small>			
     						<div class="error-container" ng-show="signup_form.email.$dirty 
     						&& signup_form.email.$invalid">
-							    	<small class="validation-message" ng-show="signup_form.email.$error.required">
+    						
+							    	<small class="error-message" ng-show="signup_form.email.$error.required">
 							    	Podaj adres email.</small>
-							    <small class="validation-message" ng-show="
+							    <small class="error-message" ng-show="
 							    !signup_form.email.$error.minlength
 							    && !signup_form.email.$error.maxlength
 							    && signup_form.email.$error.email">
 							    	Nieprawidłowy adres email.</small>	
-							    <small class="validation-message" ng-show="
+							    <small class="error-message" ng-show="
 							    	!signup_form.email.$error.required 
 							    	&& signup_form.email.$error.minlength
 									|| signup_form.email.$error.maxlength">
 							    	Email musi się składać z przynajmniej 6 i niewięcej niż 40 znaków.</small>
-							    <small class="validation-message" ng-show="signup_form.email.$error.unique">
+							    <small class="error-message" ng-show="signup_form.email.$error.unique">
 							    	Istnieje użytkownik z podanym emailem.</small>
     						</div>
 						</div>
@@ -168,9 +190,9 @@
       								required />
     						<div class="error-container" ng-show="signup_form.confirmEmail.$dirty 
     						&& signup_form.confirmEmail.$invalid">
-      						 <small class="validation-message" ng-show="signup_form.confirmEmail.$error.required">
+      						 <small class="error-message" ng-show="signup_form.confirmEmail.$error.required">
 							    	Potwierdź adres email.</small>
-							    <small class="validation-message" ng-show="
+							    <small class="error-message" ng-show="
 							    !signup_form.confirmEmail.$error.required
 							    && signup_form.confirmEmail.$error.match">
 							    	Adresy sie nie zgadzają.</small>
