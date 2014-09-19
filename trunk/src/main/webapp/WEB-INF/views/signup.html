@@ -51,7 +51,7 @@
     									Nazwa dostępna.
 									</small>
         	
-            					   <small class="error-message" ng-if="signup_form.username.$dirty &&
+            					   <small ng-if="signup_form.username.$dirty &&
             					   !signup_form.username.$error.required && loading" ng-class="loadingStyle">
     									{{loadingMessage}}
 									</small>	
@@ -70,7 +70,7 @@
 							    	&& signup_form.username.$error.minlength
 									|| signup_form.username.$error.maxlength">
 							    	Nazwa użytkownika musi się składać z przynajmniej 5 i niewięcej niż 12 znaków.</small>
-							    <small class="error-message" ng-show="signup_form.username.$error.unique">
+							    <small class="error-message" ng-show="signup_form.username.$error.unique && !loading">
 							    	Nazwa użytkownika jest już zajęta.</small>
   							</div>
 						</div>
@@ -150,7 +150,7 @@
         							signup_form.email.$dirty && !loading && !signup_form.email.$error.unique">
     									Możesz wykorzystać ten adres do rejestracji.
 							</small>		
-      						<small class="error-message" ng-if="!signup_form.email.$error.required 
+      						<small ng-if="!signup_form.email.$error.required 
       						&& signup_form.email.$dirty && loading" ng-class="loadingStyle">
     							{{loadingMessage}}
 								</small>			
@@ -169,7 +169,7 @@
 							    	&& signup_form.email.$error.minlength
 									|| signup_form.email.$error.maxlength">
 							    	Email musi się składać z przynajmniej 6 i niewięcej niż 40 znaków.</small>
-							    <small class="error-message" ng-show="signup_form.email.$error.unique">
+							    <small class="error-message" ng-show="signup_form.email.$error.unique && !loading">
 							    	Istnieje użytkownik z podanym emailem.</small>
     						</div>
 						</div>
