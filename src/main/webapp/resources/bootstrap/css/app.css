@@ -17,8 +17,16 @@ body {
 }
 
 
-.validation-message {
+.neutral-message {
+	color: #000;
+}
+
+.error-message {
 	color: #C90C00;
+}
+
+.success-message {
+	color: #009402;
 }
 
   .input-border input.ng-invalid.ng-dirty {
