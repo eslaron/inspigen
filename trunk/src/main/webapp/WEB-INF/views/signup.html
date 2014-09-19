@@ -60,7 +60,7 @@
 									|| signup_form.username.$error.maxlength">
 							    	Nazwa użytkownika musi się składać z przynajmniej 5 i niewięcej niż 12 znaków.</small>
 							    <small class="validation-message" ng-show="signup_form.username.$error.unique">
-							    	Ta nazwa jest już zajęta.</small>
+							    	Nazwa użytkownika jest już zajęta.</small>
   							</div>
 						</div>
 					</div>
@@ -73,21 +73,26 @@
             						placeholder="Hasło" 
             						name="password" 
             						ng-model="signup.password" 
-            						ng-minlength=6
+            						ng-minlength=5
             						ng-maxlength=16
             						ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/"
             						ng-model-options="{ updateOn: 'blur' }"
             						required />
   							<div class="error-container" ng-show="signup_form.password.$dirty 
   							&& signup_form.password.$invalid">
-							    <small class="validation-message" ng-show="signup_form.password.$error.required">
+  							
+  							 <small class="validation-message" ng-show="signup_form.password.$error.required">
 							    	Wprowadź hasło.</small>
-							    <small class="validation-message" ng-show="signup_form.password.$error.minlength">
-							    	Hasło musi mieć przynajmniej 6 znaków.</small>
-							    <small class="validation-message" ng-show="signup_form.password.$error.maxlength">
-							    	Hasło nie może przekraczać 16 znaków.</small>
-							    <small class="validation-message" ng-show="signup_form.password.$error.pattern">
-									Hasło musi zawierać przynajmniej jedną dużą literę i cyfrę.</small>
+							    <small class="validation-message" ng-show="
+							    !signup_form.password.$error.minlength
+							    && !signup_form.password.$error.maxlength
+							    && signup_form.password.$error.pattern">
+							    	Hasło musi zawierać przynajmniej jedną dużą literę i cyfrę.</small>	
+							    <small class="validation-message" ng-show="
+							    	!signup_form.password.$error.required 
+							    	&& signup_form.password.$error.minlength
+									|| signup_form.password.$error.maxlength">
+							    	Hasło musi się składać z przynajmniej 5 i niewięcej niż 16 znaków.</small>
   							</div>
 						</div>
 					</div>
@@ -97,26 +102,19 @@
     						<input 
     								class="form-control" 
     								type="password" 
-            						placeholder="Powtórz hasło" 
-            						name="repeatPassword" 
-            						ng-model="signup.repeatPassword" 
-            						ng-minlength=6
-            						ng-maxlength=16
-            						ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/"
+            						placeholder="Potwierdź hasło" 
+            						name="confirmPassword" 
+            						ng-model="signup.confirmPassword" 
              						ng-match="signup.password"
             						ng-model-options="{ updateOn: 'blur' }"
             					 	required />
-  							<div class="error-container" ng-show="signup_form.repeatPassword.$dirty 
-  							&& signup_form.repeatPassword.$invalid">
-							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.required">
-							    	Wprowadź hasło.</small>
-							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.minlength">
-							    	Hasło musi mieć przynajmniej 6 znaków.</small>
-							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.maxlength">
-							    	Hasło nie może przekraczać 16 znaków.</small>
-							   	<small class="validation-message" ng-show="signup_form.repeatPassword.$error.pattern">
-									Hasło musi zawierać przynajmniej jedną dużą literę i cyfrę.</small>
-							    <small class="validation-message" ng-show="signup_form.repeatPassword.$error.match">
+  							<div class="error-container" ng-show="signup_form.confirmPassword.$dirty 
+  							&& signup_form.confirmPassword.$invalid">
+							    <small class="validation-message" ng-show="signup_form.confirmPassword.$error.required">
+							    	Potwierdź hasło.</small>
+							    <small class="validation-message" ng-show="
+							    !signup_form.confirmPassword.$error.required
+							    && signup_form.confirmPassword.$error.match">
 							    	Hasła się nie zgadzają.</small>
   							</div>
 						</div>
@@ -130,20 +128,52 @@
       								placeholder="Email" 
       								name="email" 
       								ng-model="signup.email" 
-      								ng-minlength=3 
-      								ng-maxlength=20 
+      								ng-minlength=6 
+      								ng-maxlength=40 
+      								ng-unique="signup.email"
       								ng-model-options="{ updateOn: 'blur' }"
       								required />
     						<div class="error-container" ng-show="signup_form.email.$dirty 
     						&& signup_form.email.$invalid">
-      							<small class=validation-message" ng-show="signup_form.email.$error.required">
-             						Your email is required.</small>
-      							<small class="validation-message" ng-show="signup_form.email.$error.minlength">
-              						Your email is required to be at least 3 characters</small>
-      							<small class="validation-message" ng-show="signup_form.email.$error.email">
-             						That is not a valid email. Please input a valid email.</small>
-      							<small class="validation-message" ng-show="signup_form.email.$error.maxlength">
-              						Your email cannot be longer than 20 characters</small>
+							    	<small class="validation-message" ng-show="signup_form.email.$error.required">
+							    	Podaj adres email.</small>
+							    <small class="validation-message" ng-show="
+							    !signup_form.email.$error.minlength
+							    && !signup_form.email.$error.maxlength
+							    && signup_form.email.$error.email">
+							    	Nieprawidłowy adres email.</small>	
+							    <small class="validation-message" ng-show="
+							    	!signup_form.email.$error.required 
+							    	&& signup_form.email.$error.minlength
+									|| signup_form.email.$error.maxlength">
+							    	Email musi się składać z przynajmniej 6 i niewięcej niż 40 znaków.</small>
+							    <small class="validation-message" ng-show="signup_form.email.$error.unique">
+							    	Istnieje użytkownik z podanym emailem.</small>
+    						</div>
+						</div>
+					</div> 
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control"
+      								type="email" 
+      								placeholder="Potwierdź email" 
+      								name="confirmEmail" 
+      								ng-model="signup.confirmEmail" 
+      								ng-minlength=3 
+      								ng-maxlength=30 
+      								ng-match="signup.email"
+      								ng-model-options="{ updateOn: 'blur' }"
+      								required />
+    						<div class="error-container" ng-show="signup_form.confirmEmail.$dirty 
+    						&& signup_form.confirmEmail.$invalid">
+      						 <small class="validation-message" ng-show="signup_form.confirmEmail.$error.required">
+							    	Potwierdź adres email.</small>
+							    <small class="validation-message" ng-show="
+							    !signup_form.confirmEmail.$error.required
+							    && signup_form.confirmEmail.$error.match">
+							    	Adresy sie nie zgadzają.</small>
     						</div>
 						</div>
 					</div> 

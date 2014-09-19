@@ -140,9 +140,9 @@ public class UserDAOImpl implements UserDAO {
 		Query query = getCurrentSession().createQuery("from User where email = :eMail ");
 		query.setString("eMail", email);
 		
-		if (query.list().size() > 0 ) {
-			return true;
-		} else return false;
+		if (query.list().size() == 0 ) {
+			return false;
+		} else return true;
 	}
 	
 	@Override
