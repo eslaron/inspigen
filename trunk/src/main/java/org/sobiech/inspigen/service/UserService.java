@@ -1,5 +1,6 @@
 package org.sobiech.inspigen.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,9 +46,15 @@ public interface UserService extends UserDetailsService {
     
     //Resetowanie hase³
     
-    public void setPasswordTokenExpirationDate(String email);
+    public String setPasswordToken();
     
-    public void setPasswordToken(int length, String username);
+    public void updatePasswordToken(String username);
     
     public String getPasswordToken(String email);
+    
+    public Date setPasswordTokenExpirationDate();
+    
+    public void updatePasswordTokenExpirationDate(String email);
+    
+    public Date getPasswordTokenExpirationDate(String email);
 }

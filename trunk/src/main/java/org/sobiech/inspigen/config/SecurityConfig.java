@@ -43,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/resources/**", 
                 			"/signup", 
+                			"/addUser", 
                 			"/forgotPassword", 
                 			"/resetPassword",
                 			"/newPassword/{token}",

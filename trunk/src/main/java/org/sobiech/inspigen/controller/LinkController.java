@@ -59,11 +59,10 @@ public class LinkController {
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public @ResponseBody String addUser(@RequestBody User user) throws DuplicateUserException {
     	
-    	userService.addUser(user);
-    	
+    	userService.addUser(user); 	
     	return "Success";
     }
-    
+        
     @RequestMapping(value="/forgotPassword")
 	public String forgotPassword()
 	{
@@ -103,7 +102,7 @@ public class LinkController {
 			
 			String token = userService.getPasswordToken(email);
 			
-			userService.setPasswordTokenExpirationDate(email);
+			userService.setPasswordTokenExpirationDate();
 			mailService.sendMail(email, token);
 			
 			message = "resetLinkSent";

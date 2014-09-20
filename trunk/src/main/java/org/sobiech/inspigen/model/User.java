@@ -40,14 +40,20 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "password", length = 50)
     private String password;
     
-    @Column(name = "enabled")
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "enabled", columnDefinition = "TINYINT(1)")
     private Boolean enabled;
     
-    @Column(name = "accountNonLocked", columnDefinition = "TINYINT(1)")
+	@Column(name = "accountNonLocked", columnDefinition = "TINYINT(1)")
     private Boolean accountNonLocked;
     
-	@Column(name = "email")
-    private String email;
+    @Column(name = "accountNonExpired", columnDefinition = "TINYINT(1)")
+    private Boolean accountNonExpired;
+    
+    @Column(name = "credentialsNonExpired", columnDefinition = "TINYINT(1)")
+    private Boolean credentialsNonExpired;
     
 	@Column(name = "passwordToken")
 	private String passwordToken;
@@ -67,15 +73,28 @@ public class User extends BaseEntity implements UserDetails {
     
 	public User() {}
 
-    public User(String username, String password, String email, boolean enabled) {
+	public User(String username, String password, String email) {
+  	
+		this.username = username;
+		this.password = password;
+		this.email =  email;
+	}
+	
+    public User(String username, String password, String email, boolean enabled, 
+    			boolean accountNonLocked, boolean accountNonExpired, 
+    			boolean credentialsNonExpired, String passwordToken, Date tokenExpiration) {
     	
     	this.username = username;
     	this.password = password;
     	this.email =  email;
     	this.enabled = enabled;
+    	this.accountNonLocked = accountNonLocked;
+    	this.accountNonExpired = accountNonExpired;
+    	this.credentialsNonExpired = credentialsNonExpired;
+    	this.passwordToken = passwordToken;
+    	this.tokenExpiration = tokenExpiration;
     }
     
-  
     public String getUsername() {
         return username;
     }
@@ -91,10 +110,18 @@ public class User extends BaseEntity implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public String getEmail() {
+ 		return email;
+ 	}
 
-    public Boolean getEnabled() {
-        return enabled;
-    }
+ 	public void setEmail(String email) {
+ 		this.email = email;
+ 	}
+ 	
+ 	public Boolean getEnabled() {
+ 		return enabled;
+ 	}
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
@@ -103,23 +130,15 @@ public class User extends BaseEntity implements UserDetails {
     public void setAccountNonLocked(Boolean accountNonLocked) {
   		this.accountNonLocked = accountNonLocked;
   	}
-    
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-    
-    public String getEmail() {
-		return email;
+ 
+	public void setAccountNonExpired(Boolean accountNonExpired) {
+		this.accountNonExpired = accountNonExpired;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+		this.credentialsNonExpired = credentialsNonExpired;
 	}
-		
+    
 	public Date getTokenExpiration() {
 		return tokenExpiration;
 	}
@@ -136,6 +155,15 @@ public class User extends BaseEntity implements UserDetails {
 		this.passwordToken = passwordToken;
 	}
 	
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+    
+    
 	//Czy konto nie wygas³o
     @Override
     public boolean isAccountNonExpired() {
