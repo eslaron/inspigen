@@ -58,12 +58,19 @@ public class UserDAOImpl implements UserDAO {
             throw new DuplicateUserException(message);
             
         } catch (UserNotFoundException e) { 
-        	
+        	        	
         	String password = user.getPassword();
-        	
         	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(user));
+        	String passwordToken = setPasswordToken();
+        	Date tokenExpiration = setPasswordTokenExpirationDate();
         	
         	user.setPassword(encodedPassword);
+        	user.setPasswordToken(passwordToken);
+        	user.setTokenExpiration(tokenExpiration);
+        	user.setEnabled(true);
+        	user.setAccountNonLocked(true);
+        	user.setAccountNonExpired(true);
+        	user.setCredentialsNonExpired(true);
             getCurrentSession().save(user);
         }
 	}
@@ -271,23 +278,31 @@ public class UserDAOImpl implements UserDAO {
 			unlockAccount.executeUpdate();
 		}
 	}
+	
+	@Override
+	public String setPasswordToken() {
+		
+		SecureRandom srand = new SecureRandom();
+	    Random random = new Random();
+	    char[] buff = new char[16];
+
+	    for (int i = 0; i < 16; ++i) {
+	      // reseed random once you've used up all available entropy bits
+	      if ((i % 10) == 0) {
+	          random.setSeed(srand.nextLong()); // 64 bits of random!
+	      }
+	      buff[i] = VALID_CHARACTERS[random.nextInt(VALID_CHARACTERS.length)];
+	    }
+	    
+	    String token = String.valueOf(buff);
+		    
+		return token;
+	}
 
 	@Override
-	public void setPasswordToken(int length, String username) {
+	public void updatePasswordToken(String username) {
 
-		 SecureRandom srand = new SecureRandom();
-		    Random random = new Random();
-		    char[] buff = new char[length];
-
-		    for (int i = 0; i < length; ++i) {
-		      // reseed random once you've used up all available entropy bits
-		      if ((i % 10) == 0) {
-		          random.setSeed(srand.nextLong()); // 64 bits of random!
-		      }
-		      buff[i] = VALID_CHARACTERS[random.nextInt(VALID_CHARACTERS.length)];
-		    }
-		    
-		    String token = buff.toString();
+		    String token = setPasswordToken();
 		    
 		    Query setToken = getCurrentSession().createQuery(
 					"UPDATE User SET passwordToken = :token WHERE username = :userName");
@@ -296,7 +311,6 @@ public class UserDAOImpl implements UserDAO {
 		    setToken.setString("userName", username);
 		    setToken.executeUpdate();		
 	}
-
 
 	@Override
 	public String getPasswordToken(String email) {
@@ -308,20 +322,26 @@ public class UserDAOImpl implements UserDAO {
 		return getToken.list().get(0).toString();
 	}
 
-
 	@Override
-	public void setPasswordTokenExpirationDate(String email) {
-	
+	public Date setPasswordTokenExpirationDate() {
+		
 		Date currentDate = new Date();
 		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		format.format(currentDate);
-		
-		
+			
 		Calendar cal=Calendar.getInstance();
 		cal=format.getCalendar();		
 		cal.add(Calendar.MINUTE, EXPIRATION_TIME);
 		
 		Date expirationDate = cal.getTime();
+		
+		return expirationDate;
+	}
+
+	@Override
+	public void updatePasswordTokenExpirationDate(String email) {
+		
+		Date expirationDate = setPasswordTokenExpirationDate();
 		
 		Query setToken = getCurrentSession().createQuery(
 				"UPDATE User SET tokenExpiration = :stamp WHERE email = :eMail");
@@ -329,5 +349,15 @@ public class UserDAOImpl implements UserDAO {
 	    setToken.setTimestamp("stamp", expirationDate);
 	    setToken.setString("eMail", email);
 	    setToken.executeUpdate();				
+	}
+	
+	@Override
+	public Date getPasswordTokenExpirationDate(String email) {
+		
+		Query getDate = getCurrentSession().createQuery(
+				"SELECT tokenExpiration FROM User WHERE email = :eMail");
+		getDate.setString("eMail", email);
+		
+		return (Date)getDate.list().get(0);
 	}
 }

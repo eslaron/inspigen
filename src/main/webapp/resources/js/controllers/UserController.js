@@ -14,12 +14,12 @@ App.controller('UserController', function($scope, $http) {
 			  $scope.username = response;	  
 		});
 		
-		$scope.addUser = function()	{
+		/*$scope.addUser = function()	{
 	
 			$http.post('addUser', $scope.user).success(function(result) {
 				  alert($scope.user.enabled);
         	});	
-		}
+		}*/
 	   
 		$scope.role="";
 		

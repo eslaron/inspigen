@@ -1,5 +1,6 @@
 package org.sobiech.inspigen.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -99,8 +100,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void setPasswordToken(int length, String username) {
-		userDAO.setPasswordToken(length, username);
+	public String setPasswordToken() {
+		return userDAO.setPasswordToken();
+	}
+
+	@Override
+	public void updatePasswordToken(String username) {
+		userDAO.updatePasswordToken(username);
 	}
 
 	@Override
@@ -109,7 +115,17 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void setPasswordTokenExpirationDate(String email) {
-		userDAO.setPasswordTokenExpirationDate(email);
+	public Date setPasswordTokenExpirationDate() {
+		return userDAO.setPasswordTokenExpirationDate();
+	}
+
+	@Override
+	public void updatePasswordTokenExpirationDate(String email) {
+		userDAO.updatePasswordTokenExpirationDate(email);
+	}
+
+	@Override
+	public Date getPasswordTokenExpirationDate(String email) {
+		return userDAO.getPasswordTokenExpirationDate(email);
 	}
 }
