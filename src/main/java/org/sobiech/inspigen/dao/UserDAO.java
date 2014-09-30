@@ -3,12 +3,11 @@ package org.sobiech.inspigen.dao;
 import java.util.Date;
 import java.util.List;
 
-import org.sobiech.inspigen.model.LoginAttempts;
 import org.sobiech.inspigen.model.User;
 
 public interface UserDAO {
 
-	//U¿ytkownik
+	//U¯YTKOWNIK
 	
     public void addUser(User user) throws DuplicateUserException;
 
@@ -22,35 +21,15 @@ public interface UserDAO {
 
     public List<User> getUsers();
     
-    //Sprawdzanie
-    
-    public Boolean checkIfUserExists(String username);
-    
-    public Boolean checkIfEmailIsRegistered(String email);
-    
-    public Boolean checkIfPasswordTokenExpired(String token);
-    
-    //Tymczasowe blokowanie kont
-    
-    public LoginAttempts getLoginAttempts(String username);
-    
-    public void updateLoginFailAttempts(String username);
-    
-    public void resetLoginFailAttempts(String username);
-	
-    public void unlockAccount(String username);
-    
-    //Resetowanie hase³
-    
-    public String setPasswordToken();
-    
-    public void updatePasswordToken(String username);
+    // PASSWORD TOKEN
     
     public String getPasswordToken(String email);
+       
+    public void updatePasswordToken(String username, String token);
     
-    public Date setPasswordTokenExpirationDate();
-    
-    public void updatePasswordTokenExpirationDate(String email);
+    // PASSWORD TOKEN - data wygaœniêcia
     
     public Date getPasswordTokenExpirationDate(String email);
+        
+    public void updatePasswordTokenExpirationDate(String email, Date expirationDate); 
 }

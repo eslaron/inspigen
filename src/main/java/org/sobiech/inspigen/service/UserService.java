@@ -6,13 +6,11 @@ import java.util.List;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.sobiech.inspigen.dao.DuplicateUserException;
 import org.sobiech.inspigen.dao.UserNotFoundException;
-import org.sobiech.inspigen.model.LoginAttempts;
 import org.sobiech.inspigen.model.User;
 
 public interface UserService extends UserDetailsService {
-
 	
-	//U¿ytkownik
+	// U¯YTKOWNIK
 	
     public void addUser(User user) throws DuplicateUserException;
 
@@ -26,35 +24,27 @@ public interface UserService extends UserDetailsService {
 
     public List<User> getUsers();
     
-    //Sprawdzanie
+    // SPRAWDZANIE
+    
+    public Boolean checkIfPasswordTokenExpired(String email);
     
     public Boolean checkIfUserExists(String username);
     
     public Boolean checkIfEmailIsRegistered(String email);
-    
-    public Boolean checkIfPasswordTokenExpired(String token);
-    
-    //Tymczasowe blokowanie kont
-    
-    public void updateLoginFailAttempts(String username);
-    
-    public void resetLoginFailAttempts(String username);
-	
-    public LoginAttempts getLoginAttempts(String username);
-    
-    public void unlockAccount(String username);
-    
-    //Resetowanie hase³
-    
-    public String setPasswordToken();
-    
-    public void updatePasswordToken(String username);
+      
+    //	PASSWORD TOKEN
     
     public String getPasswordToken(String email);
     
-    public Date setPasswordTokenExpirationDate();
+    public String setPasswordToken();
     
-    public void updatePasswordTokenExpirationDate(String email);
+    public void updatePasswordToken(String username, String token);
+    
+	// PASSWORD TOKEN - data wygaœniêcia
     
     public Date getPasswordTokenExpirationDate(String email);
+    
+    public Date setPasswordTokenExpirationDate();
+    
+    public void updatePasswordTokenExpirationDate(String email, Date expirationDate);        
 }
