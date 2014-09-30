@@ -3,6 +3,7 @@ package org.sobiech.inspigen.config;
 
 import javax.sql.DataSource;
 
+import org.sobiech.inspigen.model.Settings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -116,4 +117,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	
     	return service;
     }   
+    
+    @Bean
+    Settings getSettings() {
+    	Settings settings = new Settings();
+    	return settings;
+    }
 }
