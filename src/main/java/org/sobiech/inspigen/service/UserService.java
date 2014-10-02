@@ -23,15 +23,7 @@ public interface UserService extends UserDetailsService {
     public void deleteUser(int userId) throws UserNotFoundException;
 
     public List<User> getUsers();
-    
-    // SPRAWDZANIE
-    
-    public Boolean checkIfPasswordTokenExpired(String email);
-    
-    public Boolean checkIfUserExists(String username);
-    
-    public Boolean checkIfEmailIsRegistered(String email);
-      
+          
     //	PASSWORD TOKEN
     
     public String getPasswordToken(String email);

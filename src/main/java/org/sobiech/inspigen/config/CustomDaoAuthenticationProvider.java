@@ -1,7 +1,7 @@
 package org.sobiech.inspigen.config;
 
-import org.sobiech.inspigen.model.Settings;
-import org.sobiech.inspigen.service.UserService;
+
+import org.sobiech.inspigen.service.CheckService;
 import org.sobiech.inspigen.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,15 +12,11 @@ import org.springframework.security.core.AuthenticationException;
 
 public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
-	
-	@Autowired
-	UserService userService;
-	
 	@Autowired
 	LoginService loginService;
 	
 	@Autowired
-	Settings settings;
+	CheckService checkService;
 	
 	private String username;
 	
@@ -31,20 +27,21 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 			
 		      try {
 		    	  
-		    	  	if(loginService.checkIfUserIsLocked(username) == true) {
+		    	  	if(checkService.checkIfUserIsLocked(username) == true) {
 		    	  				loginService.unlockAccount(username);
 		    	  		
-		    	  	} else if (loginService.checkIfUserIsLocked(username) == false
+		    	  	} else if (checkService.checkIfUserIsLocked(username) == false
 		    	  				&& super.authenticate(authentication).isAuthenticated() == true) {
 		    	  					loginService.resetLoginFailAttempts(username);
 		    	  	} 
 		    	  					
 		    	  	return super.authenticate(authentication);
 		        
-		      } catch (BadCredentialsException e) {		              				        	
+		      } catch (BadCredentialsException e) {	
+		    	  if (checkService.checkIfUserExists(username) == true) {
 		    	  	loginService.updateLoginFailAttempts(username);
 		    	  	loginService.lockAccount(username);   	
-		    	  	
+		    	  }
 			        throw e;
 		      }
 		}

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.sobiech.inspigen.dao.DuplicateUserException;
 import org.sobiech.inspigen.model.User;
+import org.sobiech.inspigen.service.CheckService;
 import org.sobiech.inspigen.service.EmailService;
 import org.sobiech.inspigen.service.UserService;
 
@@ -21,6 +22,9 @@ public class LinkController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	CheckService checkService;
 	
 	@Autowired
 	EmailService mailService;
@@ -80,9 +84,9 @@ public class LinkController {
     @ResponseBody
     public String findUser(@RequestBody String value)
 	{	
-    	if (userService.checkIfUserExists(value)==true) 
+    	if (checkService.checkIfUserExists(value)==true) 
     		return value;
-    	else if(userService.checkIfEmailIsRegistered(value)==true) 
+    	else if(checkService.checkIfEmailIsRegistered(value)==true) 
     		return value;
     	else return "valueNotFound";
     }
@@ -98,7 +102,7 @@ public class LinkController {
 	{	
 		message = "";
 		
-		if (userService.checkIfEmailIsRegistered(email) == true) {
+		if (checkService.checkIfEmailIsRegistered(email) == true) {
 			
 			String token = userService.getPasswordToken(email);
 			
@@ -119,7 +123,7 @@ public class LinkController {
 	public String resetPassword(@PathVariable String token)
 	{
 		try {
-			if (userService.checkIfPasswordTokenExpired(token) == true) {
+			if (checkService.checkIfPasswordTokenExpired(token) == true) {
 				
 				message = "resetLinkExpired";
 				return "resetLinkError";
