@@ -6,15 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.hibernate.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.dao.ReflectionSaltSource;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.sobiech.inspigen.dao.CheckDAO;
 import org.sobiech.inspigen.dao.LoginDAO;
 import org.sobiech.inspigen.model.LoginAttempts;
 import org.sobiech.inspigen.model.Settings;
@@ -26,37 +22,12 @@ public class LoginServiceImpl implements LoginService {
 	
     @Autowired
     private LoginDAO loginDAO;
-    
-    @Autowired
-    private CheckDAO checkDAO;
-    
-    @Autowired
-    Md5PasswordEncoder passwordEncoder;
-    
-    @Autowired 
-    ReflectionSaltSource saltSource;
-    
+     
     @Autowired 
     Settings settings;
     
-	@Override
-	public Boolean checkIfUserIsLocked(String username) {
-		Query query = checkDAO.checkIfUserIsLocked(username);
-    	
-    	if (query.list().size() == 0 ) {
-			return false;
-		} else return true;
-	}
-	
-	@Override
-	public Boolean checkIfUserExists(String username) {
-		Query query = checkDAO.checkIfUserExists(username);
-		
-		if (query.list().size() == 0 ) {
-			return false;
-		} else return true;
-	}	
-		
+	// PRÓBY LOGOWANIA
+    
 	@Override
 	public void addLoginAttemptEntry(String username) {
 		loginDAO.addLoginAttemptEntry(username);
@@ -74,12 +45,10 @@ public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public void updateLoginFailAttempts(String username) {
-	
-		if (checkIfUserExists(username) == true) {
+
 			if (getLoginAttempts(username) == null) addLoginAttemptEntry(username);		
 		  		else if (getLoginAttempts(username).getAttempts() < settings.getMAX_ATTEMPTS())				
-		  			loginDAO.updateLoginFailAttempts(username);					
-		}	
+		  			loginDAO.updateLoginFailAttempts(username);						
 	}
 	
 	@Override

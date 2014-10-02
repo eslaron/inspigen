@@ -5,13 +5,7 @@ import java.sql.Timestamp;
 import org.sobiech.inspigen.model.LoginAttempts;
 
 public interface LoginService {
-    
-	// SPRAWDZANIE
-    
-    public Boolean checkIfUserIsLocked(String username);
-    
-    public Boolean checkIfUserExists(String username);
-    
+        
     // PRÓBY LOGOWANIA
        
     public void addLoginAttemptEntry(String username);

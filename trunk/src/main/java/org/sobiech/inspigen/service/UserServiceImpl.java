@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import org.hibernate.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.sobiech.inspigen.dao.DuplicateUserException;
 import org.sobiech.inspigen.dao.UserDAO;
-import org.sobiech.inspigen.dao.CheckDAO;
 import org.sobiech.inspigen.dao.UserNotFoundException;
 import org.sobiech.inspigen.model.Settings;
 import org.sobiech.inspigen.model.User;
@@ -28,13 +26,11 @@ import org.sobiech.inspigen.model.User;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+	
 	static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	
     @Autowired
     private UserDAO userDAO;
-    
-    @Autowired
-    private CheckDAO checkDAO;
     
     @Autowired
     Md5PasswordEncoder passwordEncoder;
@@ -44,6 +40,8 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     Settings settings;
+    
+    // U¯YTKOWNIK
     
 	@Override
 	public void addUser(User user) throws DuplicateUserException {
@@ -98,40 +96,6 @@ public class UserServiceImpl implements UserService {
         }
     }
     
-    // SPRAWDZANIE
-    
-	@Override
-	public Boolean checkIfPasswordTokenExpired(String email) {
-			
-		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		format.format(getPasswordTokenExpirationDate(email));
-		
-		Calendar expire=Calendar.getInstance();
-		expire = format.getCalendar();		
-		
-		if(Calendar.getInstance().getTime().after(expire.getTime()) == true) {
-			return true;
-		} else return false;
-	}
-	
-	@Override
-	public Boolean checkIfUserExists(String username) {
-		Query query = checkDAO.checkIfUserExists(username);
-		
-		if (query.list().size() == 0 ) {
-			return false;
-		} else return true;
-	}
-	
-	@Override
-	public Boolean checkIfEmailIsRegistered(String email) {
-		Query query = checkDAO.checkIfEmailIsRegistered(email);
-		
-		if (query.list().size() == 0 ) {
-			return false;
-		} else return true;
-	}
-
 	// PASSWORD TOKEN
 	
 	@Override
