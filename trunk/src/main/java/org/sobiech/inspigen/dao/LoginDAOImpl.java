@@ -15,6 +15,9 @@ public class LoginDAOImpl implements LoginDAO {
 	
 	@Autowired
     private SessionFactory sessionFactory;
+	
+	@Autowired
+	LoginAttempts loginAttempts;
    
     private Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
@@ -25,12 +28,12 @@ public class LoginDAOImpl implements LoginDAO {
 	@Override
 	public void addLoginAttemptEntry(String username) { 
 		
-	  	LoginAttempts login = new LoginAttempts();
-		login.setUsername(username);
-		login.setAttempts(1);
-		login.setLastModified(new Date());
+	
+		loginAttempts.setUsername(username);
+		loginAttempts.setAttempts(1);
+		loginAttempts.setLastModified(new Date());
 		
-		getCurrentSession().save(login);	
+		getCurrentSession().save(loginAttempts);	
 	}
 	
 	@Override
