@@ -2,13 +2,19 @@ package org.sobiech.inspigen.config;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
  
+
+
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
  
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -21,6 +27,26 @@ public class CustomUserDetailsService extends JdbcDaoImpl implements UserDetails
  
 	@Autowired
 	private DataSource dataSource;
+	
+	@Bean
+	User getUser(String username, 
+			String password, 
+			boolean enabled, 
+			boolean accountNonExpired, 
+			boolean credentialsNonExpired, 
+			boolean accountNonLocked, 
+			Collection<? extends GrantedAuthority> authorities) {
+		
+		User user = new User(username, 
+				password, 
+				enabled, 
+				accountNonExpired, 
+				credentialsNonExpired, 
+				accountNonLocked,
+				authorities);
+	
+		return user;
+	}
  
 	@PostConstruct
 	private void initialize() {
@@ -52,7 +78,7 @@ public class CustomUserDetailsService extends JdbcDaoImpl implements UserDetails
 			boolean credentialsNonExpired = rs.getBoolean("credentialsNonExpired");
 			boolean accountNonLocked = rs.getBoolean("accountNonLocked");
  
-			return new User(username, password, enabled, accountNonExpired, credentialsNonExpired,
+			return getUser(username, password, enabled, accountNonExpired, credentialsNonExpired,
 				accountNonLocked, AuthorityUtils.NO_AUTHORITIES);
 		  }
  
@@ -69,7 +95,7 @@ public class CustomUserDetailsService extends JdbcDaoImpl implements UserDetails
 		  returnUsername = username;
 		}
  
-		return new User(returnUsername, userFromUserQuery.getPassword(), 
+		return getUser(returnUsername, userFromUserQuery.getPassword(), 
                        userFromUserQuery.isEnabled(),
 		       userFromUserQuery.isAccountNonExpired(), 
                        userFromUserQuery.isCredentialsNonExpired(),
