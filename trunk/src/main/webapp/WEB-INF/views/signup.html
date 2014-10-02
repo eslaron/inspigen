@@ -43,16 +43,16 @@
             						ng-maxlength=12 
             						ng-pattern="/^[A-z][A-z0-9]*$/"
             						ng-unique="signup.username"
-            						ng-model-options="{ updateOn: 'blur' }"
+            						ng-model-options="{debounce: 1000}"
             						required />
         	
-        							<small class="success-message" ng-if="
-        							signup_form.username.$dirty && !loading && !signup_form.username.$error.unique">
+        							<small class="success-message" ng-if="signup_form.username.$valid &&
+        							signup_form.username.$dirty && !signup_form.username.loading && !signup_form.username.$error.unique">
     									Nazwa dostępna.
 									</small>
         	
-            					   <small ng-if="signup_form.username.$dirty &&
-            					   !signup_form.username.$error.required && loading" ng-class="loadingStyle">
+            					   <small ng-if="signup_form.username.$valid && signup_form.username.$dirty &&
+            					   !signup_form.username.$error.required && signup_form.username.loading" ng-class="loadingStyle">
     									{{loadingMessage}}
 									</small>	
   							<div class="error-container" ng-show="signup_form.username.$dirty && signup_form.username.$invalid">
@@ -87,7 +87,7 @@
             						ng-minlength=5
             						ng-maxlength=16
             						ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/"
-            						ng-model-options="{ updateOn: 'blur' }"
+            						ng-model-options="{debounce: 1000}"
             						required />
   							<div class="error-container" ng-show="signup_form.password.$dirty 
   							&& signup_form.password.$invalid">
@@ -117,7 +117,7 @@
             						name="confirmPassword" 
             						ng-model="signup.confirmPassword" 
              						ng-match="signup.password"
-            						ng-model-options="{ updateOn: 'blur' }"
+            						ng-model-options="{debounce: 1000}"
             					 	required />
   							<div class="error-container" ng-show="signup_form.confirmPassword.$dirty 
   							&& signup_form.confirmPassword.$invalid">
@@ -142,16 +142,16 @@
       								ng-minlength=6 
       								ng-maxlength=40 
       								ng-unique="signup.email"
-      								ng-model-options="{ updateOn: 'blur' }"
+      								ng-model-options="{debounce: 1000}"
       								required />
       						
       						
-      						<small class="success-message" ng-if="
-        							signup_form.email.$dirty && !loading && !signup_form.email.$error.unique">
+      						<small class="success-message" ng-if="signup_form.email.$valid &&
+        							signup_form.email.$dirty && !signup_form.email.loading && !signup_form.email.$error.unique">
     									Możesz wykorzystać ten adres do rejestracji.
 							</small>		
-      						<small ng-if="!signup_form.email.$error.required 
-      						&& signup_form.email.$dirty && loading" ng-class="loadingStyle">
+      						<small ng-if="signup_form.email.$valid && !signup_form.email.$error.required 
+      						&& signup_form.email.$dirty && signup_form.email.loading" ng-class="loadingStyle">
     							{{loadingMessage}}
 								</small>			
     						<div class="error-container" ng-show="signup_form.email.$dirty 
@@ -186,7 +186,7 @@
       								ng-minlength=3 
       								ng-maxlength=30 
       								ng-match="signup.email"
-      								ng-model-options="{ updateOn: 'blur' }"
+      								ng-model-options="{debounce: 1000}"
       								required />
     						<div class="error-container" ng-show="signup_form.confirmEmail.$dirty 
     						&& signup_form.confirmEmail.$invalid">

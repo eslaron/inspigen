@@ -29,13 +29,13 @@ return {
 	   		link: function(scope, elem, attrs, ngModel) { 	  
 	   			ngModel.$parsers.push(function(value) {		
 	   				if(value != null) {		
-	   					scope.loading = true;
+	   					ngModel.loading = true;
 	   					scope.loadingStyle="neutral-message";
 	   					scope.loadingMessage ="Sprawdzam...";
 	   					$http.post('isUnique', value, {timeout: 30000})
 		        		  .success(function(response){
 		            		  ngModel.$setValidity('unique', value != response);   	
-		            		  scope.loading = false;
+		            		  ngModel.loading = false;
 		        		  }).error(function() {
 		        			  scope.loadingStyle="error-message";
 		        			  scope.loadingMessage = "Serwer zbyt długo nie odpowiada. Spróbuj za parę minut."
