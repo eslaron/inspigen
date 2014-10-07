@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.sobiech.inspigen.dao.DuplicateUserException;
 import org.sobiech.inspigen.model.User;
 import org.sobiech.inspigen.service.CheckService;
 import org.sobiech.inspigen.service.EmailService;
@@ -61,10 +60,8 @@ public class LinkController {
     }
         
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public @ResponseBody String addUser(@RequestBody User user) throws DuplicateUserException {
-    	
-    	userService.addUser(user); 	
-    	return "Success";
+    public @ResponseBody String addUser(@RequestBody User user) {
+    	return userService.addUser(user);
     }
         
     @RequestMapping(value="/forgotPassword")
