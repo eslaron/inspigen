@@ -17,9 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.sobiech.inspigen.dao.DuplicateUserException;
 import org.sobiech.inspigen.dao.UserDAO;
-import org.sobiech.inspigen.dao.UserNotFoundException;
 import org.sobiech.inspigen.model.Settings;
 import org.sobiech.inspigen.model.User;
 
@@ -44,41 +42,72 @@ public class UserServiceImpl implements UserService {
     // U¯YTKOWNIK
     
 	@Override
-	public void addUser(User user) throws DuplicateUserException {
+	public String addUser(User user) {
 		
-    	String password = user.getPassword();
-    	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(user));
-    	String passwordToken = setPasswordToken();
-    	Date tokenExpiration = setPasswordTokenExpirationDate();
-    	
-    	user.setPassword(encodedPassword);
-    	user.setPasswordToken(passwordToken);
-    	user.setTokenExpiration(tokenExpiration);
-    	user.setEnabled(true);
-    	user.setAccountNonLocked(true);
-    	user.setAccountNonExpired(true);
-    	user.setCredentialsNonExpired(true);
+		String response = "";
+		boolean userNameFound = false;
+		boolean emailFound =  false;
+			
+	    if (userDAO.getUserByName(user.getUsername()) != null) {	
+        	userNameFound = true;
+        	response = "duplicateUser";
+	    }
+	    
+	    if (userDAO.getUserByEmail(user.getEmail()) != null) {	
+	    	emailFound = true;
+			response = "duplicateEmail";
+	    }
+	    
+	    if(userDAO.getUserByName(user.getUsername()) != null
+	    		&& userDAO.getUserByEmail(user.getEmail()) != null) {
+	    	userNameFound = true;
+	    	emailFound = true;
+	    	response = "duplicateUser&duplicateEmail";
+	    }
+
+        if(userNameFound == false && emailFound == false) {
+        	String password = user.getPassword();
+        	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(user));
+        	String passwordToken = setPasswordToken();
+        	Date tokenExpiration = setPasswordTokenExpirationDate();
+        	
+        	user.setPassword(encodedPassword);
+        	user.setPasswordToken(passwordToken);
+        	user.setTokenExpiration(tokenExpiration);
+        	user.setEnabled(true);
+        	user.setAccountNonLocked(true);
+        	user.setAccountNonExpired(true);
+        	user.setCredentialsNonExpired(true);
+        	
+        	userDAO.addUser(user);
+        	response = "userAdded";
+        }
+        
+		return response;
+	}
+
+	@Override
+	public User getUserById(int userId) {
+		return userDAO.getUserById(userId);
+	}
 	
-		userDAO.addUser(user);
-	}
-
-    @Override
-    public User getUser(int userId) throws UserNotFoundException {
-        return userDAO.getUser(userId);
-    }
-
 	@Override
-	public User getUser(String username) throws UserNotFoundException {
-		return userDAO.getUser(username);
+	public User getUserByName(String username) {
+		return userDAO.getUserByName(username);
 	}
 
 	@Override
-	public void updateUser(User user) throws UserNotFoundException {
+	public User getUserByEmail(String email) {
+		return userDAO.getUserByEmail(email);
+	}
+
+	@Override
+	public void updateUser(User user) {
 		userDAO.updateUser(user);
 	}
 
 	@Override
-	public void deleteUser(int userId) throws UserNotFoundException {
+	public void deleteUser(int userId) {
 		userDAO.deleteUser(userId);
 	}
 
@@ -90,8 +119,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            return getUser(username);
-        } catch (UserNotFoundException e) {
+            return getUserByName(username);
+        } catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage());
         }
     }

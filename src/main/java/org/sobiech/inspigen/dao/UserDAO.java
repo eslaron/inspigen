@@ -9,15 +9,17 @@ public interface UserDAO {
 
 	//U¯YTKOWNIK
 	
-    public void addUser(User user) throws DuplicateUserException;
+    public void addUser(User user);
 
-    public User getUser(int userId) throws UserNotFoundException;
+    public User getUserById(int userId);
     
-    public User getUser(String username) throws UserNotFoundException;
+    public User getUserByName(String username);
+    
+    public User getUserByEmail(String email);
 
-    public void updateUser(User user) throws UserNotFoundException;
+    public void updateUser(User user);
 
-    public void deleteUser(int userId) throws UserNotFoundException;
+    public void deleteUser(int userId);
 
     public List<User> getUsers();
     

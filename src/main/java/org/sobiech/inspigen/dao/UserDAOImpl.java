@@ -21,51 +21,51 @@ public class UserDAOImpl implements UserDAO {
     }
     
 	@Override
-	public void addUser(User user) throws DuplicateUserException {
-      
-        try {   
-	            User userCheck = getUser(user.getUsername());
-	            String message = "The user [" + userCheck.getUsername() + "] already exists";
-	            throw new DuplicateUserException(message);     
-        } catch (UserNotFoundException e) { 
-            getCurrentSession().save(user);
-        }
+	public void addUser(User user) {
+		getCurrentSession().save(user); 
 	}
 
     @Override
-    public User getUser(int userId) throws UserNotFoundException {
+    public User getUserById(int userId) {
    
         User userObject = (User) getCurrentSession().get(User.class, userId);
         
         if (userObject == null) {
-            throw new UserNotFoundException("User id [" + userId + "] not found");
+        	return null;
         } else {
             return userObject;
         }
     }
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public User getUser(String usersName) throws UserNotFoundException {
+	public User getUserByName(String usersName) {
 
 		Query query = getCurrentSession().createQuery("from User where username = :usersName ");
 		query.setString("usersName", usersName);
 		
-
 		if (query.list().size() == 0 ) {
-			throw new UserNotFoundException("User [" + usersName + "] not found");
+			return null;
 		} else {
+			return (User)query.list().get(0);
+		}
+	}
 	
-			List<User> list = (List<User>)query.list();
-	        User userObject = (User) list.get(0);
+	@Override
+	public User getUserByEmail(String email) {
 
-	        return userObject;
+		Query query = getCurrentSession().createQuery("from User where email = :eMail ");
+		query.setString("eMail", email);
+		
+		if (query.list().size() == 0 ) {
+			return null;
+		} else {
+	        return (User)query.list().get(0);
 		}
 	}
 
 	@Override
-	public void updateUser(User user) throws UserNotFoundException {
-		User userToUpdate = getUser(user.getId());
+	public void updateUser(User user) {
+		User userToUpdate = getUserById(user.getId());
 		userToUpdate.setUsername(user.getUsername());
 		userToUpdate.setPassword(user.getPassword());
 		userToUpdate.setEnabled(user.getEnabled());
@@ -74,8 +74,8 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void deleteUser(int userId) throws UserNotFoundException {
-        User user = getUser(userId);
+	public void deleteUser(int userId) {
+        User user = getUserById(userId);
         if (user != null) {
             getCurrentSession().delete(user);
         }
