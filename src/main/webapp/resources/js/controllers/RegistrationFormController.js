@@ -10,6 +10,7 @@ App.controller('RegistrationFormController', function($scope, $http) {
 		
 	$scope.userNameUnique = true;
 	$scope.emailUnique = true;
+	$scope.timeoutMessage = '';
 	
 	$scope.registerUser = function() {
 		
@@ -17,7 +18,7 @@ App.controller('RegistrationFormController', function($scope, $http) {
 		$scope.user.password = $scope.signup.password;
 		$scope.user.email = $scope.signup.email;
 		
-		$http.post('addUser', $scope.user, {timeout: 30000}).success(function(response) {
+		$http.post('addUser', $scope.user, {timeout: 100}).success(function(response) {
 			
 			alert(response);
 			
@@ -33,8 +34,7 @@ App.controller('RegistrationFormController', function($scope, $http) {
 			}
 				
 		}).error(function() {
-			  scope.loadingStyle="error-message";
-			  ngModel.loadingMessage = "Serwer zbyt długo nie odpowiada. Spróbuj za parę minut."
+			$scope.timeoutMessage = "Serwer zbyt długo nie odpowiada. Spróbuj za parę minut."
 		});				 
 	}
 });

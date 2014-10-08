@@ -15,36 +15,16 @@ return {
 	require: 'ngModel',
 	link : 
 			function(scope, element, attrs, ngModel) {
-				ngModel.$parsers.push(function(value) {
+				ngModel.$parsers.push(function(value) {	
 					ngModel.$setValidity('match', value == scope.$eval(attrs.ngMatch));
-				return value;
+						scope.$watch(attrs.ngMatch, function() {	
+							ngModel.$setValidity('match', value == scope.$eval(attrs.ngMatch));
+						});
+						return value;
 				});
     		}
-   		}	
-})
-
-.directive('ngUnique', function ($http, $timeout) {  
-   return {   
-	   		require: 'ngModel',
-	   		link: function(scope, elem, attrs, ngModel) { 	  
-	   			ngModel.$parsers.push(function(value) {		
-	   				if(value != null) {		
-	   					ngModel.loading = true;
-	   					scope.loadingStyle="neutral-message";
-	   					ngModel.loadingMessage ="Sprawdzam...";
-	   					$http.post('isUnique', value, {timeout: 30000})
-		        		  .success(function(response){
-		            		  ngModel.$setValidity('unique', value != response);   	
-		            		  ngModel.loading = false;
-		        		  }).error(function() {
-		        			  scope.loadingStyle="error-message";
-		        			  ngModel.loadingMessage = "Serwer zbyt długo nie odpowiada. Spróbuj za parę minut."
-		        		  });
-	   				}
-	   				return value;
-	   			})	    	  
-	   		}     
-	      }
+	}	
 });
+
 
 
