@@ -16,7 +16,7 @@
     <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/app.css" 
         data-th-href="@{resources/bootstrap/css/app.css}" />
    
-		<title data-th-text="#{admin.page.title}">Title</title>
+		<title data-th-text="#{signup.page.title}">Title</title>
 </head>
 <body ng-controller="RegistrationFormController">
 
@@ -180,9 +180,8 @@
 					</div> 
 
     <button type="submit" class="btn btn-success btn-sm" ng-disabled="signup_form.$invalid">Zarejestruj</button>
-
+	<small class="error-message" ng-show="timeoutMessage"><br/>{{timeoutMessage}}</small>
 </form>
-
 
   </div>
   </div>
