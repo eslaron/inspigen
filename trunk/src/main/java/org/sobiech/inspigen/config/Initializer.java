@@ -3,7 +3,6 @@ package org.sobiech.inspigen.config;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import org.sobiech.inspigen.config.DatabaseConfig;
-import org.sobiech.inspigen.config.ThymeleafConfig;
 import org.sobiech.inspigen.config.WebAppConfig;
 
 public class Initializer extends
@@ -16,7 +15,7 @@ public class Initializer extends
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[] { ThymeleafConfig.class, WebAppConfig.class };
+    	return new Class<?>[] { ViewResolverConfig.class, WebAppConfig.class };
     }
 
     @Override

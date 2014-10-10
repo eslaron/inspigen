@@ -10,12 +10,11 @@ App.controller('PasswordResetController', function($scope, $http, $timeout, $win
     $scope.seconds = 5;
     $scope.redirectResetLinkError = "Przekierowanie nastąpi za "+$scope.seconds+" sekund.";
     
-		$http.get('index')
-		.success(function(resp){
-			
-			$scope.index = resp;
-		});
-		
+    $http.get('index')
+	.success(function(resp){
+		$scope.index = resp;
+	});
+    
 		$scope.setTimeout = function() {
 			
 			$timeout(function() {

@@ -68,13 +68,17 @@ public class UserServiceImpl implements UserService {
         if(userNameFound == false && emailFound == false) {
         	String password = user.getPassword();
         	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(user));
-        	String passwordToken = setPasswordToken();
-        	Date tokenExpiration = setPasswordTokenExpirationDate();
+        	String passwordToken = setToken();
+        	Date passwordTokenExpiration = setTokenExpirationDate();
+        	String activationToken = setToken();
+        	Date activationTokenExpiration = setTokenExpirationDate();
         	
         	user.setPassword(encodedPassword);
         	user.setPasswordToken(passwordToken);
-        	user.setTokenExpiration(tokenExpiration);
-        	user.setEnabled(true);
+        	user.setPasswordTokenExpiration(passwordTokenExpiration);
+        	user.setActivationToken(activationToken);
+        	user.setActivationTokenExpiration(activationTokenExpiration);
+        	user.setEnabled(false);
         	user.setAccountNonLocked(true);
         	user.setAccountNonExpired(true);
         	user.setCredentialsNonExpired(true);
@@ -128,12 +132,12 @@ public class UserServiceImpl implements UserService {
 	// PASSWORD TOKEN
 	
 	@Override
-	public String getPasswordToken(String email) {
-		return userDAO.getPasswordToken(email);
+	public String getToken(String tokenType, String email) {
+		return userDAO.getToken(tokenType, email);
 	}
 	
 	@Override
-	public String setPasswordToken() {
+	public String setToken() {
 		
 		char[] VALID_CHARACTERS =
 	    	    "abcdefghijklmnopqrstuvwxyz0123456879".toCharArray();
@@ -153,19 +157,19 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void updatePasswordToken(String username, String token) {
-		userDAO.updatePasswordToken(username, token);	
+	public void updateToken(String tokenType, String username, String token) {
+		userDAO.updateToken(tokenType, username, token);	
 	}
 	
 	// PASSWORD TOKEN - data wygaœniêcia
 	
 	@Override
-	public Date getPasswordTokenExpirationDate(String email) {
-		return userDAO.getPasswordTokenExpirationDate(email);
+	public Date getTokenExpirationDate(String tokenType, String email) {
+		return userDAO.getTokenExpirationDate(tokenType, email);
 	}
 
 	@Override
-	public Date setPasswordTokenExpirationDate() {
+	public Date setTokenExpirationDate() {
 		
 		Date currentDate = new Date();
 		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -179,7 +183,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updatePasswordTokenExpirationDate(String email, Date expirationDate) {	
-		userDAO.updatePasswordTokenExpirationDate(email, expirationDate);	
+	public void updateTokenExpirationDate(String tokenType, String email, Date expirationDate) {	
+		userDAO.updateTokenExpirationDate(tokenType, email, expirationDate);	
 	}
 }

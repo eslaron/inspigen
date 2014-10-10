@@ -87,46 +87,46 @@ public class UserDAOImpl implements UserDAO {
         return getCurrentSession().createQuery("from User").list();
 	}
 	
-	// PASSWORD TOKEN
+	// TOKEN
 	
 	@Override
-	public String getPasswordToken(String email) {
+	public String getToken(String tokenType, String email) {
 		
 		Query getToken = getCurrentSession().createQuery(
-				"SELECT passwordToken FROM User WHERE email = :eMail");
+				"SELECT "+tokenType+" FROM User WHERE email = :eMail");
 		getToken.setString("eMail", email);
 		
 		return getToken.list().get(0).toString();
 	}
 	
 	@Override
-	public void updatePasswordToken(String username, String token) {
+	public void updateToken(String tokenType, String username, String token) {
 	    
 		    Query setToken = getCurrentSession().createQuery(
-					"UPDATE User SET passwordToken = :token WHERE username = :userName");
+					"UPDATE User SET "+tokenType+" = :token WHERE username = :userName");
 			
 		    setToken.setString("token", token);
 		    setToken.setString("userName", username);
 		    setToken.executeUpdate();		
 	}
 	
-	// PASSWORD TOKEN - data wygaœniêcia
+	// TOKEN - data wygaœniêcia
 	
 	@Override
-	public Date getPasswordTokenExpirationDate(String email) {
+	public Date getTokenExpirationDate(String tokenType, String email) {
 		
 		Query getDate = getCurrentSession().createQuery(
-				"SELECT tokenExpiration FROM User WHERE email = :eMail");
+				"SELECT "+tokenType+"Expiration FROM User WHERE email = :eMail");
 		getDate.setString("eMail", email);
 		
 		return (Date)getDate.list().get(0);
 	}
 	
 	@Override
-	public void updatePasswordTokenExpirationDate(String email, Date expirationDate) {
+	public void updateTokenExpirationDate(String tokenType, String email, Date expirationDate) {
 				
 		Query setToken = getCurrentSession().createQuery(
-				"UPDATE User SET tokenExpiration = :stamp WHERE email = :eMail");
+				"UPDATE User SET "+tokenType+"Expiration = :stamp WHERE email = :eMail");
 
 	    setToken.setTimestamp("stamp", expirationDate);
 	    setToken.setString("eMail", email);
