@@ -12,5 +12,5 @@ public interface CheckDAO {
     
     public Query checkIfUserIsLocked(String username);
     
-    public Query checkIfPasswordTokenExpired(String token);
+    public Query checkIfTokenExpired(String tokenType, String token);
 }

@@ -24,19 +24,19 @@ public interface UserService extends UserDetailsService {
 
     public List<User> getUsers();
           
-    //	PASSWORD TOKEN
+    // TOKEN
     
-    public String getPasswordToken(String email);
+    public String getToken(String tokenType, String email);
     
-    public String setPasswordToken();
+    public String setToken();
     
-    public void updatePasswordToken(String username, String token);
+    public void updateToken(String tokenType, String username, String token);
     
-	// PASSWORD TOKEN - data wygaœniêcia
+	// TOKEN - data wygaœniêcia
     
-    public Date getPasswordTokenExpirationDate(String email);
+    public Date getTokenExpirationDate(String tokenType, String email);
     
-    public Date setPasswordTokenExpirationDate();
+    public Date setTokenExpirationDate();
     
-    public void updatePasswordTokenExpirationDate(String email, Date expirationDate);        
+    public void updateTokenExpirationDate(String tokenType, String email, Date expirationDate);        
 }

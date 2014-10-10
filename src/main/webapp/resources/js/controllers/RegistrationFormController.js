@@ -4,13 +4,14 @@
  * RailwayStationController
  * @constructor
  */
-App.controller('RegistrationFormController', function($scope, $http) {
+App.controller('RegistrationFormController', function($scope, $http, $window, $location) {
 	
 	$scope.user = {username:"", password:"", email:""};
 		
 	$scope.userNameUnique = true;
 	$scope.emailUnique = true;
-	$scope.timeoutMessage = '';
+	
+ 
 	
 	$scope.registerUser = function() {
 		
@@ -18,9 +19,7 @@ App.controller('RegistrationFormController', function($scope, $http) {
 		$scope.user.password = $scope.signup.password;
 		$scope.user.email = $scope.signup.email;
 		
-		$http.post('addUser', $scope.user, {timeout: 100}).success(function(response) {
-			
-			alert(response);
+		$http.post('addUser', $scope.user).success(function(response) {
 			
 			if(response == "duplicateUser")
 				$scope.userNameUnique = false;
@@ -32,10 +31,38 @@ App.controller('RegistrationFormController', function($scope, $http) {
 				$scope.userNameUnique = false;
 				$scope.emailUnique = false;
 			}
-				
-		}).error(function() {
-			$scope.timeoutMessage = "Serwer zbyt długo nie odpowiada. Spróbuj za parę minut."
-		});				 
+		
+			if(response == "userAdded") {			
+		
+				$http.post('sendActivationLink', $scope.user.email)
+				.then(function() {		
+					   $http.get('index')
+						.success(function(resp){
+							$scope.index = resp;
+				})
+				.then(function() {
+					$window.location.href = $scope.index;
+				})
+			
+				})
+			}		
+		}).error(function() {});
 	}
+
+	
+	
+		 $http.get('accountActivationMessage')
+			.success(function(resp) {
+			
+				  $scope.response = resp;
+				  
+				  if($scope.response == "activationLinkSent") {
+						
+						$scope.alertStyle = "alert alert-success";
+						$scope.activationMessage = 'Email z linkiem aktywującym konto został wysłany nad twoj adres.';
+						$scope.hideMessage = false;
+						$scope.response='';		
+				  }		
+			});		
 });
   

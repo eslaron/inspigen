@@ -50,10 +50,10 @@ public class CheckDAOImpl implements CheckDAO {
 
 
 	@Override
-	public Query checkIfPasswordTokenExpired(String token) {
+	public Query checkIfTokenExpired(String tokenType, String token) {
 		
 		Query query = getCurrentSession().createQuery(
-				"SELECT tokenExpiration from User where passwordToken = :token ");
+				"SELECT "+tokenType+"Expiration from User where "+tokenType+" = :token ");
 		query.setString("token", token);
 		return query;
 	}

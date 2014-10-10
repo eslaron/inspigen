@@ -23,15 +23,17 @@ public interface UserDAO {
 
     public List<User> getUsers();
     
-    // PASSWORD TOKEN
+    // TOKEN
     
-    public String getPasswordToken(String email);
+    public String getToken(String tokenType, String email);
        
-    public void updatePasswordToken(String username, String token);
+    public void updateToken(String tokenType ,String username, String token);
     
-    // PASSWORD TOKEN - data wygaœniêcia
     
-    public Date getPasswordTokenExpirationDate(String email);
+    // TOKEN - data wygaœniêcia
+    
+    public Date getTokenExpirationDate(String tokenType, String email);
         
-    public void updatePasswordTokenExpirationDate(String email, Date expirationDate); 
+    public void updateTokenExpirationDate(String tokenType, String email, Date expirationDate); 
+    
 }

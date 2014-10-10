@@ -60,10 +60,10 @@ public class CheckServiceImpl implements CheckService {
 	}	
 		
 	@Override
-	public Boolean checkIfPasswordTokenExpired(String email) {
+	public Boolean checkIfTokenExpired(String tokenType, String email) {
 				
 		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		format.format(userDAO.getPasswordTokenExpirationDate(email));
+		format.format(userDAO.getTokenExpirationDate(tokenType, email));
 			
 		Calendar expire=Calendar.getInstance();
 		expire = format.getCalendar();		

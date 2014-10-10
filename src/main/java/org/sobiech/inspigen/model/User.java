@@ -58,8 +58,14 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(name = "passwordToken")
 	private String passwordToken;
 	
-	@Column(name = "tokenExpiration")
-	private Date tokenExpiration;
+	@Column(name = "activationToken")
+	private String activationToken;
+	
+	@Column(name = "passwordTokenExpiration")
+	private Date passwordTokenExpiration;
+	
+	@Column(name = "activationTokenExpiration")
+	private Date activationTokenExpiration;
 	
 	/*@OneToOne  
     @JoinTable(name = "ig_user_roles",  
@@ -67,7 +73,6 @@ public class User extends BaseEntity implements UserDetails {
         inverseJoinColumns = {@JoinColumn(name = "role_id",  referencedColumnName = "id")}  
     ) */
 	
-
 	@Transient
     private Role role;
     
@@ -82,7 +87,8 @@ public class User extends BaseEntity implements UserDetails {
 	
     public User(String username, String password, String email, boolean enabled, 
     			boolean accountNonLocked, boolean accountNonExpired, 
-    			boolean credentialsNonExpired, String passwordToken, Date tokenExpiration) {
+    			boolean credentialsNonExpired, String passwordToken, Date passwordTokenExpiration,
+    			String activationToken, Date activationTokenExpiration) {
     	
     	this.username = username;
     	this.password = password;
@@ -92,7 +98,9 @@ public class User extends BaseEntity implements UserDetails {
     	this.accountNonExpired = accountNonExpired;
     	this.credentialsNonExpired = credentialsNonExpired;
     	this.passwordToken = passwordToken;
-    	this.tokenExpiration = tokenExpiration;
+    	this.passwordTokenExpiration = passwordTokenExpiration;
+    	this.activationToken = activationToken;
+    	this.activationTokenExpiration = activationTokenExpiration;
     }
     
     public String getUsername() {
@@ -139,20 +147,36 @@ public class User extends BaseEntity implements UserDetails {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
     
-	public Date getTokenExpiration() {
-		return tokenExpiration;
-	}
-
-	public void setTokenExpiration(Date tokenExpiration) {
-		this.tokenExpiration = tokenExpiration;
-	}
-
 	public String getPasswordToken() {
 		return passwordToken;
 	}
 
 	public void setPasswordToken(String passwordToken) {
 		this.passwordToken = passwordToken;
+	}
+	
+	public String getActivationToken() {
+		return activationToken;
+	}
+
+	public void setActivationToken(String activationToken) {
+		this.activationToken = activationToken;
+	}
+
+	public Date getPasswordTokenExpiration() {
+		return passwordTokenExpiration;
+	}
+
+	public void setPasswordTokenExpiration(Date passwordTokenExpiration) {
+		this.passwordTokenExpiration = passwordTokenExpiration;
+	}
+
+	public Date getActivationTokenExpiration() {
+		return activationTokenExpiration;
+	}
+
+	public void setActivationTokenExpiration(Date activationTokenExpiration) {
+		this.activationTokenExpiration = activationTokenExpiration;
 	}
 	
     public Role getRole() {

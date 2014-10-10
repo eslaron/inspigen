@@ -9,7 +9,7 @@ public interface CheckService {
     
     public Boolean checkIfUserExists(String username);
     
-    public Boolean checkIfPasswordTokenExpired(String email);
+    public Boolean checkIfTokenExpired(String tokenType, String email);
     
     public Boolean checkIfEmailIsRegistered(String email);
    
