@@ -11,8 +11,6 @@ App.controller('RegistrationFormController', function($scope, $http, $window, $l
 	$scope.userNameUnique = true;
 	$scope.emailUnique = true;
 	
- 
-	
 	$scope.registerUser = function() {
 		
 		$scope.user.username = $scope.signup.username;
@@ -41,28 +39,26 @@ App.controller('RegistrationFormController', function($scope, $http, $window, $l
 							$scope.index = resp;
 				})
 				.then(function() {
-					$window.location.href = $scope.index;
+					
+					 $http.get('accountActivationMessage')
+						.success(function(resp) {
+						
+							  $scope.response = resp;
+							  
+							  if($scope.response == "activationLinkSent") {
+									
+									$scope.alertStyle = "alert alert-success";
+									$scope.activationMessage = 'Email z linkiem aktywującym konto został wysłany nad twoj adres.';
+									$scope.hideMessage = false;
+									$scope.response='';		
+							  }		
+						});	
+
 				})
 			
 				})
 			}		
 		}).error(function() {});
 	}
-
-	
-	
-		 $http.get('accountActivationMessage')
-			.success(function(resp) {
-			
-				  $scope.response = resp;
-				  
-				  if($scope.response == "activationLinkSent") {
-						
-						$scope.alertStyle = "alert alert-success";
-						$scope.activationMessage = 'Email z linkiem aktywującym konto został wysłany nad twoj adres.';
-						$scope.hideMessage = false;
-						$scope.response='';		
-				  }		
-			});		
 });
   

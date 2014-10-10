@@ -1,26 +1,4 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" ng-app="AngularSpringApp">
-
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Core CSS - Include with every page -->
-    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" 
-        data-th-href="@{resources/bootstrap/css/bootstrap.css}" />
-        
-    <link type="text/css" rel="stylesheet" href="resources/font-awesome/css/font-awesome.css" 
-        data-th-href="@{resources/font-awesome/css/font-awesome.css}" />
-        
-    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/app.css" 
-        data-th-href="@{resources/bootstrap/css/app.css}" />
-   
-		<title data-th-text="#{signup.page.title}">Title</title>
-</head>
-<body ng-controller="RegistrationFormController">
-
-<div class="container">
+﻿<div class="container" ng-controller="RegistrationFormController">
 
 	<div class="row">
         <div class="col-md-3 center">
@@ -188,16 +166,3 @@
   </div>
   </div>
   </div>
-
-<!-- AngularJS -->
-
-	<script src="resources/js/lib/angular/angular.js"></script>
-	<script src="resources/js/lib/angular/angular-messages.js"></script>
-	<script src="resources/js/app.js"></script>
-	<script src="resources/js/services.js"></script>
-	<script src="resources/js/filters.js"></script>
-	<script src="resources/js/directives.js"></script>      
-	<script src="resources/js/controllers/RegistrationFormController.js"></script>
-
-</body>
-</html>

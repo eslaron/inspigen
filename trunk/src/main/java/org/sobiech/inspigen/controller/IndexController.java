@@ -12,8 +12,28 @@ public class IndexController {
         return "index";
     }
     
+    @RequestMapping("/signup")
+    public String getSignUpPage() {
+        return "index";
+    }
+    
+    @RequestMapping("/forgotPassword")
+    public String getForgotPasswordPagePage() {
+        return "index";
+    }
+    
 	@RequestMapping("/partials/login")
     public String getLoginPartialPage() {
         return "partials/login";
+    }
+	
+	@RequestMapping("/partials/signup")
+    public String getSignupPartialPage() {
+        return "partials/signup";
+    }
+	
+	@RequestMapping("/partials/forgotPassword")
+    public String getForgotPasswordPartialPage() {
+        return "partials/forgotPassword";
     }
 }

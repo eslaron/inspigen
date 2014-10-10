@@ -11,14 +11,15 @@ App.config(['$routeProvider','$locationProvider', function ($routeProvider, $loc
         templateUrl: 'partials/login',
     });
 
-    $routeProvider.when('/trains', {
-        templateUrl: 'trains/layout',
+    $routeProvider.when('/signup', {
+        templateUrl: 'partials/signup',
     });
     
-    $routeProvider.when('/railwaystations', {
-        templateUrl: 'railwaystations/layout',
+    $routeProvider.when('/forgotPassword', {
+        templateUrl: 'partials/forgotPassword',
     });
-    $routeProvider.otherwise({redirectTo: '/cars'});
     
-    //$locationProvider.html5Mode(true);
+    $routeProvider.otherwise({redirectTo: '/'});
+    
+   $locationProvider.html5Mode(true);
 }]);

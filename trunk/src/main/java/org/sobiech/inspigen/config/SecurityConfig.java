@@ -49,7 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 			"/newPassword/{token}",
                 			"*/resetLinkError",
                 			"/forgotPassowordMessage",
-                			"/isUnique",
                 			"/partials/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
