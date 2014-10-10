@@ -6,21 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Core CSS - Include with every page -->
-    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" 
-        data-th-href="@{resources/bootstrap/css/bootstrap.css}" />
-        
-    <link type="text/css" rel="stylesheet" href="resources/font-awesome/css/font-awesome.css" 
-        data-th-href="@{resources/font-awesome/css/font-awesome.css}" />
-        
-    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/app.css" 
-        data-th-href="@{resources/bootstrap/css/app.css}" />
+    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" />
+    <link type="text/css" rel="stylesheet" href="resources/font-awesome/css/font-awesome.css" />
+    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/app.css" />
        
     <title data-th-text="#{login.page.title}">Login Page</title>
+    <base href="http://localhost:8080/inspigen/">
 </head>
 
 <body>
-{{1+2}}
 <div ng-view></div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script type="text/javascript" src="resources/js/jquery-2.1.1.min.js" 
@@ -39,6 +33,7 @@
 	<script src="resources/js/filters.js"></script>
 	<script src="resources/js/directives.js"></script>      
 	<script src="resources/js/controllers/PasswordResetController.js"></script>
+	<script src="resources/js/controllers/RegistrationFormController.js"></script>
 
 </body>
 </html>

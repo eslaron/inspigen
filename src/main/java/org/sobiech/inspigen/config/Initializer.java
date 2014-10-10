@@ -15,7 +15,7 @@ public class Initializer extends
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-    	return new Class<?>[] { ViewResolverConfig.class, WebAppConfig.class };
+    	return new Class<?>[] { ThymeleafConfig.class, WebAppConfig.class };
     }
 
     @Override
