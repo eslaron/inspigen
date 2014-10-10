@@ -50,11 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 			"*/resetLinkError",
                 			"/forgotPassowordMessage",
                 			"/isUnique",
-                			"/partials/*").permitAll()
+                			"/partials/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
-                .loginPage("/login")
+                .loginPage("/")
                  .permitAll()
                  .and()
                  .rememberMe().tokenRepository(persistentTokenRepository())
