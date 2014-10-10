@@ -11,4 +11,9 @@ public class IndexController {
     public String getIndexPage() {
         return "index";
     }
+    
+	@RequestMapping("/partials/login")
+    public String getLoginPartialPage() {
+        return "partials/login";
+    }
 }

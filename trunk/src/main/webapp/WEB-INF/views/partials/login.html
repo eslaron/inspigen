@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 center">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-lock"></span> Logowanie
+                </div>
+                <div class="panel-body">
+                    <form name="f" data-th-action="@{/login}" method="POST" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                          <div data-th-if="${param.error}" class="alert alert-danger">
+				                    Niepoprawny login lub has³o.
+				          </div>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Nazwa u¿ytkowninika" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Has³o" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            <div class="checkbox">
+                                <label>
+                                <input type="checkbox" id="remember-me" name="remember-me"/>
+                                    Zapamiêtaj
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group last">
+                        <div class="col-sm-9">
+                            <button type="submit" class="btn btn-success btn-sm">Zaloguj</button><br />
+                            <a href="forgotPassword">Nie pamiêtasz has³a?</a>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <div class="panel-footer">Nie masz konta? <a href="signup">Zarejestruj siê!</a></div>
+            </div>
+        </div>
+    </div>
+</div>
