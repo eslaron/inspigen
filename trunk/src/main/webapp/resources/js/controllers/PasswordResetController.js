@@ -7,13 +7,8 @@
 App.controller('PasswordResetController', function($scope, $http, $timeout, $window) {
 
 	
-    $scope.seconds = 5;
+   /* $scope.seconds = 5;
     $scope.redirectResetLinkError = "Przekierowanie nastąpi za "+$scope.seconds+" sekund.";
-    
-    $http.get('index')
-	.success(function(resp){
-		$scope.index = resp;
-	});
     
 		$scope.setTimeout = function() {
 			
@@ -61,5 +56,5 @@ App.controller('PasswordResetController', function($scope, $http, $timeout, $win
 					$scope.hideMessage = false;
 					$scope.response='';
 			  }	
-		});		
+		});	*/	
 });

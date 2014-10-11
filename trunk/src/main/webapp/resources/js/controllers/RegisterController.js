@@ -4,7 +4,7 @@
  * RailwayStationController
  * @constructor
  */
-App.controller('RegistrationFormController', function($scope, $http, $window, $location) {
+App.controller('RegisterController', function($scope, $http, $window, $location) {
 	
 	$scope.user = {username:"", password:"", email:""};
 		
