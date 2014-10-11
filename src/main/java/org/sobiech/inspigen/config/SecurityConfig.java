@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**", 
                 			"/signup", 
                 			"/addUser", 
+                			"/sendActivationLink",
                 			"/forgotPassword", 
                 			"/resetPassword",
                 			"/newPassword/{token}",

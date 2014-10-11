@@ -32,7 +32,10 @@ public class RegisterController {
 	
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public @ResponseBody String addUser(@RequestBody User user) {
-    	return userService.addUser(user);
+    	message = userService.addUser(user);		
+    	String response = "{\"message\":\"" +message+"\"}";
+    		    
+    	return response;
     }
     
 	@RequestMapping(value = "/accountActivationMessage", method = RequestMethod.GET)
@@ -49,9 +52,11 @@ public class RegisterController {
 	  
     @RequestMapping(value = "/sendActivationLink", method = RequestMethod.POST)
     @ResponseBody
-    public void sendActivationLink(String email) {
+    public String sendActivationLink(String email) {
       	
-    	if (checkService.checkIfEmailIsRegistered(email) == true) {
+    	String response="";
+    	
+    
 			
 			/*String token = userService.getToken("activationToken", email);
 			
@@ -60,11 +65,10 @@ public class RegisterController {
 			mailService.sendMail(email, token);
 			userService.updateTokenExpirationDate("activationToken", email, expirationDate);*/
 		
-			message = "activationLinkSent";
-		}
-		else {
-			message = "emailNotRegistered";
-		}
+			message = "activationLinkSent";	
+	    	response = "{\"message\":\"" +message+"\"}";
+	    		    
+	    	return response;
     }
 
     
