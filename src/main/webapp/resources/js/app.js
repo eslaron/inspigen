@@ -15,6 +15,14 @@ App.config(['$routeProvider','$locationProvider', function ($routeProvider, $loc
         templateUrl: 'partials/signup',
     });
     
+    $routeProvider.when('/login', {
+        templateUrl: 'partials/login',
+    });
+    
+    $routeProvider.when('/home', {
+        templateUrl: 'partials/home',
+    });
+    
     $routeProvider.when('/forgotPassword', {
         templateUrl: 'partials/forgotPassword',
     });

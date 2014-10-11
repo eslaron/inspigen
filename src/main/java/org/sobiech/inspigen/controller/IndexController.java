@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class IndexController {
 
+	
+	// Linki
+	
     @RequestMapping
     public String getIndexPage() {
         return "index";
@@ -17,9 +20,26 @@ public class IndexController {
         return "index";
     }
     
-    @RequestMapping("/forgotPassword")
-    public String getForgotPasswordPagePage() {
+    @RequestMapping("/login")
+    public String getLoginPage() {
         return "index";
+    }
+    
+    @RequestMapping("/home")
+    public String getHomePage() {
+        return "index";
+    }
+    
+    @RequestMapping("/forgotPassword")
+    public String getForgotPage() {
+        return "index";
+    }
+    
+    // Partiale
+    
+    @RequestMapping("/partials/signup")
+    public String getSignupPartialPage() {
+        return "partials/signup";
     }
     
 	@RequestMapping("/partials/login")
@@ -27,13 +47,13 @@ public class IndexController {
         return "partials/login";
     }
 	
-	@RequestMapping("/partials/signup")
-    public String getSignupPartialPage() {
-        return "partials/signup";
+	@RequestMapping("/partials/home")
+    public String getHomePartialPage() {
+        return "partials/home";
     }
 	
 	@RequestMapping("/partials/forgotPassword")
-    public String getForgotPasswordPartialPage() {
-        return "partials/forgotPassword";
-    }
+	public String getForgotPartialPage() {
+		return "partials/forgotPassword";
+	}
 }
