@@ -4,12 +4,14 @@
  * RailwayStationController
  * @constructor
  */
-App.controller('RegisterController', function($scope, $http, $window, $location) {
+App.controller('RegisterController', function($scope, $http, $location) {
 	
 	$scope.user = {username:"", password:"", email:""};
 		
 	$scope.userNameUnique = true;
 	$scope.emailUnique = true;
+	$scope.hideMessage = true;
+	$scope.activationMessage = 'Email z linkiem aktywującym konto został wysłany nad twoj adres.';
 	
 	$scope.registerUser = function() {
 		
@@ -19,46 +21,34 @@ App.controller('RegisterController', function($scope, $http, $window, $location)
 		
 		$http.post('addUser', $scope.user).success(function(response) {
 			
-			if(response == "duplicateUser")
+			if(response.message == "duplicateUser")
 				$scope.userNameUnique = false;
 			
-			if(response == "duplicateEmail")
+			if(response.message  == "duplicateEmail")
 				$scope.emailUnique = false;
 			
-			if(response == "duplicateUser&duplicateEmail") {
+			if(response.message  == "duplicateUser&duplicateEmail") {
 				$scope.userNameUnique = false;
 				$scope.emailUnique = false;
 			}
 		
-			if(response == "userAdded") {			
-		
+			if(response.message  == "userAdded") {	
+				$scope.userNameUnique = true;
+				$scope.emailUnique = true;
+				
 				$http.post('sendActivationLink', $scope.user.email)
-				.then(function() {		
-					   $http.get('index')
-						.success(function(resp){
-							$scope.index = resp;
+				.success(function(resp) {		
+					$scope.message =  resp.message;		
 				})
-				.then(function() {
-					
-					 $http.get('accountActivationMessage')
-						.success(function(resp) {
-						
-							  $scope.response = resp;
-							  
-							  if($scope.response == "activationLinkSent") {
-									
-									$scope.alertStyle = "alert alert-success";
-									$scope.activationMessage = 'Email z linkiem aktywującym konto został wysłany nad twoj adres.';
-									$scope.hideMessage = false;
-									$scope.response='';		
-							  }		
-						});	
-
-				})
-			
-				})
+				.then(function(){
+					 if($scope.message  == "activationLinkSent") {			
+							$scope.hideMessage = false;
+					  }	
+				});
 			}		
 		}).error(function() {});
 	}
+	
+
 });
   
