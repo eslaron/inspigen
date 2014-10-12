@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -25,7 +23,6 @@ import org.sobiech.inspigen.model.User;
 @Transactional
 public class UserServiceImpl implements UserService {
 	
-	static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	
     @Autowired
     private UserDAO userDAO;
@@ -39,7 +36,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     Settings settings;
     
-    // U¯YTKOWNIK
+    @Autowired
+	EmailService mailService;
+    
+    
+    // UÅ»YTKOWNIK
     
 	@Override
 	public String addUser(User user) {
@@ -84,7 +85,9 @@ public class UserServiceImpl implements UserService {
         	user.setCredentialsNonExpired(true);
         	
         	userDAO.addUser(user);
-        	response = "userAdded";
+			mailService.sendTokenMail(user.getEmail(),"activationToken", activationToken);
+		
+        	response = "activationLinkSent";
         }
         
 		return response;
@@ -161,7 +164,7 @@ public class UserServiceImpl implements UserService {
 		userDAO.updateToken(tokenType, username, token);	
 	}
 	
-	// PASSWORD TOKEN - data wygaœniêcia
+	// PASSWORD TOKEN - data wygaï¿½niï¿½cia
 	
 	@Override
 	public Date getTokenExpirationDate(String tokenType, String email) {

@@ -2,6 +2,6 @@ package org.sobiech.inspigen.service;
 
 public interface EmailService {
 
-	public void sendMail(String email, String token);
+	public void sendTokenMail(String email, String tokenType, String token);
 
 }

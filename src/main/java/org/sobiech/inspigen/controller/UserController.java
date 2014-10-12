@@ -66,7 +66,7 @@ public class UserController {
 			
 			Date expirationDate = userService.setTokenExpirationDate();
 		
-			mailService.sendMail(email, token);
+			mailService.sendTokenMail(email,"passwordToken", token);
 			userService.updateTokenExpirationDate("passwordToken", email, expirationDate);
 			
 			message = "resetLinkSent";

@@ -15,14 +15,16 @@ public class UserDAOImpl implements UserDAO {
 	
     @Autowired
     private SessionFactory sessionFactory;
-   
-    private Session getCurrentSession() {
+     
+    private Session getCurrentSession() { 
         return sessionFactory.getCurrentSession();
     }
     
+    // UÅ»YTKOWNIK
+    
 	@Override
 	public void addUser(User user) {
-		getCurrentSession().save(user); 
+		getCurrentSession().save(user);
 	}
 
     @Override
@@ -110,7 +112,7 @@ public class UserDAOImpl implements UserDAO {
 		    setToken.executeUpdate();		
 	}
 	
-	// TOKEN - data wygaœniêcia
+	// TOKEN - data wygaï¿½niï¿½cia
 	
 	@Override
 	public Date getTokenExpirationDate(String tokenType, String email) {

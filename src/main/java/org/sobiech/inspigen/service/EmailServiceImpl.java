@@ -16,7 +16,7 @@ public class EmailServiceImpl implements EmailService {
 	JavaMailSenderImpl mailSender;
 	
 	@Override
-	public void sendMail(String email, String token) {
+	public void  sendTokenMail(String email, String tokenType, String token) {
 		
 		MimeMessage message =  mailSender.createMimeMessage();
 		MimeMessageHelper mimeHelper;
@@ -26,8 +26,14 @@ public class EmailServiceImpl implements EmailService {
 			
 			
 			mimeHelper.setFrom("sebastian.sobiech@gmail.com");
-			mimeHelper.setSubject("Password Reset");
-			mimeHelper.setText("<html><body>hi,<br/><a href='http://localhost:8080/inspigen/newPassword/"+token+"'> Click here</a> to reset password</body></html>",true);
+			
+			if (tokenType == "activationToken")
+			mimeHelper.setSubject("Witamy w systemie Inspigen!");
+			mimeHelper.setText(
+					"<html><body>Hej :)<br/>Cieszymy się, że do nas dołączyłeś."
+					+ "<br/>Kliknij w podany link, aby aktywować swoje konto: "
+					+ "<a href='http://localhost:8080/inspigen/activateAccount/"
+					+token+"'>LINK</a></body></html>",true);
 			mailSender.send(message);
 		} catch (MessagingException e) {
 			System.out.println("Error Sending email "+ e.getMessage());
