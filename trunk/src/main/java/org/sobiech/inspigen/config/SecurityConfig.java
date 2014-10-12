@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 			"/signup", 
                 			"/addUser", 
                 			"/sendActivationLink",
+                			"/activateAccount/{token}",
                 			"/forgotPassword", 
                 			"/resetPassword",
                 			"/newPassword/{token}",

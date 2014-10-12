@@ -1,4 +1,4 @@
-<div class="container" ng-controller="RegisterController">
+ï»¿<div class="container" ng-controller="RegisterController">
 
 	<div class="row">
         <div class="col-md-3 center">
@@ -20,7 +20,7 @@
     						<input
     								class="form-control" 
     								type="text" 
-            						placeholder="Nazwa u¿ytkownika" 
+            						placeholder="Nazwa uÅ¼ytkownika" 
             						name="username" 
             						ng-model="signup.username" 
             						ng-minlength=5 
@@ -29,23 +29,23 @@
             						ng-model-options="{debounce: 1000}"
             						required />
         	
-        						<small class="error-message" ng-show="!userNameUnique">
-    								Podana nazwa u¿ytkownika jest ju¿ zajêta.
+        						<small class="error-message" ng-show="!userNameUnique && !signup_form.username.$dirty">
+    								Podana nazwa uÅ¼ytkownika jest juÅ¼ zajÄ™ta.
 								</small>
         
   							<div class="error-container" ng-show="signup_form.username.$dirty && signup_form.username.$invalid">
 							    <small class="error-message" ng-show="signup_form.username.$error.required">
-							    	Nazwa u¿ytkownika nie mo¿e byæ pusta.</small>
+							    	Nazwa uÅ¼ytkownika nie moÅ¼e byÄ‡ pusta.</small>
 							    <small class="error-message" ng-show="
 							    !signup_form.username.$error.minlength
 							    && !signup_form.username.$error.maxlength
 							    && signup_form.username.$error.pattern">
-							    	Musi zaczynaæ siê od litery oraz zawieraæ tylko litery i cyfry</small>	
+							    	Musi zaczynaÄ‡ siÄ™ od litery oraz zawieraÄ‡ tylko litery i cyfry</small>	
 							    <small class="error-message" ng-show="
 							    	!signup_form.username.$error.required 
 							    	&& signup_form.username.$error.minlength
 									|| signup_form.username.$error.maxlength">
-							    	Nazwa u¿ytkownika musi siê sk³adaæ z przynajmniej 5 i niewiêcej ni¿ 12 znaków.</small>
+							    	Nazwa uÅ¼ytkownika musi siÄ™ skÅ‚adaÄ‡ z przynajmniej 5 i niewiÄ™cej niÅ¼ 12 znakÃ³w.</small>
   							</div>
 						</div>
 					</div>
@@ -55,7 +55,7 @@
     						<input
     								class="form-control" 
     								type="password" 
-            						placeholder="Has³o" 
+            						placeholder="HasÅ‚o" 
             						name="password" 
             						ng-model="signup.password" 
             						ng-minlength=5
@@ -67,17 +67,17 @@
   							&& signup_form.password.$invalid">
   							
   							 <small class="error-message" ng-show="signup_form.password.$error.required">
-							    	WprowadŸ has³o.</small>
+							    	WprowadÅº hasÅ‚o.</small>
 							    <small class="error-message" ng-show="
 							    !signup_form.password.$error.minlength
 							    && !signup_form.password.$error.maxlength
 							    && signup_form.password.$error.pattern">
-							    	Has³o musi zawieraæ przynajmniej jedn¹ du¿¹ literê i cyfrê.</small>	
+							    	HasÅ‚o musi zawieraÄ‡ przynajmniej jednÄ… duÅ¼Ä… literÄ™ i cyfrÄ™.</small>	
 							    <small class="error-message" ng-show="
 							    	!signup_form.password.$error.required 
 							    	&& signup_form.password.$error.minlength
 									|| signup_form.password.$error.maxlength">
-							    	Has³o musi siê sk³adaæ z przynajmniej 5 i niewiêcej ni¿ 16 znaków.</small>
+							    	HasÅ‚o musi siÄ™ skÅ‚adaÄ‡ z przynajmniej 5 i niewiÄ™cej niÅ¼ 16 znakÃ³w.</small>
   							</div>
 						</div>
 					</div>
@@ -87,7 +87,7 @@
     						<input 
     								class="form-control" 
     								type="password" 
-            						placeholder="PotwierdŸ has³o" 
+            						placeholder="PotwierdÅº hasÅ‚o" 
             						name="confirmPassword" 
             						ng-model="signup.confirmPassword" 
              						ng-match="signup.password"
@@ -96,11 +96,11 @@
   							<div class="error-container" ng-show="signup_form.confirmPassword.$dirty 
   							&& signup_form.confirmPassword.$invalid">
 							    <small class="error-message" ng-show="signup_form.confirmPassword.$error.required">
-							    	PotwierdŸ has³o.</small>
+							    	PotwierdÅº hasÅ‚o.</small>
 							    <small class="error-message" ng-show="
 							    !signup_form.confirmPassword.$error.required
 							    && signup_form.confirmPassword.$error.match">
-							    	Has³a siê nie zgadzaj¹.</small>
+							    	HasÅ‚a siÄ™ nie zgadzajÄ….</small>
   							</div>
 						</div>
 					</div>
@@ -118,8 +118,8 @@
       								ng-model-options="{debounce: 1000}"
       								required />
       						
-      							<small class="error-message" ng-show="!emailUnique">
-    								Istnieje ju¿ u¿ytkownik z podanym emailem.
+      							<small class="error-message" ng-show="!emailUnique && !signup_form.email.$dirty ">
+    								Istnieje juÅ¼ uÅ¼ytkownik z podanym emailem.
 								</small>
       						
     						<div class="error-container" ng-show="signup_form.email.$dirty 
@@ -130,12 +130,12 @@
 							    !signup_form.email.$error.minlength
 							    && !signup_form.email.$error.maxlength
 							    && signup_form.email.$error.email">
-							    	Nieprawid³owy adres email.</small>	
+							    	NieprawidÅ‚owy adres email.</small>	
 							    <small class="error-message" ng-show="
 							    	!signup_form.email.$error.required 
 							    	&& signup_form.email.$error.minlength
 									|| signup_form.email.$error.maxlength">
-							    	Email musi siê sk³adaæ z przynajmniej 6 i niewiêcej ni¿ 40 znaków.</small>
+							    	Email musi siÄ™ skÅ‚adaÄ‡ z przynajmniej 6 i niewiÄ™cej niÅ¼ 40 znakÃ³w.</small>
     						</div>
 						</div>
 					</div> 
@@ -145,7 +145,7 @@
     						<input
     								class="form-control"
       								type="text" 
-      								placeholder="PotwierdŸ email" 
+      								placeholder="PotwierdÅº email" 
       								name="confirmEmail" 
       								ng-model="signup.confirmEmail" 
       								ng-match="signup.email"
@@ -154,11 +154,11 @@
     						<div class="error-container" ng-show="signup_form.confirmEmail.$dirty 
     						&& signup_form.confirmEmail.$invalid">
       						 <small class="error-message" ng-show="signup_form.confirmEmail.$error.required">
-							    	PotwierdŸ adres email.</small>
+							    	PotwierdÅº adres email.</small>
 							    <small class="error-message" ng-show="
 							    !signup_form.confirmEmail.$error.required
 							    && signup_form.confirmEmail.$error.match">
-							    	Adresy sie nie zgadzaj¹.</small>
+							    	Adresy sie nie zgadzajÄ….</small>
     						</div>
 						</div>
 					</div> 

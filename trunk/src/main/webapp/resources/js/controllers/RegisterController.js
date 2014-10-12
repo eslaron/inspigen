@@ -23,32 +23,41 @@ App.controller('RegisterController', function($scope, $http, $location) {
 			
 			if(response.message == "duplicateUser")
 				$scope.userNameUnique = false;
+				$scope.signup_form.username.$setPristine();
 			
 			if(response.message  == "duplicateEmail")
 				$scope.emailUnique = false;
+				$scope.signup_form.email.$setPristine();
 			
 			if(response.message  == "duplicateUser&duplicateEmail") {
 				$scope.userNameUnique = false;
 				$scope.emailUnique = false;
+				$scope.signup_form.username.$setPristine();
+				$scope.signup_form.email.$setPristine();
 			}
 		
-			if(response.message  == "userAdded") {	
+			if(response.message  == "activationLinkSent") {	
 				$scope.userNameUnique = true;
 				$scope.emailUnique = true;
-				
-				$http.post('sendActivationLink', $scope.user.email)
-				.success(function(resp) {		
-					$scope.message =  resp.message;		
-				})
-				.then(function(){
-					 if($scope.message  == "activationLinkSent") {			
-							$scope.hideMessage = false;
-					  }	
-				});
-			}		
-		}).error(function() {});
+				$scope.hideMessage = false;
+				$scope.resetRegisterForm();
+			}					
+		}).error(function(){});
 	}
 	
-
+	$scope.resetRegisterForm = function() {
+		
+		$scope.signup.username = '';
+		$scope.signup.password = '';
+		$scope.signup.confirmPassword = '';
+		$scope.signup.email = '';
+		$scope.signup.confirmEmail = '';
+		
+		$scope.signup_form.$setPristine();
+	} 
+	
+	$scope.$on('$viewContentLoaded', function() {
+		$scope.signup_form.$setPristine();
+	});
 });
   
