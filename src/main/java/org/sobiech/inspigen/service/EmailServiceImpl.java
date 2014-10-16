@@ -30,8 +30,8 @@ public class EmailServiceImpl implements EmailService {
 			if (tokenType == "activationToken")
 			mimeHelper.setSubject("Witamy w systemie Inspigen!");
 			mimeHelper.setText(
-					"<html><body>Hej :)<br/>Cieszymy siê, ¿e do nas do³¹czy³eœ."
-					+ "<br/>Kliknij w podany link, aby aktywowaæ swoje konto: "
+					"<html><body>Hej :)<br/>Cieszymy siÄ™, Å¼e do nas doÅ‚Ä…czyÅ‚eÅ›."
+					+ "<br/>Kliknij w podany link, aby aktywowaÄ‡ swoje konto: "
 					+ "<a href='http://localhost:8080/inspigen/activateAccount/?token="
 					+token+"'>LINK</a></body></html>",true);
 			mailSender.send(message);

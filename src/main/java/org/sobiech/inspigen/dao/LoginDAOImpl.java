@@ -23,7 +23,7 @@ public class LoginDAOImpl implements LoginDAO {
         return sessionFactory.getCurrentSession();
     }
     
-	// PRÓBY LOGOWANIA
+	// PRÃ“BY LOGOWANIA
 	
 	@Override
 	public void addLoginAttemptEntry(String username) { 

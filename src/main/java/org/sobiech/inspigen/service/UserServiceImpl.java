@@ -40,8 +40,7 @@ public class UserServiceImpl implements UserService {
 	EmailService mailService;
     
     
-    // U¯YTKOWNIK
-    
+    // UÅ»YTKOWNIK
 	@Override
 	public String addUser(User user) {
 		
@@ -164,7 +163,7 @@ public class UserServiceImpl implements UserService {
 		userDAO.updateToken(tokenType, username, token);	
 	}
 	
-	// TOKEN - data wygaœniêcia
+	// TOKEN - data wygaï¿½niï¿½cia
 	@Override
 	public Date getTokenExpirationDate(String tokenType, String email) {
 		return userDAO.getTokenExpirationDate(tokenType, email);

@@ -8,7 +8,7 @@ import org.sobiech.inspigen.model.User;
 
 public interface UserService extends UserDetailsService {
 	
-	// U¯YTKOWNIK
+	// UÅ»YTKOWNIK
 	
     public String addUser(User user);
 
@@ -32,7 +32,7 @@ public interface UserService extends UserDetailsService {
     
     public void updateToken(String tokenType, String username, String token);
     
-	// TOKEN - data wygaœniêcia
+	// TOKEN - data wygaÅ›niÄ™cia
     
     public Date getTokenExpirationDate(String tokenType, String email);
     

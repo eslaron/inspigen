@@ -188,7 +188,7 @@ public class User extends BaseEntity implements UserDetails {
     }
     
     
-	//Czy konto nie wygas³o
+	//Czy konto nie wygasÅ‚o
     @Override
     public boolean isAccountNonExpired() {
         //return true = account is valid / not expired
@@ -202,14 +202,14 @@ public class User extends BaseEntity implements UserDetails {
         return true;
     }
 
-    //Czy has³o nie wygas³o
+    //Czy hasï¿½o nie wygassÅ‚o
     @Override
     public boolean isCredentialsNonExpired() {
         //return true = password is valid / not expired
         return true;
     }
 
-    //Czy konto jest w³¹czone
+    //Czy konto jest wÅ‚Ä…czone
     @Override
     public boolean isEnabled() {
         return this.getEnabled();
