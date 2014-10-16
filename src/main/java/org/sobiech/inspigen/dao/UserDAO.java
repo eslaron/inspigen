@@ -7,7 +7,7 @@ import org.sobiech.inspigen.model.User;
 
 public interface UserDAO {
 
-	//UÅ»YTKOWNIK
+	//U¯YTKOWNIK
 	
     public void addUser(User user);
 
@@ -30,7 +30,7 @@ public interface UserDAO {
     public void updateToken(String tokenType ,String username, String token);
     
     
-    // TOKEN - data wygaÅ›niÄ™cia
+    // TOKEN - data wygaœniêcia
     
     public Date getTokenExpirationDate(String tokenType, String token);
         

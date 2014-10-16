@@ -26,7 +26,7 @@ public class LoginServiceImpl implements LoginService {
     @Autowired 
     Settings settings;
     
-	// PRÃ“BY LOGOWANIA
+	// PRÓBY LOGOWANIA
     
 	@Override
 	public void addLoginAttemptEntry(String username) {

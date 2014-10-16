@@ -6,7 +6,7 @@ import org.sobiech.inspigen.model.LoginAttempts;
 
 public interface LoginService {
         
-    // PRÃ“BY LOGOWANIA
+    // PRÓBY LOGOWANIA
        
     public void addLoginAttemptEntry(String username);
     

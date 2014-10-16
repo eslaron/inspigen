@@ -20,7 +20,7 @@ public class UserDAOImpl implements UserDAO {
         return sessionFactory.getCurrentSession();
     }
     
-    // UÅ»YTKOWNIK
+    // U¯YTKOWNIK
     
 	@Override
 	public void addUser(User user) {
@@ -112,7 +112,7 @@ public class UserDAOImpl implements UserDAO {
 		    setToken.executeUpdate();		
 	}
 	
-	// TOKEN - data wygaï¿½niï¿½cia
+	// TOKEN - data wygaœniêcia
 	
 	@Override
 	public Date getTokenExpirationDate(String tokenType, String token) {
