@@ -39,11 +39,31 @@ App.controller('RegisterController', function($scope, $http, $location) {
 			if(response.message  == "activationLinkSent") {	
 				$scope.userNameUnique = true;
 				$scope.emailUnique = true;
+				$scope.messageStyle = "alert alert-success";
 				$scope.hideMessage = false;
 				$scope.resetRegisterForm();
 			}					
 		}).error(function(){});
 	}
+	
+	$http.get("activationMessage")
+		.success(function(resps){
+			if(resps.message =="accountActivated") {
+				$scope.messageStyle = "alert alert-success";
+				$scope.hideMessage = false;
+				$scope.activationMessage = "Konto zostało aktywowane. Możesz się zalogować.";
+			}
+			if(resps.message == "activationLinkExpired") {
+				$scope.messageStyle = "alert alert-danger";
+				$scope.hideMessage = false;
+				$scope.activationMessage = "Link aktywacyjny wygasł.";
+			}
+			if(resps.message == "invalidActivationLink") {
+				$scope.messageStyle = "alert alert-danger";
+				$scope.hideMessage = false;
+				$scope.activationMessage = "Nieprawidłowy link aktywacyjny.";
+			}
+		});	
 	
 	$scope.resetRegisterForm = function() {
 		

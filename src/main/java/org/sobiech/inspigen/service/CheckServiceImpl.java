@@ -42,10 +42,10 @@ public class CheckServiceImpl implements CheckService {
 	}	
 		
 	@Override
-	public Boolean checkIfTokenExpired(String tokenType, String email) {
+	public Boolean checkIfTokenExpired(String tokenType, String token) {
 				
 		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		format.format(userDAO.getTokenExpirationDate(tokenType, email));
+		format.format(userDAO.getTokenExpirationDate(tokenType, token));
 			
 		Calendar expire=Calendar.getInstance();
 		expire = format.getCalendar();		
@@ -59,6 +59,14 @@ public class CheckServiceImpl implements CheckService {
 	public Boolean checkIfEmailIsRegistered(String email) {
 		Query query = checkDAO.checkIfEmailIsRegistered(email);
 			
+		if (query.list().size() == 0 ) {
+			return false;
+		} else return true;
+	}
+
+	@Override
+	public Boolean checkIfTokenExists(String tokenType, String token) {
+		Query query = checkDAO.checkIfTokenExists(tokenType, token);
 		if (query.list().size() == 0 ) {
 			return false;
 		} else return true;

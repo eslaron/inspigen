@@ -1,6 +1,11 @@
-body {
+@import url(http://fonts.googleapis.com/css?family=Marvel:400,700italic);
+
+body {	
+	background: url(../../images/dark.png);
+}
+
+.containerMargin {
 	margin-top: 150px;
-	background: url(../../images/bg.png);
 }
 
 .center {
@@ -9,13 +14,34 @@ body {
      margin-right: auto;
 }
 
+.nav-font {
+		font-family: 'Marvel', sans-serif;
+}
+
+.navbar-brand {
+	max-width: 300px;
+	max-height: 100px;
+	padding: 5px;
+	font-size: 40px;
+	line-height: 100%;
+	text-align: center;
+}
+
+.navbar-brand img {
+	height: 100%;
+	padding: 0;
+}
+
+.navbar-nav li {
+	font-size: 16px;
+}
+
 .normalFont {
 	margin-left: 5px;
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
-
 
 .neutral-message {
 	color: #000;
@@ -29,11 +55,11 @@ body {
 	color: #009402;
 }
 
-  .input-border input.ng-invalid.ng-dirty {
+.input-border input.ng-invalid.ng-dirty {
     border-color: #C90C00;
-  }
+}
 
- /* .input-border input.ng-valid.ng-dirty {
+.input-border input.ng-valid.ng-dirty {
     border-color: #78FA89;
-  }*/
+}
 

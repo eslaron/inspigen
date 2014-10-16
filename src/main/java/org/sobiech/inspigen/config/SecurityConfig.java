@@ -1,12 +1,16 @@
 package org.sobiech.inspigen.config;
 
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,6 +20,8 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+
 
 
 @Configuration
@@ -38,6 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	
+  
+    	
         http
         	.csrf().disable()
             .authorizeRequests()
@@ -45,11 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 			"/signup", 
                 			"/addUser", 
                 			"/sendActivationLink",
-                			"/activateAccount/{token}",
+                			"/activationMessage",
+                			"/{token}",
                 			"/forgotPassword", 
                 			"/resetPassword",
                 			"/newPassword/{token}",
-                			"*/resetLinkError",
                 			"/forgotPassowordMessage",
                 			"/partials/**").permitAll()
                 .anyRequest().authenticated()
@@ -118,5 +126,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	CustomUserDetailsService service = new CustomUserDetailsService();
     	
     	return service;
-    }   
+    }  
 }

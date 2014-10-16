@@ -115,11 +115,11 @@ public class UserDAOImpl implements UserDAO {
 	// TOKEN - data wyga�ni�cia
 	
 	@Override
-	public Date getTokenExpirationDate(String tokenType, String email) {
+	public Date getTokenExpirationDate(String tokenType, String token) {
 		
 		Query getDate = getCurrentSession().createQuery(
-				"SELECT "+tokenType+"Expiration FROM User WHERE email = :eMail");
-		getDate.setString("eMail", email);
+				"SELECT "+tokenType+"Expiration FROM User WHERE "+tokenType+" = :token");
+		getDate.setString("token", token);
 		
 		return (Date)getDate.list().get(0);
 	}

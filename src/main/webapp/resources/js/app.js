@@ -6,28 +6,32 @@ var App = angular.module('AngularSpringApp', ['ngRoute','AngularSpringApp.filter
 
 // Declare app level module which depends on filters, and services
 App.config(['$routeProvider','$locationProvider', function ($routeProvider, $locationProvider) {
-    
+ 	
 	$routeProvider.when('/', {
-        templateUrl: 'partials/login',
-    });
+        templateUrl: 'partials/login.html',
+    })
 
-    $routeProvider.when('/signup', {
-        templateUrl: 'partials/signup',
-    });
+    .when('/signup', {
+        templateUrl: 'partials/signup.html',
+    })
     
-    $routeProvider.when('/login', {
-        templateUrl: 'partials/login',
-    });
+   .when('/login',   {
+        templateUrl: 'partials/login.html',
+    })
     
-    $routeProvider.when('/home', {
-        templateUrl: 'partials/home',
-    });
+    .when('/home', {
+        templateUrl: 'partials/home.html',
+    })
     
-    $routeProvider.when('/forgotPassword', {
-        templateUrl: 'partials/forgotPassword',
-    });
+    .when('/forgotPassword', {
+        templateUrl: 'partials/forgotPassword.html',
+    })
     
-    $routeProvider.otherwise({redirectTo: '/'});
+    .when('/:token', {
+    	redirectTo: '/login',
+    })
+       
+    //.otherwise({redirectTo: '/login'});
     
    $locationProvider.html5Mode(true);
 }]);
