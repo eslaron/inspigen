@@ -10,6 +10,7 @@
 
     <properties>
         <java-version>1.7</java-version>
+        <character-encoding>UTF-8</character-encoding>
         
         <spring-version>4.0.6.RELEASE</spring-version>
         <spring.security-version>3.2.5.RELEASE</spring.security-version>
@@ -284,6 +285,7 @@
                 <configuration>
                     <source>${java-version}</source>
                     <target>${java-version}</target>
+                    <encoding>${character-encoding}</encoding>
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
