@@ -1,4 +1,4 @@
-InspiGen - System do zarz¹dzania wolontariatem
+InspiGen - System do zarzÄ…dzania wolontariatem
 ===============================================
 
 Aplikacja webowa przeznaczona na projekt dyplomowy.
