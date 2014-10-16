@@ -16,14 +16,13 @@ import org.sobiech.inspigen.service.UserService;
 @Controller
 public class RegisterController {
 	
-	@Autowired
+	/*@Autowired
 	UserService userService;
 	
 	@Autowired
 	CheckService checkService;
 	
 	private String message;
-	
 	
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public @ResponseBody String addUser(@RequestBody User user) {
@@ -32,29 +31,24 @@ public class RegisterController {
     		    
     	return response;
     }
-    		
-	@RequestMapping(value = "*/activationLinkError", method = RequestMethod.GET)
-	@ResponseBody
-	public String activationLinkError(String error) { 
-		 return message;
+    
+    @RequestMapping(value = "/activationMessage", method = RequestMethod.GET)
+	public @ResponseBody String forgotPasswordMessage(String error) { 
+		 return "{\"message\":\"" +message+"\"}";
 	}
-	  
-	@RequestMapping(value="/activateAccount/{token}", method = RequestMethod.GET)
-	public String activateAccount(@PathVariable String token)
-	{
-		try {
+		 
+	@RequestMapping(value="/activateAccount/{token}")
+	public String activateAccount(@PathVariable String token) {
+	
+		if(checkService.checkIfTokenExists("activationToken", token) == true) {
 			if (checkService.checkIfTokenExpired("activationToken",token) == true) {
-				
 				message = "activationLinkExpired";
-				return "activationLinkError";
-			}
-			
-			else return "login";
-		
-		} catch(IndexOutOfBoundsException e) {
-			
-			message = "invalidResetLink";
-			return "activationLinkError";
+			} 
+				else message = "accountActivated";
 		}
-	}
+		else {
+				message = "invalidActivationLink";
+		}
+			return "index";
+	}	*/
 }

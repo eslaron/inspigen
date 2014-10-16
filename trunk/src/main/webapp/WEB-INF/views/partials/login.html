@@ -1,4 +1,4 @@
-﻿<div class="container" ng-controller="RegisterController">
+﻿<div class="container containerMargin" ng-controller="RegisterController">
     <div class="row">
         <div class="col-md-3 center">
             <div class="panel panel-default">
@@ -9,6 +9,9 @@
                     <form name="f" data-th-action="@{/login}" method="POST" class="form-horizontal" role="form">
                     <div class="form-group">
                         <div class="col-sm-12">
+                        <div ng-hide="hideMessage" ng-class="messageStyle">
+				                   {{activationMessage}}     
+				   			</div>
                           <div data-th-if="${param.error}" class="alert alert-danger">
 				                    Niepoprawny login lub hasło.
 				          </div>

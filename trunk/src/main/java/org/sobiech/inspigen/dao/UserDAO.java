@@ -32,7 +32,7 @@ public interface UserDAO {
     
     // TOKEN - data wygaśnięcia
     
-    public Date getTokenExpirationDate(String tokenType, String email);
+    public Date getTokenExpirationDate(String tokenType, String token);
         
     public void updateTokenExpirationDate(String tokenType, String email, Date expirationDate); 
     

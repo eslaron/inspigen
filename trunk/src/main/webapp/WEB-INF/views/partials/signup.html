@@ -1,4 +1,4 @@
-﻿<div class="container" ng-controller="RegisterController">
+﻿<div class="container containerMargin" ng-controller="RegisterController">
 
 	<div class="row">
         <div class="col-md-3 center">
@@ -11,7 +11,7 @@
 				        
 				<form name="signup_form" ng-submit="registerUser()" class="form-horizontal input-border" novalidate>
  
-    						<div ng-hide="hideMessage" class="alert alert-success">
+    						<div ng-hide="hideMessage" ng-class="messageStyle">
 				                   {{activationMessage}}     
 				   			</div>
  
@@ -23,7 +23,7 @@
             						placeholder="Nazwa użytkownika" 
             						name="username" 
             						ng-model="signup.username" 
-            						ng-minlength=5 
+            						ng-minlength=5
             						ng-maxlength=12 
             						ng-pattern="/^[A-z][A-z0-9]*$/"
             						ng-model-options="{debounce: 1000}"
@@ -72,7 +72,7 @@
 							    !signup_form.password.$error.minlength
 							    && !signup_form.password.$error.maxlength
 							    && signup_form.password.$error.pattern">
-							    	Hasło musi zawierać przynajmniej jedną dużą literę i cyfrę.</small>	
+							    	Has�o musi zawierać przynajmniej jedno duzą literę i jedną cyfrę.</small>	
 							    <small class="error-message" ng-show="
 							    	!signup_form.password.$error.required 
 							    	&& signup_form.password.$error.minlength
@@ -135,7 +135,7 @@
 							    	!signup_form.email.$error.required 
 							    	&& signup_form.email.$error.minlength
 									|| signup_form.email.$error.maxlength">
-							    	Email musi się składać z przynajmniej 6 i niewięcej niż 40 znaków.</small>
+							    	Email musi się składał z przynajmniej 6 i niewięcej niż 40 znaków.</small>
     						</div>
 						</div>
 					</div> 

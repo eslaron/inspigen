@@ -48,6 +48,14 @@ public class CheckDAOImpl implements CheckDAO {
 		return query;
 	}
 
+	
+	@Override
+	public Query checkIfTokenExists(String tokenType, String token) {
+		
+		Query query = getCurrentSession().createQuery("from User where "+tokenType+" = :token ");
+		query.setString("token", token);
+		return query;
+	}
 
 	@Override
 	public Query checkIfTokenExpired(String tokenType, String token) {
@@ -57,4 +65,7 @@ public class CheckDAOImpl implements CheckDAO {
 		query.setString("token", token);
 		return query;
 	}
+
+
+	
 }
