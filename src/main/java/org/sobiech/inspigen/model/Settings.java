@@ -8,9 +8,9 @@ import javax.persistence.Table;
 @Table(name="ig_settings")
 public class Settings extends BaseEntity {
 
-	private int MAX_ATTEMPTS = 3; //maksymalna liczba podejœæ
-    private int LOCK_TIME = 15; //czas blokady u¿ytkownika w minutach
-    private int EXPIRATION_TIME = 720; //czas po którym wygaœnie link (minuty)
+	private int MAX_ATTEMPTS = 3; //maksymalna liczba podejÅ›Ä‡
+    private int LOCK_TIME = 15; //czas blokady uÅ¼ytkownika w minutach
+    private int EXPIRATION_TIME = 720; //czas po ktÃ³rym wygaÅ›nie link (minuty)
     
 	public int getMAX_ATTEMPTS() {
 		return MAX_ATTEMPTS;
