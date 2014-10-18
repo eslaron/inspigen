@@ -36,4 +36,9 @@ public interface UserDAO {
         
     public void updateTokenExpirationDate(String tokenType, String email, Date expirationDate); 
     
+    // KONTO - aktywacja/deaktywacja
+    
+    public void activateAccount(String token);
+	
+    public void deactivateAccount(String username);
 }

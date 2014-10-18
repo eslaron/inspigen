@@ -38,5 +38,11 @@ public interface UserService extends UserDetailsService {
     
     public Date setTokenExpirationDate();
     
-    public void updateTokenExpirationDate(String tokenType, String email, Date expirationDate);        
+    public void updateTokenExpirationDate(String tokenType, String email, Date expirationDate);
+    
+    // KONTO - aktywacja/deaktywacja
+    
+    public String activateAccount(String token);
+	
+    public String deactivateAccount(String username);
 }

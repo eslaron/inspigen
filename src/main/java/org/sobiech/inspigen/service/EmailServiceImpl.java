@@ -32,7 +32,7 @@ public class EmailServiceImpl implements EmailService {
 			mimeHelper.setText(
 					"<html><body>Hej :)<br/>Cieszymy się, że do nas dołączyłeś."
 					+ "<br/>Kliknij w podany link, aby aktywować swoje konto: "
-					+ "<a href='http://localhost:8080/inspigen/activateAccount/?token="
+					+ "<a href='http://vps106107.ovh.net:8080/inspigen/activateAccount/"
 					+token+"'>LINK</a></body></html>",true);
 			mailSender.send(message);
 		} catch (MessagingException e) {

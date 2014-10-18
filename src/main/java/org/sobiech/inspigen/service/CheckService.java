@@ -14,5 +14,7 @@ public interface CheckService {
     public Boolean checkIfTokenExpired(String tokenType, String token);
     
     public Boolean checkIfEmailIsRegistered(String email);
+    
+    public Boolean checkIfUserIsActivated(String token);
    
 }

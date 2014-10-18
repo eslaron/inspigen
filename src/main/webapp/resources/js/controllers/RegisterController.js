@@ -53,11 +53,19 @@ App.controller('RegisterController', function($scope, $http, $location) {
 				$scope.hideMessage = false;
 				$scope.activationMessage = "Konto zostało aktywowane. Możesz się zalogować.";
 			}
+			
+			if(resps.message =="alreadyActivated") {
+				$scope.messageStyle = "alert alert-danger";
+				$scope.hideMessage = false;
+				$scope.activationMessage = "Konto jest już aktywne.";
+			}
+			
 			if(resps.message == "activationLinkExpired") {
 				$scope.messageStyle = "alert alert-danger";
 				$scope.hideMessage = false;
 				$scope.activationMessage = "Link aktywacyjny wygasł.";
 			}
+			
 			if(resps.message == "invalidActivationLink") {
 				$scope.messageStyle = "alert alert-danger";
 				$scope.hideMessage = false;

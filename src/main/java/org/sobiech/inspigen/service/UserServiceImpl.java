@@ -187,4 +187,18 @@ public class UserServiceImpl implements UserService {
 	public void updateTokenExpirationDate(String tokenType, String email, Date expirationDate) {	
 		userDAO.updateTokenExpirationDate(tokenType, email, expirationDate);	
 	}
+
+	// KONTO - aktywacja/deaktywacja
+	
+	@Override
+	public String activateAccount(String token) {
+		userDAO.activateAccount(token);
+		return "accountActivated";
+	}
+
+	@Override
+	public String deactivateAccount(String username) {
+		userDAO.deactivateAccount(username);
+		return "accountDeactivated";
+	}
 }

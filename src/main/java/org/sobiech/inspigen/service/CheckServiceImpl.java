@@ -71,4 +71,12 @@ public class CheckServiceImpl implements CheckService {
 			return false;
 		} else return true;
 	}
+
+	@Override
+	public Boolean checkIfUserIsActivated(String token) {
+		Query query = checkDAO.checkIfUserIsActivated(token);
+		if (query.list().size() == 0 ) {
+			return false;
+		} else return true;
+	}
 }

@@ -67,5 +67,11 @@ public class CheckDAOImpl implements CheckDAO {
 	}
 
 
-	
+	@Override
+	public Query checkIfUserIsActivated(String token) {
+		Query query = getCurrentSession().createQuery(
+				"SELECT enabled from User where activationToken = :token ");
+		query.setString("token", token);
+		return query;
+	}
 }

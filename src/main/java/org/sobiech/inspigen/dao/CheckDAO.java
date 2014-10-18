@@ -15,4 +15,6 @@ public interface CheckDAO {
     public Query checkIfTokenExists(String tokenType, String token);
     
     public Query checkIfTokenExpired(String tokenType, String token);
+    
+    public Query checkIfUserIsActivated(String token);
 }

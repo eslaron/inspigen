@@ -134,4 +134,26 @@ public class UserDAOImpl implements UserDAO {
 	    setToken.setString("eMail", email);
 	    setToken.executeUpdate();				
 	}
+
+	// KONTO - aktywacja/deaktywacja
+	
+	@Override
+	public void activateAccount(String token) {
+		Query lock = getCurrentSession().createQuery(
+				"UPDATE User SET enabled = :enabled WHERE activationToken = :token");
+		
+		lock.setBoolean("enabled", true);
+		lock.setString("token", token);
+		lock.executeUpdate();		
+	}
+
+	@Override
+	public void deactivateAccount(String username) {
+		Query lock = getCurrentSession().createQuery(
+				"UPDATE User SET enabled = :enabled WHERE username = :userName");
+		
+		lock.setBoolean("enabled", false);
+		lock.setString("userName", username);
+		lock.executeUpdate();		
+	}
 }
