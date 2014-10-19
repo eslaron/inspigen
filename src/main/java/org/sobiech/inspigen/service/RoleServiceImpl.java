@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import org.sobiech.inspigen.dao.DuplicateRoleException;
 import org.sobiech.inspigen.dao.RoleDAO;
-import org.sobiech.inspigen.dao.RoleNotFoundException;
 import org.sobiech.inspigen.model.Role;
 
 @Service
@@ -21,33 +18,33 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleDAO roleDAO;
 
-    @Override
-    public void addRole(Role role) throws DuplicateRoleException {
-        roleDAO.addRole(role);
-    }
+	@Override
+	public void addUserRole(Role role) {
+		roleDAO.addUserRole(role);	
+	}
 
-    @Override
-    public Role getRole(int id) throws RoleNotFoundException {
-        return roleDAO.getRole(id);
-    }
+	@Override
+	public Role getUserRoleById(int userId) {
+		return roleDAO.getUserRoleById(userId);
+	}
 
-    @Override
-    public Role getRole(String rolename) throws RoleNotFoundException {
-        return roleDAO.getRole(rolename);
-    }
+	@Override
+	public Role getUserRoleByName(String username) {
+		return roleDAO.getUserRoleByName(username);
+	}
 
-    @Override
-    public void updateRole(Role role) throws RoleNotFoundException {
-        roleDAO.updateRole(role);
-    }
+	@Override
+	public Role getUserRoleByEmail(String email) {
+		return roleDAO.getUserRoleByEmail(email);
+	}
 
-    @Override
-    public void deleteRole(int id) throws RoleNotFoundException {
-        roleDAO.deleteRole(id);
-    }
+	@Override
+	public void updateUserRole(Role role) {
+		roleDAO.updateUserRole(role);
+	}
 
-    @Override
-    public List<Role> getRoles() {
-        return roleDAO.getRoles();
-    }
+	@Override
+	public List<Role> getRoles() {
+		return roleDAO.getRoles();
+	} 
 }

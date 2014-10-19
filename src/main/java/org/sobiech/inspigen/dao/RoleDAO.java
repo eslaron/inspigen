@@ -5,17 +5,18 @@ import java.util.List;
 import org.sobiech.inspigen.model.Role;
 
 public interface RoleDAO {
+	
+	// ROLA UŻYTKOWNIKA
 
-    public void addRole(Role role) throws DuplicateRoleException;
+	public void addUserRole(Role role);
+		
+	public Role getUserRoleById(int userId);
 
-    public Role getRole(int id) throws RoleNotFoundException;
+	public Role getUserRoleByName(String username);
+	    
+	public Role getUserRoleByEmail(String email);
 
-    public Role getRole(String roleName) throws RoleNotFoundException;
+	public void updateUserRole(Role role);
 
-    public void updateRole(Role role) throws RoleNotFoundException;
-
-    public void deleteRole(int id) throws RoleNotFoundException;
-
-    public List<Role> getRoles();
-
+	public List<Role> getRoles();
 }

@@ -40,10 +40,10 @@ public class UserDAOImpl implements UserDAO {
     }
 
 	@Override
-	public User getUserByName(String usersName) {
+	public User getUserByName(String userName) {
 
-		Query query = getCurrentSession().createQuery("from User where username = :usersName ");
-		query.setString("usersName", usersName);
+		Query query = getCurrentSession().createQuery("from User where username = :userName ");
+		query.setString("userName", userName);
 		
 		if (query.list().size() == 0 ) {
 			return null;

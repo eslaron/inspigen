@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import org.sobiech.inspigen.model.Role;
 
 @Repository
@@ -24,71 +23,59 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     @Override
-    public void addRole(Role role) throws DuplicateRoleException {
-        logger.debug("RoleDAOImpl.addRole() - [" + role.getRolename() + "]");
-        try {
-            // if the role is not found, then a RoleNotFoundException is
-            // thrown from the getRole method call, and the new role will be 
-            // added.
-            //
-            // if the role is found, then the flow will continue from the getRole
-            // method call and the DuplicateRoleException will be thrown.
-            Role roleCheck = getRole(role.getRolename());
-            String message = "The role [" + roleCheck.getRolename() + "] already exists";
-            throw new DuplicateRoleException(message);
-        } catch (RoleNotFoundException e) {
-            getCurrentSession().save(role);
-        }
+    public void addUserRole(Role role) {
+    	getCurrentSession().save(role);
     }
 
     @Override
-    public Role getRole(int role_id) throws RoleNotFoundException {
-        Role roleObject = (Role) getCurrentSession().get(Role.class, role_id);
-        if (roleObject == null ) {
-            throw new RoleNotFoundException("Role id [" + role_id + "] not found");
-        } else {
-            return roleObject;
-        }
+    public Role getUserRoleById(int userId) {	
+    	
+    	 Role roleObject = (Role) getCurrentSession().get(Role.class, userId);
+         
+         if (roleObject == null) {
+         	return null;
+         } else {
+             return roleObject;
+         }
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public Role getRole(String usersRole) throws RoleNotFoundException {
-        logger.debug("RoleDAOImpl.getRole() - [" + usersRole + "]");
-        Query query = getCurrentSession().createQuery("from Role where rolename = :usersRole ");
-        query.setString("usersRole", usersRole);
-        
-        logger.debug(query.toString());
-        if (query.list().size() == 0 ) {
-            throw new RoleNotFoundException("Role [" + usersRole + "] not found");
-        } else {
-            logger.debug("Role List Size: " + query.list().size());
-            List<Role> list = (List<Role>)query.list();
-            Role roleObject = (Role) list.get(0);
+	@Override
+	public Role getUserRoleByName(String username) {
+		
+		Query query = getCurrentSession().createQuery("from Role where username = :userName ");
+		query.setString("userName", username);
+		
+		if (query.list().size() == 0 ) {
+			return null;
+		} else {
+			return (Role)query.list().get(0);
+		}
+	}
 
-            return roleObject;
-        }
-    }
+	@Override
+	public Role getUserRoleByEmail(String email) {
+		Query query = getCurrentSession().createQuery("from Role where email = :eMail ");
+		query.setString("eMail", email);
+		
+		if (query.list().size() == 0 ) {
+			return null;
+		} else {
+	        return (Role)query.list().get(0);
+		}
+	}
 
-    @Override
-    public void updateRole(Role role) throws RoleNotFoundException {
-        Role roleToUpdate = getRole(role.getId());
-        roleToUpdate.setId(role.getId());
-        roleToUpdate.setRolename(role.getRolename());
-        getCurrentSession().update(roleToUpdate);
-    }
-
-    @Override
-    public void deleteRole(int role_id) throws RoleNotFoundException {
-        Role role = getRole(role_id);
-        if (role != null) {
-            getCurrentSession().delete(role);
-        }
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Role> getRoles() {
-        return getCurrentSession().createQuery("from Role").list();
-    }
+	@Override
+	public void updateUserRole(Role role) {
+		Role userRoleToUpdate = getUserRoleByName(role.getUsername());
+		userRoleToUpdate.setUser_role_id(role.getUser_role_id());
+		userRoleToUpdate.setUsername(role.getUsername());
+		userRoleToUpdate.setRole(role.getRole());
+        getCurrentSession().update(userRoleToUpdate);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Role> getRoles() {
+		return getCurrentSession().createQuery("from Role").list();
+	}
 }

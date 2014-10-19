@@ -1,6 +1,7 @@
 package org.sobiech.inspigen.config;
 
 import org.sobiech.inspigen.model.LoginAttempts;
+import org.sobiech.inspigen.model.Role;
 import org.sobiech.inspigen.model.Settings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,5 +19,11 @@ public class CustomBeansConfig {
     LoginAttempts getLoginAttempts() {
     	LoginAttempts attempts = new LoginAttempts();
     	return attempts;
+    }
+    
+    @Bean
+    Role getUserRole() {
+    	Role role = new Role();
+    	return role;
     }
 }

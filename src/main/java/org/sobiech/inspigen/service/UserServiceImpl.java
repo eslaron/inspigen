@@ -15,17 +15,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.sobiech.inspigen.dao.RoleDAO;
 import org.sobiech.inspigen.dao.UserDAO;
 import org.sobiech.inspigen.model.Settings;
 import org.sobiech.inspigen.model.User;
+import org.sobiech.inspigen.model.Role;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
 	
-	
     @Autowired
     private UserDAO userDAO;
+    
+    @Autowired
+    private RoleDAO roleDAO;
     
     @Autowired
     Md5PasswordEncoder passwordEncoder;
@@ -37,8 +41,13 @@ public class UserServiceImpl implements UserService {
     Settings settings;
     
     @Autowired
+    Role role;
+    
+    @Autowired
 	EmailService mailService;
     
+    @Autowired
+	RoleService roleService;
     
     // UŻYTKOWNIK
 	@Override
@@ -82,8 +91,15 @@ public class UserServiceImpl implements UserService {
         	user.setAccountNonLocked(true);
         	user.setAccountNonExpired(true);
         	user.setCredentialsNonExpired(true);
-        	
+        
         	userDAO.addUser(user);
+        	
+        	role.setUser_role_id(getUserByName(user.getUsername()).getId());
+        	role.setUsername(user.getUsername());
+        	role.setRole("ROLE_USER");
+        	
+        	roleDAO.addUserRole(role);
+        	
 			mailService.sendTokenMail(user.getEmail(),"activationToken", activationToken);
 		
         	response = "activationLinkSent";

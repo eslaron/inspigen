@@ -60,7 +60,7 @@ public class CustomUserDetailsService extends JdbcDaoImpl implements UserDetails
 	}
 	
 	@Override
-	@Value("select username, role from user_roles where username =?")
+	@Value("select username, role from ig_user_roles where username =?")
 	public void setAuthoritiesByUsernameQuery(String queryString) {
 		super.setAuthoritiesByUsernameQuery(queryString);
 	}

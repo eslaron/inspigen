@@ -19,74 +19,49 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Objects;
 
 @Entity
-@Table(name = "ig_roles")
+@Table(name = "ig_user_roles")
 public class Role extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 6874667425302308430L;
     static Logger logger = LoggerFactory.getLogger(Role.class);
-    /*
-        CREATE TABLE `ROLES` (
-            `ID` INT(6) NOT NULL,
-            `ROLENAME`  VARCHAR(50) NOT NULL,
-            PRIMARY KEY (`ID`)
-        )
-        ENGINE=InnoDB DEFAULT CHARSET=utf8; 
-     */
 
-    @NotNull(message = "{error.roles.role.null}")
-    @NotEmpty(message = "{error.roles.role.empty}")
-    @Size(max = 50, message = "{error.roles.role.max}")
-    @Column(name = "rolename", length = 50)
-    private String rolename;
+    @Column(name = "user_role_id")
+    private int user_role_id;
     
+    @Column(name = "username")
+    private String username;
+    
+    @Column(name = "role")
+    private String role;
+
     //@OneToMany(cascade = CascadeType.ALL)  
-    @OneToMany  
+    /*@OneToMany  
     @JoinTable(name = "ig_user_roles",   
         joinColumns        = {@JoinColumn(name = "role_id", referencedColumnName = "id")},  
         inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}  
-    )  
-    private Set<User> userRoles;  
+    )  */
+    
+    public int getUser_role_id() {
+		return user_role_id;
+	}
 
-    public String getRolename() {
-        return rolename;
-    }
+	public void setUser_role_id(int user_role_id) {
+		this.user_role_id = user_role_id;
+	}
 
-    public void setRolename(String rolename) {
-        this.rolename = rolename;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public Set<User> getUserRoles() {
-        return userRoles;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setUserRoles(Set<User> userRoles) {
-        this.userRoles = userRoles;
-    }
+	public String getRole() {
+		return role;
+	}
 
-    @Override
-    public String toString() {
-        return String.format("%s(id=%d, rolename='%s')", 
-                this.getClass().getSimpleName(), 
-                this.getId(), this.getRolename());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null)
-            return false;
-
-        if (o instanceof Role) {
-            final Role other = (Role) o;
-            return Objects.equal(getId(), other.getId())
-                    && Objects.equal(getRolename(), other.getRolename());
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId(), getRolename());
-    }
+	public void setRole(String role) {
+		this.role = role;
+	}
 }

@@ -28,15 +28,9 @@ public class User extends BaseEntity implements UserDetails {
     private static final long serialVersionUID = 6311364761937265306L;
     static Logger logger = LoggerFactory.getLogger(User.class);
     
-	@NotNull(message = "{error.user.username.null}")
-    @NotEmpty(message = "{error.user.username.empty}")
-    @Size(max = 50, message = "{error.user.username.max}")
     @Column(name = "username", length = 50)
     private String username;
 
-    @NotNull(message = "{error.user.password.null}")
-    @NotEmpty(message = "{error.user.password.empty}")
-    @Size(max = 50, message = "{error.user.password.max}")
     @Column(name = "password", length = 50)
     private String password;
     
@@ -223,7 +217,7 @@ public class User extends BaseEntity implements UserDetails {
         Role userRoles = this.getRole();
         
         if(userRoles != null) {
-                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRoles.getRolename());
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRoles.getRole());
                 authorities.add(authority);
         }
  
