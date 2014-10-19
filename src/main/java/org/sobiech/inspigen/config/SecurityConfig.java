@@ -60,12 +60,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 			"/newPassword/{token}",
                 			"/forgotPassowordMessage",
                 			"/partials/**").permitAll()
+                .antMatchers("/user").hasRole("USER")
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/mod").hasRole("MOD")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
                  .loginPage("/login")
-                 .defaultSuccessUrl("/home")
                  .failureUrl("/login")
+                 .successHandler(customAuthenticationSuccessHandler())
                  .permitAll()
                  .and()
                  .rememberMe().tokenRepository(persistentTokenRepository())
@@ -127,4 +130,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	
     	return service;
     }  
+    
+    @Bean
+    CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+    	CustomAuthenticationSuccessHandler successHandler = new CustomAuthenticationSuccessHandler();
+    	
+    	return successHandler;
+    }
 }

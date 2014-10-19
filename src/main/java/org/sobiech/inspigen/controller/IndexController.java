@@ -43,8 +43,37 @@ public class IndexController {
         return "index";
     }
 
-    
+    @RequestMapping("/admin")
+    public String getAdminPage() {
+        return "index";
+    }
+	
+	@RequestMapping("/admin/settings")
+	    public String getSettingsPage() {
+	        return "index";
+	}
+
     // Partiale
+	
+	@RequestMapping("/partials/navbar")
+	public String getNavbarPartial() {
+	    return "partials/navbar";
+	}
+	
+	@RequestMapping("/partials/admin/navbar")
+    public String getAdminNavbarPartial() {
+        return "partials/admin/navbar";
+	}
+	
+	@RequestMapping("/partials/admin/sidebar")
+    public String getAdminSidebarPartial() {
+        return "partials/admin/sidebar";
+	}
+	
+	@RequestMapping("/partials/admin/dashboard")
+    public String getAdminDashboardPartial() {
+        return "partials/admin/dashboard";
+	}
     
     @RequestMapping("/partials/signup")
     public String getSignupPartialPage() {
@@ -71,6 +100,11 @@ public class IndexController {
 		return "partials/forgotPassword";
 	}
 	
+	@RequestMapping("/partials/settings")
+    public String getSettingsPartialPage() {
+        return "partials/settings";
+    }
+	
 	@Autowired
 	UserService userService;
 	
@@ -92,7 +126,7 @@ public class IndexController {
 		 return "{\"message\":\"" +message+"\"}";
 	}
 		 
-	@RequestMapping(value="/{token}")
+	@RequestMapping(value="/activateAccount/{token}")
 	public String activateAccount(@PathVariable String token) {
 	
 		if(checkService.checkIfTokenExists("activationToken", token) == true) {

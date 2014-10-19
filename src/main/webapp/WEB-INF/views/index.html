@@ -6,64 +6,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet" href="resources/font-awesome/css/font-awesome.css" />
-    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/app.css" />
+    <link type="text/css" rel="stylesheet" href="resources/css/bootstrap/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="resources/css/font-awesome/css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="resources/css/metisMenu/css/metisMenu.min.css" />
+	<link type="text/css" rel="stylesheet" href="resources/css/sb-admin-2/css/sb-admin-2.css" />
+    <link type="text/css" rel="stylesheet" href="resources/css/app.css" />    
     
-        <!-- MetisMenu CSS -->
-    <link href="css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
-
-
-       
-    <title data-th-text="#{login.page.title}">Login Page</title>
+    <title ng-bind="'InspiGen - ' + $state.current.title">ui-router</title>
+    
     <!--<base href="http://vps106107.ovh.net:8080/inspigen/">-->
     <base href="http://localhost:8080/inspigen/">
 </head>
 
 <body>
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container-fluid" id="navfluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigationbar">
-       <span class="sr-only">Toggle navigation</span>
-       <span class="icon-bar"></span>
-       <span class="icon-bar"></span>
-       <span class="icon-bar"></span>
-      </button>
-          <a class="navbar-brand nav-font" href="login">INSPIGEN</a>
-        </div>
-        <div class="collapse navbar-collapse" id="navigationbar">
-          <ul class="nav navbar-nav">
-            <li><a href="login">Zaloguj się</a></li>
-            <li><a href="signup">Zarejestruj się</a></li>
-            <li><a href="forgotPassword">Przypomnij hasło</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-<div ng-view></div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script type="text/javascript" src="resources/js/jquery-2.1.1.min.js" 
-        data-th-src="@{resources/js/jquery-2.1.1.min.js}"></script>
+<div ui-view="navbar"></div>
+<div ui-view="sidebar"></div>
+<div ui-view="content"></div>
+    
+     <!-- jQuery - wymagany przez JS bootstrapa -->
+    <script src="resources/js/lib/jquery/jquery-2.1.1.min.js"></script>
+     
+    <!-- Boostrap JS -->
+    <script src="resources/css/bootstrap/js/bootstrap.min.js" ></script>
+    
+    <!-- Metis Menu JavaScript -->
+    <script src="resources/css/metisMenu/js/metisMenu.min.js"></script>
+    
+    <!-- SB Admin 2 JavaScript -->
+    <script src="resources/css/sb-admin-2/js/sb-admin-2.js"></script>
         
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js" 
-        data-th-src="@{resources/bootstrap/js/bootstrap.min.js}"></script>
-        
-                <!-- AngularJS -->
-
-	<script src="resources/js/lib/angular/angular.js"></script>
-	<script src="resources/js/lib/angular/angular-route.js"></script>
+    <!-- AngularJS -->
+	<script src="resources/js/lib/angularjs/angular.min.js"></script>
+	<script src="resources/js/lib/angularjs/angular-ui-router.min.js"></script>
 	<script src="resources/js/app.js"></script>
+   	<script src="resources/js/directives.js"></script>
+   	<script src="resources/js/filters.js"></script>
 	<script src="resources/js/services.js"></script>
-	<script src="resources/js/filters.js"></script>
-	<script src="resources/js/directives.js"></script>      
 	<script src="resources/js/controllers/PasswordResetController.js"></script>
 	<script src="resources/js/controllers/RegisterController.js"></script>
 	<script src="resources/js/controllers/UserController.js"></script>
-
+	
 </body>
 </html>

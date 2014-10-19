@@ -16,6 +16,7 @@ import java.util.Date;
 
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 	
 	@Autowired
@@ -29,7 +30,25 @@ public class UserController {
 	
 	private String message;
 
-   
+	// Linki
+	
+	@RequestMapping
+    public String getUserPage() {
+        return "user";
+    }
+	
+	@RequestMapping("/profile")
+	    public String getLoginPage() {
+	        return "user";
+	}
+	
+	// Partiale
+	
+	@RequestMapping("/partials/profile")
+    public String getSignupPartialPage() {
+        return "partials/profile";
+    }
+	
     @RequestMapping(value = "/username", method = RequestMethod.GET)
     @ResponseBody
     public String currentUserName(Principal principal) {
