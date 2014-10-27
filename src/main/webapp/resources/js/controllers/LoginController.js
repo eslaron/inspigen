@@ -8,8 +8,14 @@ App.controller('LoginController', function($scope, $rootScope, $location, $http,
 				$http.defaults.headers.common[ xAuthTokenHeaderName ] = user.token;
 				$cookieStore.put('user', user);
 				
-				if (user.roles.ROLE_ADMIN = true)
-				$location.path("/admin");
+				if (user.roles.ROLE_ADMIN == true)
+					$location.path("/admin");
+				
+				if (user.roles.ROLE_MOD == true)
+					$location.path("/mod");
+				
+				if (user.roles.ROLE_USER == true)
+					$location.path("/user");
 			});
 		};
 });

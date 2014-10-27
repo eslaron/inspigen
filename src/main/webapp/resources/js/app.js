@@ -16,6 +16,23 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
 			$rootScope.$on('$viewContentLoaded', function() {
 				delete $rootScope.error;
 			});
+			
+			$rootScope.$on('$stateChangeStart', function(event, toState) {
+				  if (toState.name == 'login' && $rootScope.hasRole('ROLE_ADMIN') == true) {
+				    event.preventDefault();
+				    $state.go('admin');
+				  }
+				  
+				 /* if (toState.name == 'login' && $rootScope.hasRole('ROLE_ADMIN') == true) {
+					    event.preventDefault();
+					    $state.go('mod');
+				  }
+				  
+				  if (toState.name == 'login' && $rootScope.hasRole('ROLE_USER') == true) {
+					    event.preventDefault();
+					    $state.go('user');
+				  }	  */
+			});
 
 			$rootScope.hasRole = function(role) {
 
@@ -26,9 +43,9 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
 				if ($rootScope.user.roles[role] === undefined) {
 					return false;
 				}
-				return $rootScope.user.roles[role];
+				return true;
 			};
-
+			
 			$rootScope.logout = function() {
 				delete $rootScope.user;
 				delete $http.defaults.headers.common[xAuthTokenHeaderName];
@@ -36,10 +53,11 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
 				$location.path("/login");
 			};
 
-			 /* Try getting valid user from cookie or go to login page */
+			/* Try getting valid user from cookie or go to login page */
 			var originalPath = $location.path();
 			$location.path("/login");
 			var user = $cookieStore.get('user');
+		
 			if (user !== undefined) {
 				$rootScope.user = user;
 				$http.defaults.headers.common[xAuthTokenHeaderName] = user.token;
