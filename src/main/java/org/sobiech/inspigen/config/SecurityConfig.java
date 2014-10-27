@@ -1,27 +1,25 @@
 package org.sobiech.inspigen.config;
 
-
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
+import org.sobiech.inspigen.config.xauth.XAuthTokenConfigurer;
+import org.sobiech.inspigen.config.xauth.XAuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-
-
 
 
 @Configuration
@@ -40,42 +38,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     		.and()
     		.authenticationProvider(customAuthenticationProvider());	
     }
-
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	
-  
-    	
-        http
-        	.csrf().disable()
-            .authorizeRequests()
-                .antMatchers("/resources/**", 
-                			"/signup", 
-                			"/addUser", 
-                			"/sendActivationLink",
-                			"/activationMessage",
-                			"/{token}",
-                			"/forgotPassword", 
-                			"/resetPassword",
-                			"/newPassword/{token}",
-                			"/forgotPassowordMessage",
-                			"/partials/**").permitAll()
-                .antMatchers("/user").hasRole("USER")
-                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/mod").hasRole("MOD")
-                .anyRequest().authenticated()
-                .and()
-            .formLogin()
-                 .loginPage("/login")
-                 .failureUrl("/login")
-                 .successHandler(customAuthenticationSuccessHandler())
-                 .permitAll()
-                 .and()
-                 .rememberMe().tokenRepository(persistentTokenRepository())
-                 .tokenValiditySeconds(1209600)
-                 .and()            
-            .logout()
-                .permitAll();
+ 
+    	http.csrf().disable();
+    	http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.authorizeRequests()
+            .antMatchers("/resources/**", 
+            			"/signup", 
+            			"/addUser", 
+            			"/sendActivationLink",
+            			"/activationMessage",
+            			"/{token}",
+            			"/forgotPassword", 
+            			"/resetPassword",
+            			"/newPassword/{token}",
+            			"/forgotPassowordMessage",
+            			"/partials/**").permitAll()
+            .antMatchers("/user/**").hasRole("USER")
+            .antMatchers("/admin/**").hasRole("ADMIN")
+            .antMatchers("/mod/**").hasRole("MOD")
+            .anyRequest().authenticated()
+            .and()           
+        .formLogin()
+        	 .loginPage("/")
+             .permitAll()
+             .and()
+             .rememberMe().tokenRepository(persistentTokenRepository())
+             .tokenValiditySeconds(1209600)
+             .and()
+        .logout()
+            .permitAll();
+    	          
+        SecurityConfigurer<DefaultSecurityFilterChain, HttpSecurity> securityConfigurerAdapter = new XAuthTokenConfigurer(customUserDetailsService());
+        http.apply(securityConfigurerAdapter); 
     }
     
     @Bean
@@ -86,30 +84,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
     
     @Bean
-	public SavedRequestAwareAuthenticationSuccessHandler 
-                savedRequestAwareAuthenticationSuccessHandler() {
- 
-               SavedRequestAwareAuthenticationSuccessHandler auth 
-                    = new SavedRequestAwareAuthenticationSuccessHandler();
-		auth.setTargetUrlParameter("targetUrl");
-		return auth;
-	}
-    
-    @Bean
     ReflectionSaltSource saltSource() {
 		
 		ReflectionSaltSource salt = new ReflectionSaltSource();
 		salt.setUserPropertyToUse("username");
-		
+	
 		return salt;		
 	}
     
     @Bean
     Md5PasswordEncoder passwordEncoder() {
-    	
-    	Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-    	
-    	return encoder;
+    	return new Md5PasswordEncoder();
     } 
     
     @Bean
@@ -125,16 +110,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     
     @Bean
-    CustomUserDetailsService customUserDetailsService() {
-    	CustomUserDetailsService service = new CustomUserDetailsService();
-    	
-    	return service;
+    CustomUserDetailsService customUserDetailsService() { 	
+    	return new CustomUserDetailsService();
+    }   
+    
+    @Bean
+    XAuthTokenFilter xAuthTokenFilter() {
+    	return new XAuthTokenFilter(customUserDetailsService());
     }  
     
     @Bean
-    CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
-    	CustomAuthenticationSuccessHandler successHandler = new CustomAuthenticationSuccessHandler();
-    	
-    	return successHandler;
-    }
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    } 
 }

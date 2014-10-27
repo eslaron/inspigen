@@ -1,7 +1,6 @@
 package org.sobiech.inspigen.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
 import org.sobiech.inspigen.config.DatabaseConfig;
 import org.sobiech.inspigen.config.WebAppConfig;
 
@@ -22,5 +21,4 @@ public class Initializer extends
     protected String[] getServletMappings() {
         return new String[] { "/" };
     }
-
 }

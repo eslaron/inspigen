@@ -2,6 +2,17 @@
 
 /* Services */
 
-var AppServices = angular.module('AngularSpringApp.services', []);
+var AppServices = angular.module('AngularSpringApp.services', ['ngResource'])
 
-AppServices.value('version', '0.1');
+.factory('LoginService', function($resource) {
+
+	return $resource(':action', {},
+			{
+				authenticate: {
+					method: 'POST',
+					params: {'action' : 'authenticate'},
+					headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+				}
+			}
+		);
+});

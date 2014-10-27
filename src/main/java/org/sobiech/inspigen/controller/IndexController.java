@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 @Controller
-@RequestMapping("/")
+@RequestMapping(value = "/")
 public class IndexController {
 
 	
@@ -32,17 +33,13 @@ public class IndexController {
     public String getLoginPage() {
         return "index";
     }
-    
-    @RequestMapping("/home")
-    public String getHomePage() {
-        return "index";
-    }
-    
+   
     @RequestMapping("/forgotPassword")
     public String getForgotPage() {
         return "index";
     }
 
+   
     @RequestMapping("/admin")
     public String getAdminPage() {
         return "index";
@@ -52,6 +49,8 @@ public class IndexController {
 	    public String getSettingsPage() {
 	        return "index";
 	}
+
+
 
     // Partiale
 	
@@ -84,17 +83,7 @@ public class IndexController {
     public String getLoginPartialPage() {
         return "partials/login";
     }
-	
-	@RequestMapping("/partials/login2")
-    public String getLogin2PartialPage() {
-        return "partials/login2";
-    }
-	
-	@RequestMapping("/partials/home")
-    public String getHomePartialPage() {
-        return "partials/home";
-    }
-	
+
 	@RequestMapping("/partials/forgotPassword")
 	public String getForgotPartialPage() {
 		return "partials/forgotPassword";
@@ -120,6 +109,12 @@ public class IndexController {
     		    
     	return response;
     }
+    
+    @RequestMapping(value = "/message", method = RequestMethod.GET)
+	public @ResponseBody String redarectionMessage(String error) { 
+    		message = "admin";
+		 return "{\"message\":\"" +message+"\"}";
+	}
     
     @RequestMapping(value = "/activationMessage", method = RequestMethod.GET)
 	public @ResponseBody String forgotPasswordMessage(String error) { 
