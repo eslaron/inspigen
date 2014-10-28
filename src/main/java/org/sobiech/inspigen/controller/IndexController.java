@@ -45,19 +45,12 @@ public class IndexController {
         return "index";
     }
 	
-	@RequestMapping("/admin/settings")
-	    public String getSettingsPage() {
-	        return "index";
-	}
 
 
 
     // Partiale
-	
-	@RequestMapping("/partials/navbar")
-	public String getNavbarPartial() {
-	    return "partials/navbar";
-	}
+
+	//ADMIN
 	
 	@RequestMapping("/partials/admin/navbar")
     public String getAdminNavbarPartial() {
@@ -72,6 +65,30 @@ public class IndexController {
 	@RequestMapping("/partials/admin/dashboard")
     public String getAdminDashboardPartial() {
         return "partials/admin/dashboard";
+	}
+	
+	// USER
+	
+	@RequestMapping("/partials/user/navbar")
+    public String getUserNavbarPartial() {
+        return "partials/user/navbar";
+	}
+	
+	@RequestMapping("/partials/user/sidebar")
+    public String getUserSidebarPartial() {
+        return "partials/user/sidebar";
+	}
+	
+	@RequestMapping("/partials/user/dashboard")
+    public String getUserDashboardPartial() {
+        return "partials/user/dashboard";
+	}
+	
+	// OTHER
+	
+	@RequestMapping("/partials/navbar")
+	public String getNavbarPartial() {
+	    return "partials/navbar";
 	}
     
     @RequestMapping("/partials/signup")

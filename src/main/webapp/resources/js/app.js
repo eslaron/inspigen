@@ -16,14 +16,14 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
 			$rootScope.$on('$viewContentLoaded', function() {
 				delete $rootScope.error;
 			});
-			
+
 			$rootScope.$on('$stateChangeStart', function(event, toState) {
 				  if (toState.name == 'login' && $rootScope.hasRole('ROLE_ADMIN') == true) {
 				    event.preventDefault();
 				    $state.go('admin');
 				  }
 				  
-				 /* if (toState.name == 'login' && $rootScope.hasRole('ROLE_ADMIN') == true) {
+				  if (toState.name == 'login' && $rootScope.hasRole('ROLE_MOD') == true) {
 					    event.preventDefault();
 					    $state.go('mod');
 				  }
@@ -31,7 +31,7 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
 				  if (toState.name == 'login' && $rootScope.hasRole('ROLE_USER') == true) {
 					    event.preventDefault();
 					    $state.go('user');
-				  }	  */
+				  }	  
 			});
 
 			$rootScope.hasRole = function(role) {
@@ -45,7 +45,7 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
 				}
 				return true;
 			};
-			
+
 			$rootScope.logout = function() {
 				delete $rootScope.user;
 				delete $http.defaults.headers.common[xAuthTokenHeaderName];
@@ -53,11 +53,11 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
 				$location.path("/login");
 			};
 
-			/* Try getting valid user from cookie or go to login page */
+			 /* Try getting valid user from cookie or go to login page */
 			var originalPath = $location.path();
-			$location.path("/login");
+			$location.path("/");
 			var user = $cookieStore.get('user');
-		
+
 			if (user !== undefined) {
 				$rootScope.user = user;
 				$http.defaults.headers.common[xAuthTokenHeaderName] = user.token;
@@ -73,7 +73,7 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
          function ( $stateProvider, $urlRouterProvider, $locationProvider, $rootScope, $q, $location) {
 	
 	  //Usunięcie # z linków
-	  $locationProvider.html5Mode(true);
+	 // $locationProvider.html5Mode(true);
 
 	  
       // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
@@ -151,8 +151,8 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
         })
         
         .state('admin', {
-          url: '/admin',
-          title: 'Administracja',
+          url: '/dashboard',
+          title: 'Panel administracyjny',
    
           views: {
               'navbar': {
@@ -163,6 +163,40 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
               },
               'content': {
             	  templateUrl: 'partials/admin/dashboard.html' 
+              },
+            },
+        })
+        
+        .state('mod', {
+          url: '/dashboard',
+          title: 'Panel koordynatora',
+   
+          views: {
+              'navbar': {
+            	  templateUrl: 'partials/mod/navbar.html' 
+              },
+              'sidebar': {
+            	  templateUrl: 'partials/mod/sidebar.html'
+              },
+              'content': {
+            	  templateUrl: 'partials/mod/dashboard.html' 
+              },
+            },
+        })
+        
+        .state('user', {
+          url: '/dashboard',
+          title: 'Panel wolontariusza',
+   
+          views: {
+              'navbar': {
+            	  templateUrl: 'partials/user/navbar.html' 
+              },
+              'sidebar': {
+            	  templateUrl: 'partials/user/sidebar.html'
+              },
+              'content': {
+            	  templateUrl: 'partials/user/dashboard.html' 
               },
             },
         })

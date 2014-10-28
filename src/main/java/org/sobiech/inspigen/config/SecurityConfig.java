@@ -57,9 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             			"/newPassword/{token}",
             			"/forgotPassowordMessage",
             			"/partials/**").permitAll()
-            .antMatchers("/user/**").hasRole("USER")
-            .antMatchers("/admin/**").hasRole("ADMIN")
-            .antMatchers("/mod/**").hasRole("MOD")
+            .antMatchers("/dashboard/**").hasAnyRole("ADMIN","MOD","USER")
             .anyRequest().authenticated()
             .and()           
         .formLogin()

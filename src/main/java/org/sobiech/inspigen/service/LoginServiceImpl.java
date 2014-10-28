@@ -54,10 +54,13 @@ public class LoginServiceImpl implements LoginService {
 	@Override
 	public void resetLoginFailAttempts(String username) {
 		
-		int attempts = getLoginAttempts(username).getAttempts();
-		
-		if(attempts < settings.getMAX_ATTEMPTS() && attempts > 0)
-		loginDAO.resetLoginFailAttempts(username);	
+		if (getLoginAttempts(username) == null) addLoginAttemptEntry(username);	
+		else {
+			int attempts = getLoginAttempts(username).getAttempts();
+			
+			if(attempts < settings.getMAX_ATTEMPTS() && attempts > 0)
+			loginDAO.resetLoginFailAttempts(username);
+		}	
 	}
 
 	// BLOKOKOWANIE I ODBLOKOWYWANIE KONTA 
