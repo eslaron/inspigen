@@ -7,15 +7,15 @@ App.controller('LoginController', function($scope, $rootScope, $location, $state
 				$rootScope.user = user;
 				$http.defaults.headers.common[ xAuthTokenHeaderName ] = user.token;
 				$cookieStore.put('user', user);
-				
-				if (user.roles.ROLE_ADMIN == true)
-					$state.go('admin');
-				
-				if (user.roles.ROLE_MOD == true)
-					$state.go('mod');
-				
-				if (user.roles.ROLE_USER == true)
-					$state.go('user');
+			
+	      	if (user.role == 'ROLE_ADMIN')
+        		$state.go('user.admin');
+
+        	if (user.role == 'ROLE_MOD')
+        		$state.go('user.moderator');
+
+        	if (user.role == 'ROLE_USER')
+        		$state.go('user.member');			
 			});
 		};
 });

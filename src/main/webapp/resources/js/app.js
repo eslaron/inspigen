@@ -4,10 +4,10 @@ var xAuthTokenHeaderName = 'x-auth-token';
 
 var AngularSpringApp = {};
 
-var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSpringApp.filters', 'AngularSpringApp.services', 'AngularSpringApp.directives'])
+var App = angular.module('AngularSpringApp', ['permission', 'ui.router','ngCookies','AngularSpringApp.filters', 'AngularSpringApp.services', 'AngularSpringApp.directives'])
 
-.run(['$http','$rootScope', '$state', '$stateParams', '$location', '$cookieStore','LoginService' ,function (
-		$http, $rootScope, $state, $stateParams, $location, $cookieStore, LoginService) {
+.run(['$http','$rootScope', '$state', '$stateParams', '$location', '$cookieStore','LoginService','Permission' ,function (
+		$http, $rootScope, $state, $stateParams, $location, $cookieStore, LoginService, Permission) {
 
 		    $rootScope.$state = $state;
 		    $rootScope.$stateParams = $stateParams;
@@ -17,30 +17,47 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
 				delete $rootScope.error;
 			});
 
-			$rootScope.$on('$stateChangeStart', function(event, toState) {
-				  if (toState.name == 'login' && $rootScope.hasRole('ROLE_ADMIN') == true) {
-				    event.preventDefault();
-				    $state.go('admin');
-				  }
-				  
-				  if (toState.name == 'login' && $rootScope.hasRole('ROLE_MOD') == true) {
-					    event.preventDefault();
-					    $state.go('mod');
-				  }
-				  
-				  if (toState.name == 'login' && $rootScope.hasRole('ROLE_USER') == true) {
-					    event.preventDefault();
-					    $state.go('user');
-				  }	  
-			});
-
+			Permission.defineRole('anonymous', function (stateParams) {
+		        // If the returned value is *truthy* then the user has the role, otherwise they don't
+		        if ($rootScope.hasRole("ROLE_ADMIN") == false 
+		        		|| $rootScope.hasRole("ROLE_MOD") == false 
+		        			|| $rootScope.hasRole("ROLE_MOD") == false) {
+		          return true; // Is anonymous
+		        }
+		        return false;
+		      });
+			
+			Permission.defineRole('admin', function (stateParams) {
+		        // If the returned value is *truthy* then the user has the role, otherwise they don't
+		        if ($rootScope.hasRole("ROLE_ADMIN") == true) {
+		          return true; // Is Admin
+		        }
+		        return false;
+		      });
+			
+			Permission.defineRole('moderator', function (stateParams) {
+		        // If the returned value is *truthy* then the user has the role, otherwise they don't
+		        if ($rootScope.hasRole("ROLE_MOD") == true) {
+		          return true; // Is Moderator
+		        }
+		        return false;
+		      });
+			
+			Permission.defineRole('user', function (stateParams) {
+		        // If the returned value is *truthy* then the user has the role, otherwise they don't
+		        if ($rootScope.hasRole("ROLE_USER") == true) {
+		          return true; // Is User
+		        }
+		        return false;
+		      });
+			
 			$rootScope.hasRole = function(role) {
 
 				if ($rootScope.user === undefined) { 
 					return false;
 				}
 
-				if ($rootScope.user.roles[role] === undefined) {
+				if ($rootScope.user.role === undefined) {
 					return false;
 				}
 				return true;
@@ -95,7 +112,12 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
               'content': {
             	  templateUrl: 'partials/login.html' 
               },
-            }      
+            }, 
+            data: {
+          permissions: {
+            only: ['anonymous']
+          }
+        }
         })
       
       .state("login", {
@@ -108,7 +130,12 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
               'content': {
             	  templateUrl: 'partials/login.html' 
               },
-            }      
+            },
+            data: {
+                permissions: {
+                  only: ['anonymous']
+                }
+            }
         })
 
         .state('register', {
@@ -121,6 +148,11 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
               'content': {
             	  templateUrl: 'partials/signup.html' 
               },
+            },
+            data: {
+                permissions: {
+                  only: ['anonymous']
+                }
             }
         })
         
@@ -134,7 +166,12 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
 	              'content': {
 	            	  templateUrl: 'partials/login.html' 
 	              },
-	            }  
+	            },
+	            data: {
+	                permissions: {
+	                  only: ['anonymous']
+	                }
+	            }
         })
         
         .state('resetPassword', {
@@ -147,30 +184,73 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
               'content': {
             	  templateUrl: 'partials/forgotPassword.html' 
               },
+            },
+            data: {
+                permissions: {
+                  only: ['anonymous']
+                }
             }
         })
         
-        .state('admin', {
-          url: '/dashboard',
-          title: 'Panel administracyjny',
-   
+        .state('user', {
+             url: '/user',
+        	 abstract: true,
+        	 template: '<div ui-view></div>', 
+        	 data: {
+                 permissions: {
+                 	only: ['user','admin','moderator']
+                 }
+             }
+        })
+        
+        .state('user.admin', {
+          title: 'Panel wolontariusza',
+          abstract: false,
+          url: '/admin',
           views: {
-              'navbar': {
+              'navbar@': {
             	  templateUrl: 'partials/admin/navbar.html' 
               },
-              'sidebar': {
+              'sidebar@': {
             	  templateUrl: 'partials/admin/sidebar.html'
               },
-              'content': {
+              'content@': {
             	  templateUrl: 'partials/admin/dashboard.html' 
               },
             },
+            data: {
+                permissions: {
+                  only: ['admin']
+                }
+            }
         })
         
-        .state('mod', {
+        .state('user.member', {
+          title: 'Panel wolontariusza',
+          abstract: false,
           url: '/dashboard',
+          views: {
+              'navbar@': {
+            	  templateUrl: 'partials/user/navbar.html' 
+              },
+              'sidebar@': {
+            	  templateUrl: 'partials/user/sidebar.html'
+              },
+              'content@': {
+            	  templateUrl: 'partials/user/dashboard.html' 
+              },
+            },
+            data: {
+                permissions: {
+                  only: ['user']
+                }
+            }
+        })
+              
+        .state('user.moderator', {
           title: 'Panel koordynatora',
-   
+          abstract: false,
+          url: '/mod',
           views: {
               'navbar': {
             	  templateUrl: 'partials/mod/navbar.html' 
@@ -182,23 +262,11 @@ var App = angular.module('AngularSpringApp', ['ui.router','ngCookies','AngularSp
             	  templateUrl: 'partials/mod/dashboard.html' 
               },
             },
-        })
-        
-        .state('user', {
-          url: '/dashboard',
-          title: 'Panel wolontariusza',
-   
-          views: {
-              'navbar': {
-            	  templateUrl: 'partials/user/navbar.html' 
-              },
-              'sidebar': {
-            	  templateUrl: 'partials/user/sidebar.html'
-              },
-              'content': {
-            	  templateUrl: 'partials/user/dashboard.html' 
-              },
-            },
+           data: {
+                permissions: {
+                  only: ['moderator']
+                }
+           }
         })
     }
   ]

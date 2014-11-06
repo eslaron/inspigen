@@ -2,7 +2,9 @@
 
 /* Services */
 
-var AppServices = angular.module('AngularSpringApp.services', ['ngResource'])
+var routeForUnauthorizedAccess = '/SomeAngularRouteForUnauthorizedAccess';
+
+var AppServices = angular.module('AngularSpringApp.services', ['ngResource','ngCookies','ui.router'])
 
 .factory('LoginService', function($resource) {
 

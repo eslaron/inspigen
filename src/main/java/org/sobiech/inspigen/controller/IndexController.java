@@ -16,37 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/")
 public class IndexController {
 
-	
-	// Linki
-	
 	@RequestMapping
     public String getIndexPage() {
         return "index";
     }
-    
-    @RequestMapping("/signup")
-    public String getSignUpPage() {
-        return "index";
-    }
-    
-    @RequestMapping("/login")
-    public String getLoginPage() {
-        return "index";
-    }
-   
-    @RequestMapping("/forgotPassword")
-    public String getForgotPage() {
-        return "index";
-    }
-
-   
-    @RequestMapping("/admin")
-    public String getAdminPage() {
-        return "index";
-    }
-	
-
-
 
     // Partiale
 

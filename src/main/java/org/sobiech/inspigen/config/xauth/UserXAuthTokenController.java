@@ -47,20 +47,22 @@ public class UserXAuthTokenController {
 
 		UserDetails details = this.userDetailsService.loadUserByUsername(username);
 
-		Map<String, Boolean> roles = new HashMap<String, Boolean>();
+		//Map<String, Boolean> roles = new HashMap<String, Boolean>();
+		String role="";
 		for (GrantedAuthority authority : details.getAuthorities())
-			roles.put(authority.toString(), Boolean.TRUE);
+			role = authority.toString();
 
-		return new UserTransfer(details.getUsername(), roles, tokenUtils.createToken(details));
+		return new UserTransfer(details.getUsername(), role, tokenUtils.createToken(details));
 	}
 
 	public static class UserTransfer {
 
 		private final String name;
-		private final Map<String, Boolean> roles;
+		//private final Map<String, Boolean> roles;
+		private final String role;
 		private final String token;
 
-		public UserTransfer(String userName, Map<String, Boolean> roles, String token) {
+		/*public UserTransfer(String userName, Map<String, Boolean> roles, String token) {
 
 			Map<String, Boolean> mapOfRoles = new ConcurrentHashMap<String, Boolean>();
 			for (String k : roles.keySet())
@@ -69,18 +71,29 @@ public class UserXAuthTokenController {
 			this.roles = mapOfRoles;
 			this.token = token;
 			this.name = userName;
+		}*/
+		
+		public UserTransfer(String userName, String role, String token) {
+			
+			this.role = role;
+			this.token = token;
+			this.name = userName;
 		}
 
 		public String getName() {
 			return this.name;
 		}
 
-		public Map<String, Boolean> getRoles() {
+		/*public Map<String, Boolean> getRoles() {
 			return this.roles;
-		}
+		}*/
 
 		public String getToken() {
 			return this.token;
+		}
+
+		public String getRole() {
+			return role;
 		}
 	}
 }
