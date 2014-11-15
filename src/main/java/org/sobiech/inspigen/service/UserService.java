@@ -10,7 +10,7 @@ public interface UserService extends UserDetailsService {
 	
 	// UŻYTKOWNIK
 	
-    public String addUser(User user);
+    public void addUser(User user);
 
     public User getUserById(int userId);
 

@@ -4,7 +4,13 @@
  * RailwayStationController
  * @constructor
  */
-App.controller('RegisterController', function($scope, $http, $location) {
+App.controller('RegisterController', function($scope, $http, $location, $resource, Restangular) {
+
+	Restangular.setBaseUrl('api/v1/');
+	
+	var User = Restangular.all('users');
+	var Role = Restangular.all('roles');
+	var Account = Restangular.all('accounts');
 	
 	$scope.user = {username:"", password:"", email:""};
 		
@@ -14,39 +20,28 @@ App.controller('RegisterController', function($scope, $http, $location) {
 	$scope.activationMessage = 'Email z linkiem aktywującym konto został wysłany nad twoj adres.';
 	
 	$scope.registerUser = function() {
-		
 		$scope.user.username = $scope.signup.username;
 		$scope.user.password = $scope.signup.password;
 		$scope.user.email = $scope.signup.email;
 		
-		$http.post('addUser', $scope.user).success(function(response) {
-			
-			if(response.message == "duplicateUser")
-				$scope.userNameUnique = false;
-				$scope.signup_form.username.$setPristine();
-			
-			if(response.message  == "duplicateEmail")
-				$scope.emailUnique = false;
-				$scope.signup_form.email.$setPristine();
-			
-			if(response.message  == "duplicateUser&duplicateEmail") {
-				$scope.userNameUnique = false;
-				$scope.emailUnique = false;
-				$scope.signup_form.username.$setPristine();
-				$scope.signup_form.email.$setPristine();
-			}
 		
-			if(response.message  == "activationLinkSent") {	
-				$scope.userNameUnique = true;
-				$scope.emailUnique = true;
-				$scope.messageStyle = "alert alert-success";
-				$scope.hideMessage = false;
-				$scope.resetRegisterForm();
-			}					
-		}).error(function(){});
-	}
+		
+		/*User.post($scope.user)
+			.then(function(response){
+				$scope.message = response.message;
+				
+				Role.post($scope.user)
+					.then(function(response){
+							$scope.message = response.message;
+							$scope.messageStyle = "alert alert-success";
+							$scope.hideMessage = false;
+							$scope.resetRegisterForm();					
+					});
+		});*/
+	};
 	
-	$http.get("activationMessage")
+	
+	/*$http.get("register/activationMessage")
 		.success(function(resps){
 			if(resps.message =="accountActivated") {
 				$scope.messageStyle = "alert alert-success";
@@ -71,7 +66,7 @@ App.controller('RegisterController', function($scope, $http, $location) {
 				$scope.hideMessage = false;
 				$scope.activationMessage = "Nieprawidłowy link aktywacyjny.";
 			}
-		});	
+		});	*/
 	
 	$scope.resetRegisterForm = function() {
 		
@@ -85,6 +80,7 @@ App.controller('RegisterController', function($scope, $http, $location) {
 	} 
 	
 	$scope.$on('$viewContentLoaded', function() {
+		
 		$scope.signup_form.$setPristine();
 	});
 });

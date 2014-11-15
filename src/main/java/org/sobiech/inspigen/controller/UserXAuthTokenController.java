@@ -1,10 +1,7 @@
-package org.sobiech.inspigen.config.xauth;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+package org.sobiech.inspigen.controller;
 
 import org.sobiech.inspigen.config.CustomUserDetailsService;
+import org.sobiech.inspigen.config.xauth.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

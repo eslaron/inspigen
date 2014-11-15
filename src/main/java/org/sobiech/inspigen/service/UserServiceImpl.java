@@ -51,30 +51,8 @@ public class UserServiceImpl implements UserService {
     
     // UŻYTKOWNIK
 	@Override
-	public String addUser(User user) {
+	public void addUser(User user) {
 		
-		String response = "";
-		boolean userNameFound = false;
-		boolean emailFound =  false;
-			
-	    if (userDAO.getUserByName(user.getUsername()) != null) {	
-        	userNameFound = true;
-        	response = "duplicateUser";
-	    }
-	    
-	    if (userDAO.getUserByEmail(user.getEmail()) != null) {	
-	    	emailFound = true;
-			response = "duplicateEmail";
-	    }
-	    
-	    if(userDAO.getUserByName(user.getUsername()) != null
-	    		&& userDAO.getUserByEmail(user.getEmail()) != null) {
-	    	userNameFound = true;
-	    	emailFound = true;
-	    	response = "duplicateUser&duplicateEmail";
-	    }
-
-        if(userNameFound == false && emailFound == false) {
         	String password = user.getPassword();
         	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(user));
         	String passwordToken = setToken();
@@ -93,19 +71,8 @@ public class UserServiceImpl implements UserService {
         	user.setCredentialsNonExpired(true);
         
         	userDAO.addUser(user);
-        	
-        	role.setUser_role_id(getUserByName(user.getUsername()).getId());
-        	role.setUsername(user.getUsername());
-        	role.setRole("ROLE_USER");
-        	
-        	roleDAO.addUserRole(role);
-        	
-			mailService.sendTokenMail(user.getEmail(),"activationToken", activationToken);
-		
-        	response = "activationLinkSent";
-        }
-        
-		return response;
+       	
+			mailService.sendTokenMail(user.getEmail(),"activationToken", activationToken);    
 	}
 
 	@Override

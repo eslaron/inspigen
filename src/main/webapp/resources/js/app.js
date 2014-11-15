@@ -4,62 +4,51 @@ var xAuthTokenHeaderName = 'x-auth-token';
 
 var AngularSpringApp = {};
 
-var App = angular.module('AngularSpringApp', ['permission', 'ui.router','ngCookies','AngularSpringApp.filters', 'AngularSpringApp.services', 'AngularSpringApp.directives'])
+var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permission', 'restangular', 'AngularSpringApp.filters', 'AngularSpringApp.services', 'AngularSpringApp.directives'])
 
-.run(['$http','$rootScope', '$state', '$stateParams', '$location', '$cookieStore','LoginService','Permission' ,function (
-		$http, $rootScope, $state, $stateParams, $location, $cookieStore, LoginService, Permission) {
+.run(function($http, $rootScope, $state, $stateParams, $cookieStore, Permission) {
 
 		    $rootScope.$state = $state;
 		    $rootScope.$stateParams = $stateParams;
-		    
+		       
 		    /* Reset error when a new view is loaded */
 			$rootScope.$on('$viewContentLoaded', function() {
 				delete $rootScope.error;
 			});
 
 			Permission.defineRole('anonymous', function (stateParams) {
-		        // If the returned value is *truthy* then the user has the role, otherwise they don't
 		        if ($rootScope.hasRole("ROLE_ADMIN") == false 
 		        		|| $rootScope.hasRole("ROLE_MOD") == false 
 		        			|| $rootScope.hasRole("ROLE_MOD") == false) {
-		          return true; // Is anonymous
+		          return true;
 		        }
 		        return false;
 		      });
 			
 			Permission.defineRole('admin', function (stateParams) {
-		        // If the returned value is *truthy* then the user has the role, otherwise they don't
 		        if ($rootScope.hasRole("ROLE_ADMIN") == true) {
-		          return true; // Is Admin
+		          return true;
 		        }
 		        return false;
 		      });
 			
 			Permission.defineRole('moderator', function (stateParams) {
-		        // If the returned value is *truthy* then the user has the role, otherwise they don't
 		        if ($rootScope.hasRole("ROLE_MOD") == true) {
-		          return true; // Is Moderator
+		          return true;
 		        }
 		        return false;
 		      });
 			
 			Permission.defineRole('user', function (stateParams) {
-		        // If the returned value is *truthy* then the user has the role, otherwise they don't
 		        if ($rootScope.hasRole("ROLE_USER") == true) {
-		          return true; // Is User
+		          return true;
 		        }
 		        return false;
 		      });
 			
 			$rootScope.hasRole = function(role) {
-
-				if ($rootScope.user === undefined) { 
-					return false;
-				}
-
-				if ($rootScope.user.role === undefined) {
-					return false;
-				}
+					if ($rootScope.user === undefined) return false;
+					if ($rootScope.user.role === undefined) return false;
 				return true;
 			};
 
@@ -67,41 +56,28 @@ var App = angular.module('AngularSpringApp', ['permission', 'ui.router','ngCooki
 				delete $rootScope.user;
 				delete $http.defaults.headers.common[xAuthTokenHeaderName];
 				$cookieStore.remove('user');
-				$location.path("/login");
+				$state.go('login');
 			};
 
 			 /* Try getting valid user from cookie or go to login page */
-			var originalPath = $location.path();
-			$location.path("/");
 			var user = $cookieStore.get('user');
 
 			if (user !== undefined) {
 				$rootScope.user = user;
 				$http.defaults.headers.common[xAuthTokenHeaderName] = user.token;
-
-				$location.path(originalPath);
+				$state.go('index');
 			}
-}])
+})
 
+.config(['RestangularProvider', '$stateProvider', '$urlRouterProvider', 
+         function (RestangularProvider, $stateProvider, $urlRouterProvider) {
+   
+	  RestangularProvider.setBaseUrl('api/v1');
+      
+      $urlRouterProvider.otherwise('/');
 
-// PONIŻEJ JEST COŚ ŹLE
-
-.config(['$stateProvider', '$urlRouterProvider','$locationProvider', 
-         function ( $stateProvider, $urlRouterProvider, $locationProvider, $rootScope, $q, $location) {
-	
-	  //Usunięcie # z linków
-	 // $locationProvider.html5Mode(true);
-
-	  
-      // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
-      $urlRouterProvider
-               
-        // If the url is ever invalid, e.g. '/asdf', then redirect to '/' aka the home state
-        .otherwise('/');
-
-      // Use $stateProvider to configure your states.
       $stateProvider
-
+      
       .state("index", {
           url: "/",
           title: 'Zaloguj się',
@@ -113,12 +89,12 @@ var App = angular.module('AngularSpringApp', ['permission', 'ui.router','ngCooki
             	  templateUrl: 'partials/login.html' 
               },
             }, 
-            data: {
-          permissions: {
-            only: ['anonymous']
+          data: {
+	          permissions: {
+	        	  only: ['anonymous']
+	          }
           }
-        }
-        })
+      })
       
       .state("login", {
           url: "/login",
@@ -133,7 +109,7 @@ var App = angular.module('AngularSpringApp', ['permission', 'ui.router','ngCooki
             },
             data: {
                 permissions: {
-                  only: ['anonymous']
+                	only: ['anonymous']
                 }
             }
         })
@@ -151,30 +127,37 @@ var App = angular.module('AngularSpringApp', ['permission', 'ui.router','ngCooki
             },
             data: {
                 permissions: {
-                  only: ['anonymous']
+                	only: ['anonymous']
                 }
             }
         })
         
         .state('activateAccount', {
-	        url: "/activateAccount/:token",
+	        url: "/{token}",
 	        title: 'Zaloguj się',
-	          views: {
+	        views: {
 	              'navbar': {
 	            	  templateUrl: 'partials/navbar.html' 
 	              },
 	              'content': {
 	            	  templateUrl: 'partials/login.html' 
 	              },
-	            },
-	            data: {
-	                permissions: {
-	                  only: ['anonymous']
-	                }
+	        },
+	        data: {
+	        	permissions: {
+	        		only: ['anonymous']
 	            }
+	        },
+	        resolve: {
+	        	activation: function(Restangular, $stateParams) {
+	        		var User = Restangular.one('accounts');
+	        		User.activationToken = $stateParams.token;
+	        		User.put();	
+	        	}
+	        } 
         })
         
-        .state('resetPassword', {
+        .state('forgotPassword', {
           url: '/forgotPassword',
           title: 'Resetuj hasło',
           views: {
@@ -267,7 +250,7 @@ var App = angular.module('AngularSpringApp', ['permission', 'ui.router','ngCooki
                   only: ['moderator']
                 }
            }
-        })
+        });
     }
   ]
 );

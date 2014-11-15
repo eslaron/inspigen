@@ -11,9 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.AssertFalse;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,25 +31,35 @@ public class User extends BaseEntity implements UserDetails {
 
     private static final long serialVersionUID = 6311364761937265306L;
     static Logger logger = LoggerFactory.getLogger(User.class);
-    
-    @Column(name = "username", length = 50)
+        
+    @NotEmpty
+    @Size(min = 5, max = 12, message="SizeValidationFailed")
+    @Pattern(regexp = "^[A-z][A-z0-9]*$", message = "PatternValidationFailed")
+    @Column(name = "username", unique=true)
     private String username;
 
-    @Column(name = "password", length = 50)
+    @NotEmpty
+    @Column(name = "password")
     private String password;
     
-    @Column(name = "email")
+    @Email(message="emailValidationFailed")
+    @Size(min = 6, max = 40)
+    @Column(name = "email", unique=true)
     private String email;
     
+    @AssertFalse
     @Column(name = "enabled", columnDefinition = "TINYINT(1)")
     private Boolean enabled;
     
+    @AssertTrue
 	@Column(name = "accountNonLocked", columnDefinition = "TINYINT(1)")
     private Boolean accountNonLocked;
     
+    @AssertTrue
     @Column(name = "accountNonExpired", columnDefinition = "TINYINT(1)")
     private Boolean accountNonExpired;
     
+    @AssertTrue
     @Column(name = "credentialsNonExpired", columnDefinition = "TINYINT(1)")
     private Boolean credentialsNonExpired;
     
@@ -72,6 +86,11 @@ public class User extends BaseEntity implements UserDetails {
     
 	public User() {}
 
+	public User(String activationToken) {
+	  	
+		this.activationToken = activationToken;
+	}
+	
 	public User(String username, String password, String email) {
   	
 		this.username = username;

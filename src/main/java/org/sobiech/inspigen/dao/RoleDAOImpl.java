@@ -23,12 +23,12 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     @Override
-    public void addUserRole(Role role) {
+    public void addRole(Role role) {
     	getCurrentSession().save(role);
     }
 
     @Override
-    public Role getUserRoleById(int userId) {	
+    public Role getRoleById(int userId) {	
     	
     	 Role roleObject = (Role) getCurrentSession().get(Role.class, userId);
          
@@ -40,7 +40,7 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
 	@Override
-	public Role getUserRoleByName(String username) {
+	public Role getRoleByName(String username) {
 		
 		Query query = getCurrentSession().createQuery("from Role where username = :userName ");
 		query.setString("userName", username);
@@ -53,7 +53,7 @@ public class RoleDAOImpl implements RoleDAO {
 	}
 
 	@Override
-	public Role getUserRoleByEmail(String email) {
+	public Role getRoleByEmail(String email) {
 		Query query = getCurrentSession().createQuery("from Role where email = :eMail ");
 		query.setString("eMail", email);
 		
@@ -65,8 +65,8 @@ public class RoleDAOImpl implements RoleDAO {
 	}
 
 	@Override
-	public void updateUserRole(Role role) {
-		Role userRoleToUpdate = getUserRoleByName(role.getUsername());
+	public void updateRole(Role role) {
+		Role userRoleToUpdate = getRoleByName(role.getUsername());
 		userRoleToUpdate.setUser_role_id(role.getUser_role_id());
 		userRoleToUpdate.setUsername(role.getUsername());
 		userRoleToUpdate.setRole(role.getRole());

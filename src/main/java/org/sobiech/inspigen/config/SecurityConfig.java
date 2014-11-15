@@ -46,17 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-            .antMatchers("/resources/**", 
-            			"/signup", 
-            			"/addUser", 
-            			"/sendActivationLink",
-            			"/activationMessage",
-            			"/{token}",
-            			"/forgotPassword", 
-            			"/resetPassword",
-            			"/newPassword/{token}",
-            			"/forgotPassowordMessage",
-            			"/partials/**").permitAll()
+            .antMatchers("/resources/**",
+            			 "/partials/**",
+            			 "/api/**").permitAll()
             .antMatchers("/dashboard/**").hasAnyRole("ADMIN","MOD","USER")
             .anyRequest().authenticated()
             .and()           

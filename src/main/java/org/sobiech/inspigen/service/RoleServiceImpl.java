@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.sobiech.inspigen.dao.RoleDAO;
+import org.sobiech.inspigen.dao.UserDAO;
 import org.sobiech.inspigen.model.Role;
+import org.sobiech.inspigen.model.User;
 
 @Service
 @Transactional
@@ -17,30 +19,40 @@ public class RoleServiceImpl implements RoleService {
     
     @Autowired
     private RoleDAO roleDAO;
+    
+    @Autowired
+    Role role;
+    
+    @Autowired
+    private UserDAO userDAO;
 
 	@Override
-	public void addUserRole(Role role) {
-		roleDAO.addUserRole(role);	
+	public void addRole(User user) {
+		role.setUser_role_id(userDAO.getUserByName(user.getUsername()).getId());
+    	role.setUsername(user.getUsername());
+    	role.setRole("ROLE_USER");
+    	
+    	roleDAO.addRole(role);
 	}
 
 	@Override
-	public Role getUserRoleById(int userId) {
-		return roleDAO.getUserRoleById(userId);
+	public Role getRoleById(int userId) {
+		return roleDAO.getRoleById(userId);
 	}
 
 	@Override
-	public Role getUserRoleByName(String username) {
-		return roleDAO.getUserRoleByName(username);
+	public Role getRoleByName(String username) {
+		return roleDAO.getRoleByName(username);
 	}
 
 	@Override
-	public Role getUserRoleByEmail(String email) {
-		return roleDAO.getUserRoleByEmail(email);
+	public Role getRoleByEmail(String email) {
+		return roleDAO.getRoleByEmail(email);
 	}
 
 	@Override
-	public void updateUserRole(Role role) {
-		roleDAO.updateUserRole(role);
+	public void updateRole(Role role) {
+		roleDAO.updateRole(role);
 	}
 
 	@Override
