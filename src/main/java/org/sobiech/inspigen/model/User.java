@@ -63,9 +63,11 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "credentialsNonExpired", columnDefinition = "TINYINT(1)")
     private Boolean credentialsNonExpired;
     
+    @NotNull
 	@Column(name = "passwordToken")
 	private String passwordToken;
 	
+    @NotNull
 	@Column(name = "activationToken")
 	private String activationToken;
 	

@@ -26,33 +26,49 @@ public class UsersController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> create(@RequestBody User user) {
 
+    	HttpStatus responseStatus = HttpStatus.OK;
+    	JsonObject jsonResponse = new JsonObject();
+    	
 		try {
 			
 			boolean userNameFound = false;
 			boolean emailFound =  false;
 				
-		    if (userService.getUserByName(user.getUsername()) != null) 	
-	        	userNameFound = true;
-		    		    
-		    if (userService.getUserByEmail(user.getEmail()) != null)	
+		    if (userService.getUserByName(user.getUsername()) != null) {
+		    	userNameFound = true;
+		    	responseStatus = HttpStatus.CONFLICT;
+		    	jsonResponse.addProperty("id", "Resource Conflict");
+				jsonResponse.addProperty("description", "duplicateUser");
+		    } 	
+	        			    		    
+		    if (userService.getUserByEmail(user.getEmail()) != null) {
 		    	emailFound = true;
+		    	responseStatus = HttpStatus.CONFLICT;
+		    	jsonResponse.addProperty("id", "Resource Conflict");
+				jsonResponse.addProperty("description", "duplicateEmail");
+		    }	
 		    
-		    if(userNameFound == false && emailFound == false) 
+		    if(userNameFound == true && emailFound == true) {
+		    	responseStatus = HttpStatus.CONFLICT;
+		    	jsonResponse.addProperty("id", "Resource Conflict");
+				jsonResponse.addProperty("description", "duplicateUser&Email");
+		    }
+		    	
+		    if(userNameFound == false && emailFound == false) {
 		    	userService.addUser(user);
+		    	jsonResponse.addProperty("message", "Create Success");
+		    }
 		} 
+		    
 		catch (ConstraintViolationException e) {
-	
-			JsonObject jsonResponse = new JsonObject();
+		
 			jsonResponse.addProperty("id", "Creation Failed");
 			jsonResponse.addProperty("description", e.getConstraintViolations().iterator().next().getMessage());
 			
 			return new ResponseEntity<String>(jsonResponse.toString(), HttpStatus.PRECONDITION_FAILED);
 		} 
 		
-		JsonObject jsonResponse = new JsonObject();
-		jsonResponse.addProperty("message", "Creation Success");
-		
-    	return new ResponseEntity<String>(jsonResponse.toString(), HttpStatus.CREATED);
+    	return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
