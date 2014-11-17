@@ -184,4 +184,9 @@ public class UserServiceImpl implements UserService {
 		userDAO.deactivateAccount(username);
 		return "accountDeactivated";
 	}
+
+	@Override
+	public void deleteNotActivatedUsers() {
+		userDAO.deleteNotActivatedUsers();
+	}
 }

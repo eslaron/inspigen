@@ -89,6 +89,14 @@ public class UserDAOImpl implements UserDAO {
         return getCurrentSession().createQuery("from User").list();
 	}
 	
+	@Override
+	public void deleteNotActivatedUsers() {
+		Query delete = getCurrentSession().createQuery(
+				"DELETE from User WHERE enabled = :enabled");		
+		delete.setBoolean("enabled", false);
+		delete.executeUpdate();
+	}
+	
 	// TOKEN
 	
 	@Override

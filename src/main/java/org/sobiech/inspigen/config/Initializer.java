@@ -9,7 +9,7 @@ public class Initializer extends
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { DatabaseConfig.class, SecurityConfig.class, EmailConfig.class, CustomBeansConfig.class };
+        return new Class[] { DatabaseConfig.class, SecurityConfig.class, EmailConfig.class, CustomBeansConfig.class, ScheduledTasks.class };
     }
 
     @Override

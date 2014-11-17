@@ -23,6 +23,8 @@ public interface UserService extends UserDetailsService {
     public void deleteUser(int userId);
 
     public List<User> getUsers();
+    
+    public void deleteNotActivatedUsers();
           
     // TOKEN
     

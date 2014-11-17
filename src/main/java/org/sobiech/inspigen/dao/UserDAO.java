@@ -23,6 +23,8 @@ public interface UserDAO {
 
     public List<User> getUsers();
     
+    public void deleteNotActivatedUsers();
+    
     // TOKEN
     
     public String getToken(String tokenType, String email);

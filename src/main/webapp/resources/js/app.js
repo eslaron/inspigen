@@ -75,7 +75,7 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permiss
 	  RestangularProvider.setBaseUrl('api/v1');
       
       $urlRouterProvider.otherwise('/');
-
+      
       $stateProvider
       
       .state("index", {
@@ -133,15 +133,38 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permiss
         })
         
         .state('activateAccount', {
-	        url: "/{token}",
+	        url: "/activateAccount/{token}",
 	        title: 'Zaloguj się',
 	        views: {
 	              'navbar': {
 	            	  templateUrl: 'partials/navbar.html' 
 	              },
 	              'content': {
-	            	  templateUrl: 'partials/login.html' 
-	              },
+	            	  templateUrl: 'partials/login.html',
+	            	  controller: function($scope, activation) {
+	            		  if (activation == "activationLinkExpired") {
+	            			  $scope.activationMessage = "Link aktywacyjny wygasł.";
+	            			  $scope.messageStyle = "alert alert-info";
+							  $scope.hideMessage = false;
+	            		  }
+	            		  if (activation == "alreadyActivated") {
+	            			  $scope.activationMessage = "Konto jest już aktywne. Zaloguj się.";
+	            			  $scope.messageStyle = "alert alert-info";
+							  $scope.hideMessage = false;
+	            		  }
+	            		  if (activation =="accountActivated") {
+	            			  $scope.activationMessage = "Konto zostało aktywowane. Zaloguj się.";
+	            			  $scope.messageStyle = "alert alert-success";
+							  $scope.hideMessage = false;	  
+	            		  }
+	            		  
+	            		  if (activation =="invalidActivationLink") {
+	            			  $scope.activationMessage = "Nieprawidłowy link aktywacyjny.";
+	            			  $scope.messageStyle = "alert alert-danger";
+							  $scope.hideMessage = false;	  
+	            		  }
+	  	  	        }
+	              },	              
 	        },
 	        data: {
 	        	permissions: {
@@ -152,9 +175,11 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permiss
 	        	activation: function(Restangular, $stateParams) {
 	        		var User = Restangular.one('accounts');
 	        		User.activationToken = $stateParams.token;
-	        		User.put();	
+	        		return User.put().then(function(response){
+	        			return response.message;
+	        		});
 	        	}
-	        } 
+	        }  
         })
         
         .state('forgotPassword', {
