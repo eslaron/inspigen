@@ -173,7 +173,7 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permiss
 	        },
 	        resolve: {
 	        	activation: function(Restangular, $stateParams) {
-	        		var User = Restangular.one('accounts');
+	        		var User = Restangular.one('users');
 	        		User.activationToken = $stateParams.token;
 	        		return User.put().then(function(response){
 	        			return response.message;
@@ -182,15 +182,15 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permiss
 	        }  
         })
         
-        .state('forgotPassword', {
-          url: '/forgotPassword',
+        .state('resetPassword', {
+          url: '/resetPassword',
           title: 'Resetuj hasło',
           views: {
               'navbar': {
             	  templateUrl: 'partials/navbar.html' 
               },
               'content': {
-            	  templateUrl: 'partials/forgotPassword.html' 
+            	  templateUrl: 'partials/resetPassword.html' 
               },
             },
             data: {
