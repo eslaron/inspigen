@@ -37,30 +37,28 @@ public class EmailServiceImpl implements EmailService {
 			mimeHelper.setFrom("sebastian.sobiech@gmail.com");
 			
 			if (tokenType == "activationToken") {
-			mimeHelper.setSubject("Witamy w systemie Inspigen!");
+				mimeHelper.setSubject("Witamy w systemie Inspigen!");
 			
-			msg = "<html><body>Hej :)<br/>Cieszymy się, że do nas dołączyłeś."
-					+ "<br/>Kliknij w podany link, aby aktywować swoje konto: "
-					+ "<a href='http://localhost:8080/inspigen/#/activateAccount/"
-					+token+"'>LINK</a></body></html>";
+				msg = "<html><body>Hej :)<br/>Cieszymy się, że do nas dołączyłeś."
+						+ "<br/>Kliknij w podany link, aby aktywować swoje konto: "
+						+ "<a href='http://localhost:8080/inspigen/#/activateAccount/"
+						+token+"'>LINK</a></body></html>";
 			
-			mbp.setContent(msg, "text/html; charset=UTF-8");
-			mp.addBodyPart(mbp);
-			message.setContent(mp);
-			
-			/*mimeHelper.setText(
-					"<html><body>Hej :)<br/>Cieszymy się, że do nas dołączyłeś."
-					+ "<br/>Kliknij w podany link, aby aktywować swoje konto: "
-					+ "<a href='http://localhost:8080/inspigen/#/activateAccount/"
-					+token+"'>LINK</a></body></html>",true);*/
+				mbp.setContent(msg, "text/html; charset=UTF-8");
+				mp.addBodyPart(mbp);
+				message.setContent(mp);
 			}
 			
 			if (tokenType == "passwordToken") {
 				mimeHelper.setSubject("Przypomnienie hasła - Inspigen");
-				mimeHelper.setText(
-						"<html><body>Hej :)<br/>Aby zresetować swoje hasło kliknij w poniższy link: <br/>"
-						+ "<a href='http://localhost:8080/inspigen/#/resetPassword/"
-						+token+"'>LINK</a></body></html>",true);
+				
+				msg = "<html><body>Hej :)<br/>Aby zresetować swoje hasło kliknij w poniższy link: <br/>"
+						+ "<a href='http://localhost:8080/inspigen/#/newPassword/"
+						+token+"'>LINK</a></body></html>";
+				
+				mbp.setContent(msg, "text/html; charset=UTF-8");
+				mp.addBodyPart(mbp);
+				message.setContent(mp);
 			}
 			
 			mailSender.send(message);

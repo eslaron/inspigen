@@ -173,7 +173,7 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permiss
 	        },
 	        resolve: {
 	        	activation: function(Restangular, $stateParams) {
-	        		var User = Restangular.one('users');
+	        		var User = Restangular.one('users/accountActivation');
 	        		User.activationToken = $stateParams.token;
 	        		return User.put().then(function(response){
 	        			return response.message;
@@ -198,6 +198,34 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permiss
                   only: ['anonymous']
                 }
             }
+        })
+        
+          .state('newPassword', {
+          url: '/newPassword/{token}',
+          title: 'Resetuj hasło',
+          views: {
+              'navbar': {
+            	  templateUrl: 'partials/navbar.html' 
+              },
+              'content': {
+            	  templateUrl: 'partials/newPassword.html' 
+              },
+            },
+            data: {
+                permissions: {
+                  only: ['anonymous']
+                }
+            },
+            /*resolve: {
+	        	reset: function(Restangular, $stateParams) {
+	        		var User = Restangular.one('users');
+	        		User.passwordToken = $stateParams.token;
+	        		
+	        		return User.put().then(function(response){
+	        			return response.message;
+	        		});
+	        	}
+	        }*/
         })
         
         .state('user', {

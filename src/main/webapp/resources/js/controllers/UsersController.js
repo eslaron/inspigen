@@ -1,6 +1,7 @@
-App.controller('UsersController', function($scope, Restangular) {
+App.controller('UsersController', function($scope, $timeout, $state, $stateParams, Restangular) {
 
 	$scope.Users = Restangular.all('users');
+	$scope.passwordReset = Restangular.one('users/passwordReset');
 
 	$scope.userNameUnique = true;
 	$scope.emailUnique = true;
@@ -45,7 +46,58 @@ App.controller('UsersController', function($scope, Restangular) {
 	}
 	
 	$scope.sendResetPasswordEmail = function() { 
-		$scope.Users.get($scope.reset.email);
+		$scope.Users.get($scope.reset.email)
+			.then(function(response) {			
+				if(response.message == "resetLinkSent") {
+					$scope.messageStyle = "alert alert-success";
+					$scope.hideMessage = false;
+					$scope.resetMessage = 'Email z linkiem resetującym hasło został wysłany nad twoj email.';
+					
+					$timeout(function () {
+						$state.go('login');
+			          }, 10000);
+				}
+			},
+				function(error) {
+					$scope.error = error.data;
+					
+					if ($scope.error.message == "emailNotRegistered") {
+						$scope.resetMessage = "Nie istnieje użytkownik z podanym adresem email.";
+						$scope.messageStyle = "alert alert-info";
+						$scope.hideMessage = false;
+					}
+				}	
+			);
+	}
+	
+	$scope.resetPassword = function() {
+		
+		$scope.passwordReset.password = $scope.reset.password;
+		$scope.passwordReset.passwordToken = $stateParams.token;
+		
+		$scope.passwordReset.put().then(function(response){
+				if(response.message = "passwordChanged") {
+					$scope.resetMessage = "Hasło zostało zmienione.";
+					$scope.messageStyle = "alert alert-success";
+					$scope.hideMessage = false;
+				}
+				
+				if(response.message = "resetLinkExpired") {
+					$scope.resetMessage = "Link resetujący hasło wygasł.";
+					$scope.messageStyle = "alert alert-info";
+					$scope.hideMessage = false;
+				}
+			},
+			function(error){
+				$scope.error = error.data;
+				
+				if ($scope.error.message == "invalidResetLink") {
+					$scope.resetMessage = "Nieprawidłowy link resetujący";
+					$scope.messageStyle = "alert alert-danger";
+					$scope.hideMessage = false;
+				}
+			}
+		);
 	}
 	
 	$scope.resetRegisterForm = function() {

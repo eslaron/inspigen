@@ -1,6 +1,8 @@
 package org.sobiech.inspigen.core.services;
 
+import java.sql.Timestamp;
 import java.util.Date;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.sobiech.inspigen.core.models.entities.User;
 import org.sobiech.inspigen.core.services.util.UsersList;
@@ -24,7 +26,7 @@ public interface UserService extends UserDetailsService {
 	public void updateUser(User data);
 	
 	public void deleteUser(User data);
-          
+	  
     // TOKEN
        
     public String setToken();
@@ -32,4 +34,8 @@ public interface UserService extends UserDetailsService {
     public Date setTokenExpirationDate();
     
 	public Boolean checkIfTokenExpired(String tokenType, String token);
+	
+	// PASSWORD
+	
+	public String encodePassword(User data);
 }

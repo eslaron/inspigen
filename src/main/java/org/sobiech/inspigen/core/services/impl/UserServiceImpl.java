@@ -1,6 +1,7 @@
 package org.sobiech.inspigen.core.services.impl;
 
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -56,21 +57,14 @@ public class UserServiceImpl implements UserService {
      	String password = data.getPassword();
     	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(data));
     	String passwordToken = setToken();
-    	Date passwordTokenExpiration = setTokenExpirationDate();
     	String activationToken = setToken();
     	Date activationTokenExpiration = setTokenExpirationDate();
     	
     	data.setPassword(encodedPassword);
     	data.setPasswordToken(passwordToken);
-    	data.setPasswordTokenExpiration(passwordTokenExpiration);
     	data.setActivationToken(activationToken);
     	data.setActivationTokenExpiration(activationTokenExpiration);
-    	data.setRole("ROLE_USER");
-    	data.setEnabled(false);
-    	data.setAccountNonLocked(true);
-    	data.setAccountNonExpired(true);
-    	data.setCredentialsNonExpired(true);
-		
+
 		dao.create(data);
 		
     	emailService.sendTokenMail(data.getEmail(), "activationToken", activationToken);
@@ -153,7 +147,7 @@ public class UserServiceImpl implements UserService {
 		cal=format.getCalendar();		
 		cal.add(Calendar.MINUTE, settings.getEXPIRATION_TIME());
 	
-		return cal.getTime();
+		return (Date)cal.getTime();
 	}
 	
 	@Override
@@ -175,5 +169,14 @@ public class UserServiceImpl implements UserService {
 		if(Calendar.getInstance().getTime().after(expire.getTime()) == true) {
 			return true;
 		} else return false;
+	}
+
+	@Override
+	public String encodePassword(User data) {
+	
+		String password = data.getPassword();
+    	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(data));
+		
+    	return encodedPassword;
 	}
 }

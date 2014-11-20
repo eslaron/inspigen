@@ -1,6 +1,5 @@
 package org.sobiech.inspigen.core.models.entities;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -79,38 +78,20 @@ public class User extends BaseEntity implements UserDetails {
 	private int failedLogins;
 	
 	@Column(name = "lastLoginAttempt")
-	private Timestamp lastLoginAttempt;
+	private Date lastLoginAttempt;
 		  
 	public User() {}
-
-	public User(String activationToken) {
-	  	
-		this.activationToken = activationToken;
-	}
-	
-	public User(String activationToken, boolean enabled) {
-		
-		this.activationToken = activationToken;
-		this.enabled = enabled;
-	}
 	
 	public User(String username, String role) {
 	  	
 		this.username = username;
 		this.role = role;
 	}
-	
-	public User(String username, String password, String email) {
-  	
-		this.username = username;
-		this.password = password;
-		this.email =  email;
-	}
-	
+
     public User(String username, String password, String email, String role, boolean enabled, 
     			boolean accountNonLocked, boolean accountNonExpired, 
     			boolean credentialsNonExpired, String passwordToken, Date passwordTokenExpiration,
-    			String activationToken, Date activationTokenExpiration, int failedLogins) {
+    			String activationToken, Date activationTokenExpiration, int failedLogins, Date lastLoginAttempt) {
     	
     	this.username = username;
     	this.password = password;
@@ -125,6 +106,7 @@ public class User extends BaseEntity implements UserDetails {
     	this.activationToken = activationToken;
     	this.activationTokenExpiration = activationTokenExpiration;
     	this.failedLogins = failedLogins;
+    	this.lastLoginAttempt = lastLoginAttempt;
     }
     
     public String getUsername() {
@@ -219,11 +201,11 @@ public class User extends BaseEntity implements UserDetails {
 		this.failedLogins = failedLogins;
 	}
 
-	public Timestamp getLastLoginAttempt() {
+	public Date getLastLoginAttempt() {
 		return lastLoginAttempt;
 	}
 
-	public void setLastLoginAttempt(Timestamp lastLoginAttempt) {
+	public void setLastLoginAttempt(Date lastLoginAttempt) {
 		this.lastLoginAttempt = lastLoginAttempt;
 	}
     

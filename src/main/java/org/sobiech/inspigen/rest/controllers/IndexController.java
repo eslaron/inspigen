@@ -72,6 +72,11 @@ public class IndexController {
 		return "partials/resetPassword";
 	}
 	
+	@RequestMapping("/partials/newPassword")
+	public String getNewPartialPage() {
+		return "partials/newPassword";
+	}
+	
 	@RequestMapping("/partials/settings")
     public String getSettingsPartialPage() {
         return "partials/settings";
