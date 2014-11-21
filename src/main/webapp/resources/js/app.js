@@ -173,7 +173,7 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permiss
 	        },
 	        resolve: {
 	        	activation: function(Restangular, $stateParams) {
-	        		var User = Restangular.one('users/accountActivation');
+	        		var User = Restangular.one('accounts/accountActivation');
 	        		User.activationToken = $stateParams.token;
 	        		return User.put().then(function(response){
 	        			return response.message;
@@ -215,17 +215,7 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permiss
                 permissions: {
                   only: ['anonymous']
                 }
-            },
-            /*resolve: {
-	        	reset: function(Restangular, $stateParams) {
-	        		var User = Restangular.one('users');
-	        		User.passwordToken = $stateParams.token;
-	        		
-	        		return User.put().then(function(response){
-	        			return response.message;
-	        		});
-	        	}
-	        }*/
+            }
         })
         
         .state('user', {

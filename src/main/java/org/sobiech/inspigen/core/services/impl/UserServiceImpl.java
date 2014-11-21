@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +24,8 @@ import org.sobiech.inspigen.core.repositories.IUserDao;
 import org.sobiech.inspigen.core.services.EmailService;
 import org.sobiech.inspigen.core.services.UserService;
 import org.sobiech.inspigen.core.services.util.UsersList;
+
+import com.google.gson.JsonObject;
 
 @Service
 @Transactional
@@ -62,7 +66,12 @@ public class UserServiceImpl implements UserService {
     	
     	data.setPassword(encodedPassword);
     	data.setPasswordToken(passwordToken);
+    	data.setRole("ROLE_USER");
+    	data.setEnabled(false);
+    	data.setAccountNonExpired(true);
+    	data.setAccountNonLocked(true);
     	data.setActivationToken(activationToken);
+    	data.setCredentialsNonExpired(true);
     	data.setActivationTokenExpiration(activationTokenExpiration);
 
 		dao.create(data);
@@ -178,5 +187,44 @@ public class UserServiceImpl implements UserService {
     	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(data));
 		
     	return encodedPassword;
+	}
+
+	@Override
+	public ResponseEntity<String> addUser(User data) {
+		
+		HttpStatus responseStatus = HttpStatus.CREATED;
+    	JsonObject jsonResponse = new JsonObject();
+    	User userFoundByName = findUserByName(data.getUsername());
+    	User userFoundByEmail = findUserByEmail(data.getEmail());
+    	
+			boolean userNameFound = false;
+			boolean emailFound =  false;
+				
+		    if (userFoundByName != null) {
+		    	userNameFound = true;
+		    	responseStatus = HttpStatus.CONFLICT;
+		    	jsonResponse.addProperty("id", "Resource Conflict");
+				jsonResponse.addProperty("description", "duplicateUser");
+		    } 	
+	        			    		    
+		    if (userFoundByEmail != null) {
+		    	emailFound = true;
+		    	responseStatus = HttpStatus.CONFLICT;
+		    	jsonResponse.addProperty("id", "Resource Conflict");
+				jsonResponse.addProperty("description", "duplicateEmail");
+		    }	
+		    
+		    if(userNameFound == true && emailFound == true) {
+		    	responseStatus = HttpStatus.CONFLICT;
+		    	jsonResponse.addProperty("id", "Resource Conflict");
+				jsonResponse.addProperty("description", "duplicateUser&Email");
+		    }
+		    	
+		    if(userNameFound == false && emailFound == false) {
+		    	createUser(data);
+		    	jsonResponse.addProperty("message", "Create Success");
+		    }
+		
+    	return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
 }

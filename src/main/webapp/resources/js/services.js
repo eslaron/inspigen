@@ -18,28 +18,3 @@ var AppServices = angular.module('AngularSpringApp.services', ['restangular','ng
 			}
 		);
 });
-
-/*.factory('ActivationService', function(Restangular) {
-	
-	return {
-		
-		message: function() {
-			
-			alert("works");
-		},
-		
-		activateAccount: function(Restangular, token) {
-			
-		 return Restangular.all('inspigen/api/v1/accounts', $stateParams.token).put().then(function(response){
-				
-				alert(response); 
-			},
-			
-			function(error){  
-				
-				alert(error);
-			});
-		 
-		}
-	}	
-})*/

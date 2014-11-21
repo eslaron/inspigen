@@ -3,6 +3,7 @@ package org.sobiech.inspigen.core.services;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.sobiech.inspigen.core.models.entities.User;
 import org.sobiech.inspigen.core.services.util.UsersList;
@@ -26,6 +27,8 @@ public interface UserService extends UserDetailsService {
 	public void updateUser(User data);
 	
 	public void deleteUser(User data);
+	
+	public ResponseEntity<String> addUser(User data);
 	  
     // TOKEN
        

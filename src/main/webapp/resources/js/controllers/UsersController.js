@@ -1,7 +1,7 @@
 App.controller('UsersController', function($scope, $timeout, $state, $stateParams, Restangular) {
 
-	$scope.Users = Restangular.all('users');
-	$scope.passwordReset = Restangular.one('users/passwordReset');
+	$scope.Accounts = Restangular.all('accounts');
+	$scope.passwordReset = Restangular.one('accounts/passwordReset');
 
 	$scope.userNameUnique = true;
 	$scope.emailUnique = true;
@@ -17,7 +17,7 @@ App.controller('UsersController', function($scope, $timeout, $state, $stateParam
 		$scope.user.password = $scope.signup.password;
 		$scope.user.email = $scope.signup.email;
 		
-		$scope.Users.post($scope.user)
+		$scope.Accounts.post($scope.user)
 			.then(function(response){
 				if(response.message == "Create Success") {		
 					$scope.messageStyle = "alert alert-success";
@@ -46,12 +46,14 @@ App.controller('UsersController', function($scope, $timeout, $state, $stateParam
 	}
 	
 	$scope.sendResetPasswordEmail = function() { 
-		$scope.Users.get($scope.reset.email)
+		$scope.Accounts.get($scope.reset.email)
 			.then(function(response) {			
 				if(response.message == "resetLinkSent") {
 					$scope.messageStyle = "alert alert-success";
 					$scope.hideMessage = false;
 					$scope.resetMessage = 'Email z linkiem resetującym hasło został wysłany nad twoj email.';
+					$scope.reset.email = "";
+					$scope.passwordReset_form.email.$setPristine();
 					
 					$timeout(function () {
 						$state.go('login');
@@ -65,6 +67,8 @@ App.controller('UsersController', function($scope, $timeout, $state, $stateParam
 						$scope.resetMessage = "Nie istnieje użytkownik z podanym adresem email.";
 						$scope.messageStyle = "alert alert-info";
 						$scope.hideMessage = false;
+						$scope.reset.email = "";
+						$scope.passwordReset_form.email.$setPristine();
 					}
 				}	
 			);
@@ -75,18 +79,32 @@ App.controller('UsersController', function($scope, $timeout, $state, $stateParam
 		$scope.passwordReset.password = $scope.reset.password;
 		$scope.passwordReset.passwordToken = $stateParams.token;
 		
-		$scope.passwordReset.put().then(function(response){
-				if(response.message = "passwordChanged") {
-					$scope.resetMessage = "Hasło zostało zmienione.";
-					$scope.messageStyle = "alert alert-success";
-					$scope.hideMessage = false;
-				}
-				
-				if(response.message = "resetLinkExpired") {
+		$scope.passwordReset.put().then(function(response) {
+			
+				if(response.message == "resetLinkExpired") {
 					$scope.resetMessage = "Link resetujący hasło wygasł.";
 					$scope.messageStyle = "alert alert-info";
 					$scope.hideMessage = false;
+					$scope.reset.password = "";
+					$scope.reset.confirmPassword = "";
+					$scope.newPassword_form.password.$setPristine();
+					$scope.newPassword_form.confirmPassword.$setPristine();
 				}
+			
+				if(response.message == "passwordChanged") {
+					$scope.resetMessage = "Hasło zostało zmienione.";
+					$scope.messageStyle = "alert alert-success";
+					$scope.hideMessage = false;
+					$scope.reset.password = "";
+					$scope.reset.confirmPassword = "";
+					$scope.newPassword_form.password.$setPristine();
+					$scope.newPassword_form.confirmPassword.$setPristine();
+					
+					$timeout(function () {
+						$state.go('login');
+			          }, 10000);
+				}
+				
 			},
 			function(error){
 				$scope.error = error.data;
@@ -95,6 +113,10 @@ App.controller('UsersController', function($scope, $timeout, $state, $stateParam
 					$scope.resetMessage = "Nieprawidłowy link resetujący";
 					$scope.messageStyle = "alert alert-danger";
 					$scope.hideMessage = false;
+					$scope.reset.password = "";
+					$scope.reset.confirmPassword = "";
+					$scope.newPassword_form.password.$setPristine();
+					$scope.newPassword_form.confirmPassword.$setPristine();
 				}
 			}
 		);
@@ -114,5 +136,7 @@ App.controller('UsersController', function($scope, $timeout, $state, $stateParam
 	$scope.$on('$viewContentLoaded', function() {
 		
 		$scope.signup_form.$setPristine();
+		$scope.passwordReset_form.$setPristine();
+		$scope.newPassword_form.$setPristine();
 	});
 });

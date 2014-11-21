@@ -27,22 +27,15 @@ public class User extends BaseEntity implements UserDetails {
     private static final long serialVersionUID = 6311364761937265306L;
     static Logger logger = LoggerFactory.getLogger(User.class);
         
-    @NotEmpty
-    @Size(min = 5, max = 12, message="SizeValidationFailed")
-    @Pattern(regexp = "^[A-z][A-z0-9]*$", message = "PatternValidationFailed")
     @Column(name = "username", unique=true)
     private String username;
 
-    @NotEmpty
     @Column(name = "password")
     private String password;
     
-    @Email(message="emailValidationFailed")
-    @Size(min = 6, max = 40)
     @Column(name = "email", unique=true)
     private String email;
     
-    @NotEmpty
     @Column(name="role")
     private String role;
     
@@ -52,19 +45,15 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(name = "accountNonLocked", columnDefinition = "TINYINT(1)")
     private Boolean accountNonLocked;
     
-    @AssertTrue
     @Column(name = "accountNonExpired", columnDefinition = "TINYINT(1)")
     private Boolean accountNonExpired;
     
-    @AssertTrue
     @Column(name = "credentialsNonExpired", columnDefinition = "TINYINT(1)")
     private Boolean credentialsNonExpired;
     
-    @NotNull
 	@Column(name = "passwordToken")
 	private String passwordToken;
 	
-    @NotNull
 	@Column(name = "activationToken")
 	private String activationToken;
 	
