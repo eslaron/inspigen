@@ -7,15 +7,14 @@
                 </div>
                 <div class="panel-body">
                     <form name="f" class="form-horizontal" role="form">
+                    
+                    <div ng-hide="hideMessage" ng-class="messageStyle">
+				                   {{activationMessage}}  
+				                   {{loginMessage}}   
+				   	</div>
                     <div class="form-group">
                         <div class="col-sm-12">
-                        <div ng-hide="hideMessage" ng-class="messageStyle">
-				                   {{activationMessage}}     
-				   			</div>
-                          <div data-th-if="${param.error}" class="alert alert-danger">
-				                    Niepoprawny login lub has³o.
-				          </div>
-                            <input type="text" class="form-control" id="username" name="username" ng-model="username" placeholder="Nazwa u¿ytkowninika" />
+                        	<input type="text" class="form-control" id="username" name="username" ng-model="username" placeholder="Nazwa u¿ytkownika" />
                         </div>
                     </div>
                     <div class="form-group">

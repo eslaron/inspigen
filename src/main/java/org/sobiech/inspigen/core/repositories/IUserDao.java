@@ -8,5 +8,5 @@ public interface IUserDao {
 	
 	public User findUserByEmail(String email);
 	
-	public User findUserByToken(String tokenType, String token);  
+	public User findUserByToken(String tokenType, String token);  	
 }

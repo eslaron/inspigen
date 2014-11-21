@@ -1,5 +1,6 @@
 package org.sobiech.inspigen.core.repositories.impl;
 
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
