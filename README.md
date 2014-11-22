@@ -1,5 +1,5 @@
-InspiGen - System wsparcia wolontariatu oparty na wzorcu REST i SPA
-======================================================================
+InspiGen - Aplikacja webowa wspierająca organizację wolontariacką oparta na wzorcu REST i modelu SPA
+======================================================================================================
 
 Aplikacja webowa przeznaczona na projekt dyplomowy.
 
