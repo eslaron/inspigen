@@ -4,9 +4,10 @@ var xAuthTokenHeaderName = 'x-auth-token';
 
 var AngularSpringApp = {};
 
-var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permission', 'restangular', 'AngularSpringApp.filters', 'AngularSpringApp.services', 'AngularSpringApp.directives'])
+var App = angular.module('AngularSpringApp', ['ui.router', 'LocalStorageModule', 'permission', 'restangular', 
+                                              'AngularSpringApp.filters', 'AngularSpringApp.services', 'AngularSpringApp.directives'])
 
-.run(function($http, $rootScope, $state, $stateParams, $cookieStore, Permission) {
+.run(function($http, $rootScope, $state, $stateParams, Permission, localStorageService) {
 
 		    $rootScope.$state = $state;
 		    $rootScope.$stateParams = $stateParams;
@@ -55,23 +56,29 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'ngCookies', 'permiss
 			$rootScope.logout = function() {
 				delete $rootScope.user;
 				delete $http.defaults.headers.common[xAuthTokenHeaderName];
-				$cookieStore.remove('user');
+				localStorageService.cookie.remove('user');
 				$state.go('login');
 			};
 
 			 /* Try getting valid user from cookie or go to login page */
-			var user = $cookieStore.get('user');
+			var user = localStorageService.cookie.get('user');
 
-			if (user !== undefined) {
+			if (user !== null) {
 				$rootScope.user = user;
 				$http.defaults.headers.common[xAuthTokenHeaderName] = user.token;
 				$state.go('index');
 			}
 })
 
-.config(['RestangularProvider', '$stateProvider', '$urlRouterProvider', 
-         function (RestangularProvider, $stateProvider, $urlRouterProvider) {
+.config(['RestangularProvider', '$stateProvider', '$urlRouterProvider', 'localStorageServiceProvider',
+         function (RestangularProvider, $stateProvider, $urlRouterProvider, localStorageServiceProvider) {
    
+	 localStorageServiceProvider
+	    .setPrefix('inspigen')
+	    .setStorageType('sessionStorage')
+	    .setNotify(true, true)
+	    .setStorageCookie(5, '/');
+	
 	  RestangularProvider.setBaseUrl('api/v1');
       
       $urlRouterProvider.otherwise('/');

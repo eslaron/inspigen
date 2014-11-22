@@ -1,7 +1,6 @@
 'use strict';
 
-App.controller('LoginController', function($scope, $rootScope, $location, $state, $http, $cookieStore, LoginService) {
-	
+App.controller('LoginController', function($scope, $rootScope, $state, $http, LoginService, localStorageService) {
 	
 	$scope.hideMessage = true;
 	$scope.loginMessage = 'Niepoprawny login lub hasło';
@@ -10,9 +9,7 @@ App.controller('LoginController', function($scope, $rootScope, $location, $state
 			LoginService.authenticate($.param({username: $scope.username, password: $scope.password}), function(user) {
 				$rootScope.user = user;
 				$http.defaults.headers.common[ xAuthTokenHeaderName ] = user.token;
-				$cookieStore.put('user', user);
-			
-				
+				localStorageService.cookie.set('user', user);	
 				
 	      	if (user.role == 'ROLE_ADMIN')
         		$state.go('user.admin');
@@ -34,7 +31,7 @@ App.controller('LoginController', function($scope, $rootScope, $location, $state
 				if($scope.error.description == "accountLocked") {
 					$scope.messageStyle = "alert alert-danger";
 					$scope.hideMessage = false;
-					$scope.loginMessage = 'Konto zablokowane. Spróbuj się zalogować za 15 minut.';
+					$scope.loginMessage = 'Konto zablokowane. Spróbuj zalogować się za 15 minut.';
 				};
 			}
 			

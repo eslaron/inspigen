@@ -18,8 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.DefaultSecurityFilterChain;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 
 @Configuration
@@ -57,22 +55,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	 .loginPage("/")
              .permitAll()
              .and()
-             .rememberMe().tokenRepository(persistentTokenRepository())
-             .tokenValiditySeconds(1209600)
-             .and()
         .logout()
             .permitAll();
     	          
         SecurityConfigurer<DefaultSecurityFilterChain, HttpSecurity> securityConfigurerAdapter = new XAuthTokenConfigurer(customUserDetailsService());
         http.apply(securityConfigurerAdapter); 
     }
-    
-    @Bean
-	public PersistentTokenRepository persistentTokenRepository() {
-		JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
-		db.setDataSource(dataSource);
-		return db;
-	}
     
     @Bean
     ReflectionSaltSource saltSource() {

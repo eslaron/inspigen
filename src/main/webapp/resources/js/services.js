@@ -4,7 +4,7 @@
 
 var routeForUnauthorizedAccess = '/SomeAngularRouteForUnauthorizedAccess';
 
-var AppServices = angular.module('AngularSpringApp.services', ['restangular','ngResource','ngCookies','ui.router'])
+var AppServices = angular.module('AngularSpringApp.services', ['restangular','ngResource','ui.router'])
 
 .factory('LoginService', function($resource, Restangular) {
 
