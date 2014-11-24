@@ -228,7 +228,7 @@ public class User extends BaseEntity implements UserDetails {
     //Pobierz role
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Collection<GrantedAuthority> authorities = new ArrayList<>();
+		/*Collection<GrantedAuthority> authorities = new ArrayList<>();
 		
         User userRole = new User(getUsername(),getRole());
         
@@ -237,7 +237,7 @@ public class User extends BaseEntity implements UserDetails {
                 authorities.add(authority);
         }
  
-        System.out.println(authorities);
-    	return authorities;
+        System.out.println(authorities);*/
+    	return null;
 	}	
 }

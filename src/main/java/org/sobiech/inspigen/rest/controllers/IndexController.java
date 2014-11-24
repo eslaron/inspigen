@@ -33,6 +33,16 @@ public class IndexController {
         return "partials/admin/dashboard";
 	}
 	
+	@RequestMapping("/partials/admin/users")
+    public String getAdminUsersPartial() {
+        return "partials/admin/users";
+	}
+	
+	@RequestMapping("/partials/admin/settings")
+    public String getSettingsPartialPage() {
+        return "partials/admin/settings";
+    }
+	
 	// Partiale - USER
 	
 	@RequestMapping("/partials/user/navbar")
@@ -76,9 +86,4 @@ public class IndexController {
 	public String getNewPartialPage() {
 		return "partials/newPassword";
 	}
-	
-	@RequestMapping("/partials/settings")
-    public String getSettingsPartialPage() {
-        return "partials/settings";
-    }
 }

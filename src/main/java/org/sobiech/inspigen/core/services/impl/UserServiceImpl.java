@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,8 +101,28 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public UsersList findAllUsers() {
-		return new UsersList(dao.findAll());
+	public List<User> findAllUsers() {
+		return dao.findAll();
+	}
+	
+	@Override
+	public List<User> findFirstPage(int size) {
+		return dao.findFirstPage(size);
+	}
+
+	@Override
+	public List<User> findPage(int page, int size) {
+		return dao.findPage(page, size);
+	}
+
+	@Override
+	public List<User> findLastPage(int size) {
+		return dao.findLastPage(size);
+	}
+
+	@Override
+	public Long entitySize() {
+		return dao.entitySize();
 	}
 
 	@Override

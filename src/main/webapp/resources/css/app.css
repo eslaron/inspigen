@@ -1,8 +1,10 @@
 @import url(http://fonts.googleapis.com/css?family=Marvel:400,700italic);
 
 body {	
-	background: url(../images/dark.png);
+	background-color: /*url(../images/dark.png)*/ #fff;
 }
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 .containerMargin {
 	margin-top: 150px;
@@ -25,6 +27,11 @@ body {
 	font-size: 40px;
 	line-height: 100%;
 	text-align: center;
+}
+
+.lineheight {
+		line-height: 100%;
+	
 }
 
 .navbar-brand img {
@@ -63,3 +70,51 @@ body {
     border-color: #78FA89;
 }
 
+
+.relative {
+	position: relative;
+	
+};
+
+.right {
+	left: 20px;
+}
+
+
+.userList {
+	background-color: #fff;
+	padding: 20px;
+}
+.content {
+	background-color: #fff;
+	top: 50px;
+	position: relative;
+	width: 85%;
+	height: auto;
+	float: right;
+}
+
+.content {
+	background-color: #fff;
+	top: 50px;
+	position: relative;
+	width: 85%;
+	height: auto;
+	float: right;
+}
+
+.sidebar {
+	border-right: 1px solid #e7e7e7;
+	position: fixed;
+	width: 15%;
+	height: 100%;
+	background-color: #f8f8f8;
+}
+
+.sidebar-content {
+	
+	top: 70px;
+	padding-left: 20px;
+	position: relative;
+	font-size: 15px;
+}

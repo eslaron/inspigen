@@ -1,12 +1,11 @@
 package org.sobiech.inspigen.core.services;
 
-import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.sobiech.inspigen.core.models.entities.User;
-import org.sobiech.inspigen.core.services.util.UsersList;
 
 public interface UserService extends UserDetailsService {
 	
@@ -22,7 +21,15 @@ public interface UserService extends UserDetailsService {
 	
 	public User findUserByToken(String tokenType, String token);
 	
-	public UsersList findAllUsers();
+	public List<User> findAllUsers();
+	
+	public List<User> findFirstPage(int size);
+	   
+	public List<User> findPage(int page, int size);
+	   
+	public List<User> findLastPage(int size);
+	
+	Long entitySize();
 	
 	public void updateUser(User data);
 	

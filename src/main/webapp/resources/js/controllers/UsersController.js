@@ -1,142 +1,77 @@
-App.controller('UsersController', function($scope, $timeout, $state, $stateParams, Restangular) {
-
-	$scope.Accounts = Restangular.all('accounts');
-	$scope.passwordReset = Restangular.one('accounts/passwordReset');
-
-	$scope.userNameUnique = true;
-	$scope.emailUnique = true;
-	$scope.emailFound = true;
-	$scope.hideMessage = true;
-	$scope.activationMessage = 'Email z linkiem aktywującym konto został wysłany nad twoj email.';
-	$scope.resetMessage = 'Email z linkiem resetującym hasło został wysłany nad twoj email.';
+App.controller('UsersController', function($scope, $state, $stateParams, Restangular, $filter, ngTableParams) {
 	
-	$scope.user = {username:"", password:"", email:""};
+	$scope.limit = 10;
+	$scope.entitySize = 0;
+	$scope.currentPage = 1;
+	$scope.selectedPage = 0;
 	
-	$scope.registerUser = function() {
-		$scope.user.username = $scope.signup.username;
-		$scope.user.password = $scope.signup.password;
-		$scope.user.email = $scope.signup.email;
-		
-		$scope.Accounts.post($scope.user)
-			.then(function(response){
-				if(response.message == "Create Success") {		
-					$scope.messageStyle = "alert alert-success";
-					$scope.hideMessage = false;
-					$scope.resetRegisterForm();
-				}
-		},
-		function(error){
-			$scope.error = error.data;
-
-			if($scope.error.description == "duplicateUser") {
-				$scope.userNameUnique = false;
-				$scope.signup_form.username.$setPristine();
-			}
-			if($scope.error.description  == "duplicateEmail") {
-				$scope.emailUnique = false;
-				$scope.signup_form.email.$setPristine();
-			}
-			if($scope.error.description  == "duplicateUser&Email") {
-				$scope.userNameUnique = false;
-				$scope.emailUnique = false;
-				$scope.signup_form.username.$setPristine();
-				$scope.signup_form.email.$setPristine();
-			}
+	$scope.User = Restangular.all('users');            
+	$scope.UserPage = Restangular.one('users?page='+$scope.currentPage+'&size='+$scope.limit);
+	$scope.UserFirstPage = Restangular.one('users/firstPage?size='+$scope.limit);
+	$scope.UserLastPage = Restangular.one('users/lastPage?size='+$scope.limit);
+	$scope.UserEntitySize = Restangular.one('users/entitySize');
+	
+	$scope.userList = [{id:"", username:"", password:"", email:"", role: "", enabled:"", accountNonLocked:"", accountNonExpired:"", credentialsNonExpired:"",
+		passwordToken:"", activationToken:"", passwordTokenExpiration:"", activationTokenExpiration:"", failedLogins: "", lastLoginAttempt:""}];
+	
+	$scope.pageCount = function() {
+		return  Math.round(($scope.entitySize / $scope.limit))+1;
+	}
+	
+	$scope.UserEntitySize.get().
+	then(function(response){
+		$scope.entitySize = response;
+		$scope.UserFirstPage.getList()
+		.then(function(response) {
+			$scope.userList = response;
 		});
-	}
-	
-	$scope.sendResetPasswordEmail = function() { 
-		$scope.Accounts.get($scope.reset.email)
-			.then(function(response) {			
-				if(response.message == "resetLinkSent") {
-					$scope.messageStyle = "alert alert-success";
-					$scope.hideMessage = false;
-					$scope.resetMessage = 'Email z linkiem resetującym hasło został wysłany nad twoj email.';
-					$scope.reset.email = "";
-					$scope.passwordReset_form.email.$setPristine();
-					
-					$timeout(function () {
-						$state.go('login');
-			          }, 10000);
-				}
-			},
-				function(error) {
-					$scope.error = error.data;
-					
-					if ($scope.error.message == "emailNotRegistered") {
-						$scope.resetMessage = "Nie istnieje użytkownik z podanym adresem email.";
-						$scope.messageStyle = "alert alert-info";
-						$scope.hideMessage = false;
-						$scope.reset.email = "";
-						$scope.passwordReset_form.email.$setPristine();
-					}
-				}	
-			);
-	}
-	
-	$scope.resetPassword = function() {
-		
-		$scope.passwordReset.password = $scope.reset.password;
-		$scope.passwordReset.passwordToken = $stateParams.token;
-		
-		$scope.passwordReset.put().then(function(response) {
-			
-				if(response.message == "resetLinkExpired") {
-					$scope.resetMessage = "Link resetujący hasło wygasł.";
-					$scope.messageStyle = "alert alert-info";
-					$scope.hideMessage = false;
-					$scope.reset.password = "";
-					$scope.reset.confirmPassword = "";
-					$scope.newPassword_form.password.$setPristine();
-					$scope.newPassword_form.confirmPassword.$setPristine();
-				}
-			
-				if(response.message == "passwordChanged") {
-					$scope.resetMessage = "Hasło zostało zmienione.";
-					$scope.messageStyle = "alert alert-success";
-					$scope.hideMessage = false;
-					$scope.reset.password = "";
-					$scope.reset.confirmPassword = "";
-					$scope.newPassword_form.password.$setPristine();
-					$scope.newPassword_form.confirmPassword.$setPristine();
-					
-					$timeout(function () {
-						$state.go('login');
-			          }, 10000);
-				}
-				
-			},
-			function(error){
-				$scope.error = error.data;
-				
-				if ($scope.error.message == "invalidResetLink") {
-					$scope.resetMessage = "Nieprawidłowy link resetujący";
-					$scope.messageStyle = "alert alert-danger";
-					$scope.hideMessage = false;
-					$scope.reset.password = "";
-					$scope.reset.confirmPassword = "";
-					$scope.newPassword_form.password.$setPristine();
-					$scope.newPassword_form.confirmPassword.$setPristine();
-				}
-			}
-		);
-	}
-	
-	$scope.resetRegisterForm = function() {
-		
-		$scope.signup.username = '';
-		$scope.signup.password = '';
-		$scope.signup.confirmPassword = '';
-		$scope.signup.email = '';
-		$scope.signup.confirmEmail = '';
-		
-		$scope.signup_form.$setPristine();
-	} 
-	
-	$scope.$on('$viewContentLoaded', function() {
-		
-		$scope.signup_form.$setPristine();
-		$scope.passwordReset_form.$setPristine();
-		$scope.newPassword_form.$setPristine();
 	});
+	
+	$scope.tableParams = new ngTableParams({ 
+		count: 0, // hides pager
+        sorting: {
+            name: 'desc'     
+        }
+    }, {
+    	counts: [],
+    	 
+        getData: function($defer, params) {
+        	
+        var orderedData = params.sorting() ? $scope.userList = $filter('orderBy')($scope.userList, params.orderBy()) :  $scope.userList;
+        
+        $defer.resolve(orderedData);
+        }
+    });	
+	
+	$scope.getPage = function() {
+		$scope.currentPage = $scope.selectedPage;
+		Restangular.one('users?page='+$scope.currentPage+'&size='+$scope.limit).getList()
+		.then(function(response) {
+			$scope.userList = response;
+	});			
+			$scope.tableParams = new ngTableParams({ 
+				count: 0, // hides pager
+		        sorting: {
+		            name: 'desc'     
+		        }
+		    }, {
+		    	counts: [],
+		    	 
+		        getData: function($defer, params) {
+		        	
+		        var orderedData = params.sorting() ? $scope.userList = $filter('orderBy')($scope.userList, params.orderBy()) :  $scope.userList;
+		        
+		        $defer.resolve(orderedData);
+		        }
+		    });		
+	};
+	
+	$scope.hideEditPanel = true;
+    $scope.editRow =  function(id,hide) {   	
+    	$scope.hideEditPanel = hide;
+    	
+    } 
+
+    $scope.isCollapsed = true;
+    
 });

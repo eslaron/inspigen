@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="AngularSpringApp">
 
 <head>
@@ -8,31 +8,22 @@
 
     <link type="text/css" rel="stylesheet" href="resources/css/bootstrap/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet" href="resources/css/font-awesome/css/font-awesome.min.css" />
-    <link type="text/css" rel="stylesheet" href="resources/css/metisMenu/css/metisMenu.min.css" />
-	<link type="text/css" rel="stylesheet" href="resources/css/sb-admin-2/css/sb-admin-2.css" />
+    <link type="text/css" rel="stylesheet" href="resources/js/lib/ng-table/ng-table.min.css" />
+    <link type="text/css" rel="stylesheet" href="resources/js/lib/angular-busy/angular-busy.min.css" />
     <link type="text/css" rel="stylesheet" href="resources/css/app.css" />    
     
     <title ng-bind="'InspiGen - ' + $state.current.title">InspiGen</title>
 </head>
 
 <body>
-<div ui-view="navbar"></div>
-<div ui-view="sidebar"></div>
-<div ui-view="content"></div>
+<div class="relative" ui-view="navbar"></div>
+<div class="relative" ui-view="sidebar"></div>
+<div class="relative" ui-view="content"></div>
     
-    <!-- jQuery - wymagany przez JS bootstrapa -->
+    <!-- jQuery -->
     <script src="resources/js/lib/jquery/jquery-2.1.1.min.js"></script>
      
-    <!-- Boostrap JS -->
-    <script src="resources/css/bootstrap/js/bootstrap.min.js" ></script>
-    
-    <!-- Metis Menu JavaScript -->
-    <script src="resources/css/metisMenu/js/metisMenu.min.js"></script>
-    
-    <!-- SB Admin 2 JavaScript -->
-    <script src="resources/css/sb-admin-2/js/sb-admin-2.js"></script>
-    
-    <!-- lodash - wymagany przez Restangular -->
+    <!-- lodash -->
     <script src="resources/js/lib/lodash/lodash.min.js"></script>   
     
     <!-- AngularJS -->
@@ -42,11 +33,26 @@
 	<script src="resources/js/lib/angularjs/angular-local-storage.min.js"></script>
 	<script src="resources/js/lib/angularjs/angular-permission.js"></script>
 	<script src="resources/js/lib/angularjs/restangular.min.js"></script>
+	
+	<!-- UI-Boostrap -->
+	<script src="resources/js/lib/ui-bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
+	
+	<!-- Angular Busy -->
+	<script src="resources/js/lib/angular-busy/angular-busy.min.js"></script>
+	
+	<!-- Angular - główne skrypty -->
 	<script src="resources/js/app.js"></script>
    	<script src="resources/js/directives.js"></script>
    	<script src="resources/js/filters.js"></script>
 	<script src="resources/js/services.js"></script>
-	<script src="resources/js/controllers/UsersController.js"></script>
+	
+	<!-- ng-table -->
+	<script src="resources/js/lib/ng-table/ng-table.min.js"></script>
+	
+	<!-- Angular - kontrolery -->
+	<script src="resources/js/controllers/IndexController.js"></script>
 	<script src="resources/js/controllers/LoginController.js"></script>
+	<script src="resources/js/controllers/AccountsController.js"></script>
+	<script src="resources/js/controllers/UsersController.js"></script>
 </body>
 </html>

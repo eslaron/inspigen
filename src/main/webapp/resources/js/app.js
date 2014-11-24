@@ -4,7 +4,7 @@ var xAuthTokenHeaderName = 'x-auth-token';
 
 var AngularSpringApp = {};
 
-var App = angular.module('AngularSpringApp', ['ui.router', 'LocalStorageModule', 'permission', 'restangular', 
+var App = angular.module('AngularSpringApp', ['ui.router', 'ui.bootstrap', 'ngTable','cgBusy', 'LocalStorageModule', 'permission', 'restangular', 
                                               'AngularSpringApp.filters', 'AngularSpringApp.services', 'AngularSpringApp.directives'])
 
 .run(function($http, $rootScope, $state, $stateParams, Permission, localStorageService) {
@@ -72,7 +72,8 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'LocalStorageModule',
 
 .config(['RestangularProvider', '$stateProvider', '$urlRouterProvider', 'localStorageServiceProvider',
          function (RestangularProvider, $stateProvider, $urlRouterProvider, localStorageServiceProvider) {
-   
+
+	
 	 localStorageServiceProvider
 	    .setPrefix('inspigen')
 	    .setStorageType('sessionStorage')
@@ -249,6 +250,50 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'LocalStorageModule',
               },
               'content@': {
             	  templateUrl: 'partials/admin/dashboard.html' 
+              },
+            },
+            data: {
+                permissions: {
+                  only: ['admin']
+                }
+            }
+        })
+        
+        .state('user.admin.users', {
+          title: 'Użytkownicy',
+          abstract: false,
+          url: '/users',
+          views: {
+              'navbar@': {
+            	  templateUrl: 'partials/admin/navbar.html' 
+              },
+              'sidebar@': {
+            	  templateUrl: 'partials/admin/sidebar.html'
+              },
+              'content@': {
+            	  templateUrl: 'partials/admin/users.html' 
+              },
+            },
+            data: {
+                permissions: {
+                  only: ['admin']
+                }
+            }
+        })
+        
+         .state('user.admin.settings', {
+          title: 'Ustawienia',
+          abstract: false,
+          url: '/settings',
+          views: {
+              'navbar@': {
+            	  templateUrl: 'partials/admin/navbar.html' 
+              },
+              'sidebar@': {
+            	  templateUrl: 'partials/admin/sidebar.html'
+              },
+              'content@': {
+            	  templateUrl: 'partials/admin/settings.html' 
               },
             },
             data: {
