@@ -21,10 +21,10 @@ App.controller('UsersController', function($scope, $state, $stateParams, Restang
 	$scope.UserEntitySize.get().
 	then(function(response){
 		$scope.entitySize = response;
-		$scope.UserFirstPage.getList()
-		.then(function(response) {
-			$scope.userList = response;
-		});
+			$scope.UserFirstPage.getList()
+			.then(function(response) {
+				$scope.userList = response;
+			});
 	});
 	
 	$scope.tableParams = new ngTableParams({ 

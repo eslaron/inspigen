@@ -104,17 +104,14 @@ body {
 }
 
 .sidebar {
-	border-right: 1px solid #e7e7e7;
 	position: fixed;
 	width: 15%;
 	height: 100%;
-	background-color: #f8f8f8;
 }
 
 .sidebar-content {
-	
 	top: 70px;
-	padding-left: 20px;
+	padding-left: 15px;
 	position: relative;
 	font-size: 15px;
 }

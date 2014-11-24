@@ -2,9 +2,6 @@
 <div class="userList container class="col-md-4">
 <h2>Użytkownicy</h2>
 
-	  <tabset justified="true">
-    <tab heading="Lista">
-		<br />
 		<table ng-table="tableParams" class="table">
 		<tbody>
         <tr ng-repeat="u in userList">
@@ -41,11 +38,7 @@
 		</table>
 	    Wyników na stronę: <input type="text" size="3" ng-model="limit" ng-change="getPage()"></input><br />
 	    Strony: <select ng-model="selectedPage" ng-change="getPage()" ng-options="n for n in [] | range:1:pageCount()"></select>
-    
-    </tab>
-    <tab heading="Dodaj">Short Labeled Justified content</tab>
-    <tab heading="Edytuj">Long Labeled Justified content</tab>
-  </tabset>
+
 
 
 </div>

@@ -1,46 +1,7 @@
 <div class="content"  ng-controller="UsersController">
 <div class="userList container">
 <h2>Edycja użytkowników</h2>
-<button ng-click="tableParams.sorting({})" class="btn btn-default pull-right">Resetuj sortowanie</button>
 
-<table ng-table="tableParams" class="table col-md-4">
-<tbody>
-        <tr ng-repeat="u in userList">
-            <td data-title="'Id'" sortable="'id'">
-                {{u.id}}
-            </td>
-            <td data-title="'Nazwa użytkownika'" sortable="'username'">
-                {{u.username}} 
-            </td>
-            <td data-title="'Email'" sortable="'email'">
-                {{u.email}}
-            </td>
-            <td data-title="'Rola'" sortable="'role'">
-                {{u.role}}
-            </td>
-            <td data-title="'Aktywny'" sortable="'enabled'">
-                {{u.enabled}}
-            </td>
-            <td data-title="'Niezablokowany'" sortable="'accountNonLocked'">
-                {{u.accountNonLocked}}
-            </td>
-            <td data-title="'Nieudane logowania'" sortable="'failedLogins'">
-                {{u.failedLogins}}
-            </td>
-            <td data-title="'Ostatnia próba'" sortable="'lastLoginAttempt'">
-                {{u.lastLoginAttempt  | date:'yyyy-MM-dd HH:mm:ss'}}
-            </td>
-            <td data-title="'Operacje'">
-             	<input type=button value="Edytuj" ng-click="editRow(u.id)"><br />
-             	<input type=button value="Usuń" ng-click="deleteRow(u.id)">
-            </td> 
-        </tr> 
 
-     
-</tbody>
-</table>
-    
-    Wyników na stronę: <input type="text" size="3" ng-model="limit" ng-change="getPage()"></input><br />
-    Strony: <select ng-model="selectedPage" ng-change="getPage()" ng-options="n for n in [] | range:1:pageCount()"></select>
 </div>
 

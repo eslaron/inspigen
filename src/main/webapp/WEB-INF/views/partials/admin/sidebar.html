@@ -1,7 +1,29 @@
-<div class="sidebar" ng-controller="UsersController">
+<div class="sidebar">
 	<div class="sidebar-content">
-		<a ui-sref="user.admin">Panel administracyjny</a><br />
-		<a ui-sref="user.admin.users">Użytkownicy</a><br />
-		<a ui-sref="user.admin.settings">Ustawienia</a>
+
+		
+<accordion close-others="true">
+ 
+    <accordion-group is-open="false">
+        <accordion-heading>
+            <a ui-sref="user.admin">Panel administracyjny</a><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        </accordion-heading>
+       Sekcje w budowie
+    </accordion-group>
+    <accordion-group is-open="false">
+        <accordion-heading>
+            Użytkownicy<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        </accordion-heading>
+        <a ui-sref="user.admin.users">Lista</a><br />
+        <a ui-sref="user.admin.users.add">Dodawanie</a><br />
+        <a ui-sref="user.admin.users.edit">Edycja</a><br />
+    </accordion-group>
+    <accordion-group is-open="false">
+        <accordion-heading>
+            Ustawienia<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        </accordion-heading>
+       <a ui-sref="user.admin.settings">Główne</a>
+    </accordion-group>
+</accordion>
 	</div>
 </div>

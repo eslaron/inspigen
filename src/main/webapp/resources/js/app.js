@@ -281,6 +281,28 @@ var App = angular.module('AngularSpringApp', ['ui.router', 'ui.bootstrap', 'ngTa
             }
         })
         
+        .state('user.admin.users.edit', {
+          title: 'Użytkownicy',
+          abstract: false,
+          url: '/edit',
+          views: {
+              'navbar@': {
+            	  templateUrl: 'partials/admin/navbar.html' 
+              },
+              'sidebar@': {
+            	  templateUrl: 'partials/admin/sidebar.html'
+              },
+              'content@': {
+            	  templateUrl: 'partials/admin/editUser.html' 
+              },
+            },
+            data: {
+                permissions: {
+                  only: ['admin']
+                }
+            }
+        })
+        
          .state('user.admin.settings', {
           title: 'Ustawienia',
           abstract: false,
