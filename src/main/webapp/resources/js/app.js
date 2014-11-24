@@ -4,7 +4,7 @@ var xAuthTokenHeaderName = 'x-auth-token';
 
 var AngularSpringApp = {};
 
-var App = angular.module('AngularSpringApp', ['ui.router', 'ui.bootstrap', 'ngTable','cgBusy', 'LocalStorageModule', 'permission', 'restangular', 
+var App = angular.module('AngularSpringApp', ['ui.router', 'ui.bootstrap', 'ngTable', 'LocalStorageModule', 'permission', 'restangular', 
                                               'AngularSpringApp.filters', 'AngularSpringApp.services', 'AngularSpringApp.directives'])
 
 .run(function($http, $rootScope, $state, $stateParams, Permission, localStorageService) {
