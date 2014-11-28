@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/resources/**",
             			 "/partials/**",
             			 "/authenticate",
+            			 "/api/v1/accounts",
             			 "/api/v1/accounts/*").permitAll()
             .antMatchers("/dashboard/**").hasAnyRole("ADMIN","MOD","USER")
             .anyRequest().authenticated()

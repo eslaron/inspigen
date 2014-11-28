@@ -1,5 +1,5 @@
 <div class="content"  ng-controller="UsersController">
-<div class="userList container class="col-md-4">
+<div class="userList container col-md-4">
 <h2>Użytkownicy</h2>
 
 		<table ng-table="tableParams" class="table">
@@ -30,8 +30,8 @@
                 {{u.lastLoginAttempt  | date:'yyyy-MM-dd HH:mm:ss'}}
             </td>
             <td data-title="'Operacje'">
-             	<input type=button value="Edytuj" ng-click="editRow(u.id)"><br />
-             	<input type=button value="Usuń" ng-click="deleteRow(u.id)">
+             	<input type=button value="Edytuj" ng-click="editUser(u.id)"><br />
+             	<input type=button value="Usuń" ng-click="deleteUser(u.id)">
             </td> 
         </tr>    
 		</tbody>

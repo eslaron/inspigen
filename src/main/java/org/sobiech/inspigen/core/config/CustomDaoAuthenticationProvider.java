@@ -42,23 +42,24 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 			
 			User userByName = userService.findUserByName(username);
 			
-			int attempts = userByName.getFailedLogins(); 
-			Date lastAttempt = userByName.getLastLoginAttempt();
-			
 		      try {
-		    	  
-		  		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		  		format.format(lastAttempt);
+		    	
+		    	if (userByName != null) {
 		  		
-		  		Calendar unlockTime = Calendar.getInstance();
-		  		unlockTime = format.getCalendar();
-		  		unlockTime.add(Calendar.MINUTE, settings.getLOCK_TIME());
-		  			
-		  		if(Calendar.getInstance().getTime().after(unlockTime.getTime()) == true) {
-		  			userByName.setFailedLogins(0);
-		  			userByName.setAccountNonLocked(true);
-		  			userService.updateUser(userByName);
-		  		}			
+		    		Date lastAttempt  = userByName.getLastLoginAttempt();
+			  		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			  		format.format(lastAttempt);
+			  		
+			  		Calendar unlockTime = Calendar.getInstance();
+			  		unlockTime = format.getCalendar();
+			  		unlockTime.add(Calendar.MINUTE, settings.getLOCK_TIME());
+			  			
+			  		if(Calendar.getInstance().getTime().after(unlockTime.getTime()) == true) {
+			  			userByName.setFailedLogins(0);
+			  			userByName.setAccountNonLocked(true);
+			  			userService.updateUser(userByName);
+			  		}
+		      }
 		    	  	return super.authenticate(authentication);
 		        
 		      } catch (BadCredentialsException e) {	
@@ -66,7 +67,9 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 		    	  setLoginFailureError("invalidCredentials");
 		    	  
 		    	  if (userByName != null) {
-		    			
+		    		  
+		    		int attempts = userByName.getFailedLogins(); 
+		    		
 		    		attempts++;
 		    		userByName.setFailedLogins(attempts);
 		    		userByName.setLastLoginAttempt(new Date());

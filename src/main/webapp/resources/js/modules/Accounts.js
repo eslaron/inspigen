@@ -1,4 +1,123 @@
-App.controller('AccountsController', function($scope, $timeout, $state, $stateParams, Restangular) {
+var Accounts = angular.module('inspigen.accounts', ['ui.router', 'restangular'])
+
+.config(['$stateProvider', function ($stateProvider) {
+   
+      $stateProvider
+      
+        .state('register', {
+          url: '/register',
+          title: 'Rejestracja',
+          views: {
+              'navbar': {
+            	  templateUrl: 'partials/navbar.html' 
+              },
+              'content': {
+            	  templateUrl: 'partials/signup.html',
+            	  controller: 'AccountsController'        	
+              },
+            },
+            data: {
+                permissions: {
+                	only: ['anonymous']
+                }
+            }
+        })
+        
+        .state('activateAccount', {
+	        url: "/activateAccount/{token}",
+	        title: 'Zaloguj się',
+	        views: {
+	              'navbar': {
+	            	  templateUrl: 'partials/navbar.html' 
+	              },
+	              'content': {
+	            	  templateUrl: 'partials/login.html',
+	            	  controller:  'AccountActivationController'       
+	              },
+	        },
+	        data: {
+	        	permissions: {
+	        		only: ['anonymous']
+	            }
+	        }   
+        })
+        
+        .state('resetPassword', {
+          url: '/resetPassword',
+          title: 'Resetuj hasło',
+          views: {
+              'navbar': {
+            	  templateUrl: 'partials/navbar.html' 
+              },
+              'content': {
+            	  templateUrl: 'partials/resetPassword.html',
+            	  controller: 'AccountsController'
+              },
+            },
+            data: {
+                permissions: {
+                  only: ['anonymous']
+                }
+            }
+        })
+        
+          .state('newPassword', {
+          url: '/newPassword/{token}',
+          title: 'Resetuj hasło',
+          views: {
+              'navbar': {
+            	  templateUrl: 'partials/navbar.html' 
+              },
+              'content': {
+            	  templateUrl: 'partials/newPassword.html',
+            	  controller: 'AccountsController'
+              },
+            },
+            data: {
+                permissions: {
+                  only: ['anonymous']
+                }
+            }
+        })
+    }
+  ]
+);
+
+//KONTROLERY
+
+Accounts.controller('AccountActivationController', function($scope, $stateParams, Restangular) {
+	
+	var Account = Restangular.one('accounts/accountActivation');
+	
+	Account.activationToken = $stateParams.token;
+	
+	Account.put().then(function(response){
+	
+		  if (response.message == "activationLinkExpired") {
+			  $scope.activationMessage = "Link aktywacyjny wygasł.";
+			  $scope.messageStyle = "alert alert-info";
+			  $scope.hideMessage = false;
+		  }
+		  if (response.message == "alreadyActivated") {
+			  $scope.activationMessage = "Konto jest już aktywne. Zaloguj się.";
+			  $scope.messageStyle = "alert alert-info";
+			  $scope.hideMessage = false;
+		  }
+		  if (response.message =="accountActivated") {
+			  $scope.activationMessage = "Konto zostało aktywowane. Zaloguj się.";
+			  $scope.messageStyle = "alert alert-success";
+			  $scope.hideMessage = false;	  
+		  }
+		  
+		  if (response.message =="invalidActivationLink") {
+			  $scope.activationMessage = "Nieprawidłowy link aktywacyjny.";
+			  $scope.messageStyle = "alert alert-danger";
+			  $scope.hideMessage = false;	  
+		  }
+	});
+});
+
+Accounts.controller('AccountsController', function($scope, $timeout, $state, $stateParams, Restangular) {
 
 	$scope.Accounts = Restangular.all('accounts');
 	$scope.passwordReset = Restangular.one('accounts/passwordReset');
@@ -13,6 +132,9 @@ App.controller('AccountsController', function($scope, $timeout, $state, $statePa
 	$scope.user = {username:"", password:"", email:""};
 	
 	$scope.registerUser = function() {
+		
+		$scope.hideMessage = true;
+		
 		$scope.user.username = $scope.signup.username;
 		$scope.user.password = $scope.signup.password;
 		$scope.user.email = $scope.signup.email;
@@ -22,6 +144,8 @@ App.controller('AccountsController', function($scope, $timeout, $state, $statePa
 				if(response.message == "Create Success") {		
 					$scope.messageStyle = "alert alert-success";
 					$scope.hideMessage = false;
+					$scope.userNameUnique = true;
+					$scope.emailUnique = true;
 					$scope.resetRegisterForm();
 				}
 		},
@@ -46,6 +170,9 @@ App.controller('AccountsController', function($scope, $timeout, $state, $statePa
 	}
 	
 	$scope.sendResetPasswordEmail = function() { 
+		
+		$scope.hideMessage = true;
+		
 		$scope.Accounts.get($scope.reset.email)
 			.then(function(response) {			
 				if(response.message == "resetLinkSent") {
@@ -132,11 +259,5 @@ App.controller('AccountsController', function($scope, $timeout, $state, $statePa
 		
 		$scope.signup_form.$setPristine();
 	} 
-	
-	$scope.$on('$viewContentLoaded', function() {
-		
-		$scope.signup_form.$setPristine();
-		$scope.passwordReset_form.$setPristine();
-		$scope.newPassword_form.$setPristine();
-	});
 });
+		
