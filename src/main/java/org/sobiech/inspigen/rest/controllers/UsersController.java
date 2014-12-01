@@ -32,6 +32,11 @@ public class UsersController {
     	return userService.addUser(data);
     }
     
+    @RequestMapping(method = RequestMethod.GET)
+    public List<User> findAll(){
+       return userService.findAllUsers();
+    }
+    
     @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET)
     public List<User> findPage(@RequestParam("page") int page, @RequestParam("size") int size){
        return userService.findPage(page, size);

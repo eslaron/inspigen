@@ -1,7 +1,7 @@
 <div class="content"  ng-controller="UsersController">
 <div class="userList container col-md-3">
 <h2>Edycja użytkowników</h2>
-<b>ID: {{item.id}}</b><br /><br />
+<b>ID: {{id}}</b><br /><br />
 		<form name="editUser_form" ng-submit="editUser()" class="form-horizontal input-border" novalidate>
  
     						<div ng-hide="hideMessage" ng-class="messageStyle">
@@ -15,7 +15,7 @@
     								type="text" 
             						placeholder="Nazwa użytkownika" 
             						name="username" 
-            						ng-model="edit.username" 
+            						ng-model="user.username" 
             						ng-minlength=5
             						ng-maxlength=12 
             						ng-pattern="/^[A-z][A-z0-9]*$/"
@@ -31,7 +31,7 @@
     								type="password" 
             						placeholder="Hasło" 
             						name="password" 
-            						ng-model="edit.password" 
+            						ng-model="user.password" 
             						ng-minlength=5
             						ng-maxlength=16
             						ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/"
@@ -48,18 +48,20 @@
       								type="email" 
       								placeholder="Email" 
       								name="email" 
-      								ng-model="edit.email" 
+      								ng-model="user.email" 
       								ng-minlength=6 
       								ng-maxlength=40 
       								ng-model-options="{debounce: 1000}"
       								required />
 						</div>
 					</div> 
-					
-
-
+				
     <button type="submit" class="btn btn-success btn-sm" ng-disabled="editUser_form.$invalid">Zmień</button>
 </form>
 
+	<table>
+
+
+		
 </div>
 

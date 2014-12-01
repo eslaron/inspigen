@@ -1,5 +1,5 @@
-angular.module('inspigen', ['ui.router', 'ui.bootstrap', 'permission', 
-                            'inspigen.login', 'inspigen.accounts', 'inspigen.users', 'inspigen.services', 'inspigen.directives'])
+angular.module('inspigen', ['ui.router', 'ui.bootstrap', 'permission', 'ngResource','ngTasty',
+                            'inspigen.login', 'inspigen.accounts', 'inspigen.users', 'inspigen.services', 'inspigen.directives', 'inspigen.filters'])
 
 .run(function($rootScope, $state, $stateParams) {
 

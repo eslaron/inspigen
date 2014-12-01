@@ -1,4 +1,4 @@
-var Users = angular.module('inspigen.users', ['ui.router', 'restangular'])
+var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTable'])
 
 .config(['$stateProvider', function ($stateProvider) {
 	
@@ -27,7 +27,67 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular'])
        	  templateUrl: 'partials/admin/sidebar.html'
          },
          'content@': {
-       	  templateUrl: 'partials/admin/dashboard.html' 
+       	  templateUrl: 'partials/admin/dashboard.html',
+       	  controller: 'UsersController'
+         },
+       },
+       data: {
+           permissions: {
+             only: ['admin']
+           }
+       },
+       resolve: { 	
+    	   users: ['User','Context', function(User, Context) {  
+	      		return  User.loadUsersFromJson()
+	    	    .then(function(newlyLoadedUsers){
+	    	    	Context.all.users = User.getAllUsers();
+	    	    });
+    	   }]
+   	   }
+   })
+   
+      .state('user.admin.users', {
+     title: 'Panel wolontariusza',
+     abstract: false,
+     url: '/users',
+     views: {
+         'navbar@': {
+       	  templateUrl: 'partials/admin/navbar.html' 
+         },
+         'sidebar@': {
+       	  templateUrl: 'partials/admin/sidebar.html'
+         },
+         'content@': {
+       	  templateUrl: 'partials/admin/users.html',
+       	  controller: 'UsersController' 
+         },
+       },
+       data: {
+           permissions: {
+             only: ['admin']
+           }
+       }
+   })
+   
+   
+     .state('user.admin.users.edit', {
+     title: 'Panel wolontariusza',
+     abstract: false,
+     url: '/:id/edit',
+     views: {
+         'navbar@': {
+       	  templateUrl: 'partials/admin/navbar.html' 
+         },
+         'sidebar@': {
+       	  templateUrl: 'partials/admin/sidebar.html'
+         },
+         'content@': {
+       	  templateUrl: 'partials/admin/editUser.html',
+       	  controller: function($stateParams, $scope, User) {
+              $scope.id = $stateParams.id;
+              $scope.user = User.getUserById($stateParams.id);
+              $scope.isCollapsed = true;
+          } 
          },
        },
        data: {
@@ -87,90 +147,33 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular'])
 
 //KONTROLERY
 
-Users.controller('UsersController', function($scope, $state, $stateParams, Restangular, $filter, ngTableParams, users,  utils) {
+Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Context',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Context) {
 	
-	$scope.users = users;
+  $scope.all = Context.all;
+  $scope.active = Context.active;
+  $scope.activate = Context.activate;
+  
+  var data = $scope.all.users;
+  	    
+  $scope.tableParams = new ngTableParams({
+        page: 1,            // show first page
+        count: 10,          // count per page
+        sorting: {
+            id: 'asc'     // initial sorting
+        } 
+    }, {
+    	groupBy: 'role',
+        total: data.length, // length of data
+        getData: function($defer, params) {
+        	var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count())); 
+           
+        }
+   });
 	
-	$scope.isCollapsed = true;
-	
-	$scope.limit = 10;
-	$scope.entitySize = 0;
-	$scope.currentPage = 1;
-	$scope.selectedPage = 0;
-	
-	//$scope.User = Restangular.all('users');            
-	$scope.UserPage = Restangular.one('users?page='+$scope.currentPage+'&size='+$scope.limit);
-	$scope.UserFirstPage = Restangular.one('users/firstPage?size='+$scope.limit);
-	$scope.UserLastPage = Restangular.one('users/lastPage?size='+$scope.limit);
-	$scope.UserEntitySize = Restangular.one('users/entitySize');
-	
-	$scope.userList = [{id:"", username:"", password:"", email:"", role: "", enabled:"", accountNonLocked:"", accountNonExpired:"", credentialsNonExpired:"",
-		passwordToken:"", activationToken:"", passwordTokenExpiration:"", activationTokenExpiration:"", failedLogins: "", lastLoginAttempt:""}];
-	
-	$scope.pageCount = function() {
-		return  Math.round(($scope.entitySize / $scope.limit))+1;
-	}
-	
-	if($state.current.name == 'user.admin.users') {
-		
-		$scope.UserEntitySize.get().
-		then(function(response){
-			$scope.entitySize = response;
-				$scope.UserFirstPage.getList()
-				.then(function(response) {
-					$scope.userList = response;
-				});
-		});
-		
-		$scope.tableParams = new ngTableParams({ 
-			count: 0, // hides pager
-	        sorting: {
-	            name: 'desc'     
-	        }
-	    }, {
-	    	counts: [],
-	    	 
-	        getData: function($defer, params) {
-	        	
-	        var orderedData = params.sorting() ? $scope.userList = $filter('orderBy')($scope.userList, params.orderBy()) :  $scope.userList;
-	        
-	        $defer.resolve(orderedData);
-	        }
-	    });		
-	}
-		
-	
-	$scope.getPage = function() {
-		$scope.currentPage = $scope.selectedPage;
-		Restangular.one('users?page='+$scope.currentPage+'&size='+$scope.limit).getList()
-		.then(function(response) {
-			$scope.userList = response;
-	});			
-			$scope.tableParams = new ngTableParams({ 
-				count: 0, // hides pager
-		        sorting: {
-		            name: 'desc'     
-		        }
-		    }, {
-		    	counts: [],
-		    	 
-		        getData: function($defer, params) {
-		        	
-		        var orderedData = params.sorting() ? $scope.userList = $filter('orderBy')($scope.userList, params.orderBy()) :  $scope.userList;
-		        
-		        $defer.resolve(orderedData);
-		        }
-		    });		
-	};
-	
-	$scope.edit = {id:"", username:"", password:"", email:"", role: "", enabled:"", accountNonLocked:"", accountNonExpired:"", credentialsNonExpired:"",
-		passwordToken:"", activationToken:"", passwordTokenExpiration:"", activationTokenExpiration:"", failedLogins: "", lastLoginAttempt:""};
-	
-    $scope.editUser =  function(uid) {   
-    	
-    	$scope.item = utils.findById($scope.users, uid);
-    	$scope.edit = $filter('filter')($scope.userList, function (d) {return d.id === uid})[0];
-    	$state.go('user.admin.users.edit', $scope.item);
-    }    
-});
+	$scope.isCollapsed = true;	
+}]);
+
+
 		

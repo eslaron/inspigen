@@ -1,10 +1,6 @@
-'use strict';
+angular.module('inspigen.filters', [])
 
-/* Filters */
-
-var AppFilters = angular.module('AngularSpringApp.filters', []);
-
-AppFilters.filter('interpolate', ['version', function (version) {
+.filter('interpolate', ['version', function (version) {
     return function (text) {
         return String(text).replace(/\%VERSION\%/mg, version);
     }
@@ -12,10 +8,7 @@ AppFilters.filter('interpolate', ['version', function (version) {
 
 .filter('range', function() {
   return function(input, min, max) {
-	  
-
-	  
-	  
+	 
     min = parseInt(min);
     max = parseInt(max);
     for (var i=min; i<=max; i++)
