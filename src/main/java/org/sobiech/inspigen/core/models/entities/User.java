@@ -44,8 +44,8 @@ public class User extends BaseEntity implements UserDetails {
     
 	@Column(name = "accountNonLocked", columnDefinition = "TINYINT(1)")
     private Boolean accountNonLocked;
-    
-    @Column(name = "accountNonExpired", columnDefinition = "TINYINT(1)")
+
+	@Column(name = "accountNonExpired", columnDefinition = "TINYINT(1)")
     private Boolean accountNonExpired;
     
     @Column(name = "credentialsNonExpired", columnDefinition = "TINYINT(1)")
@@ -138,14 +138,27 @@ public class User extends BaseEntity implements UserDetails {
         this.enabled = enabled;
     }
     
+    
+    public Boolean getAccountNonLocked() {
+		return accountNonLocked;
+	}
+
     public void setAccountNonLocked(Boolean accountNonLocked) {
   		this.accountNonLocked = accountNonLocked;
   	}
- 
+    
+	public Boolean getAccountNonExpired() {
+		return accountNonExpired;
+	}
+
 	public void setAccountNonExpired(Boolean accountNonExpired) {
 		this.accountNonExpired = accountNonExpired;
 	}
-
+	
+	public Boolean getCredentialsNonExpired() {
+		return credentialsNonExpired;
+	}
+    
 	public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
@@ -201,22 +214,19 @@ public class User extends BaseEntity implements UserDetails {
 	//Czy konto nie wygasło
     @Override
     public boolean isAccountNonExpired() {
-        //return true = account is valid / not expired
-        return true; 
+        return this.getAccountNonExpired();
     }
 
     //Czy konto jest odblokowane
     @Override
     public boolean isAccountNonLocked() {
-        //return true = account is not locked
-        return true;
+    	return this.getAccountNonLocked();
     }
 
     //Czy has�o nie wygassło
     @Override
     public boolean isCredentialsNonExpired() {
-        //return true = password is valid / not expired
-        return true;
+    	return this.getCredentialsNonExpired();
     }
 
     //Czy konto jest włączone

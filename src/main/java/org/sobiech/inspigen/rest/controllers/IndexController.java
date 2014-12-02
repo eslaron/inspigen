@@ -43,6 +43,11 @@ public class IndexController {
         return "partials/admin/editUser";
 	}
 	
+	@RequestMapping("/partials/admin/addUser")
+    public String getAddUserPartial() {
+        return "partials/admin/addUser";
+	}
+	
 	@RequestMapping("/partials/admin/settings")
     public String getSettingsPartialPage() {
         return "partials/admin/settings";

@@ -45,7 +45,10 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 		      try {
 		    	
 		    	if (userByName != null) {
-		  		
+		    		if(userByName.getAccountNonLocked() == true) {
+			    		userByName.setFailedLogins(0);
+			    		userService.updateUser(userByName);
+		    		}
 		    		Date lastAttempt  = userByName.getLastLoginAttempt();
 			  		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			  		format.format(lastAttempt);

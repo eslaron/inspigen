@@ -1,9 +1,9 @@
 package org.sobiech.inspigen.core.services.impl;
 
 import java.security.SecureRandom;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,13 +18,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.sobiech.inspigen.core.models.DTO.UserDTO;
 import org.sobiech.inspigen.core.models.entities.Settings;
 import org.sobiech.inspigen.core.models.entities.User;
 import org.sobiech.inspigen.core.repositories.common.IGenericDao;
 import org.sobiech.inspigen.core.repositories.IUserDao;
 import org.sobiech.inspigen.core.services.EmailService;
 import org.sobiech.inspigen.core.services.UserService;
-import org.sobiech.inspigen.core.services.util.UsersList;
 
 import com.google.gson.JsonObject;
 
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User findUserById(int id) {
+	public User findUserById(long id) {
 		return dao.findOneById(id);
 	}
 	
@@ -101,8 +101,35 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<User> findAllUsers() {
-		return dao.findAll();
+	public List<UserDTO> findAllUsers() {
+		
+		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+		
+		List<User> users = dao.findAll();
+		
+		for(User user : users) {
+			
+			UserDTO userDto = new UserDTO();
+			
+			userDto.setId(user.getId());
+			userDto.setUsername(user.getUsername());
+			userDto.setEmail(user.getEmail());
+			userDto.setRole(user.getRole());
+			userDto.setEnabled(user.getEnabled());
+			
+			if(user.getAccountNonLocked() == true)
+				userDto.setLocked(false);
+			
+			if(user.getAccountNonLocked() == false)
+				userDto.setLocked(true);
+			
+			userDto.setFailedLogins(user.getFailedLogins());
+			userDto.setLastLoginAttempt(user.getLastLoginAttempt());
+
+			userDtoList.add(userDto);
+		}
+		
+		return userDtoList;
 	}
 	
 	@Override
@@ -129,10 +156,41 @@ public class UserServiceImpl implements UserService {
 	public void updateUser(User data) {
 		dao.update(data);
 	}
+	
+	@Override
+	public void updateUser(UserDTO data) {
+		
+		User user = findUserById(data.getId());
+		
+		user.setUsername(data.getUsername());
+		
+		if(data.getPassword() != null) 
+			user.setPassword(data.getPassword());
+		
+		user.setEmail(data.getEmail());
+		user.setRole(data.getRole());
+		user.setEnabled(data.getEnabled());
+		
+		if(data.getLocked() == true) 
+			user.setAccountNonLocked(false);
+		
+		if(data.getLocked() == false) {
+			user.setAccountNonLocked(true);
+			user.setFailedLogins(0);
+		}
+		
+		dao.update(user);
+	}
 
 	@Override
 	public void deleteUser(User data) {
 		dao.delete(data);
+	}
+	
+
+	@Override
+	public void deleteUserById(long id) {
+		dao.deleteById(id);
 	}
 	
     @Override

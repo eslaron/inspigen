@@ -1,11 +1,11 @@
 <div class="content"  ng-controller="UsersController">
 <div class="userList container col-md-3">
-<h2>Edycja użytkowników</h2>
-<b>ID: {{id}}</b><br /><br />
-		<form name="editUser_form" ng-submit="editUser()" class="form-horizontal input-border" novalidate>
+<h2>{{editedUser}} - edycja</h2>
+ID użytkownika: <b>{{user.id}}</b><br /><br />
+		<form name="editUser_form" ng-submit="editUser(user)" class="form-horizontal input-border" novalidate>
  
     						<div ng-hide="hideMessage" ng-class="messageStyle">
-				                   {{activationMessage}}     
+				                   {{message}}     
 				   			</div>
  
 					<div class="form-group">
@@ -15,12 +15,31 @@
     								type="text" 
             						placeholder="Nazwa użytkownika" 
             						name="username" 
-            						ng-model="user.username" 
+            						ng-model="username" 
             						ng-minlength=5
             						ng-maxlength=12 
             						ng-pattern="/^[A-z][A-z0-9]*$/"
             						ng-model-options="{debounce: 1000}"
             						required />
+            						
+            					<small class="error-message" ng-show="duplicateUsername && !editUser_form.username.$dirty">
+    								Podana nazwa użytkownika jest już zajęta.
+								</small>
+        
+  							<div class="error-container" ng-show="editUser_form.username.$dirty && editUser_form.username.$invalid">
+							    <small class="error-message" ng-show="editUser_form.username.$error.required">
+							    	Nazwa użytkownika nie może być pusta.</small>
+							    <small class="error-message" ng-show="
+							    !editUser_form.username.$error.minlength
+							    && !editUser_form.username.$error.maxlength
+							    && editUser_form.username.$error.pattern">
+							    	Musi zaczynać się od litery oraz zawierać tylko litery i cyfry</small>	
+							    <small class="error-message" ng-show="
+							    	!editUser_form.username.$error.required 
+							    	&& editUser_form.username.$error.minlength
+									|| editUser_form.username.$error.maxlength">
+							    	Nazwa użytkownika musi się składać z przynajmniej 5 i niewięcej niż 12 znaków.</small>
+  							</div>
 						</div>
 					</div>
 					
@@ -31,12 +50,27 @@
     								type="password" 
             						placeholder="Hasło" 
             						name="password" 
-            						ng-model="user.password" 
+            						ng-model="password" 
             						ng-minlength=5
             						ng-maxlength=16
             						ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/"
-            						ng-model-options="{debounce: 1000}"
-            						required />
+            						ng-model-options="{debounce: 1000}" />
+            						
+            				 
+  							<div class="error-container" ng-show="editUser_form.password.$dirty 
+  							&& editUser_form.password.$invalid">
+  							
+							    <small class="error-message" ng-show="
+							    !editUser_form.password.$error.minlength
+							    && !editUser_form.password.$error.maxlength
+							    && editUser_form.password.$error.pattern">
+							    	Hasło musi zawierać przynajmniej jedno duzą literę i jedną cyfrę.</small>	
+							    <small class="error-message" ng-show="
+							    	!editUser_form.password.$error.required 
+							    	&& editUser_form.password.$error.minlength
+									|| editUser_form.password.$error.maxlength">
+							    	Hasło musi się składać z przynajmniej 5 i niewięcej niż 16 znaków.</small>
+  							</div>
   		
 						</div>
 					</div>
@@ -48,13 +82,53 @@
       								type="email" 
       								placeholder="Email" 
       								name="email" 
-      								ng-model="user.email" 
+      								ng-model="email" 
       								ng-minlength=6 
       								ng-maxlength=40 
       								ng-model-options="{debounce: 1000}"
       								required />
+      								
+      								
+      								<small class="error-message" ng-show="duplicateEmail && !editUser_form.email.$dirty">
+    									Podany email jest już zajęty.
+									</small>
+      								
+      								<div class="error-container" ng-show="editUser_form.email.$dirty 
+    						&& editUser_form.email.$invalid">
+							    <small class="error-message" ng-show="editUser_form.email.$error.required">
+							    	Podaj adres email.</small>
+							    <small class="error-message" ng-show="
+							    !editUser_form.email.$error.minlength
+							    && !editUser_form.email.$error.maxlength
+							    && editUser_form.email.$error.email">
+							    	Nieprawidłowy adres email.</small>	
+							    <small class="error-message" ng-show="
+							    	!editUser_form.email.$error.required 
+							    	&& editUser_form.email.$error.minlength
+									|| editUser_form.email.$error.maxlength">
+							    	Email musi się składał z przynajmniej 6 i niewięcej niż 40 znaków.</small>
+    						</div>
 						</div>
 					</div> 
+					
+						<div class="form-group">
+							<div class="col-sm-12">
+		    					<select  class="form-control" ng-model="selectedRole.value">
+		        					<option ng-repeat="item in roles" value="{{item.value}}" ng-selected="selectedRole.value == item.value">{{item.key}}</option>
+		      					</select>
+							</div>
+						</div> 
+						<div class="form-group">
+							<div class="col-sm-12">
+		    				Aktywny <input type="checkbox" ng-model="enabled">
+							</div>
+						</div> 	
+						<div class="form-group">
+							<div class="col-sm-12">
+		    				Zablokowany <input type="checkbox" ng-model="locked">
+							</div>
+						</div> 
+						
 				
     <button type="submit" class="btn btn-success btn-sm" ng-disabled="editUser_form.$invalid">Zmień</button>
 </form>
