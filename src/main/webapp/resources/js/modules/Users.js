@@ -72,7 +72,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
    .state('user.admin.users.add', {
 	     title: 'Panel wolontariusza',
 	     abstract: false,
-	     url: '/add',
+	     url: '/:users/add',
 	     views: {
 	         'navbar@': {
 	       	  templateUrl: 'partials/admin/navbar.html' 
@@ -82,7 +82,11 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 	         },
 	         'content@': {
 	       	  templateUrl: 'partials/admin/addUser.html',
-	       	  controller: 'UsersController'	            
+	       	  controller: function($stateParams, $scope, User) {
+	              $scope.user = $stateParams.user;
+	              //$scope.user = User.User.getAllUsers();
+	              $scope.isCollapsed = true;
+	          }             
 	         }
 	       },
 	       data: {
@@ -177,7 +181,7 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   $scope.activate = Context.activate;
   
   var data = $scope.all.users;
-  
+   
   $scope.username = $scope.user.username;
   $scope.password = $scope.user.password;
   $scope.email = $scope.user.email;
@@ -226,10 +230,39 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
 	  }
   }
   
+  
+  $scope.addUser = function(add) {
+		 
+		 $scope.duplicateUsername = false;
+		 $scope.duplicateEmail = false; 
+		 $scope.addUser_form.username.$setPristine();
+		 $scope.addUser_form.email.$setPristine(); 
+
+		  $scope.findDuplicateUsername($scope.add.username);
+		  $scope.findDuplicateEmail($scope.add.email);
+		  
+		  if($scope.duplicateUsername == false 
+				  	&& $scope.duplicateEmail == false) {
+		  
+			  var Add = Restangular.one('users');
+							  
+			  Add.post($scope.add).then(function(response){
+				  $scope.duplicateUsername = false;
+				  $scope.duplicateEmail = false;
+				  $scope.messageStyle = "alert alert-success";
+				  $scope.hideMessage = false;
+				  $scope.message = "Użytkownik został dodany";	
+				  
+			  });
+		  }
+	  }
+  
   $scope.editUser = function(user) {
-	  
-	  $scope.editUser_form.username.$setPristine();
-	  $scope.editUser_form.email.$setPristine(); 
+	 
+	 $scope.duplicateUsername = false;
+	 $scope.duplicateEmail = false; 
+	 $scope.editUser_form.username.$setPristine();
+	 $scope.editUser_form.email.$setPristine(); 
 
 	  $scope.findDuplicateUsername($scope.username);
 	  $scope.findDuplicateEmail($scope.email);
