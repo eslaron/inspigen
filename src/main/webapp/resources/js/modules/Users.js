@@ -72,7 +72,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
    .state('user.admin.users.add', {
 	     title: 'Panel wolontariusza',
 	     abstract: false,
-	     url: '/:users/add',
+	     url: '/add',
 	     views: {
 	         'navbar@': {
 	       	  templateUrl: 'partials/admin/navbar.html' 
@@ -82,11 +82,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 	         },
 	         'content@': {
 	       	  templateUrl: 'partials/admin/addUser.html',
-	       	  controller: function($stateParams, $scope, User) {
-	              $scope.user = $stateParams.user;
-	              //$scope.user = User.User.getAllUsers();
-	              $scope.isCollapsed = true;
-	          }             
+	       	  controller: 'UsersController'      
 	         }
 	       },
 	       data: {
@@ -186,9 +182,9 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   $scope.password = $scope.user.password;
   $scope.email = $scope.user.email;
   
-  $scope.roles = [{key: "Administrator", value:"ROLE_ADMIN"},
+  $scope.roles = [{key: "Wolontariusz", value:"ROLE_USER"},
                   {key: "Koordynator", value:"ROLE_MOD"},
-                  {key: "Wolontariusz", value:"ROLE_USER"}];
+                  {key: "Administrator", value:"ROLE_ADMIN"}];
   
   $scope.selectedRole = {key: "", value:""}
   $scope.selectedRole.value = $scope.user.role;
@@ -202,71 +198,74 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   $scope.duplicateUsername = false;
   $scope.duplicateEmail = false;
   
-  $scope.findDuplicateUsername = function(username) {
-	    
-	  var newUsername = username.toLowerCase(); 
-	  var oldUsername = $scope.user.username.toLowerCase(); 
-	
-	  if(newUsername != oldUsername) {
+  $scope.findDuplicate = function(type, value) { 
 		  for(var i = data.length - 1; i >= 0; i--) {
-			    if(data[i].username.toLowerCase() == newUsername) {
+			  if(type == "username") {
+			    if(data[i].username.toLowerCase() == value) {
 			    	$scope.duplicateUsername = true;
 			    }
+			  }
+			  if(type == "email") {
+				    if(data[i].email.toLowerCase() == value) {
+				    	$scope.duplicateEmail = true;
+				    }
+			  }
 			}
-  	  }
   }
-  
-  $scope.findDuplicateEmail = function(email) {
-	  
-	  var newEmail = email.toLowerCase();
-	  var oldEmail = $scope.user.email.toLowerCase();
-	  
-	  if(newEmail != oldEmail) {
-		  for(var i = data.length - 1; i >= 0; i--) {
-			    if(data[i].email.toLowerCase() == newEmail) {
-			    	$scope.duplicateEmail = true;
-			    }
-			}
-	  }
-  }
-  
   
   $scope.addUser = function(add) {
-		 
+	  
+	  	 var username = $scope.add.username.toLowerCase();
+		 var email = $scope.add.email.toLowerCase();
+ 
 		 $scope.duplicateUsername = false;
 		 $scope.duplicateEmail = false; 
 		 $scope.addUser_form.username.$setPristine();
 		 $scope.addUser_form.email.$setPristine(); 
 
-		  $scope.findDuplicateUsername($scope.add.username);
-		  $scope.findDuplicateEmail($scope.add.email);
-		  
+		 $scope.findDuplicate("username", username);
+		 $scope.findDuplicate("email", email);
+		 
 		  if($scope.duplicateUsername == false 
 				  	&& $scope.duplicateEmail == false) {
-		  
-			  var Add = Restangular.one('users');
-							  
+		 		  
+			  var Add = Restangular.all('users');
+			  		  
 			  Add.post($scope.add).then(function(response){
 				  $scope.duplicateUsername = false;
 				  $scope.duplicateEmail = false;
 				  $scope.messageStyle = "alert alert-success";
 				  $scope.hideMessage = false;
-				  $scope.message = "Użytkownik został dodany";	
-				  
+				  $scope.message = "Użytkownik został dodany";			
+				  //data.push($scope.add);
+				  return  User.loadUsersFromJson()
+		    	    .then(function(newlyLoadedUsers){
+		    	    	Context.all.users = User.getAllUsers();
+		    	    });
 			  });
 		  }
 	  }
   
   $scope.editUser = function(user) {
 	 
+	 var newUsername = $scope.username.toLowerCase(); 
+	 var oldUsername = $scope.user.username.toLowerCase(); 
+	 var newEmail = $scope.email.toLowerCase();
+	 var oldEmail = $scope.user.email.toLowerCase();
+	 
 	 $scope.duplicateUsername = false;
 	 $scope.duplicateEmail = false; 
 	 $scope.editUser_form.username.$setPristine();
 	 $scope.editUser_form.email.$setPristine(); 
-
-	  $scope.findDuplicateUsername($scope.username);
-	  $scope.findDuplicateEmail($scope.email);
+ 
+	 if(newUsername != oldUsername) {
+		  $scope.findDuplicate("username", newUsername);
+	  }
 	  
+	  if(newEmail != oldEmail) {
+		  $scope.findDuplicate("email", newEmail);
+	  }
+	   
 	  if($scope.duplicateUsername == false 
 			  	&& $scope.duplicateEmail == false) {
 	  
@@ -313,10 +312,11 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
 			       data.splice(i, 1);
 			    }
 			}
+		  
+		  $scope.tableParams.reload();
 	  });
   }
-
-  	    
+    
   $scope.tableParams = new ngTableParams({
         page: 1,            // show first page
         count: 10,          // count per page
@@ -335,6 +335,3 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
 	
 	$scope.isCollapsed = true;	
 }]);
-
-
-		

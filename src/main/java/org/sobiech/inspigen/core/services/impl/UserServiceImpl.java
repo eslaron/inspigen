@@ -67,7 +67,10 @@ public class UserServiceImpl implements UserService {
     	
     	data.setPassword(encodedPassword);
     	data.setPasswordToken(passwordToken);
-    	data.setRole("ROLE_USER");
+    	
+    	if(data.getRole() == null)
+    		data.setRole("ROLE_USER");
+    	
     	data.setEnabled(false);
     	data.setAccountNonExpired(true);
     	data.setAccountNonLocked(true);
@@ -273,8 +276,8 @@ public class UserServiceImpl implements UserService {
 		
 		HttpStatus responseStatus = HttpStatus.CREATED;
     	JsonObject jsonResponse = new JsonObject();
-    	User userFoundByName = findUserByName(data.getUsername());
-    	User userFoundByEmail = findUserByEmail(data.getEmail());
+    	User userFoundByName = findUserByName(data.getUsername().toLowerCase());
+    	User userFoundByEmail = findUserByEmail(data.getEmail().toLowerCase());
     	
 			boolean userNameFound = false;
 			boolean emailFound =  false;

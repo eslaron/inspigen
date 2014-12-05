@@ -4,7 +4,7 @@
 <form name="addUser_form" ng-submit="addUser(add)" class="form-horizontal input-border" novalidate>
  
     						<div ng-hide="hideMessage" ng-class="messageStyle">
-				                   {{activationMessage}}     
+				                   {{message}}     
 				   			</div>
  
 					<div class="form-group">
@@ -21,7 +21,7 @@
             						ng-model-options="{debounce: 1000}"
             						required />
         	
-        						<small class="error-message" ng-show="duplicateUsername && !editUser_form.username.$dirty">
+        						<small class="error-message" ng-show="duplicateUsername && !addUser_form.username.$dirty">
     								Podana nazwa użytkownika jest już zajęta.
 								</small>
         			
@@ -88,7 +88,7 @@
       								ng-model-options="{debounce: 1000}"
       								required />
       						
-      							<small class="error-message" ng-show="duplicateEmail && !editUser_form.email.$dirty">
+      							<small class="error-message" ng-show="duplicateEmail && !addUser_form.email.$dirty">
     									Podany email jest już zajęty.
 									</small>
       						
@@ -111,7 +111,7 @@
 					</div> 
 					<div class="form-group">
 							<div class="col-sm-12">
-		    					<select  class="form-control" ng-model="selectedRole.value">
+		    					<select  class="form-control" ng-model="add.role">
 		        					<option ng-repeat="item in roles" value="{{item.value}}">{{item.key}}</option>
 		      					</select>
 							</div>
