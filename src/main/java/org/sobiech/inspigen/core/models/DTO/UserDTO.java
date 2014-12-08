@@ -14,9 +14,9 @@ public class UserDTO {
     
     private String role;
     
-    private Boolean enabled;
-    
-    private Boolean locked;
+    private String enabled;
+
+	private String locked;
 	
 	private int failedLogins;
 	
@@ -66,19 +66,19 @@ public class UserDTO {
 		this.role = role;
 	}
 
-	public Boolean getEnabled() {
+    public String getEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(Boolean enabled) {
+	public void setEnabled(String enabled) {
 		this.enabled = enabled;
 	}
 
-	public Boolean getLocked() {
+	public String getLocked() {
 		return locked;
 	}
 
-	public void setLocked(Boolean locked) {
+	public void setLocked(String locked) {
 		this.locked = locked;
 	}
 

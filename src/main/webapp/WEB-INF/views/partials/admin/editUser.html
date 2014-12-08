@@ -113,8 +113,8 @@ ID użytkownika: <b>{{user.id}}</b><br /><br />
 					
 						<div class="form-group">
 							<div class="col-sm-12">
-		    					<select  class="form-control" ng-model="selectedRole.value">
-		        					<option ng-repeat="item in roles" value="{{item.value}}" ng-selected="selectedRole.value == item.value">{{item.key}}</option>
+		    					<select  class="form-control" ng-model="selectedRole.key">
+		        					<option ng-repeat="item in roles" value="{{item.key}}" ng-selected="selectedRole.key == item.key">{{item.key}}</option>
 		      					</select>
 							</div>
 						</div> 
@@ -130,7 +130,7 @@ ID użytkownika: <b>{{user.id}}</b><br /><br />
 						</div> 
 						
 				
-    <button type="submit" class="btn btn-success btn-sm" ng-disabled="editUser_form.$invalid">Zmień</button>
+    <button type="submit" class="btn btn-success btn-sm" ng-disabled="editUser_form.$invalid || editUser_form.$pristine">Zmień</button>
 </form>
 
 	<table>

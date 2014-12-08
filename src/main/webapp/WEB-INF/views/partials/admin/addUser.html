@@ -112,13 +112,18 @@
 					<div class="form-group">
 							<div class="col-sm-12">
 		    					<select  class="form-control" ng-model="add.role">
-		        					<option ng-repeat="item in roles" value="{{item.value}}">{{item.key}}</option>
+		        					<option ng-repeat="item in roles" value="{{item.key}}" ng-selected="item.key == 'Wolontariusz'">{{item.key}}</option>
 		      					</select>
+		      						<div class="error-container" ng-show="addUser_form.role.$dirty 
+    						&& addUser_form.role.$invalid">
+							    <small class="error-message" ng-show="addUser_form.role.$error.required">
+							    	Wybierz rolę użytkownika.</small>
+							    	</div>
 							</div>
 						</div> 
 						<div class="form-group">
 							<div class="col-sm-12">
-		    				Aktywny <input type="checkbox" ng-model="add.enabled">
+		    				Aktywny <input type="checkbox" ng-model="optionalEnabled">
 							</div>
 						</div> 
 

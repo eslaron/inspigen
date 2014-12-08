@@ -182,21 +182,30 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   $scope.password = $scope.user.password;
   $scope.email = $scope.user.email;
   
-  $scope.roles = [{key: "Wolontariusz", value:"ROLE_USER"},
-                  {key: "Koordynator", value:"ROLE_MOD"},
-                  {key: "Administrator", value:"ROLE_ADMIN"}];
+  $scope.roles = [{key: "Wolontariusz"},
+                  {key: "Koordynator"},
+                  {key: "Administrator"}];
   
-  $scope.selectedRole = {key: "", value:""}
-  $scope.selectedRole.value = $scope.user.role;
+  $scope.selectedRole = {key: ""}
+  $scope.selectedRole.key = $scope.user.role;
   
-  $scope.enabled = $scope.user.enabled;
-  $scope.locked = $scope.user.locked;
+  $scope.optionalEnabled = false;
+  
+  if($scope.user.enabled == "Tak")
+	  $scope.enabled = true;
+  if($scope.user.enabled == "Nie")
+	  $scope.enabled = false;
+  if($scope.user.locked == "Tak")
+	  $scope.locked = true;
+  if($scope.user.locked == "Nie")
+	  $scope.locked = false;
   
   $scope.editedUser = $scope.user.username;
-  $scope.hideMessage = true;
-  $scope.message = '';
+  
   $scope.duplicateUsername = false;
   $scope.duplicateEmail = false;
+  $scope.hideMessage = true;
+  $scope.message = '';
   
   $scope.findDuplicate = function(type, value) { 
 		  for(var i = data.length - 1; i >= 0; i--) {
@@ -215,6 +224,8 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   
   $scope.addUser = function(add) {
 	  
+	  	$scope.hideMessage = true;
+	  
 	  	 var username = $scope.add.username.toLowerCase();
 		 var email = $scope.add.email.toLowerCase();
  
@@ -230,6 +241,12 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
 				  	&& $scope.duplicateEmail == false) {
 		 		  
 			  var Add = Restangular.all('users');
+			  	
+			  if( $scope.optionalEnabled == true)
+				  $scope.add.enabled = "Tak";
+			  
+			  if( $scope.optionalEnabled == false) 
+				  $scope.add.enabled = "Nie";
 			  		  
 			  Add.post($scope.add).then(function(response){
 				  $scope.duplicateUsername = false;
@@ -237,11 +254,28 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
 				  $scope.messageStyle = "alert alert-success";
 				  $scope.hideMessage = false;
 				  $scope.message = "Użytkownik został dodany";			
-				  //data.push($scope.add);
+
 				  return  User.loadUsersFromJson()
 		    	    .then(function(newlyLoadedUsers){
 		    	    	Context.all.users = User.getAllUsers();
 		    	    });
+			  }, function(error) {
+				  $scope.error = error.data;
+				  
+					if($scope.error.description == "duplicateUser") {
+						$scope.duplicateUsername = true;
+						$scope.addUser_form.username.$setPristine();
+					}
+					if($scope.error.description  == "duplicateEmail") {
+						$scope.duplicateEmail = true; 
+						$scope.addUser_form.email.$setPristine();
+					}
+					if($scope.error.description  == "duplicateUser&Email") {
+						$scope.duplicateUsername = true;
+						$scope.duplicateEmail = true; 
+						$scope.addUser_form.username.$setPristine();
+						$scope.addUser_form.email.$setPristine();
+					}
 			  });
 		  }
 	  }
@@ -270,14 +304,23 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
 			  	&& $scope.duplicateEmail == false) {
 	  
 		  var Edit = Restangular.one('users');
+		  
+		  if($scope.enabled == true)
+			  $scope.user.enabled = "Tak";
+		  if($scope.enabled == false)
+			  $scope.user.enabled = "Nie";
+		  if($scope.locked == true)
+			  $scope.user.locked = "Tak";
+		  if($scope.locked == false)
+			  $scope.user.locked = "Nie";
 			
 		  Edit.id = $scope.user.id;
 		  Edit.username = $scope.username;
 		  Edit.password = $scope.password;
 		  Edit.email = $scope.email;
-		  Edit.role = $scope.selectedRole.value;
-		  Edit.enabled = $scope.enabled;
-		  Edit.locked = $scope.locked;
+		  Edit.role = $scope.selectedRole.key;
+		  Edit.enabled = $scope.user.enabled;
+		  Edit.locked = $scope.user.locked;
 		  
 		  Edit.put().then(function(response){
 			  $scope.duplicateUsername = false;
@@ -289,9 +332,9 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
 			  $scope.user.username = $scope.username; 
 			  $scope.user.password = $scope.password; 
 			  $scope.user.email =  $scope.email;
-			  $scope.user.role = $scope.selectedRole.value;
-			  $scope.user.enabled = $scope.enabled;
-			  $scope.user.locked = $scope.locked;  
+			  
+			  $scope.user.role = $scope.selectedRole.key;
+			  			  
 		  });
 	  }
   }
@@ -322,14 +365,17 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
         count: 10,          // count per page
         sorting: {
             id: 'asc'     // initial sorting
-        } 
+        }
     }, {
-    	groupBy: 'role',
         total: data.length, // length of data
         getData: function($defer, params) {
+        	        	
         	var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count())); 
-           
+        	var filteredData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData; 
+        	
+        	params.total(filteredData.length); // set total for recalc pagination
+        	
+            $defer.resolve(filteredData.slice((params.page() - 1) * params.count(), params.page() * params.count()));          
         }
    });
 	

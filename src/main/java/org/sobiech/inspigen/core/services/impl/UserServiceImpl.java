@@ -57,30 +57,56 @@ public class UserServiceImpl implements UserService {
     
     // UŻYTKOWNIK
 	@Override
-	public void createUser(User data){
+	public void createUser(UserDTO data){
 		
+		User newUser = new User(); 
+		
+		newUser.setUsername(data.getUsername());
+	
      	String password = data.getPassword();
-    	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(data));
-    	String passwordToken = setToken();
-    	String activationToken = setToken();
-    	Date activationTokenExpiration = setTokenExpirationDate();
+    	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(newUser));
+    	newUser.setPassword(encodedPassword);
     	
-    	data.setPassword(encodedPassword);
-    	data.setPasswordToken(passwordToken);
+    	newUser.setEmail(data.getEmail());
+    	
+    	String passwordToken = setToken();
+      	newUser.setPasswordToken(passwordToken);
+      	
+    	String activationToken = setToken();
+    	newUser.setActivationToken(activationToken);
+    	
+    	Date activationTokenExpiration = setTokenExpirationDate();
+    	newUser.setActivationTokenExpiration(activationTokenExpiration);
     	
     	if(data.getRole() == null)
-    		data.setRole("ROLE_USER");
+    		newUser.setRole("ROLE_USER");
     	
-    	data.setEnabled(false);
-    	data.setAccountNonExpired(true);
-    	data.setAccountNonLocked(true);
-    	data.setActivationToken(activationToken);
-    	data.setCredentialsNonExpired(true);
-    	data.setActivationTokenExpiration(activationTokenExpiration);
-
-		dao.create(data);
+    	if(data.getRole().equals("Wolontariusz"))
+    		newUser.setRole("ROLE_USER");
+    	
+    	if(data.getRole().equals("Koordynator"))
+    		newUser.setRole("ROLE_MOD");
+    	
+    	if(data.getRole().equals("Administrator"))
+    		newUser.setRole("ROLE_ADMIN");
+    	
+    	if(data.getEnabled() == null)
+    		newUser.setEnabled(false);
+    	
+    	if(data.getEnabled().equals("Tak"))
+    		newUser.setEnabled(true);
+    	
+    	if(data.getEnabled().equals("Nie"))
+        	newUser.setEnabled(false);
+    	
+    	newUser.setAccountNonLocked(true);
+    	newUser.setAccountNonExpired(true);
+    	newUser.setCredentialsNonExpired(true);
+    
+		dao.create(newUser);
 		
-    	emailService.sendTokenMail(data.getEmail(), "activationToken", activationToken);
+		if(newUser.getEnabled() == false)
+			emailService.sendTokenMail(data.getEmail(), "activationToken", activationToken);
 	}
 	
 	@Override
@@ -117,14 +143,29 @@ public class UserServiceImpl implements UserService {
 			userDto.setId(user.getId());
 			userDto.setUsername(user.getUsername());
 			userDto.setEmail(user.getEmail());
-			userDto.setRole(user.getRole());
-			userDto.setEnabled(user.getEnabled());
+			
+			String role = user.getRole();
+
+			if(role.contains("ROLE_USER"))
+				userDto.setRole("Wolontariusz");
+			
+			if(role.contains("ROLE_MOD"))
+				userDto.setRole("Koordynator");
+			
+			if(role.contains("ROLE_ADMIN"))
+				userDto.setRole("Administrator");
+			
+			if(user.getEnabled() == true)
+				userDto.setEnabled("Tak");
+			
+			if(user.getEnabled() == false)
+				userDto.setEnabled("Nie");
 			
 			if(user.getAccountNonLocked() == true)
-				userDto.setLocked(false);
+				userDto.setLocked("Nie");
 			
 			if(user.getAccountNonLocked() == false)
-				userDto.setLocked(true);
+				userDto.setLocked("Tak");
 			
 			userDto.setFailedLogins(user.getFailedLogins());
 			userDto.setLastLoginAttempt(user.getLastLoginAttempt());
@@ -135,26 +176,6 @@ public class UserServiceImpl implements UserService {
 		return userDtoList;
 	}
 	
-	@Override
-	public List<User> findFirstPage(int size) {
-		return dao.findFirstPage(size);
-	}
-
-	@Override
-	public List<User> findPage(int page, int size) {
-		return dao.findPage(page, size);
-	}
-
-	@Override
-	public List<User> findLastPage(int size) {
-		return dao.findLastPage(size);
-	}
-
-	@Override
-	public Long entitySize() {
-		return dao.entitySize();
-	}
-
 	@Override
 	public void updateUser(User data) {
 		dao.update(data);
@@ -171,13 +192,26 @@ public class UserServiceImpl implements UserService {
 			user.setPassword(data.getPassword());
 		
 		user.setEmail(data.getEmail());
-		user.setRole(data.getRole());
-		user.setEnabled(data.getEnabled());
 		
-		if(data.getLocked() == true) 
+		if(data.getRole().equals("Wolontariusz"))
+			user.setRole("ROLE_USER");
+		
+		if(data.getRole().equals("Koordynator"))
+			user.setRole("ROLE_MOD");
+		
+		if(data.getRole().equals("Administrator"))
+			user.setRole("ROLE_ADMIN");
+	
+		if(data.getEnabled().equals("Tak"))
+			user.setEnabled(true);
+		
+		if(data.getEnabled().equals("Nie"))
+			user.setEnabled(false);
+		
+		if(data.getLocked().equals("Tak")) 
 			user.setAccountNonLocked(false);
 		
-		if(data.getLocked() == false) {
+		if(data.getLocked().equals("Nie")) {
 			user.setAccountNonLocked(true);
 			user.setFailedLogins(0);
 		}
@@ -272,7 +306,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseEntity<String> addUser(User data) {
+	public ResponseEntity<String> addUser(UserDTO data) {
 		
 		HttpStatus responseStatus = HttpStatus.CREATED;
     	JsonObject jsonResponse = new JsonObject();

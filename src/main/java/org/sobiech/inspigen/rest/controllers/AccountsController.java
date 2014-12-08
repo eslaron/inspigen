@@ -1,5 +1,6 @@
 package org.sobiech.inspigen.rest.controllers;
 
+import org.sobiech.inspigen.core.models.DTO.UserDTO;
 import org.sobiech.inspigen.core.models.entities.User;
 import org.sobiech.inspigen.core.services.EmailService;
 import org.sobiech.inspigen.core.services.UserService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.JsonObject;
 
 @RestController
@@ -26,7 +28,7 @@ public class AccountsController {
 	EmailService emailService;
 	
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> create(@RequestBody User data) {
+    public ResponseEntity<String> create(@RequestBody UserDTO data) {
 
     	return userService.addUser(data);
     }

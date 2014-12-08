@@ -5,22 +5,13 @@
 					<div ng-hide="hideMessage" ng-class="messageStyle">
 				                   {{message}}     
 				   			</div>
-		 <table ng-table="tableParams" class="table">
-			 <tbody ng-repeat="group in $groups">
-		        <tr class="ng-table-group">
-		            <td colspan="{{$columns.length}}">
-		                <a href="" ng-click="group.$hideRows = !group.$hideRows">
-		                    <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
-		                    <strong>{{ group.value }}</strong>
-		                </a>
-		            </td>
-		        </tr>
-		        <tr ng-hide="group.$hideRows" ng-repeat="user in group.data">
-		           <td data-title="'Id'" sortable="'id'">{{user.id}}</td>
-		            <td data-title="'Nazwa użytkownika'" sortable="'username'">{{user.username}}</td>
-		            <td data-title="'Rola'" sortable="'role'">{{user.role}}</td>
-		            <td data-title="'Aktywny'" sortable="'enabled'">{{user.enabled}}</td>
-		            <td data-title="'Zablokowany'" sortable="'locked'">{{user.locked}}</td>
+		 <table ng-table="tableParams" show-filter="true" class="table"> 
+		        <tr ng-repeat="user in $data">
+		            <td data-title="'Id'" sortable="'id'">{{user.id}}</td>
+		            <td data-title="'Nazwa użytkownika'" sortable="'username'" filter="{ 'username': 'text' }">{{user.username}}</td>
+		            <td data-title="'Rola'" sortable="'role'" filter="{ 'role': 'text' }">{{user.role}}</td>
+		            <td data-title="'Aktywny'" sortable="'enabled'" filter="{ 'enabled': 'text' }">{{user.enabled}}</td>
+		            <td data-title="'Zablokowany'" sortable="'locked'" filter="{ 'locked': 'text' }">{{user.locked}}</td>
 		            <td data-title="'Nieudane logowania'" sortable="'failedLogins'">{{user.failedLogins}}</td>
 		            <td data-title="'Ostatnia próba'" sortable="'lastLoginAttempt'">{{user.lastLoginAttempt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 		            <td data-title="'Operacje'">
@@ -29,6 +20,5 @@
 		            	<a ng-click="deleteUser(user.id)">Usuń</a>
 		            </td>
 		        </tr>
-	    	</tbody> 
         </table> 	
 </div>
