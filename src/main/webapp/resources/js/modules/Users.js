@@ -42,6 +42,13 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 	    	    .then(function(newlyLoadedUsers){
 	    	    	Context.all.users = User.getAllUsers();
 	    	    });
+    	   }],
+    	   
+    	   persons: ['Person','Context', function(Person, Context) {  
+	      		return  Person.loadPersonsFromJson()
+	    	    .then(function(newlyLoadedPersons){
+	    	    	Context.all.persons = Person.getAllPersons();
+	    	    });
     	   }]
    	   }
    })
@@ -119,6 +126,34 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
+   .state('user.admin.users.details', {
+     title: 'Panel wolontariusza',
+     abstract: false,
+     url: '/:id/details',
+     views: {
+         'navbar@': {
+       	  templateUrl: 'partials/admin/navbar.html' 
+         },
+         'sidebar@': {
+       	  templateUrl: 'partials/admin/sidebar.html'
+         },
+         'content@': {
+       	  templateUrl: 'partials/admin/userDetails.html',
+       	  controller: function($stateParams, $scope, User, Person) {
+              $scope.user.id = $stateParams.id;
+              $scope.user = User.getUserById($stateParams.id);
+              $scope.person = Person.getPersonByUserId($stateParams.id);
+              $scope.isCollapsed = true;
+          } 
+         },
+       },
+       data: {
+           permissions: {
+             only: ['admin']
+           }
+       }
+   })
+   
    .state('user.member', {
      title: 'Panel wolontariusza',
      abstract: false,
@@ -169,8 +204,8 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 
 //KONTROLERY
 
-Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Context', 'Restangular',
-                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Context, Restangular) {
+Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person,  Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;
@@ -224,7 +259,7 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   
   $scope.addUser = function(add) {
 	  
-	  	$scope.hideMessage = true;
+	  	 $scope.hideMessage = true;
 	  
 	  	 var username = $scope.add.username.toLowerCase();
 		 var email = $scope.add.email.toLowerCase();
@@ -282,6 +317,8 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   
   $scope.editUser = function(user) {
 	 
+	 $scope.hideMessage = true; 
+	  
 	 var newUsername = $scope.username.toLowerCase(); 
 	 var oldUsername = $scope.user.username.toLowerCase(); 
 	 var newEmail = $scope.email.toLowerCase();

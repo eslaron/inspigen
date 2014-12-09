@@ -188,9 +188,13 @@ public class UserServiceImpl implements UserService {
 		
 		user.setUsername(data.getUsername());
 		
-		if(data.getPassword() != null) 
-			user.setPassword(data.getPassword());
-		
+		if(data.getPassword() != null) {
+			
+			String password = data.getPassword();
+	    	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(user));
+	    	user.setPassword(encodedPassword);
+		} 
+				
 		user.setEmail(data.getEmail());
 		
 		if(data.getRole().equals("Wolontariusz"))
