@@ -14,14 +14,14 @@
         <accordion-heading>
             Użytkownicy<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
-        <a ui-sref="user.admin.users">Lista</a><br />
-        <a ui-sref="user.admin.users.add">Dodaj</a><br />
+        <a ui-sref="user.admin.users" ng-href="#/user/admin/users">Lista</a><br />
+        <a ui-sref="user.admin.users.add" ng-href="#/user/admin/add">Dodaj</a><br />
     </accordion-group>
     <accordion-group is-open="false">
         <accordion-heading>
             Ustawienia<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
-       <a ui-sref="user.admin.settings">Główne</a>
+       <a ui-sref="user.admin.settings" ng-href="#/user/admin/settings">Główne</a>
     </accordion-group>
 </accordion>
 	</div>

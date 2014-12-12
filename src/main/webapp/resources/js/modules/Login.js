@@ -47,13 +47,22 @@ var Login = angular.module('inspigen.login', ['ui.router', 'LocalStorageModule',
 				$state.go('login');
 			};
 
+			
 			 /* Try getting valid user from cookie or go to login page */
 			var user = localStorageService.cookie.get('user');
 
 			if (user !== null) {
 				$rootScope.user = user;
 				$http.defaults.headers.common[xAuthTokenHeaderName] = user.token;
-				$state.go('index');
+
+				/*   if ($rootScope.hasRole("ROLE_ADMIN") == true)
+					   	$state.go('user.admin');
+
+				   else if ($rootScope.hasRole("ROLE_MOD") == true) 
+						$state.go('user.moderator');
+  
+				   else if ($rootScope.hasRole("ROLE_USER") == true) 
+					   	$state.go('user.member');	*/				
 			}
 })
 

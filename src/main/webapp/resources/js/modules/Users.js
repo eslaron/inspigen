@@ -210,7 +210,6 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
            }
        }
    })
-         
    .state('user.moderator', {
      title: 'Panel koordynatora',
      abstract: false,

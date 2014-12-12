@@ -1,5 +1,6 @@
 angular.module('inspigen', ['ui.router', 'ui.bootstrap', 'permission', 'ngResource','ngTasty',
-                            'inspigen.login', 'inspigen.accounts', 'inspigen.users', 'inspigen.services', 'inspigen.directives', 'inspigen.filters'])
+                            'inspigen.login', 'inspigen.accounts', 'inspigen.users', 'inspigen.services', 
+                            'inspigen.directives', 'inspigen.filters','angular-loading-bar'])
 
 .run(function($rootScope, $state, $stateParams) {
 
@@ -12,9 +13,11 @@ angular.module('inspigen', ['ui.router', 'ui.bootstrap', 'permission', 'ngResour
 			});
 })
 
-.config(['RestangularProvider', '$stateProvider', '$urlRouterProvider',
-         function (RestangularProvider, $stateProvider, $urlRouterProvider) {
+.config(['RestangularProvider', '$stateProvider', '$urlRouterProvider', 'cfpLoadingBarProvider',
+         function (RestangularProvider, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
 
+	  cfpLoadingBarProvider.includeSpinner = false;
+	
 	  RestangularProvider.setBaseUrl('api/v1');
       
       $urlRouterProvider.otherwise('/');
