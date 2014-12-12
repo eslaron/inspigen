@@ -274,7 +274,7 @@ public class UserServiceImpl implements UserService {
 			
 		Calendar cal=Calendar.getInstance();
 		cal=format.getCalendar();		
-		cal.add(Calendar.MINUTE, settings.getEXPIRATION_TIME());
+		cal.add(Calendar.MINUTE, settings.getLinkExpirationTime());
 	
 		return (Date)cal.getTime();
 	}

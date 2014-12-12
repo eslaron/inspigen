@@ -1,7 +1,29 @@
-<div class="content">
-<div class="userList container class="col-md-4">
-<h2>Główne</h2>
+<div class="content"  ng-controller="UsersController">
+<div class="userList container col-md-5">
+<h2>Ustawienia</h2>
 
 
-
+			<div ng-hide="hideMessage" ng-class="messageStyle">
+				                   {{message}}     
+				   			</div>
+	<table>
+		<tr>
+			<td>
+				<b>Główne:</b>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Liczba prób logowania: <b><input type="text" ng-model="settings.maxLoginAttempts" /></b><br />
+				Blokada konta: <b><input type="text" ng-model="settings.accountLockTime" /> minut</b><br />
+				Ważność linków: <b><input type="text" ng-model="settings.linkExpirationTime" /> minut</b><br />
+				Ważność nieaktywowanych kont: <b><input type="text" ng-model="settings.inactiveAccountsDeletionTime" />dni</b><br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button class="btn btn-primary" ng-click="editSettings(settings)">Zmień</button>
+			</td>
+		</tr>
+	</table>
 </div>

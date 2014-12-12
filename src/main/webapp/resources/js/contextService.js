@@ -1,13 +1,15 @@
-Users.service('Context', function($q, User, Person) {
+Users.service('Context', function($q, User, Person, Settings) {
   var context = this;
   
   this.active = {
     'user' :{},
-    'person': {}
+    'person': {},
+    'settings': {}
   };
   this.all = {
     'user': [],
-  	'person': []
+  	'person': [],
+  	'settings': []
   };
 
   this.activate = {
@@ -18,6 +20,10 @@ Users.service('Context', function($q, User, Person) {
     'person' : function(person){
         context.active.person = person;
         return person;
+    },
+    'settings' : function(settings){
+        context.active.settings = settings;
+        return settings;
       }
   }
 });

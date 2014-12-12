@@ -1,41 +1,52 @@
 package org.sobiech.inspigen.core.models.entities;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 
 @Entity  
 @Table(name="ig_settings")
-public class Settings extends BaseEntity {
+public class Settings extends BaseEntity implements Serializable {
 
-	private int MAX_ATTEMPTS = 3; //maksymalna liczba podejść
-    private int LOCK_TIME = 15; //czas blokady użytkownika w minutach
-    private int EXPIRATION_TIME = 2880; //czas po którym wygaśnie link lub zost(minuty)
-    private int DELETION_TIME = 2; // usunięcie zasob-u/ów po N dniach.
+	private static final long serialVersionUID = -6053786706744243022L;
+
+	@Column(name = "maxLoginAttempts")
+	private int maxLoginAttempts; //maksymalna liczba podejść
+	
+	@Column(name = "accountLockTime")
+	private int accountLockTime; //czas blokady użytkownika w minutach
+	
+	@Column(name = "linkExpirationTime")
+    private int linkExpirationTime; //czas po którym wygaśnie link lub zost(minuty)
+	
+	@Column(name = "inactiveAccountsDeletionTime")
+    private int inactiveAccountsDeletionTime; // usunięcie zasob-u/ów po N dniach.
     
-
-	public int getMAX_ATTEMPTS() {
-		return MAX_ATTEMPTS;
+    public int getMaxLoginAttempts() {
+		return maxLoginAttempts;
 	}
-	public void setMAX_ATTEMPTS(int mAX_ATTEMPTS) {
-		MAX_ATTEMPTS = mAX_ATTEMPTS;
+	public void setMaxLoginAttempts(int maxLoginAttempts) {
+		this.maxLoginAttempts = maxLoginAttempts;
 	}
-	public int getLOCK_TIME() {
-		return LOCK_TIME;
+	public int getAccountLockTime() {
+		return accountLockTime;
 	}
-	public void setLOCK_TIME(int lOCK_TIME) {
-		LOCK_TIME = lOCK_TIME;
-	} 	
-    public int getEXPIRATION_TIME() {
-		return EXPIRATION_TIME;
+	public void setAccountLockTime(int accountLockTime) {
+		this.accountLockTime = accountLockTime;
 	}
-	public void setEXPIRATION_TIME(int eXPIRATION_TIME) {
-		EXPIRATION_TIME = eXPIRATION_TIME;
+	public int getLinkExpirationTime() {
+		return linkExpirationTime;
 	}
-	public int getDELETION_TIME() {
-		return DELETION_TIME;
+	public void setLinkExpirationTime(int linkExpirationTime) {
+		this.linkExpirationTime = linkExpirationTime;
 	}
-	public void setDELETION_TIME(int dELETION_TIME) {
-		DELETION_TIME = dELETION_TIME;
+	public int getInactiveAccountsDeletionTime() {
+		return inactiveAccountsDeletionTime;
+	}
+	public void setInactiveAccountsDeletionTime(int inactiveAccountsDeletionTime) {
+		this.inactiveAccountsDeletionTime = inactiveAccountsDeletionTime;
 	}
 }

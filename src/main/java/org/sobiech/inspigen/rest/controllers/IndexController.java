@@ -56,7 +56,7 @@ public class IndexController {
 	@RequestMapping("/partials/admin/settings")
     public String getSettingsPartialPage() {
         return "partials/admin/settings";
-    }
+    }	
 	
 	// Partiale - USER
 	

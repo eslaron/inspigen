@@ -23,7 +23,7 @@
 			Ostatnia próba logowania: <b>{{user.lastLoginAttempt | date:'yyyy-MM-dd HH:mm:ss'}}</b><br /><br />
 		</td>
 	</tr>
-	<tr>
+	<tr ng-hide="person == null">
 		<td>
 			<b>Dane osobowe:</b>
 		</td>
@@ -31,7 +31,7 @@
 			<button class="btn btn-primary" ui-sref="user.admin.persons.edit({ id: person.id })">Edytuj</button>
 		</td>
 	</tr>
-	<tr>
+	<tr ng-hide="person == null">
 		<td>
 			Imię: <b>{{person.firstName}}</b><br />
 			Nazwisko: <b>{{person.lastName}}</b><br />

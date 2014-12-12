@@ -55,7 +55,7 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 			  		
 			  		Calendar unlockTime = Calendar.getInstance();
 			  		unlockTime = format.getCalendar();
-			  		unlockTime.add(Calendar.MINUTE, settings.getLOCK_TIME());
+			  		unlockTime.add(Calendar.MINUTE, settings.getAccountLockTime());
 			  			
 			  		if(Calendar.getInstance().getTime().after(unlockTime.getTime()) == true) {
 			  			userByName.setFailedLogins(0);
@@ -77,7 +77,7 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 		    		userByName.setFailedLogins(attempts);
 		    		userByName.setLastLoginAttempt(new Date());
 		    		
-		    		if (attempts > settings.getMAX_ATTEMPTS()-1) {
+		    		if (attempts > settings.getMaxLoginAttempts()-1) {
 		    			userByName.setAccountNonLocked(false);
 		    			setLoginFailureError("accountLocked");
 		    		}

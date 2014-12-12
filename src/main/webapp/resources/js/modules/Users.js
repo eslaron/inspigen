@@ -36,7 +36,13 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
              only: ['admin']
            }
        },
-       resolve: { 	
+       resolve: {
+    	   settings: ['Settings','Context', function(Settings, Context) {  
+	      		return  Settings.loadSettingsFromJson()
+	    	    .then(function(newlyLoadedSettings){
+	    	    	Context.all.settings = Settings.getAllSettings();
+	    	    });
+    	   }],
     	   users: ['User','Context', function(User, Context) {  
 	      		return  User.loadUsersFromJson()
 	    	    .then(function(newlyLoadedUsers){
@@ -49,7 +55,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 	    	    .then(function(newlyLoadedPersons){
 	    	    	Context.all.persons = Person.getAllPersons();
 	    	    });
-    	   }]
+    	   }] 
    	   }
    })
    
@@ -142,9 +148,38 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        	  controller: function($stateParams, $scope, User, Person) {
               $scope.user.id = $stateParams.id;
               $scope.user = User.getUserById($stateParams.id);
-              $scope.person = Person.getPersonByUserId($stateParams.id);
+              $scope.persons = Person.getAllPersons();
+              for(var i = $scope.persons.length - 1; i >= 0; i--) {
+  			    if($scope.persons[i].userId == $stateParams.id) {
+  			       $scope.person = $scope.persons[i];
+  			    }
+  			}
+              
               $scope.isCollapsed = true;
           } 
+         },
+       },
+       data: {
+           permissions: {
+             only: ['admin']
+           }
+       }
+   })
+   
+      .state('user.admin.settings', {
+     title: 'Ustawienia',
+     abstract: false,
+     url: '/settings',
+     views: {
+         'navbar@': {
+       	  templateUrl: 'partials/admin/navbar.html' 
+         },
+         'sidebar@': {
+       	  templateUrl: 'partials/admin/sidebar.html'
+         },
+         'content@': {
+       	  templateUrl: 'partials/admin/settings.html',
+       	  controller: 'UsersController' 
          },
        },
        data: {
@@ -204,14 +239,16 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 
 //KONTROLERY
 
-Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Context', 'Restangular',
-                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person,  Context, Restangular) {
+Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Settings', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Settings, Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;
   $scope.activate = Context.activate;
   
   var data = $scope.all.users;
+  
+  $scope.settings = $scope.all.settings[0];
    
   $scope.username = $scope.user.username;
   $scope.password = $scope.user.password;
@@ -394,6 +431,24 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
 			}
 		  
 		  $scope.tableParams.reload();
+	  });
+  }
+  
+  $scope.editSettings = function(settings) {
+	  
+	  var EditSettings = Restangular.one('settings');
+	  
+	  EditSettings.id = 0;
+	  EditSettings.maxLoginAttempts = $scope.settings.maxLoginAttempts;
+	  EditSettings.accountLockTime = $scope.settings.accountLockTime;
+	  EditSettings.linkExpirationTime = $scope.settings.linkExpirationTime;
+	  EditSettings.inactiveAccountsDeletionTime = $scope.settings.inactiveAccountsDeletionTime;
+	
+	  EditSettings.put().then(function(response){
+		
+		  $scope.messageStyle = "alert alert-success";
+		  $scope.hideMessage = false;
+		  $scope.message = "Zapisane";			  			  
 	  });
   }
     
