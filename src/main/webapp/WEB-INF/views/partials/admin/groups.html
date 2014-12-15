@@ -1,0 +1,29 @@
+<div class="content"  ng-controller="UsersController">
+<div class="userList container col-md-5">
+<h2>Grupy</h2>
+
+					<div ng-hide="hideMessage" ng-class="messageStyle">
+				                   {{message}}     
+				   			</div>
+	   			
+		 <table ng-table="tableParams" show-filter="true" class="table ng-table-rowselected"> 
+		        <tr ng-repeat="user in $data" ng-click="user.$selected = !user.$selected; user.checked = !user.checked; changeSelection(user)"
+                ng-class="{'active': user.$selected}">
+                	<td data-title="'Wybierz'"><input type="checkbox" ng-model="user.$selected" /></td>
+		            <td data-title="'Nazwa użytkownika'" sortable="'username'" filter="{ 'username': 'text' }">{{user.username}}</td>
+		            <td data-title="'Rola'" sortable="'role'" filter="{ 'role': 'text' }">{{user.role}}</td>
+		            <td data-title="'Operacje'">
+		            	<a ui-sref="user.admin.users.details({ id: user.id })">Szczegóły</a>
+		            </td>
+		        </tr>
+        </table>
+
+    Administrator <input type="radio" ng-model="addToGroup" value="Administrator" /><br />
+
+    Koordynator <input type="radio" ng-model="addToGroup" value="Koordynator" /><br />
+    
+    Wolontariusz <input type="radio" ng-model="addToGroup" value="Wolontariusz" /><br />
+    
+    <button ng-click="assignToGroup()">Dodaj do grupy</button>
+        
+</div>

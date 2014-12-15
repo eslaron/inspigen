@@ -3,6 +3,7 @@ package org.sobiech.inspigen.rest.controllers;
 import java.util.List;
 
 import org.sobiech.inspigen.core.models.DTO.UserDTO;
+import org.sobiech.inspigen.core.models.entities.User;
 import org.sobiech.inspigen.core.services.EmailService;
 import org.sobiech.inspigen.core.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

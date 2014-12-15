@@ -186,6 +186,7 @@ public class UserServiceImpl implements UserService {
 		
 		User user = findUserById(data.getId());
 		
+		if(data.getUsername() != null)
 		user.setUsername(data.getUsername());
 		
 		if(data.getPassword() != null) {
@@ -194,7 +195,8 @@ public class UserServiceImpl implements UserService {
 	    	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(user));
 	    	user.setPassword(encodedPassword);
 		} 
-				
+		
+		if(data.getEmail() != null)			
 		user.setEmail(data.getEmail());
 		
 		if(data.getRole().equals("Wolontariusz"))
@@ -206,18 +208,28 @@ public class UserServiceImpl implements UserService {
 		if(data.getRole().equals("Administrator"))
 			user.setRole("ROLE_ADMIN");
 	
-		if(data.getEnabled().equals("Tak"))
-			user.setEnabled(true);
-		
-		if(data.getEnabled().equals("Nie"))
+		if(data.getEnabled() == null)
 			user.setEnabled(false);
+		else {	
+			if(data.getEnabled().equals("Tak"))
+				user.setEnabled(true);
+			
+			if(data.getEnabled().equals("Nie"))
+				user.setEnabled(false);
+		}
 		
-		if(data.getLocked().equals("Tak")) 
-			user.setAccountNonLocked(false);
-		
-		if(data.getLocked().equals("Nie")) {
+		if(data.getLocked() == null) {
 			user.setAccountNonLocked(true);
 			user.setFailedLogins(0);
+		}
+		else {
+			if(data.getLocked().equals("Tak")) 
+				user.setAccountNonLocked(false);
+			
+			if(data.getLocked().equals("Nie")) {
+				user.setAccountNonLocked(true);
+				user.setFailedLogins(0);
+			}
 		}
 		
 		dao.update(user);

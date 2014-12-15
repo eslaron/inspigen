@@ -166,6 +166,30 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
+   .state('user.admin.groups', {
+     title: 'Grupy użytkowników',
+     abstract: false,
+     url: '/groups',
+     views: {
+         'navbar@': {
+       	  templateUrl: 'partials/admin/navbar.html' 
+         },
+         'sidebar@': {
+       	  templateUrl: 'partials/admin/sidebar.html'
+         },
+         'content@': {
+       	  templateUrl: 'partials/admin/groups.html',
+       	  controller: 'UsersController'
+         
+         },
+       },
+       data: {
+           permissions: {
+             only: ['admin']
+           }
+       }
+   })
+   
       .state('user.admin.settings', {
      title: 'Ustawienia',
      abstract: false,
@@ -277,6 +301,38 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   $scope.duplicateEmail = false;
   $scope.hideMessage = true;
   $scope.message = '';
+  
+  $scope.addToGroup = "";
+  $scope.selectedUsers = [];
+  
+  $scope.changeSelection = function(user) {
+	  
+	  if(user.$selected == true)
+		  $scope.selectedUsers.push(user.id);
+	  	
+	  if(user.$selected == false) {	  
+		  for(var i = $scope.selectedUsers.length - 1; i >= 0; i--) {	
+			    if($scope.selectedUsers[i] == user.id)
+			    	$scope.selectedUsers.splice(i, 1);	  
+		  }
+	  }
+  }
+  
+  $scope.assignToGroup = function() {
+	  
+	  var assignGroup = Restangular.one('users');
+	  $scope.userBatch = {id:'', role:''};
+	  
+	  for(var i = 0; i < $scope.selectedUsers.length; i++) {	
+		  assignGroup.id = $scope.selectedUsers[i];
+		  assignGroup.role = $scope.addToGroup;
+		  assignGroup.put().then(function(response){
+			  
+			  $scope.user.role = $scope.addToGroup;
+			  $scope.tableParams.reload();
+		  });
+	  }
+  }
   
   $scope.findDuplicate = function(type, value) { 
 		  for(var i = data.length - 1; i >= 0; i--) {

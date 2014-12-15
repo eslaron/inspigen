@@ -1,6 +1,6 @@
 angular.module('inspigen', ['ui.router', 'ui.bootstrap', 'permission', 'ngResource','ngTasty',
                             'inspigen.login', 'inspigen.accounts', 'inspigen.users', 'inspigen.services', 
-                            'inspigen.directives', 'inspigen.filters','angular-loading-bar'])
+                            'inspigen.directives', 'inspigen.filters','angular-loading-bar', 'checklist-model'])
 
 .run(function($rootScope, $state, $stateParams) {
 

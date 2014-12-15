@@ -53,6 +53,11 @@ public class IndexController {
         return "partials/admin/userDetails";
 	}
 	
+	@RequestMapping("/partials/admin/groups")
+    public String getGroupsPartialPage() {
+        return "partials/admin/groups";
+    }	
+	
 	@RequestMapping("/partials/admin/settings")
     public String getSettingsPartialPage() {
         return "partials/admin/settings";
