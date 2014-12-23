@@ -5,14 +5,14 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.sobiech.inspigen.core.models.DTO.UserDTO;
+import org.sobiech.inspigen.core.models.dto.UserDto;
 import org.sobiech.inspigen.core.models.entities.User;
 
-public interface UserService extends UserDetailsService {
+public interface IUserService extends UserDetailsService {
 	
 	// UŻYTKOWNIK
 	
-	public void createUser(UserDTO data);
+	public void createUser(UserDto data);
 	
 	public User findUserById(long id);
 	
@@ -22,17 +22,17 @@ public interface UserService extends UserDetailsService {
 	
 	public User findUserByToken(String tokenType, String token);
 	
-	public List<UserDTO> findAllUsers();
+	public List<UserDto> findAllUsers();
 	
 	public void updateUser(User data);
 	
-	public void updateUser(UserDTO data);
+	public void updateUser(UserDto data);
 	
 	public void deleteUser(User data);
 	
 	public void deleteUserById(long id);
 	
-	public ResponseEntity<String> addUser(UserDTO data);
+	public ResponseEntity<String> addUser(UserDto data);
 	  
     // TOKEN
        

@@ -1,7 +1,7 @@
 package org.sobiech.inspigen.core.config;
 
 import org.sobiech.inspigen.core.models.entities.Settings;
-import org.sobiech.inspigen.core.services.UserService;
+import org.sobiech.inspigen.core.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,7 +13,7 @@ public class ScheduledTasks {
 	Settings settings;
 	
 	@Autowired
-	UserService userService;
+	IUserService userService;
 	
 	final private String deleteNotActivatedUsersCron = "0 0 0 */2 * ?";
 	

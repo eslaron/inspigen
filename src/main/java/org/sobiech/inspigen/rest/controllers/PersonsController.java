@@ -2,9 +2,8 @@ package org.sobiech.inspigen.rest.controllers;
 
 import java.util.List;
 
-import org.sobiech.inspigen.core.models.dto.UserDto;
-import org.sobiech.inspigen.core.services.IEmailService;
-import org.sobiech.inspigen.core.services.IUserService;
+import org.sobiech.inspigen.core.models.entities.Person;
+import org.sobiech.inspigen.core.services.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,37 +16,44 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonObject;
 
 @RestController
-@RequestMapping("/api/v1/users")
-public class UsersController {
+@RequestMapping("/api/v1/persons")
+public class PersonsController {
 	
 	String message = "";	
 
 	@Autowired
-	IUserService userService;
-	
-	@Autowired
-	IEmailService emailService;
-	
+	IPersonService personService;
+
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> create(@RequestBody UserDto data) {
+    public ResponseEntity<String> create(@RequestBody Person data) {
     	
-    	return userService.addUser(data);
-    }
+    	message = "personCreated";
+    	HttpStatus responseStatus = HttpStatus.OK;
+    
+    	personService.createPerson(data);
+    	
+    	JsonObject jsonResponse = new JsonObject();
+		jsonResponse.addProperty("message", message);
+		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
+	}
     
     @RequestMapping(method = RequestMethod.GET)
-    public List<UserDto> findAll(){
-       return userService.findAllUsers();
+    public List<Person> findAllPersons(){
+       return personService.findAllPersons();
+    }
+    
+    @RequestMapping(value ="/{id}", method = RequestMethod.GET)
+    public Person findPersonByUserId(@PathVariable int id){
+       return personService.findPersonByUserId(id);
     }
         
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<String> updateUser(@RequestBody UserDto data) {
+	public ResponseEntity<String> updatePerson(@RequestBody Person data) {
     	
-    	message = "userUpdated";
+    	message = "personUpdated";
     	HttpStatus responseStatus = HttpStatus.OK;
- 	
-    	System.out.println(data.getEnabled());
-    	System.out.println(data.getLocked());
-    	userService.updateUser(data);
+
+    	personService.updatePerson(data);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);
@@ -55,12 +61,12 @@ public class UsersController {
 	}
     
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteUser(@PathVariable long id) {
+	public ResponseEntity<String> deletePerson(@PathVariable long id) {
     	
-    	message = "userDeleted";
+    	message = "personDeleted";
     	HttpStatus responseStatus = HttpStatus.OK;
  	
-    	userService.deleteUserById(id);
+    	personService.deletePersonById(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

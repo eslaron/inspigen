@@ -7,11 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.sobiech.inspigen.core.models.entities.Person;
 import org.sobiech.inspigen.core.repositories.IPersonDao;
 import org.sobiech.inspigen.core.repositories.common.IGenericDao;
-import org.sobiech.inspigen.core.services.PersonService;
+import org.sobiech.inspigen.core.services.IPersonService;
 
 @Service
 @Transactional
-public class PersonServiceImpl implements PersonService {
+public class PersonServiceImpl implements IPersonService {
 	
 	IGenericDao<Person> dao;
 	 

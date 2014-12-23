@@ -18,19 +18,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.sobiech.inspigen.core.models.DTO.UserDTO;
+import org.sobiech.inspigen.core.models.dto.UserDto;
 import org.sobiech.inspigen.core.models.entities.Settings;
 import org.sobiech.inspigen.core.models.entities.User;
 import org.sobiech.inspigen.core.repositories.common.IGenericDao;
 import org.sobiech.inspigen.core.repositories.IUserDao;
-import org.sobiech.inspigen.core.services.EmailService;
-import org.sobiech.inspigen.core.services.UserService;
+import org.sobiech.inspigen.core.services.IEmailService;
+import org.sobiech.inspigen.core.services.IUserService;
 
 import com.google.gson.JsonObject;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 	
 	IGenericDao<User> dao;
 	 
@@ -53,11 +53,11 @@ public class UserServiceImpl implements UserService {
     Settings settings;
     
     @Autowired
-	EmailService emailService;
+	IEmailService emailService;
     
     // UŻYTKOWNIK
 	@Override
-	public void createUser(UserDTO data){
+	public void createUser(UserDto data){
 		
 		User newUser = new User(); 
 		
@@ -130,15 +130,15 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<UserDTO> findAllUsers() {
+	public List<UserDto> findAllUsers() {
 		
-		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+		List<UserDto> userDtoList = new ArrayList<UserDto>();
 		
 		List<User> users = dao.findAll();
 		
 		for(User user : users) {
 			
-			UserDTO userDto = new UserDTO();
+			UserDto userDto = new UserDto();
 			
 			userDto.setId(user.getId());
 			userDto.setUsername(user.getUsername());
@@ -182,7 +182,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void updateUser(UserDTO data) {
+	public void updateUser(UserDto data) {
 		
 		User user = findUserById(data.getId());
 		
@@ -322,7 +322,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseEntity<String> addUser(UserDTO data) {
+	public ResponseEntity<String> addUser(UserDto data) {
 		
 		HttpStatus responseStatus = HttpStatus.CREATED;
     	JsonObject jsonResponse = new JsonObject();

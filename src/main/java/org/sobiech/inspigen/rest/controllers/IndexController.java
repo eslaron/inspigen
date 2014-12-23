@@ -63,6 +63,16 @@ public class IndexController {
         return "partials/admin/settings";
     }	
 	
+	@RequestMapping("/partials/admin/events")
+    public String getEventsPartialPage() {
+        return "partials/admin/events";
+    }
+	
+	@RequestMapping("/partials/admin/addEvent")
+    public String getAddEventPartialPage() {
+        return "partials/admin/addEvent";
+    }
+	
 	// Partiale - USER
 	
 	@RequestMapping("/partials/user/navbar")

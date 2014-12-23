@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.sobiech.inspigen.core.models.entities.Settings;
 import org.sobiech.inspigen.core.models.entities.User;
-import org.sobiech.inspigen.core.services.UserService;
+import org.sobiech.inspigen.core.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,7 +18,7 @@ import org.springframework.security.core.AuthenticationException;
 public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
 	@Autowired
-	UserService userService;
+	IUserService userService;
 	
 	@Autowired
 	Settings settings;

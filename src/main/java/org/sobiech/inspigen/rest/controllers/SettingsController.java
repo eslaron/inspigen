@@ -3,7 +3,7 @@ package org.sobiech.inspigen.rest.controllers;
 import java.util.List;
 
 import org.sobiech.inspigen.core.models.entities.Settings;
-import org.sobiech.inspigen.core.services.SettingsService;
+import org.sobiech.inspigen.core.services.ISettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class SettingsController {
 	String message = "";	
 
 	@Autowired
-	SettingsService settingsService;
+	ISettingsService settingsService;
     
     @RequestMapping(method = RequestMethod.GET)
     public List<Settings> getSettings() {

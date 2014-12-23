@@ -3,12 +3,20 @@ package org.sobiech.inspigen.core.models.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-public class Events extends BaseEntity implements Serializable {
+@Entity  
+@Table(name="ig_events")
+public class Event extends BaseEntity implements Serializable {
 	
 	private static final long serialVersionUID = -508277826502034614L;
 	
+	private String name;
+	
 	private String type;
+	
+	private String location;
 	
 	private Date startDate;
 	
@@ -18,7 +26,15 @@ public class Events extends BaseEntity implements Serializable {
 	
 	private int user_id;
 	
-	public Events() {}
+	public Event() {}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public String getType() {
 		return type;
@@ -26,6 +42,14 @@ public class Events extends BaseEntity implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	public Date getStartDate() {

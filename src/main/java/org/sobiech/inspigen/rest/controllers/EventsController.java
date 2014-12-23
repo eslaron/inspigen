@@ -2,9 +2,8 @@ package org.sobiech.inspigen.rest.controllers;
 
 import java.util.List;
 
-import org.sobiech.inspigen.core.models.dto.UserDto;
-import org.sobiech.inspigen.core.services.IEmailService;
-import org.sobiech.inspigen.core.services.IUserService;
+import org.sobiech.inspigen.core.models.entities.Event;
+import org.sobiech.inspigen.core.services.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,37 +16,43 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonObject;
 
 @RestController
-@RequestMapping("/api/v1/users")
-public class UsersController {
+@RequestMapping("/api/v1/events")
+public class EventsController {
 	
 	String message = "";	
 
 	@Autowired
-	IUserService userService;
-	
-	@Autowired
-	IEmailService emailService;
-	
+	IEventService eventService;
+
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> create(@RequestBody UserDto data) {
+    public ResponseEntity<String> create(@RequestBody Event data) {
     	
-    	return userService.addUser(data);
-    }
+    	message = "eventCreated";
+    	HttpStatus responseStatus = HttpStatus.OK;
+    
+    	eventService.createEvent(data);
+    	JsonObject jsonResponse = new JsonObject();
+		jsonResponse.addProperty("message", message);
+		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
+	}
     
     @RequestMapping(method = RequestMethod.GET)
-    public List<UserDto> findAll(){
-       return userService.findAllUsers();
+    public List<Event> findAllEvents(){
+       return eventService.findAllEvents();
+    }
+    
+    @RequestMapping(value ="/{id}", method = RequestMethod.GET)
+    public Event findEventById(@PathVariable int id){
+       return eventService.findEventById(id);
     }
         
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<String> updateUser(@RequestBody UserDto data) {
+	public ResponseEntity<String> updateEvent(@RequestBody Event data) {
     	
-    	message = "userUpdated";
+    	message = "participantUpdated";
     	HttpStatus responseStatus = HttpStatus.OK;
- 	
-    	System.out.println(data.getEnabled());
-    	System.out.println(data.getLocked());
-    	userService.updateUser(data);
+
+    	eventService.updateEvent(data);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);
@@ -55,12 +60,12 @@ public class UsersController {
 	}
     
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteUser(@PathVariable long id) {
+	public ResponseEntity<String> deleteEventById(@PathVariable long id) {
     	
-    	message = "userDeleted";
+    	message = "eventDeleted";
     	HttpStatus responseStatus = HttpStatus.OK;
  	
-    	userService.deleteUserById(id);
+    	eventService.deleteEventById(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

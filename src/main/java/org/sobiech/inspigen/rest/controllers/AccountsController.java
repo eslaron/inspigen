@@ -1,9 +1,9 @@
 package org.sobiech.inspigen.rest.controllers;
 
-import org.sobiech.inspigen.core.models.DTO.UserDTO;
+import org.sobiech.inspigen.core.models.dto.UserDto;
 import org.sobiech.inspigen.core.models.entities.User;
-import org.sobiech.inspigen.core.services.EmailService;
-import org.sobiech.inspigen.core.services.UserService;
+import org.sobiech.inspigen.core.services.IEmailService;
+import org.sobiech.inspigen.core.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +22,13 @@ public class AccountsController {
 	String message = "";	
 	
 	@Autowired
-	UserService userService;
+	IUserService userService;
 	
 	@Autowired
-	EmailService emailService;
+	IEmailService emailService;
 	
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> create(@RequestBody UserDTO data) {
+    public ResponseEntity<String> create(@RequestBody UserDto data) {
 
     	return userService.addUser(data);
     }

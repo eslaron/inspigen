@@ -7,14 +7,14 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.sobiech.inspigen.core.services.EmailService;
+import org.sobiech.inspigen.core.services.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmailServiceImpl implements EmailService {
+public class EmailServiceImpl implements IEmailService {
 	
 	@Autowired
 	JavaMailSenderImpl mailSender;

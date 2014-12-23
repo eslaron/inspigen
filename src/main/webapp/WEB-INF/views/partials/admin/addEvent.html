@@ -1,0 +1,118 @@
+<div class="content"  ng-controller="EventsController">
+<div class="userList container col-md-3">
+<h2>Nowe wydarzenie</h2>
+
+<form name="addEvent_form" ng-submit="addEvent(event)" class="form-horizontal input-border" novalidate>
+ 
+    						<div ng-hide="hideMessage" ng-class="messageStyle">
+				                   {{message}}     
+				   			</div>
+ 
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="Nazwa" 
+            						name="username" 
+            						ng-model="event.name" 
+            						ng-pattern="/^[A-z][A-z0-9]*$/"
+            						ng-model-options="{debounce: 1000}"
+            						required />
+     
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="Typ wydarzenia" 
+            						name="username" 
+            						ng-model="event.type" 
+            						ng-pattern="/^[A-z][A-z0-9]*$/"
+            						ng-model-options="{debounce: 1000}"
+            						required />
+  
+						</div>
+					</div>
+					
+						<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="Miejsce" 
+            						name="username" 
+            						ng-model="event.location" 
+            						ng-pattern="/^[A-z][A-z0-9]*$/"
+            						ng-model-options="{debounce: 1000}"
+            						required />
+
+						</div>
+					</div>
+					
+			 <div class="form-group">
+        		<div class="col-sm-12">
+			      <input class="form-control" ng-model="event.startDate" data-autoclose="1" placeholder="Data rozpoczęcia" bs-datepicker type="text">
+			    </div>
+    		 </div>
+    		 
+			<div class="form-group">
+        		<div class="col-sm-12">
+			      <input class="form-control" ng-model="event.startDate" data-autoclose="1" placeholder="Godzina rozpoczęcia" bs-timepicker type="text"> 
+     			</div>
+    		</div>
+ 
+  			<div class="form-group">
+        		<div class="col-sm-12">
+			      <input class="form-control" ng-model="event.endDate" data-autoclose="1" placeholder="Data rozpoczęcia" bs-datepicker type="text">
+			    </div>
+    		 </div>
+    		 
+			<div class="form-group">
+        		<div class="col-sm-12">
+			      <input class="form-control" ng-model="event.endDate" data-autoclose="1" placeholder="Godzina rozpoczęcia" bs-timepicker type="text"> 
+     			</div>
+    		</div>
+    		
+    		<div class="form-group">
+						<div class="col-sm-12">
+    						<textarea
+    								rows=3
+    								placeholder="Opis"
+    								class="form-control" 
+            						ng-model="event.description" 
+            						ng-model-options="{debounce: 1000}"></textarea>
+        	
+        						<small class="error-message" ng-show="duplicateUsername && !addEvent_form.username.$dirty">
+    								Podana nazwa użytkownika jest już zajęta.
+								</small>
+        			
+        
+  							<div class="error-container" ng-show="addEvent_form.username.$dirty && addEvent_form.username.$invalid">
+							    <small class="error-message" ng-show="addEvent_form.username.$error.required">
+							    	Nazwa nie może być pusta.</small>
+							    <small class="error-message" ng-show="
+							    !addEvent_form.username.$error.minlength
+							    && !addEvent_form.username.$error.maxlength
+							    && addEvent_form.username.$error.pattern">
+							    	Musi zaczynać się od litery oraz zawierać tylko litery i cyfry</small>	
+  							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12">
+								<select  class="form-control" ng-model="event.user_id">
+		        					<option ng-repeat="p in persons" value="{{p.userId}}">{{p.firstName}} {{p.lastName}}</option>
+		      					</select>
+		      			</div>
+		      		</div>
+    <button type="submit" class="btn btn-success btn-sm" ng-disabled="addEvent_form.$invalid">Utwórz wydarzenie</button>
+</form>
+
+
+		
+</div>
+

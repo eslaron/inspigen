@@ -3,7 +3,7 @@ package org.sobiech.inspigen.core.services;
 import java.util.List;
 import org.sobiech.inspigen.core.models.entities.Person;
 
-public interface PersonService {
+public interface IPersonService {
 
 	public void createPerson(Person data);
 	

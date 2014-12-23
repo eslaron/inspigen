@@ -1,8 +1,8 @@
-package org.sobiech.inspigen.core.models.DTO;
+package org.sobiech.inspigen.core.models.dto;
 
 import java.util.Date;
 
-public class UserDTO {
+public class UserDto {
 	
 	private Long id;
 	
@@ -23,7 +23,7 @@ public class UserDTO {
 	private Date lastLoginAttempt;
 	
 
-	public UserDTO() {}
+	public UserDto() {}
 	
 	
 	public Long getId() {

@@ -2,7 +2,13 @@ package org.sobiech.inspigen.core.models.entities;
 
 import java.io.Serializable;
 
-public class Participants extends BaseEntity implements Serializable {
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+
+@Entity  
+@Table(name="ig_participants")
+public class Participant extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 3146080687613852144L;
 	
@@ -12,7 +18,7 @@ public class Participants extends BaseEntity implements Serializable {
 	
 	private String eventRole;
 	
-	public Participants() {}
+	public Participant() {}
 	
 	public int getUser_id() {
 		return user_id;

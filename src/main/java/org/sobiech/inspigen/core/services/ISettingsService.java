@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.sobiech.inspigen.core.models.entities.Settings;
 
-public interface SettingsService {
+public interface ISettingsService {
 	
 	public List<Settings> getSettings();
 	
