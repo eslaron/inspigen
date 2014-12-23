@@ -85,21 +85,7 @@
     								class="form-control" 
             						ng-model="event.description" 
             						ng-model-options="{debounce: 1000}"></textarea>
-        	
-        						<small class="error-message" ng-show="duplicateUsername && !addEvent_form.username.$dirty">
-    								Podana nazwa użytkownika jest już zajęta.
-								</small>
-        			
-        
-  							<div class="error-container" ng-show="addEvent_form.username.$dirty && addEvent_form.username.$invalid">
-							    <small class="error-message" ng-show="addEvent_form.username.$error.required">
-							    	Nazwa nie może być pusta.</small>
-							    <small class="error-message" ng-show="
-							    !addEvent_form.username.$error.minlength
-							    && !addEvent_form.username.$error.maxlength
-							    && addEvent_form.username.$error.pattern">
-							    	Musi zaczynać się od litery oraz zawierać tylko litery i cyfry</small>	
-  							</div>
+      
 						</div>
 					</div>
 					<div class="form-group">

@@ -55,7 +55,19 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 	    	    .then(function(newlyLoadedPersons){
 	    	    	Context.all.persons = Person.getAllPersons();
 	    	    });
-    	   }] 
+    	   }],
+    	   events: ['Event','Context', function(Event, Context) {  
+	      		return  Event.loadEventsFromJson()
+	    	    .then(function(newlyLoadedEvents){
+	    	    	Context.all.events = Event.getAllEvents();
+	    	    });
+	   	   }],
+	   	   participants: ['Participant','Context', function(Participant, Context) {  
+		      		return  Participant.loadParticipantsFromJson()
+		    	    .then(function(newlyLoadedParticipants){
+		    	    	Context.all.participants = Participant.getAllParticipants();
+		    	    });
+	   	   }],
    	   }
    })
    

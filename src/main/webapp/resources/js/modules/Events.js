@@ -26,18 +26,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 		           }
 		       },
 		       resolve: {
-		    	   events: ['Event','Context', function(Event, Context) {  
-			      		return  Event.loadEventsFromJson()
-			    	    .then(function(newlyLoadedEvents){
-			    	    	Context.all.events = Event.getAllEvents();
-			    	    });
-		    	   }],
-		    	   participants: ['Participant','Context', function(Participant, Context) {  
-			      		return  Participant.loadParticipantsFromJson()
-			    	    .then(function(newlyLoadedParticipants){
-			    	    	Context.all.participants = Participant.getAllParticipants();
-			    	    });
-		    	   }],
+
 		   	   }
 		   }) 
 		   
@@ -69,7 +58,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 
 //KONTROLERY
 
-Events.controller('EventsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event', 'Participant', 'Restangular',
+Events.controller('EventsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event', 'Participant','Context', 'Restangular',
                                      function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Participant, Context, Restangular) {
 	
   $scope.all = Context.all;
@@ -78,15 +67,30 @@ Events.controller('EventsController', ['$scope', '$state', '$stateParams', '$fil
   
   var data = $scope.all.events;
  
+  var Add = Restangular.all('events');
+  
   $scope.users = User.getAllUsers();
   $scope.persons = Person.getAllPersons();
   
   $scope.addEvent = function(event) {
-  
-  for(var i = $scope.users.length - 1; i >= 0; i--) {	
+  	  
+  /*for(var i = $scope.users.length - 1; i >= 0; i--) {	
 	    if($scope.users[i].id == $scope.event.user_id)  
 	    	alert($scope.users[i].username);
   	}
+  }*/
+  
+	  Add.post($scope.event).then(function(response){
+	
+		  $scope.messageStyle = "alert alert-success";
+		  $scope.hideMessage = false;
+		  $scope.message = "Wydarzenie dodane";			
+	
+	  }, function(error) {
+		  $scope.error = error.data;
+		  
+			
+	  });
   }
  
 }]);
