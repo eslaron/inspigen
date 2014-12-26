@@ -47,12 +47,7 @@ public class IndexController {
     public String getAddUserPartial() {
         return "partials/admin/addUser";
 	}
-	
-	@RequestMapping("/partials/admin/userDetails")
-    public String getUserDetailsPartial() {
-        return "partials/admin/userDetails";
-	}
-	
+		
 	@RequestMapping("/partials/admin/groups")
     public String getGroupsPartialPage() {
         return "partials/admin/groups";
@@ -62,15 +57,32 @@ public class IndexController {
     public String getSettingsPartialPage() {
         return "partials/admin/settings";
     }	
+		
+	//Partiale - COMMON
 	
-	@RequestMapping("/partials/admin/events")
-    public String getEventsPartialPage() {
-        return "partials/admin/events";
+	@RequestMapping("/partials/common/addEvent")
+    public String getAddEventPartialPage() {
+        return "partials/common/addEvent";
     }
 	
-	@RequestMapping("/partials/admin/addEvent")
-    public String getAddEventPartialPage() {
-        return "partials/admin/addEvent";
+	@RequestMapping("/partials/common/events")
+    public String getEventsPartialPage() {
+        return "partials/common/events";
+    }
+	
+	@RequestMapping("/partials/common/addSchool")
+    public String getAddSchoolPartialPage() {
+        return "partials/common/addSchool";
+    }
+	
+	@RequestMapping("/partials/common/schools")
+    public String getSchoolsPartialPage() {
+        return "partials/common/schools";
+    }
+	
+	@RequestMapping("/partials/common/userDetails")
+    public String getUserDetailsPartialPage() {
+        return "partials/common/userDetails";
     }
 	
 	// Partiale - USER

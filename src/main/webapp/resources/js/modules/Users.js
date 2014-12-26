@@ -68,6 +68,12 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 		    	    	Context.all.participants = Participant.getAllParticipants();
 		    	    });
 	   	   }],
+	   	   schools: ['School','Context', function(School, Context) {  
+	      		return  School.loadSchoolsFromJson()
+	    	    .then(function(newlyLoadedSchools){
+	    	    	Context.all.schools = School.getAllSchools();
+	    	    });
+	   	   }],
    	   }
    })
    
@@ -156,7 +162,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        	  templateUrl: 'partials/admin/sidebar.html'
          },
          'content@': {
-       	  templateUrl: 'partials/admin/userDetails.html',
+       	  templateUrl: 'partials/common/userDetails.html',
        	  controller: function($stateParams, $scope, User, Person) {
               $scope.user.id = $stateParams.id;
               $scope.user = User.getUserById($stateParams.id);

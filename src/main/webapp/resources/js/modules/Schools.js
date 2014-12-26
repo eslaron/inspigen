@@ -1,13 +1,13 @@
-var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTable'])
+var Schools = angular.module('inspigen.schools', ['ui.router', 'restangular','ngTable'])
 
 .config(['$stateProvider', function ($stateProvider) {
 	
 	$stateProvider
 	
-	.state('user.admin.events', {
-		     title: 'Wydarzenia',
+	.state('user.admin.schools', {
+		     title: 'Szkoły/Uczelnie',
 		     abstract: false,
-		     url: '/events',
+		     url: '/schools',
 		     views: {
 		         'navbar@': {
 		       	  templateUrl: 'partials/admin/navbar.html' 
@@ -16,8 +16,8 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 		       	  templateUrl: 'partials/admin/sidebar.html'
 		         },
 		         'content@': {
-		       	  templateUrl: 'partials/common/events.html',
-		       	  controller: 'EventsController'      
+		       	  templateUrl: 'partials/common/schools.html',
+		       	  controller: 'SchoolsController'      
 		         }
 		       },
 		       data: {
@@ -30,8 +30,8 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 		   	   }
 		   }) 
 		   
-		 .state('user.admin.events.add', {
-	     title: 'Dodaj wydarzenie',
+		 .state('user.admin.schools.add', {
+	     title: 'Dodaj szkołę/uczelnię',
 	     abstract: false,
 	     url: '/add',
 	     views: {
@@ -42,8 +42,8 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	       	  templateUrl: 'partials/admin/sidebar.html'
 	         },
 	         'content@': {
-	       	  templateUrl: 'partials/common/addEvent.html',
-	       	  controller: 'EventsController'      
+	       	  templateUrl: 'partials/common/addSchool.html',
+	       	  controller: 'SchoolsController'      
 	         }
 	       },
 	       data: {
@@ -64,43 +64,6 @@ Events.controller('EventsController', ['$scope', '$state', '$stateParams', '$fil
   $scope.all = Context.all;
   $scope.active = Context.active;
   $scope.activate = Context.activate;
-  
-  var data = $scope.all.events;
- 
-  var Add = Restangular.all('events');
-  
-  
-  $scope.users = User.getAllUsers();
-  
-  $scope.persons = Person.getAllPersons();
-  
-  $scope.schools = School.getAllSchools();
-  
-  $scope.coordinators = [];
-  
-	  for(var i = $scope.persons.length - 1; i >= 0; i--) {	
-		  for(var j = $scope.users.length - 1; j >= 0; j--) {	
-			  if($scope.users[j].role == "Koordynator") {
-				  if($scope.users[j].id == $scope.persons[i].userId)
-					  $scope.coordinators.push($scope.persons[i]);
-			  }
-		  }	
-	  }	
 
-  $scope.persons = Person.getAllPersons();
-  
-  $scope.addEvent = function(event) {
-  	    
-	  Add.post($scope.event).then(function(response){
-	
-		  $scope.messageStyle = "alert alert-success";
-		  $scope.hideMessage = false;
-		  $scope.message = "Wydarzenie dodane";			
-	
-	  }, function(error) {
-		  $scope.error = error.data;
-		 			
-	  });
-  }
  
 }]);

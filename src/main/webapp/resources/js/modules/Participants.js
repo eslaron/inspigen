@@ -16,7 +16,7 @@ var Participants = angular.module('inspigen.participants', ['ui.router', 'restan
 		       	  templateUrl: 'partials/admin/sidebar.html'
 		         },
 		         'content@': {
-		       	  templateUrl: 'partials/admin/participants.html',
+		       	  templateUrl: 'partials/common/participants.html',
 		       	  controller: 'EventsController'      
 		         }
 		       },
