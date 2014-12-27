@@ -48,12 +48,17 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 	    	    .then(function(newlyLoadedUsers){
 	    	    	Context.all.users = User.getAllUsers();
 	    	    });
-    	   }],
-    	   
+    	   }],   
     	   persons: ['Person','Context', function(Person, Context) {  
 	      		return  Person.loadPersonsFromJson()
 	    	    .then(function(newlyLoadedPersons){
 	    	    	Context.all.persons = Person.getAllPersons();
+	    	    });
+    	   }],
+    	   address: ['Address','Context', function(Address, Context) {  
+	      		return  Address.loadAddressesFromJson()
+	    	    .then(function(newlyLoadedAddresses){
+	    	    	Context.all.addreses = Address.getAllAddresses();
 	    	    });
     	   }],
     	   events: ['Event','Context', function(Event, Context) {  

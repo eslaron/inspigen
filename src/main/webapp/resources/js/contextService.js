@@ -1,10 +1,11 @@
-Users.service('Context', function($q, User, Person, Event, Participant, Location, Settings) {
+Users.service('Context', function($q, User, Person, Address, Event, Participant, Location, Settings) {
 	
   var context = this;
   
   this.active = {
     'user' :{},
     'person': {},
+    'address': {},
     'event': {},
     'participant': {},
     'location': {},
@@ -13,6 +14,7 @@ Users.service('Context', function($q, User, Person, Event, Participant, Location
   this.all = {
     'user': [],
   	'person': [],
+  	'address': [],
   	'event': [],
   	'participant': [],
   	'location': [],
@@ -27,6 +29,10 @@ Users.service('Context', function($q, User, Person, Event, Participant, Location
     'person' : function(person){
         context.active.person = person;
         return person;
+    },
+    'address' : function(address){
+        context.active.address = address;
+        return address;
     },
     'event' : function(event){
         context.active.event = event;

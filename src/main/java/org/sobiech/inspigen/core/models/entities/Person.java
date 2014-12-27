@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.mysql.jdbc.Blob;
 
 @Entity  
-@Table(name="ig_personal_data")
+@Table(name="ig_persons")
 public class Person extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = -8562484446335390991L;

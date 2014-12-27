@@ -1,5 +1,6 @@
 angular.module('inspigen', ['ui.router', 'ui.bootstrap','mgcrea.ngStrap', 'permission', 'ngResource',
-                            'inspigen.login', 'inspigen.accounts', 'inspigen.users', 'inspigen.events', 'inspigen.participants', 'inspigen.locations', 'inspigen.services', 
+                            'inspigen.login', 'inspigen.accounts', 'inspigen.users', 'inspigen.addresses', 'inspigen.events', 
+                            'inspigen.participants', 'inspigen.locations', 'inspigen.services', 
                             'inspigen.directives', 'inspigen.filters','angular-loading-bar'])
 
 .run(function($rootScope, $state, $stateParams) {
