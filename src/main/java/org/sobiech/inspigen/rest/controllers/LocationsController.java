@@ -1,8 +1,8 @@
 package org.sobiech.inspigen.rest.controllers;
 
 import java.util.List;
-import org.sobiech.inspigen.core.models.entities.School;
-import org.sobiech.inspigen.core.services.ISchoolService;
+import org.sobiech.inspigen.core.models.entities.Location;
+import org.sobiech.inspigen.core.services.ILocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,43 +15,43 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonObject;
 
 @RestController
-@RequestMapping("/api/v1/schools")
-public class SchoolsController {
+@RequestMapping("/api/v1/locations")
+public class LocationsController {
 	
 	String message = "";	
 
 	@Autowired
-	ISchoolService schoolService;
+	ILocationService locationService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> create(@RequestBody School data) {
+    public ResponseEntity<String> create(@RequestBody Location data) {
     	
-    	message = "schoolCreated";
+    	message = "locationCreated";
     	HttpStatus responseStatus = HttpStatus.OK;
     
-    	schoolService.createSchool(data);
+    	locationService.createLocation(data);
     	JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
 		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
     
     @RequestMapping(method = RequestMethod.GET)
-    public List<School> findAllSchools(){
-       return schoolService.findAllSchools();
+    public List<Location> findAllLocations(){
+       return locationService.findAllLocations();
     }
     
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
-    public School findSchoolById(@PathVariable int id){
-       return schoolService.findSchoolById(id);
+    public Location findLocationById(@PathVariable int id){
+       return locationService.findLocationById(id);
     }
         
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<String> updateSchool(@RequestBody School data) {
+	public ResponseEntity<String> updateLocation(@RequestBody Location data) {
     	
-    	message = "schoolUpdated";
+    	message = "locationUpdated";
     	HttpStatus responseStatus = HttpStatus.OK;
 
-    	schoolService.updateSchool(data);
+    	locationService.updateLocation(data);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);
@@ -59,12 +59,12 @@ public class SchoolsController {
 	}
     
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteSchoolById(@PathVariable long id) {
+	public ResponseEntity<String> deleteLocationById(@PathVariable long id) {
     	
-    	message = "schoolDeleted";
+    	message = "locationDeleted";
     	HttpStatus responseStatus = HttpStatus.OK;
  	
-    	schoolService.deleteSchoolById(id);
+    	locationService.deleteLocationById(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

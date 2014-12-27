@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity  
-@Table(name="ig_schools")
-public class School extends BaseEntity implements Serializable {
+@Table(name="ig_locations")
+public class Location extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 3879277972207055944L;
 	
 	private String name;
+	
+	private String type;
 
 	private String adress;
 	
@@ -26,7 +28,7 @@ public class School extends BaseEntity implements Serializable {
 	
 	private String email;	
 	
-	public School() {}
+	public Location() {}
 	
 	
 	public String getName() {
@@ -37,6 +39,14 @@ public class School extends BaseEntity implements Serializable {
 		this.name = name;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 	public String getAdress() {
 		return adress;
 	}

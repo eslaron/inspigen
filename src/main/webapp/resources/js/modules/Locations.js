@@ -1,13 +1,13 @@
-var Schools = angular.module('inspigen.schools', ['ui.router', 'restangular','ngTable'])
+var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular','ngTable'])
 
 .config(['$stateProvider', function ($stateProvider) {
 	
 	$stateProvider
 	
-	.state('user.admin.schools', {
+	.state('user.admin.locations', {
 		     title: 'Szkoły/Uczelnie',
 		     abstract: false,
-		     url: '/schools',
+		     url: '/locations',
 		     views: {
 		         'navbar@': {
 		       	  templateUrl: 'partials/admin/navbar.html' 
@@ -16,8 +16,8 @@ var Schools = angular.module('inspigen.schools', ['ui.router', 'restangular','ng
 		       	  templateUrl: 'partials/admin/sidebar.html'
 		         },
 		         'content@': {
-		       	  templateUrl: 'partials/common/schools.html',
-		       	  controller: 'SchoolsController'      
+		       	  templateUrl: 'partials/common/locations.html',
+		       	  controller: 'LocationsController'      
 		         }
 		       },
 		       data: {
@@ -30,7 +30,7 @@ var Schools = angular.module('inspigen.schools', ['ui.router', 'restangular','ng
 		   	   }
 		   }) 
 		   
-		 .state('user.admin.schools.add', {
+		 .state('user.admin.locations.add', {
 	     title: 'Dodaj szkołę/uczelnię',
 	     abstract: false,
 	     url: '/add',
@@ -42,8 +42,8 @@ var Schools = angular.module('inspigen.schools', ['ui.router', 'restangular','ng
 	       	  templateUrl: 'partials/admin/sidebar.html'
 	         },
 	         'content@': {
-	       	  templateUrl: 'partials/common/addSchool.html',
-	       	  controller: 'SchoolsController'      
+	       	  templateUrl: 'partials/common/addLocation.html',
+	       	  controller: 'LocationsController'      
 	         }
 	       },
 	       data: {
@@ -58,8 +58,8 @@ var Schools = angular.module('inspigen.schools', ['ui.router', 'restangular','ng
 
 //KONTROLERY
 
-Events.controller('EventsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event', 'Participant','School', 'Context', 'Restangular',
-                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Participant, School, Context, Restangular) {
+Locations.controller('LocationsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event', 'Participant','Location', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Participant, Location, Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;

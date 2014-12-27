@@ -52,18 +52,36 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	           }
 	       }
 	   })
+	   
+	   .state('user.admin.events.add.toggleLocation', {
+	     title: 'Dodaj wydarzenie',
+	     abstract: false,
+	     views: {
+	         'otherLocation@': {
+	       	  templateUrl: 'partials/common/otherLocation.html',
+	       	  controller: 'EventsController'      
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['admin']
+	           }
+	       }
+	   })
 }
            
 ]);
 
 //KONTROLERY
 
-Events.controller('EventsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event', 'Participant','School', 'Context', 'Restangular',
-                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Participant, School, Context, Restangular) {
+Events.controller('EventsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event', 'Participant','Location', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Participant, Location, Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;
   $scope.activate = Context.activate;
+  
+  $scope.toggleLocation = true;
   
   var data = $scope.all.events;
  
@@ -74,7 +92,7 @@ Events.controller('EventsController', ['$scope', '$state', '$stateParams', '$fil
   
   $scope.persons = Person.getAllPersons();
   
-  $scope.schools = School.getAllSchools();
+  $scope.locations = Location.getAllLocations();
   
   $scope.coordinators = [];
   
@@ -101,6 +119,11 @@ Events.controller('EventsController', ['$scope', '$state', '$stateParams', '$fil
 		  $scope.error = error.data;
 		 			
 	  });
+  }
+  
+  $scope.switchLocationForm = function() {
+	  
+	  $state.go('user.admin.events.add.toggleLocation');
   }
  
 }]);

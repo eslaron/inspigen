@@ -68,10 +68,10 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 		    	    	Context.all.participants = Participant.getAllParticipants();
 		    	    });
 	   	   }],
-	   	   schools: ['School','Context', function(School, Context) {  
-	      		return  School.loadSchoolsFromJson()
-	    	    .then(function(newlyLoadedSchools){
-	    	    	Context.all.schools = School.getAllSchools();
+	   	   locations: ['Location','Context', function(Location, Context) {  
+	      		return  Location.loadLocationsFromJson()
+	    	    .then(function(newlyLoadedLocations){
+	    	    	Context.all.locations = Location.getAllLocations();
 	    	    });
 	   	   }],
    	   }

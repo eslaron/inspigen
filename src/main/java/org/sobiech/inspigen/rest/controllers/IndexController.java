@@ -70,21 +70,21 @@ public class IndexController {
         return "partials/common/events";
     }
 	
-	@RequestMapping("/partials/common/addSchool")
-    public String getAddSchoolPartialPage() {
-        return "partials/common/addSchool";
+	@RequestMapping("/partials/common/addLocation")
+    public String getAddLocationPartialPage() {
+        return "partials/common/addLocation";
     }
 	
-	@RequestMapping("/partials/common/schools")
-    public String getSchoolsPartialPage() {
-        return "partials/common/schools";
+	@RequestMapping("/partials/common/locations")
+    public String getLocationsPartialPage() {
+        return "partials/common/locations";
     }
 	
 	@RequestMapping("/partials/common/userDetails")
     public String getUserDetailsPartialPage() {
         return "partials/common/userDetails";
     }
-	
+
 	// Partiale - USER
 	
 	@RequestMapping("/partials/user/navbar")
