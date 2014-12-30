@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 
 @Entity  
-@Table(name="ig_participants")
+@Table(name="ig_event_participants")
 public class Participant extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 3146080687613852144L;

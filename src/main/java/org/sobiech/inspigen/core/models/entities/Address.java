@@ -24,6 +24,8 @@ public class Address extends BaseEntity implements Serializable {
 	
 	private Boolean mailAddress;
 	
+	private int user_id;
+	
 	public Address() {}
 	
 	public String getAddress() {
@@ -80,6 +82,14 @@ public class Address extends BaseEntity implements Serializable {
 
 	public void setMailAddress(Boolean mailAddress) {
 		this.mailAddress = mailAddress;
+	}
+	
+	public int getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
 	}
 }
 

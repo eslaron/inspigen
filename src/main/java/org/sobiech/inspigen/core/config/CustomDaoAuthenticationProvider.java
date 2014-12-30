@@ -40,7 +40,7 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 		    
 			username = authentication.getName();
 			
-			User userByName = userService.findUserByName(username);
+			User userByName = userService.findUserByUsername(username);
 			
 		      try {
 		    	

@@ -115,8 +115,8 @@ public class UserServiceImpl implements IUserService {
 	}
 	
 	@Override
-	public User findUserByName(String username) {
-		return userDao.findUserByName(username);
+	public User findUserByUsername(String username) {
+		return userDao.findUserByUsername(username);
 	}
 
 	@Override
@@ -249,7 +249,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            return findUserByName(username);
+            return findUserByUsername(username);
         } catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage());
         }
@@ -326,7 +326,7 @@ public class UserServiceImpl implements IUserService {
 		
 		HttpStatus responseStatus = HttpStatus.CREATED;
     	JsonObject jsonResponse = new JsonObject();
-    	User userFoundByName = findUserByName(data.getUsername().toLowerCase());
+    	User userFoundByName = findUserByUsername(data.getUsername().toLowerCase());
     	User userFoundByEmail = findUserByEmail(data.getEmail().toLowerCase());
     	
 			boolean userNameFound = false;

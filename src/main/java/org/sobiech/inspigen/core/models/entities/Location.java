@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity  
-@Table(name="ig_locations")
+@Table(name="ig_event_locations")
 public class Location extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 3879277972207055944L;
@@ -14,7 +14,7 @@ public class Location extends BaseEntity implements Serializable {
 	
 	private String type;
 
-	private String adress;
+	private String address;
 	
 	private String city;
 	
@@ -29,7 +29,6 @@ public class Location extends BaseEntity implements Serializable {
 	private String email;	
 	
 	public Location() {}
-	
 	
 	public String getName() {
 		return name;
@@ -47,12 +46,13 @@ public class Location extends BaseEntity implements Serializable {
 		this.type = type;
 	}
 	
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAdress(String adress) {
-		this.adress = adress;
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getCity() {

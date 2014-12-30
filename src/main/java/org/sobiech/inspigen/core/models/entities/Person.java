@@ -37,14 +37,8 @@ public class Person extends BaseEntity implements Serializable {
     
     @Column(name = "user_id")
     private int userId;
-
-    @Column(name = "school_id")
-    private int schoolId;
-    
-    
-    public Person() {
-
-    }
+ 
+    public Person() {}
     
     public String getFirstName() {
 		return firstName;
@@ -92,13 +86,5 @@ public class Person extends BaseEntity implements Serializable {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
-	}
-
-	public int getSchoolId() {
-		return schoolId;
-	}
-
-	public void setSchoolId(int schoolId) {
-		this.schoolId = schoolId;
 	}
 }

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.sobiech.inspigen.core.models.entities.Person;
-import org.sobiech.inspigen.core.repositories.IPersonDao;
 import org.sobiech.inspigen.core.repositories.common.IGenericDao;
 import org.sobiech.inspigen.core.services.IPersonService;
 
@@ -20,10 +19,7 @@ public class PersonServiceImpl implements IPersonService {
 	      dao = daoToSet;
 	      dao.setClazz(Person.class);
 	   }
-	
-	@Autowired
-	IPersonDao personDao;
-	   
+		   
 	@Override
 	public void createPerson(Person data) {
 		dao.create(data);
@@ -37,11 +33,6 @@ public class PersonServiceImpl implements IPersonService {
 	@Override
 	public Person findPersonById(long id) {
 		return dao.findOneById(id);
-	}
-	
-	@Override
-	public Person findPersonByUserId(long id) {
-		return personDao.findPersonByUserId(id);
 	}
 
 	@Override

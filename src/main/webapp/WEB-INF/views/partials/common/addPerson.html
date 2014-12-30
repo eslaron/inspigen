@@ -1,0 +1,75 @@
+<div class="content"  ng-controller="PersonsController">
+<div class="userList container col-md-3">
+<h2>Dane osobowe</h2>
+
+<form name="addPerson_form" ng-submit="addPerson(person)" class="form-horizontal input-border" novalidate>
+ 
+    						<div ng-hide="hideMessage" ng-class="messageStyle">
+				                   {{message}}     
+				   			</div>
+ 
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="Imię" 
+            						name="firstName" 
+            						ng-model="person.firstName" 
+            						ng-pattern="/^[A-z][A-z0-9]*$/"
+            						ng-model-options="{debounce: 1000}"
+            						required />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="Nazwisko" 
+            						name="lastName" 
+            						ng-model="person.lastName" 
+            						ng-pattern="/^[A-z][A-z0-9]*$/"
+            						ng-model-options="{debounce: 1000}"
+            						required />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="PESEL" 
+            						name="pesel" 
+            						ng-model="person.pesel" 
+            						ng-pattern="/^[A-z][A-z0-9]*$/"
+            						ng-model-options="{debounce: 1000}"
+            						required />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="Numer telefonu" 
+            						name="phoneNumber" 
+            						ng-model="person.phoneNumber" 
+            						ng-pattern="/^[A-z][A-z0-9]*$/"
+            						ng-model-options="{debounce: 1000}"
+            						required />
+						</div>
+					</div>
+					
+
+					
+    <button type="submit" class="btn btn-success btn-sm" ng-disabled="addPerson_form.$invalid">Dodaj dane</button>
+</form>
+
+
+		
+</div>
+

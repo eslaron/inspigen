@@ -4,7 +4,7 @@ import org.sobiech.inspigen.core.models.entities.User;
 
 public interface IUserDao {
 	
-	public User findUserByName(String username);
+	public User findUserByUsername(String username);
 	
 	public User findUserByEmail(String email);
 	

@@ -16,13 +16,13 @@ public class Event extends BaseEntity implements Serializable {
 	
 	private String type;
 	
-	private String location;
-	
 	private Date startDate;
 	
 	private Date endDate;
 	
 	private String description;
+	
+	private int location_id;
 	
 	private int user_id;
 	
@@ -44,12 +44,12 @@ public class Event extends BaseEntity implements Serializable {
 		this.type = type;
 	}
 
-	public String getLocation() {
-		return location;
+	public int getLocation_id() {
+		return location_id;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
+	public void setLocation_id(int location_id) {
+		this.location_id = location_id;
 	}
 
 	public Date getStartDate() {

@@ -57,7 +57,7 @@ public class IndexController {
     public String getSettingsPartialPage() {
         return "partials/admin/settings";
     }	
-		
+	
 	//Partiale - COMMON
 	
 	@RequestMapping("/partials/common/addEvent")
@@ -83,6 +83,21 @@ public class IndexController {
 	@RequestMapping("/partials/common/userDetails")
     public String getUserDetailsPartialPage() {
         return "partials/common/userDetails";
+    }
+	
+	@RequestMapping("/partials/common/persons")
+    public String getPersonsPartialPage() {
+        return "partials/common/persons";
+    }
+	
+	@RequestMapping("/partials/common/addPerson")
+    public String getAddPersonPartialPage() {
+        return "partials/common/addPerson";
+    }	
+	
+	@RequestMapping("/partials/common/editPerson")
+    public String getEditPersonPartialPage() {
+        return "partials/common/editPerson";
     }
 
 	// Partiale - USER

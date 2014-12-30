@@ -16,7 +16,7 @@ public interface IUserService extends UserDetailsService {
 	
 	public User findUserById(long id);
 	
-	public User findUserByName(String username);
+	public User findUserByUsername(String username);
 	
 	public User findUserByEmail(String email);
 	

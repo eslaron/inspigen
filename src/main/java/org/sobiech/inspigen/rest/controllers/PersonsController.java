@@ -41,11 +41,6 @@ public class PersonsController {
     public List<Person> findAllPersons(){
        return personService.findAllPersons();
     }
-    
-    @RequestMapping(value ="/{id}", method = RequestMethod.GET)
-    public Person findPersonByUserId(@PathVariable int id){
-       return personService.findPersonByUserId(id);
-    }
         
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<String> updatePerson(@RequestBody Person data) {

@@ -10,9 +10,7 @@ public interface IPersonService {
 	public List<Person> findAllPersons();
 	
 	public Person findPersonById(long id);
-	
-	public Person findPersonByUserId(long id);
-			
+				
 	public void updatePerson(Person data);
 	
 	public void deletePersonById(long id);

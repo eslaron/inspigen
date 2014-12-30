@@ -39,6 +39,26 @@
 			Numer telefonu: <b>{{person.phoneNumber}}</b><br />
 		</td>
 	</tr>
+	<tr ng-hide="person != null">
+		<td>
+			Uzupełnij dane osobowe		
+		</td>
+		<td valign="top"><button class="btn btn-primary" ui-sref="user.admin.persons.add">Dodaj</button></td>
+	</tr>
+	
+	<tr ng-hide="registeredAddress != null">
+		<td>
+			Uzupełnij adres zameldowania
+			
+		</td>
+		<td valign="top"><button class="btn btn-primary" ui-sref="user.admin.addresses.add">Dodaj</button></td>
+	</tr>
+	<tr ng-hide="mailAddress != null">
+		<td>
+			Uzupełnij adres korespondencyjny			
+		</td>
+		<td valign="top"><button class="btn btn-primary" ui-sref="user.admin.addresses.add">Dodaj</button></td>
+	</tr>
 </table>
 
 </div>
