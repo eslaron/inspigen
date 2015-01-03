@@ -60,31 +60,6 @@ public class IndexController {
 	
 	//Partiale - COMMON
 	
-	@RequestMapping("/partials/common/addEvent")
-    public String getAddEventPartialPage() {
-        return "partials/common/addEvent";
-    }
-	
-	@RequestMapping("/partials/common/events")
-    public String getEventsPartialPage() {
-        return "partials/common/events";
-    }
-	
-	@RequestMapping("/partials/common/addLocation")
-    public String getAddLocationPartialPage() {
-        return "partials/common/addLocation";
-    }
-	
-	@RequestMapping("/partials/common/locations")
-    public String getLocationsPartialPage() {
-        return "partials/common/locations";
-    }
-	
-	@RequestMapping("/partials/common/userDetails")
-    public String getUserDetailsPartialPage() {
-        return "partials/common/userDetails";
-    }
-	
 	@RequestMapping("/partials/common/persons")
     public String getPersonsPartialPage() {
         return "partials/common/persons";
@@ -99,7 +74,42 @@ public class IndexController {
     public String getEditPersonPartialPage() {
         return "partials/common/editPerson";
     }
-
+	
+	@RequestMapping("/partials/common/events")
+    public String getEventsPartialPage() {
+        return "partials/common/events";
+    }
+	
+	@RequestMapping("/partials/common/addEvent")
+    public String getAddEventPartialPage() {
+        return "partials/common/addEvent";
+    }
+	
+	@RequestMapping("/partials/common/editEvent")
+    public String getEditEventPartialPage() {
+        return "partials/common/editEvent";
+    }
+	
+	@RequestMapping("/partials/common/locations")
+    public String getLocationsPartialPage() {
+        return "partials/common/locations";
+    }
+	
+	@RequestMapping("/partials/common/addLocation")
+    public String getAddLocationPartialPage() {
+        return "partials/common/addLocation";
+    }
+	
+	@RequestMapping("/partials/common/editLocation")
+    public String getEditLocationPartialPage() {
+        return "partials/common/editLocation";
+    }
+	
+	@RequestMapping("/partials/common/userDetails")
+    public String getUserDetailsPartialPage() {
+        return "partials/common/userDetails";
+    }
+	
 	// Partiale - USER
 	
 	@RequestMapping("/partials/user/navbar")

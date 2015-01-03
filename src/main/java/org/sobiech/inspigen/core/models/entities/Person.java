@@ -5,12 +5,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.mysql.jdbc.Blob;
 
 @Entity  
 @Table(name="ig_persons")
@@ -31,14 +28,13 @@ public class Person extends BaseEntity implements Serializable {
     @Column(name = "phoneNumber")
     private String phoneNumber;
     
-    @Transient
-    @Column(name = "photo", columnDefinition="longblob")
-    private Blob photo;
-    
     @Column(name = "user_id")
     private int userId;
- 
-    public Person() {}
+    
+    @Column(name = "attachment_id")
+    private int attachmentId;
+    
+	public Person() {}
     
     public String getFirstName() {
 		return firstName;
@@ -72,19 +68,19 @@ public class Person extends BaseEntity implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Blob getPhoto() {
-		return photo;
-	}
-
-	public void setPhoto(Blob photo) {
-		this.photo = photo;
-	}
-
 	public int getUserId() {
 		return userId;
 	}
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+    public int getAttachmentId() {
+		return attachmentId;
+	}
+
+	public void setAttachmentId(int attachmentId) {
+		this.attachmentId = attachmentId;
 	}
 }

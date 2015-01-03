@@ -15,4 +15,27 @@ return {
 				});
     		}
 	}	
+})
+
+.directive('fileUpload', function() {
+
+	  return {
+	    restrict: 'A',
+	    scope: {
+	      file: '='
+	    },
+	    link: function(scope, element) {
+	      var input = element[0];
+
+	      function _handleUpload(){
+	        var reader = new FileReader();
+	        reader.readAsBinaryString(this.files[0]);
+	        reader.onload = function(ev){
+	          var file = ev.target.result;
+	          scope.file = file;
+	        }
+	      }
+	      input.addEventListener('change', _handleUpload)
+	    }
+	  }
 });

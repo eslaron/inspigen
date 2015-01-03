@@ -1,14 +1,12 @@
 package org.sobiech.inspigen.core.models.entities;
 
 import java.io.Serializable;
-import java.sql.Blob;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity  
-@Table(name="ig_event_attachments")
-public class Attachments extends BaseEntity implements Serializable {
+@Table(name="ig_attachments")
+public class Attachment extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 9211655507105029935L;
 	
@@ -16,11 +14,9 @@ public class Attachments extends BaseEntity implements Serializable {
 	
 	private String fileType;
 	
-	private Blob file;
+	private byte[] file;
 	
-	private int event_id;
-	
-	public Attachments() {}
+	public Attachment() {}
 	
 	public String getFileName() {
 		return fileName;
@@ -38,20 +34,11 @@ public class Attachments extends BaseEntity implements Serializable {
 		this.fileType = fileType;
 	}
 
-	public Blob getFile() {
+	public byte[] getFile() {
 		return file;
 	}
 
-	public void setFile(Blob file) {
+	public void setFile(byte[] file) {
 		this.file = file;
 	}
-
-	public int getEvent_id() {
-		return event_id;
-	}
-
-	public void setEvent_id(int event_id) {
-		this.event_id = event_id;
-	}	
 }
-
