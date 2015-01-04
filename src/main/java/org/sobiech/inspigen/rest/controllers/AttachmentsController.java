@@ -21,39 +21,21 @@ import com.google.gson.JsonObject;
 public class AttachmentsController {
 	
 	String message = "";	
-	String fileName = "";
-	String fileType = "";
-	int userId = 0;
 
 	@Autowired
 	IAttachmentService attachmentService;
 
-	@RequestMapping(value="/fileInfo", method = RequestMethod.POST)
-    public ResponseEntity<String> getFileInfo(@RequestBody Attachment data) {
-  	
-    	message = "fileInfoReceived";
-    	HttpStatus responseStatus = HttpStatus.OK;
- 	   	    	
-    	fileName = data.getFileName();
-    	fileType = data.getFileType();
-    	userId = data.getUser_id();
-    	
-    	JsonObject jsonResponse = new JsonObject();
-		jsonResponse.addProperty("message", message);
-		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
-	}
-	
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> create(@RequestBody byte[] file) {
+    public ResponseEntity<String> create(@RequestBody Attachment file) {
   	
     	message = "attachmentCreated";
     	HttpStatus responseStatus = HttpStatus.OK;
  	
 		    	Attachment attachment = new Attachment();
-		    	attachment.setFileName(fileName);
-		    	attachment.setFileType(fileType);
-		    	attachment.setUser_id(userId);
-		    	attachment.setFile(file);
+		    	attachment.setFileName(file.getFileName());
+		    	attachment.setFileType(file.getFileType());
+		    	attachment.setUser_id(file.getUser_id());
+		    	attachment.setFile(file.getFile());
 	    	
 		    	attachmentService.createAttachment(attachment);
       

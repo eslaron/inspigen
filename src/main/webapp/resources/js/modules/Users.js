@@ -310,9 +310,7 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   $scope.selectedRole.key = $scope.user.role;
   
   $scope.optionalEnabled = false;
-  
-  $scope.Attachment = {fileName:"", fileType: "", file:"", user_id:""};
-  
+    
   if($scope.user.enabled == "Tak")
 	  $scope.enabled = true;
   if($scope.user.enabled == "Nie")
@@ -558,33 +556,27 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
 Users.controller('UserDetailsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Settings', 'Context', 'Restangular',
                                      function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Settings, Context, Restangular) {
 	
-	
+	  $scope.Attachment = {fileName:"", fileType: "", file:"", user_id:""};
+	  
+	  var AddAttachment = Restangular.all('attachments');
+	  
 	  $scope.addPhoto = function(data) {
 		  
-		  var AddAttachment = Restangular.all('attachments');
-		  var AddFileInfo = Restangular.all('attachments/fileInfo');
-		  
 		  if($scope.data != null) {
-			    
+			  
+			  $scope.Attachment.file = btoa($scope.data);
 			  $scope.Attachment.user_id = $scope.user.id;
-			  	  
-			  AddFileInfo.post($scope.Attachment).then(function(response){
-		
-				  	AddAttachment.post($scope.data).then(function(response){
+			  	  	
+				 AddAttachment.post($scope.Attachment).then(function(response){
 						 
-					 },function(error) {
+				 },function(error) {
 		 				  $scope.error = error.data; 					
-		 			 });
-									  		  
-				  }, function(error) {
-					  $scope.error = error.data; 					
-			  });
+		 		 });
 		  }
 	  }
-	
-	  $scope.image = '';
 	  
-	
+	  $scope.image = '';
+	 
 	  Restangular.one('attachments', $scope.user.id).get()
 	  	.then(function(result) {
 	  		$scope.image = result;
@@ -600,14 +592,11 @@ Users.controller('UserDetailsController', ['$scope', '$state', '$stateParams', '
 	    	
 	    	 $scope.Attachment.fileName = f.name;
  			 $scope.Attachment.fileType = f.type;
- 			 
- 			alert($scope.Attachment.fileName);
-
+ 
 	    output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
 	                  f.size, ' bytes</li>');
 	    }
 	    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
 	}
-
 	  	document.getElementById('files').addEventListener('change', handleFileSelect, false);
 }]);
