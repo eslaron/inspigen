@@ -29,7 +29,7 @@ return {
 
 	      function _handleUpload(){
 	        var reader = new FileReader();
-	        reader.readAsBinaryString(this.files[0]);
+	        reader.readAsDataURL(this.files[0]);
 	        reader.onload = function(ev){
 	          var file = ev.target.result;
 	          scope.file = file;

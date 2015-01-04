@@ -292,6 +292,8 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   $scope.active = Context.active;
   $scope.activate = Context.activate;
   
+  $scope.isCollapsed = true;	
+  
   var data = $scope.all.users;
   
   $scope.settings = $scope.all.settings[0];
@@ -308,6 +310,8 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   $scope.selectedRole.key = $scope.user.role;
   
   $scope.optionalEnabled = false;
+  
+  $scope.Attachment = {fileName:"", fileType: "", file:"", user_id:""};
   
   if($scope.user.enabled == "Tak")
 	  $scope.enabled = true;
@@ -549,5 +553,61 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
         }
    });
 	
-	$scope.isCollapsed = true;	
+}]);
+
+Users.controller('UserDetailsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Settings', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Settings, Context, Restangular) {
+	
+	
+	  $scope.addPhoto = function(data) {
+		  
+		  var AddAttachment = Restangular.all('attachments');
+		  var AddFileInfo = Restangular.all('attachments/fileInfo');
+		  
+		  if($scope.data != null) {
+			    
+			  $scope.Attachment.user_id = $scope.user.id;
+			  	  
+			  AddFileInfo.post($scope.Attachment).then(function(response){
+		
+				  	AddAttachment.post($scope.data).then(function(response){
+						 
+					 },function(error) {
+		 				  $scope.error = error.data; 					
+		 			 });
+									  		  
+				  }, function(error) {
+					  $scope.error = error.data; 					
+			  });
+		  }
+	  }
+	
+	  $scope.image = '';
+	  
+	
+	  Restangular.one('attachments', $scope.user.id).get()
+	  	.then(function(result) {
+	  		$scope.image = result;
+	  });
+	
+	function handleFileSelect(evt) {
+		  
+	    var files = evt.target.files; // FileList object
+
+	    // files is a FileList of File objects. List some properties.
+	    var output = [];
+	    for (var i = 0, f; f = files[i]; i++) {
+	    	
+	    	 $scope.Attachment.fileName = f.name;
+ 			 $scope.Attachment.fileType = f.type;
+ 			 
+ 			alert($scope.Attachment.fileName);
+
+	    output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+	                  f.size, ' bytes</li>');
+	    }
+	    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+	}
+
+	  	document.getElementById('files').addEventListener('change', handleFileSelect, false);
 }]);

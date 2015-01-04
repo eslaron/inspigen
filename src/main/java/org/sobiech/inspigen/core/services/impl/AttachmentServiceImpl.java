@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.sobiech.inspigen.core.models.entities.Attachment;
+import org.sobiech.inspigen.core.repositories.IAttachmentDao;
 import org.sobiech.inspigen.core.repositories.common.IGenericDao;
 import org.sobiech.inspigen.core.services.IAttachmentService;
 
@@ -21,6 +22,9 @@ public class AttachmentServiceImpl implements IAttachmentService {
 	      dao = daoToSet;
 	      dao.setClazz(Attachment.class);
 	   }
+	   
+	   @Autowired
+	   IAttachmentDao attachmentDao;
 
 	@Override
 	public void createAttachment(Attachment data) {
@@ -45,5 +49,10 @@ public class AttachmentServiceImpl implements IAttachmentService {
 	@Override
 	public void deleteAttachmentById(long id) {
 		dao.deleteById(id);
+	}
+
+	@Override
+	public Attachment findAttachmentByUserId(int id) {
+		return attachmentDao.findAttachmentByUserId(id);
 	}	
 }

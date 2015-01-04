@@ -44,7 +44,7 @@
             						placeholder="PESEL" 
             						name="pesel" 
             						ng-model="person.pesel" 
-            						ng-pattern="/^[A-z][A-z0-9]*$/"
+            						ng-pattern="/^[0-9]*$/"
             						ng-model-options="{debounce: 1000}"
             						required />
 						</div>
@@ -58,33 +58,14 @@
             						placeholder="Numer telefonu" 
             						name="phoneNumber" 
             						ng-model="person.phoneNumber" 
-            						ng-pattern="/^[A-z][A-z0-9]*$/"
+            						ng-pattern="/^[0-9]*$/"
             						ng-model-options="{debounce: 1000}"
             						required />
 						</div>
 					</div>
-				
-    <button type="submit" class="btn btn-success btn-sm" ng-disabled="addPerson_form.$invalid">Dodaj dane</button>
+								
+   <button type="submit" class="btn btn-success btn-sm" ng-disabled="addPerson_form.$invalid">Dodaj dane</button>
 </form>
-
-<div ng-controller="AttachmentController">
-	<form name="addAttachment_form" class="form-horizontal input-border" ng-submit="addAttachment(data)">
-					<div class="form-group">
-						<div class="col-md-12">
-    						<input 
-    								class="form-control"  
-    								type="file" 
-    								file-upload 
-    								id="files" 
-    								name="files[]" 
-    								multiple
-    								file="data" />
-						</div>
-					</div>
-					   <button type="submit" class="btn btn-success btn-sm">Dodaj zdjęcie</button>
-					</form>	
-					<output id="list"></output>
-</div>
-			
+		
 </div>
 

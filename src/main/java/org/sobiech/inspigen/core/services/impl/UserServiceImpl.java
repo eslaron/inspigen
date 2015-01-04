@@ -72,15 +72,20 @@ public class UserServiceImpl implements IUserService {
     	String passwordToken = setToken();
       	newUser.setPasswordToken(passwordToken);
       	
+      	Date passwordTokenExpiration = setTokenExpirationDate();
+    	newUser.setPasswordTokenExpiration(passwordTokenExpiration);
+    	
+      	Date activationTokenExpiration = setTokenExpirationDate();
+    	newUser.setActivationTokenExpiration(activationTokenExpiration);
+      	
     	String activationToken = setToken();
     	newUser.setActivationToken(activationToken);
-    	
-    	Date activationTokenExpiration = setTokenExpirationDate();
-    	newUser.setActivationTokenExpiration(activationTokenExpiration);
-    	
+    	    	
     	if(data.getRole() == null)
     		newUser.setRole("ROLE_USER");
     	
+    	else {
+    		
     	if(data.getRole().equals("Wolontariusz"))
     		newUser.setRole("ROLE_USER");
     	
@@ -89,15 +94,18 @@ public class UserServiceImpl implements IUserService {
     	
     	if(data.getRole().equals("Administrator"))
     		newUser.setRole("ROLE_ADMIN");
+    	}
     	
     	if(data.getEnabled() == null)
     		newUser.setEnabled(false);
     	
-    	if(data.getEnabled().equals("Tak"))
-    		newUser.setEnabled(true);
-    	
-    	if(data.getEnabled().equals("Nie"))
-        	newUser.setEnabled(false);
+    	else {  		
+    		if(data.getEnabled().equals("Tak"))
+        		newUser.setEnabled(true);
+        	
+        	if(data.getEnabled().equals("Nie"))
+            	newUser.setEnabled(false);
+    	}
     	
     	newUser.setAccountNonLocked(true);
     	newUser.setAccountNonExpired(true);
@@ -283,9 +291,9 @@ public class UserServiceImpl implements IUserService {
 		Date currentDate = new Date();
 		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		format.format(currentDate);
-			
+
 		Calendar cal=Calendar.getInstance();
-		cal=format.getCalendar();		
+		cal=format.getCalendar();	
 		cal.add(Calendar.MINUTE, settings.getLinkExpirationTime());
 	
 		return (Date)cal.getTime();

@@ -41,7 +41,7 @@ public class EmailServiceImpl implements IEmailService {
 			
 				msg = "<html><body>Hej :)<br/>Cieszymy się, że do nas dołączyłeś."
 						+ "<br/>Kliknij w podany link, aby aktywować swoje konto: "
-						+ "<a href='http://localhost:8080/inspigen/#/activateAccount/"
+						+ "<a href='http://inspigen.pl/#/activateAccount/"
 						+token+"'>LINK</a></body></html>";
 			
 				mbp.setContent(msg, "text/html; charset=UTF-8");
@@ -53,7 +53,7 @@ public class EmailServiceImpl implements IEmailService {
 				mimeHelper.setSubject("Przypomnienie hasła - Inspigen");
 				
 				msg = "<html><body>Hej :)<br/>Aby zresetować swoje hasło kliknij w poniższy link: <br/>"
-						+ "<a href='http://localhost:8080/inspigen/#/newPassword/"
+						+ "<a href='http://inspigen.pl/#/newPassword/"
 						+token+"'>LINK</a></body></html>";
 				
 				mbp.setContent(msg, "text/html; charset=UTF-8");

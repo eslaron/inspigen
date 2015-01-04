@@ -12,6 +12,8 @@ public interface IAttachmentService {
 	public List<Attachment> findAllAttachments();
 	
 	public Attachment findAttachmentById(long id);
+	
+	public Attachment findAttachmentByUserId(int id);
 		
 	public void updateAttachment(Attachment data);
 	

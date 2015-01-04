@@ -8,10 +8,10 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @Configuration
 public class EmailConfig {
 	
-	private String host = "smtp.gmail.com";
-	private int port = 587;
-	private String username = "sebastian.sobiech";
-	private String password = "maciorado13lat";
+	private String host = "mail.inspigen.pl";
+	private int port = 25;
+	private String username = "administracja";
+	private String password = "Sebastian999";
 	
 	
 	@Bean
@@ -27,7 +27,8 @@ public class EmailConfig {
 		
 		javaMailProperties.setProperty("mail.smtp.auth", "true");
 		javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
-		
+		//javaMailProperties.setProperty("mail.smtp.ssl.trust", "mail.inspigen.pl");
+	
 		sender.setJavaMailProperties(javaMailProperties);
 		
 		return sender;

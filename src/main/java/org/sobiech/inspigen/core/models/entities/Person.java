@@ -31,9 +31,6 @@ public class Person extends BaseEntity implements Serializable {
     @Column(name = "user_id")
     private int userId;
     
-    @Column(name = "attachment_id")
-    private int attachmentId;
-    
 	public Person() {}
     
     public String getFirstName() {
@@ -74,13 +71,5 @@ public class Person extends BaseEntity implements Serializable {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
-	}
-
-    public int getAttachmentId() {
-		return attachmentId;
-	}
-
-	public void setAttachmentId(int attachmentId) {
-		this.attachmentId = attachmentId;
 	}
 }

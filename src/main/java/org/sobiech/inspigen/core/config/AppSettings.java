@@ -16,6 +16,6 @@ public class AppSettings {
 	
 	@PostConstruct
 	public void initSettings() {
-		settings = settingsService.getSettings().get(0);
+		//DELETE THIS CLASS
 	}	
 }
