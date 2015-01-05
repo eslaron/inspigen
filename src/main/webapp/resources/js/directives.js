@@ -17,6 +17,48 @@ return {
 	}	
 })
 
+.directive('ngPesel', function() {
+	
+	/*
+	 * @author: Aleksander Kawęczyński(algorytm)
+	 * @author: Sebastian Sobiech (dyrektywa dla AngularJS)
+	 * 
+	 * */
+	
+return {
+	require: 'ngModel',
+	link : 
+			function(scope, element, attrs, ngModel) {
+			ngModel.$parsers.push(function(value) {	
+				
+				var valid = false;
+				var reg = /^[0-9]{11}$/;
+				
+			        if(reg.test(value) == false) {
+			        	valid = false;
+			        }
+			        else
+			        {
+			            var digit = (""+value).split("");
+			            var check = (1*parseInt(digit[0]) + 3*parseInt(digit[1]) + 7*parseInt(digit[2]) 
+			            		+ 9*parseInt(digit[3]) + 1*parseInt(digit[4]) + 3*parseInt(digit[5]) + 
+			            		7*parseInt(digit[6]) + 9*parseInt(digit[7]) + 1*parseInt(digit[8]) + 
+			            		3*parseInt(digit[9]))%10;
+			            if(check==0) check = 10;
+			            check = 10 - check;
+			            if(parseInt(digit[10])==check)
+			            valid = true;
+			            else
+			            valid = false;
+			        } 
+			        ngModel.$setValidity('pesel', valid == true);   
+			        
+				return value;
+			});
+		}
+	}
+})
+
 .directive('fileUpload', function() {
 
 	  return {

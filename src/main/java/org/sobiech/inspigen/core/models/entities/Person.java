@@ -29,8 +29,8 @@ public class Person extends BaseEntity implements Serializable {
     private String phoneNumber;
     
     @Column(name = "user_id")
-    private int userId;
-    
+    private int user_id;
+
 	public Person() {}
     
     public String getFirstName() {
@@ -64,12 +64,12 @@ public class Person extends BaseEntity implements Serializable {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
-	public int getUserId() {
-		return userId;
+   
+	public int getUser_id() {
+		return user_id;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
 	}
 }

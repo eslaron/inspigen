@@ -33,7 +33,7 @@
 					<button class="btn btn-primary" ui-sref="user.admin.persons.edit({ id: person.id })">Edytuj</button>
 				</td>
 			</tr>
-			<tr ng-hide="person == null">
+			<tr ng-hide="person == null && person.user_id != user.id">
 				<td>
 					Imię: <b>{{person.firstName}}</b><br />
 					Nazwisko: <b>{{person.lastName}}</b><br />
@@ -41,11 +41,11 @@
 					Numer telefonu: <b>{{person.phoneNumber}}</b><br />
 				</td>
 			</tr>
-			<tr ng-hide="person != null">
+			<tr ng-hide="person != null && person.user_id == user.id">
 				<td>
 					Uzupełnij dane osobowe		
 				</td>
-				<td valign="top"><button class="btn btn-primary" ui-sref="user.admin.persons.add">Dodaj</button></td>
+				<td valign="top"><button class="btn btn-primary" ui-sref="user.admin.persons.add({ id: user.id })">Dodaj</button></td>
 			</tr>
 			
 			<tr ng-hide="registeredAddress != null">
@@ -62,7 +62,7 @@
 				<td valign="top"><button class="btn btn-primary" ui-sref="user.admin.addresses.add">Dodaj</button></td>
 			</tr>
 		</td>
-		<td valign="top" ng-controller="UserDetailsController">
+		<td valign="top" ng-controller="AttachmentsController">
 		<img ng-hide="image != null" src="resources/images/blank_photo.jpg" width="50%" height="50%">
 				<img ng-hide="image == null" ng-src="{{image}}" width="50%" height="50%">	
 							
@@ -98,7 +98,9 @@
 					</div>
 				<button type="submit" class="btn btn-primary">Zmień zdjęcie</button>
 			</form>
+			{{noFile}}
 			<button class="btn btn-danger" ng-click="deleteAttachmentByUserId()">Usuń zdjęcie</button> 
+			
 		</td>	
 	</tr>
 	

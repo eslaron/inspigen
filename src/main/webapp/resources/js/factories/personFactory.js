@@ -15,7 +15,7 @@ Users.factory('Person', function($http, $q, Restangular) {
       personCache[self.id] = self;
     };
     
-    Person.getUPersonById = function(id){
+    Person.getPersonById = function(id){
       return personCache[id]
     }
     

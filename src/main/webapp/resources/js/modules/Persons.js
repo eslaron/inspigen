@@ -33,7 +33,7 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 		 .state('user.admin.persons.add', {
 	     title: 'Dodaj dane osobowe',
 	     abstract: false,
-	     url: '/add',
+	     url: '/:id/add',
 	     views: {
 	         'navbar@': {
 	       	  templateUrl: 'partials/admin/navbar.html' 
@@ -43,7 +43,10 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 	         },
 	         'content@': {
 	       	  templateUrl: 'partials/common/addPerson.html',
-	       	  controller: 'PersonsController'      
+	       	  controller: function($stateParams, $scope, Person) {
+	       		  $scope.person = {user_id:""};
+	              $scope.person.user_id = $stateParams.id;
+	          }      
 	         }
 	       },
 	       data: {
@@ -67,6 +70,7 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 	         'content@': {
 	       	  templateUrl: 'partials/common/editPerson.html',
 	       	  controller: function($stateParams, $scope, Person) {
+	       		  $scope.person = {};
 	              $scope.person.id = $stateParams.id;
 	              $scope.person = Person.getPersonById($stateParams.id);
 	              $scope.isCollapsed = true;
@@ -91,16 +95,33 @@ Persons.controller('PersonsController', ['$scope', '$state', '$stateParams', '$f
   $scope.all = Context.all;
   $scope.active = Context.active;
   $scope.activate = Context.activate;
- 
+  
+  var AllPersons = Restangular.all('persons');
+  var OnePerson = Restangular.one('persons');
+  
   $scope.addPerson = function(person) {
-	  
-	  		  var AddPerson = Restangular.all('persons');
-			 
-			  AddPerson.post($scope.person).then(function(response) {
-				 	
+
+	  		  AllPersons.post($scope.person).then(function(response) {
+	  			  Person.loadPersonsFromJson();
 			  }, function(error) {
 				  $scope.error = error.data; 					
 			  });		  
+  }
+  
+  $scope.editPerson = function(person) {
+	  
+		OnePerson.id = $scope.person.id;
+		OnePerson.firstName = $scope.person.firstName;
+		OnePerson.lastName = $scope.person.lastName;
+		OnePerson.pesel = $scope.person.pesel;
+		OnePerson.phoneNumber = $scope.person.phoneNumber;
+		OnePerson.user_id = $scope.person.user_id;
+	 
+		OnePerson.put().then(function(response) {
+			Person.loadPersonsFromJson();
+		  }, function(error) {
+			  $scope.error = error.data; 					
+		  });		  
   }
   
 }]);

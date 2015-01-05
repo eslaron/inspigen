@@ -26,7 +26,7 @@ public class PersonsController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> create(@RequestBody Person data) {
-    	
+
     	message = "personCreated";
     	HttpStatus responseStatus = HttpStatus.OK;
     
