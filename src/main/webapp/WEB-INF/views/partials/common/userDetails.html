@@ -38,9 +38,28 @@
 					Imię: <b>{{person.firstName}}</b><br />
 					Nazwisko: <b>{{person.lastName}}</b><br />
 					PESEL: <b>{{person.pesel}}</b><br />
-					Numer telefonu: <b>{{person.phoneNumber}}</b><br />
+					Numer telefonu: <b>{{person.phoneNumber}}</b><br /><br />
 				</td>
 			</tr>
+			<tr ng-hide="address == null">
+				<td>
+					<b>Adres zameldowania:</b>
+				</td>
+				<td valign="top">
+					<button class="btn btn-primary" ui-sref="user.admin.addresses.edit({ id: user.id })">Edytuj</button>
+				</td>
+			</tr>
+			<tr ng-hide="address == null && address.user_id != user.id && address.registeredAddress == true">
+				<td>
+					Ulica: <b>{{address.address}}</b><br />
+					Miejscowość: <b>{{address.city}}</b><br />
+					Kod pocztowy: <b>{{address.zipCode}}</b><br />
+					Ulica: <b>{{address.address}}</b><br />
+					Województwo/Powiat/Gmina: <b>{{address.state}}</b><br />
+					Kraj: <b>{{address.country}}</b><br /><br />
+				</td>
+			</tr>
+			
 			<tr ng-hide="person != null && person.user_id == user.id">
 				<td>
 					Uzupełnij dane osobowe		
@@ -48,18 +67,18 @@
 				<td valign="top"><button class="btn btn-primary" ui-sref="user.admin.persons.add({ id: user.id })">Dodaj</button></td>
 			</tr>
 			
-			<tr ng-hide="registeredAddress != null">
+			<tr ng-hide="address != null && address.user_id == user.id && address.registeredAddress == true">
 				<td>
 					Uzupełnij adres zameldowania
 					
 				</td>
-				<td valign="top"><button class="btn btn-primary" ui-sref="user.admin.addresses.add">Dodaj</button></td>
+				<td valign="top"><button class="btn btn-primary" ui-sref="user.admin.addresses.add({ id: user.id })">Dodaj</button></td>
 			</tr>
 			<tr ng-hide="mailAddress != null">
 				<td>
 					Uzupełnij adres korespondencyjny			
 				</td>
-				<td valign="top"><button class="btn btn-primary" ui-sref="user.admin.addresses.add">Dodaj</button></td>
+				<td valign="top"><button class="btn btn-primary" ui-sref="user.admin.addresses.add({ id: user.id })">Dodaj</button></td>
 			</tr>
 		</td>
 		<td valign="top" ng-controller="AttachmentsController">

@@ -20,7 +20,7 @@ return {
 .directive('ngPesel', function() {
 	
 	/*
-	 * @author: Aleksander Kawęczyński(algorytm)
+	 * @author: Aleksander Kawęczyński(algorytm) - http://blog.aleksander.kaweczynski.pl/walidacja-numerow-pesel-nip-regon-w-javascript-i-php/
 	 * @author: Sebastian Sobiech (dyrektywa dla AngularJS)
 	 * 
 	 * */

@@ -1,0 +1,139 @@
+<div class="content"  ng-controller="PersonsController">
+<div class="userList container col-md-3">
+<h2>Adres - Edycja</h2>
+
+<form name="editPerson_form" ng-submit="editPerson(person)" class="form-horizontal input-border" novalidate>
+ 
+    						<div ng-hide="hideMessage" ng-class="messageStyle">
+				                   {{message}}     
+				   			</div>
+ 
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="Imię" 
+            						name="firstName" 
+            						ng-model="person.firstName" 
+            						ng-minlength=3
+            						ng-maxlength=12 
+            						ng-pattern="/^[A-Ź][a-ź]*$/"
+            						ng-model-options="{debounce: 1000}"
+            						required />
+            						
+            				<div class="error-container" ng-show="editPerson_form.firstName.$dirty && editPerson_form.firstName.$invalid">
+							    <small class="error-message" ng-show="editPerson_form.firstName.$error.required">
+							    	To pole nie może być puste.</small>
+							    <small class="error-message" ng-show="
+							    !editPerson_form.firstName.$error.minlength
+							    && !editPerson_form.firstName.$error.maxlength
+							    && editPerson_form.firstName.$error.pattern">
+							    	Musi zaczynać się od dużej litery oraz zawierać tylko litery.</small>	
+							    <small class="error-message" ng-show="
+							    	!editPerson_form.firstName.$error.required 
+							    	&& editPerson_form.firstName.$error.minlength
+									|| editPerson_form.firstName.$error.maxlength">
+							    	Pole musi się składać z przynajmniej 3 i niewięcej niż 12 znaków.</small>
+  							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+									<div class="col-sm-12">
+			    						<input
+			    								class="form-control" 
+			    								type="text" 
+			            						placeholder="Nazwisko" 
+			            						name="lastName" 
+			            						ng-model="person.lastName" 
+			            						ng-minlength=3
+			            						ng-maxlength=20 
+			            						ng-pattern="/^[A-Ź][A-ź-]*$/"
+			            						ng-model-options="{debounce: 1000}"
+			            						required />
+			            						
+			            				<div class="error-container" ng-show="editPerson_form.lastName.$dirty && editPerson_form.lastName.$invalid">
+										    <small class="error-message" ng-show="editPerson_form.lastName.$error.required">
+										    	To pole nie może być puste.</small>
+										    <small class="error-message" ng-show="
+										    !editPerson_form.lastName.$error.minlength
+										    && !editPerson_form.lastName.$error.maxlength
+										    && editPerson_form.lastName.$error.pattern">
+										    	Musi zaczynać się od dużej litery i ewentualnie zawierać '-'.</small>	
+										    <small class="error-message" ng-show="
+										    	!editPerson_form.lastName.$error.required 
+										    	&& editPerson_form.lastName.$error.minlength
+												|| editPerson_form.lastName.$error.maxlength">
+										    	Pole musi się składać z przynajmniej 3 i niewięcej niż 20 znaków.</small>
+			  							</div>
+									</div>
+						</div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="PESEL" 
+            						name="pesel" 
+            						ng-model="person.pesel" 
+            						ng-minlength=11
+			            			ng-maxlength=11
+									ng-pesel="person.pesel"
+            						ng-model-options="{debounce: 1000}"
+            						required />
+            						
+            					<div class="error-container" ng-show="editPerson_form.pesel.$dirty && editPerson_form.pesel.$invalid">
+										    <small class="error-message" ng-show="editPerson_form.pesel.$error.required">
+										    	To pole nie może być puste.</small>
+										    <small class="error-message" ng-show="
+										    !editPerson_form.pesel.$error.minlength
+										    && !editPerson_form.pesel.$error.maxlength
+										    && editPerson_form.pesel.$error.pesel">
+										    	Numer PESEL jest nieprawidłowy.</small>	
+										    <small class="error-message" ng-show="
+										    	!editPerson_form.pesel.$error.required 
+										    	&& editPerson_form.pesel.$error.minlength
+												|| editPerson_form.pesel.$error.maxlength">
+										    	PESEL musi mieć dokładnie 11 cyfr.</small>
+			  							</div>
+									</div>						
+						</div>
+		
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="Numer telefonu" 
+            						name="phoneNumber" 
+            						ng-model="person.phoneNumber" 
+            						ng-minlength=9
+			            			ng-maxlength=11
+            						ng-pattern="/^[0-9]*$/"
+            						required />
+            						
+            							<div class="error-container" ng-show="editPerson_form.phoneNumber.$dirty && editPerson_form.phoneNumber.$invalid">
+										    <small class="error-message" ng-show="editPerson_form.phoneNumber.$error.required">
+										    	To pole nie może być puste.</small>
+										    <small class="error-message" ng-show="
+										    !editPerson_form.phoneNumber.$error.minlength
+										    && !editPerson_form.phoneNumber.$error.maxlength
+										    && editPerson_form.phoneNumber.$error.pattern">
+										    	Numer telefonu może zawierać wyłącznie cyfry.</small>	
+										    <small class="error-message" ng-show="
+										    	!editPerson_form.phoneNumber.$error.required 
+										    	&& editPerson_form.phoneNumber.$error.minlength
+												|| editPerson_form.phoneNumber.$error.maxlength">
+										    	Numer telefonu nie może być krótszy niż 9 i i niedłuższy niż 11 cyfr.</small>
+			  							</div>
+						</div>
+					</div>
+								
+   <button type="submit" class="btn btn-success btn-sm" ng-disabled="editPerson_form.$invalid || editPerson_form.$pristine">Zmień dane</button>
+</form>
+		
+</div>
+

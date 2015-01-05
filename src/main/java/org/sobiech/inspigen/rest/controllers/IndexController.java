@@ -75,6 +75,21 @@ public class IndexController {
         return "partials/common/editPerson";
     }
 	
+	@RequestMapping("/partials/common/addresses")
+    public String getAddressesPartialPage() {
+        return "partials/common/addresses";
+    }
+	
+	@RequestMapping("/partials/common/addAddress")
+    public String getAddAddressPartialPage() {
+        return "partials/common/addAddress";
+    }	
+	
+	@RequestMapping("/partials/common/editAddress")
+    public String getEditAddressPartialPage() {
+        return "partials/common/editAddress";
+    }
+	
 	@RequestMapping("/partials/common/events")
     public String getEventsPartialPage() {
         return "partials/common/events";

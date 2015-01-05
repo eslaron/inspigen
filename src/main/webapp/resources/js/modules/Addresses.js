@@ -33,7 +33,7 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 		 .state('user.admin.addresses.add', {
 	     title: 'Dodaj szkołę/uczelnię',
 	     abstract: false,
-	     url: '/add',
+	     url: '/:id/add',
 	     views: {
 	         'navbar@': {
 	       	  templateUrl: 'partials/admin/navbar.html' 
@@ -43,7 +43,10 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 	         },
 	         'content@': {
 	       	  templateUrl: 'partials/common/addAddress.html',
-	       	  controller: 'AddressesController'      
+	       	  controller: function($stateParams, $scope, Address) {
+	       		  $scope.address = {user_id:""};
+	              $scope.address.user_id = $stateParams.id;
+	          }      
 	         }
 	       },
 	       data: {
@@ -58,8 +61,8 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 
 //KONTROLERY
 
-Addresses.controller('AddressesController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event', 'Participant','Location', 'Context', 'Restangular',
-                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Participant, Location, Context, Restangular) {
+Addresses.controller('AddressesController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Address', 'Event', 'Participant','Location', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Address, Event, Participant, Location, Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;

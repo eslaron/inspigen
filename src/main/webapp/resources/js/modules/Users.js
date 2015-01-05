@@ -58,7 +58,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
     	   address: ['Address','Context', function(Address, Context) {  
 	      		return  Address.loadAddressesFromJson()
 	    	    .then(function(newlyLoadedAddresses){
-	    	    	Context.all.addreses = Address.getAllAddresses();
+	    	    	Context.all.addresses = Address.getAllAddresses();
 	    	    });
     	   }],
     	   events: ['Event','Context', function(Event, Context) {  
@@ -168,15 +168,22 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
          },
          'content@': {
        	  templateUrl: 'partials/common/userDetails.html',
-       	  controller: function($stateParams, $scope, User, Person) {
+       	  controller: function($stateParams, $scope, User, Person, Address) {
               $scope.user.id = $stateParams.id;
               $scope.user = User.getUserById($stateParams.id);
               $scope.persons = Person.getAllPersons();
+              $scope.addresses = Address.getAllAddresses();
+                     
               for(var i = $scope.persons.length - 1; i >= 0; i--) {
   			    if($scope.persons[i].user_id == $stateParams.id) {
   			       $scope.person = $scope.persons[i];
   			    }
   			}
+              for(var i = $scope.addresses.length - 1; i >= 0; i--) {
+  			    if($scope.addresses[i].user_id == $stateParams.id) {
+  			       $scope.address = $scope.addresses[i];
+  		   }
+              }
               
               $scope.isCollapsed = true;
           } 
@@ -285,8 +292,8 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 
 //KONTROLERY
 
-Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Settings', 'Context', 'Restangular',
-                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Settings, Context, Restangular) {
+Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Address','Settings', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Address,Settings, Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;
