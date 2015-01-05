@@ -53,6 +53,21 @@ public class AttachmentServiceImpl implements IAttachmentService {
 
 	@Override
 	public Attachment findAttachmentByUserId(int id) {
-		return attachmentDao.findAttachmentByUserId(id);
+		
+		Attachment emptyAttachment = new Attachment();
+		
+		if(attachmentDao.findAttachmentByUserId(id) == null)
+			return emptyAttachment;
+		else return attachmentDao.findAttachmentByUserId(id);
+	}
+
+	@Override
+	public void updateAttachmentByUserId(Attachment data) {
+		attachmentDao.updateAttachmentByUserId(data);	
+	}
+
+	@Override
+	public void deleteAttachmentByUserId(int id) {
+		attachmentDao.deleteAttachmentByUserId(id);
 	}	
 }

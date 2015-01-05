@@ -66,7 +66,7 @@
 		<img ng-hide="image != null" src="resources/images/blank_photo.jpg" width="50%" height="50%">
 				<img ng-hide="image == null" ng-src="{{image}}" width="50%" height="50%">	
 							
-		<form name="addPhoto_form" ng-submit="addPhoto(data)" class="form-horizontal input-border" novalidate>
+		<form name="addPhoto_form" ng-submit="addAttachment(data)" class="form-horizontal input-border" ng-hide="image != null" novalidate>
  
 				<div class="form-group">
 						<div class="col-md-12">
@@ -78,12 +78,27 @@
     								multiple
     								file="data" 
     								required />
-  				
-    							<output id="list"></output>
 						</div>
 					</div>
 				<button type="submit" class="btn btn-primary">Dodaj zdjęcie</button>
 			</form> 
+			<form name="addPhoto_form" ng-submit="updateAttachmentByUserId(data)" class="form-horizontal input-border" ng-hide="image == null" novalidate>
+ 
+				<div class="form-group">
+						<div class="col-md-12">
+    						<input 
+    								type="file" 
+    								file-upload 
+    								id="files" 
+    								name="files[]" 
+    								multiple
+    								file="data" 
+    								required />
+						</div>
+					</div>
+				<button type="submit" class="btn btn-primary">Zmień zdjęcie</button>
+			</form>
+			<button class="btn btn-danger" ng-click="deleteAttachmentByUserId()">Usuń zdjęcie</button> 
 		</td>	
 	</tr>
 	

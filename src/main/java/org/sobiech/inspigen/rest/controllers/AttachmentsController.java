@@ -51,16 +51,16 @@ public class AttachmentsController {
     
     @RequestMapping(value ="/{id}", method = RequestMethod.GET, produces = "image/gif;image/jpeg;image/png;application/pdf;application/msword")
     public byte[] findAttachmentById(@PathVariable int id) {
-       return attachmentService.findAttachmentByUserId(id).getFile();
+    	return attachmentService.findAttachmentByUserId(id).getFile();   
     }
             
-    @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<String> updateAttachment(@RequestBody Attachment data) {
+    @RequestMapping(method = RequestMethod.PUT)
+	public ResponseEntity<String> updateAttachmentByUserId(@RequestBody Attachment data) {
     	
     	message = "attachmentUpdated";
     	HttpStatus responseStatus = HttpStatus.OK;
 
-    	attachmentService.updateAttachment(data);
+    	attachmentService.updateAttachmentByUserId(data);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);
@@ -68,12 +68,12 @@ public class AttachmentsController {
 	}
     
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteAttachmentById(@PathVariable long id) {
+	public ResponseEntity<String> deleteAttachmentByUserId(@PathVariable int id) {
     	
     	message = "attachmentDeleted";
     	HttpStatus responseStatus = HttpStatus.OK;
  	
-    	attachmentService.deleteAttachmentById(id);
+    	attachmentService.deleteAttachmentByUserId(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

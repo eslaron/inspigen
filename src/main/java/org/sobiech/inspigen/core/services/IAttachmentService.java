@@ -17,5 +17,9 @@ public interface IAttachmentService {
 		
 	public void updateAttachment(Attachment data);
 	
+	public void updateAttachmentByUserId(Attachment data);
+	
 	public void deleteAttachmentById(long id);	
+	
+	public void deleteAttachmentByUserId(int id);	
 }

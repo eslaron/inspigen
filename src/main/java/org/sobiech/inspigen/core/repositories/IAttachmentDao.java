@@ -6,4 +6,7 @@ public interface IAttachmentDao {
 	
 	public Attachment findAttachmentByUserId(int id);
 	
+	public void updateAttachmentByUserId(Attachment data);
+	
+	public void deleteAttachmentByUserId(int id);
 }

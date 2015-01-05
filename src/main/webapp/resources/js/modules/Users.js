@@ -495,11 +495,11 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
 
   $scope.deleteUser = function(id) {
 	  
-	  var Edit = Restangular.one('users');
+	  var Delete = Restangular.one('users');
 	  
-	  Edit.id = id;
+	  Delete.id = id;
 	  
-	  Edit.remove().then(function(response){
+	  Delete.remove().then(function(response){
 		  $scope.messageStyle = "alert alert-success";
 		  $scope.hideMessage = false;
 		  $scope.message = "Użytkownik został usunięty";
@@ -558,30 +558,80 @@ Users.controller('UserDetailsController', ['$scope', '$state', '$stateParams', '
 	
 	  $scope.Attachment = {fileName:"", fileType: "", file:"", user_id:""};
 	  
-	  var AddAttachment = Restangular.all('attachments');
-	  
-	  $scope.addPhoto = function(data) {
+	  $scope.image = '';
+
+	  var AllAttachments = Restangular.all('attachments');
+	  var OneAttachment = Restangular.one('attachments');
+	  var AttachmentWithId = Restangular.one('attachments', $scope.user.id);
+  
+	  $scope.addAttachment = function(data) {
 		  
 		  if($scope.data != null) {
 			  
 			  $scope.Attachment.file = btoa($scope.data);
 			  $scope.Attachment.user_id = $scope.user.id;
 			  	  	
-				 AddAttachment.post($scope.Attachment).then(function(response){
-						 
+			  AllAttachments.post($scope.Attachment).then(function(response){
+					 
+					 AttachmentWithId.get()
+					  	.then(function(result) {
+					  		$scope.image = result; 	
+					  });
+					 
 				 },function(error) {
 		 				  $scope.error = error.data; 					
 		 		 });
 		  }
 	  }
 	  
-	  $scope.image = '';
-	 
-	  Restangular.one('attachments', $scope.user.id).get()
-	  	.then(function(result) {
-	  		$scope.image = result;
-	  });
-	
+	  $scope.getAttachmentByUserId = function() {
+		  
+		  AttachmentWithId.get()
+		  	.then(function(result) {
+		  		$scope.image = result;
+		  });
+	  }
+	  
+	  $scope.updateAttachmentByUserId = function(data) {
+		  
+		  if($scope.data != null) {
+
+			  OneAttachment.fileName = $scope.Attachment.fileName;
+			  OneAttachment.fileType = $scope.Attachment.fileType;
+			  OneAttachment.file = btoa($scope.data);
+			  OneAttachment.user_id = $scope.user.id;
+			  
+			  OneAttachment.put().then(function(response){
+					 
+				  	AttachmentWithId.get()
+					  	.then(function(result) {
+					  		$scope.image = result; 	
+					  });
+					 
+				 },function(error) {
+		 				  $scope.error = error.data; 					
+		 		 });
+		  }
+	  }
+	  
+	  $scope.deleteAttachmentByUserId = function() {
+		  
+		  OneAttachment.id = $scope.user.id;
+		  
+		  OneAttachment.remove().then(function(response){
+			  
+			  AttachmentWithId.get()
+			  	.then(function(result) {
+			  		$scope.image = result; 	
+			  });
+			 
+		  },function(error) {
+				  $scope.error = error.data; 					
+		  });
+	  }
+    
+	$scope.getAttachmentByUserId();
+
 	function handleFileSelect(evt) {
 		  
 	    var files = evt.target.files; // FileList object
@@ -593,10 +643,10 @@ Users.controller('UserDetailsController', ['$scope', '$state', '$stateParams', '
 	    	 $scope.Attachment.fileName = f.name;
  			 $scope.Attachment.fileType = f.type;
  
-	    output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-	                  f.size, ' bytes</li>');
+ 			 /*output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+	                  f.size, ' bytes</li>');*/
 	    }
-	    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+	    	//document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
 	}
-	  	document.getElementById('files').addEventListener('change', handleFileSelect, false);
+	  		document.getElementById('files').addEventListener('change', handleFileSelect, false);
 }]);

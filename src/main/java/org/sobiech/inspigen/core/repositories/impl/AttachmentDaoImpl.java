@@ -31,4 +31,24 @@ public class AttachmentDaoImpl implements IAttachmentDao {
 			return (Attachment)query.list().get(0);
 		}
 	}
+
+	@Override
+	public void updateAttachmentByUserId(Attachment data) {
+		
+		Query query = getCurrentSession().createQuery("Update Attachment set fileName = :fn, fileType = :ft, file = :f where user_id = :id");
+		query.setString("fn",data.getFileName());
+		query.setString("ft",data.getFileType());
+		query.setBinary("f", data.getFile());
+		query.setInteger("id", data.getUser_id());
+		
+		query.executeUpdate();
+	}
+
+	@Override
+	public void deleteAttachmentByUserId(int id) {
+		Query query = getCurrentSession().createQuery("Delete Attachment where user_id = :id");
+		query.setInteger("id", id);
+		
+		query.executeUpdate();	
+	}
 }
