@@ -1,0 +1,21 @@
+<div class="content"  ng-controller="LocationsController">
+<div class="userList container col-md-5">
+<h2>Lokacje</h2>
+
+					<div ng-hide="hideMessage" ng-class="messageStyle">
+				                   {{message}}     
+				   			</div>
+				   			
+		 <table ng-table="tableParams" show-filter="true" class="table"> 
+		        <tr ng-repeat="location in $data">
+		            <td data-title="'Id'" sortable="'id'">{{location.id}}</td>
+		            <td data-title="'Nazwa'" sortable="'name'" filter="{ 'name': 'text' }">{{location.name}}</td>
+		           	<td data-title="'Miejscowość'" sortable="'city'" filter="{ 'city': 'text' }">{{location.city}}</td>
+		            <td data-title="'Operacje'">
+		            	<a ui-sref="user.admin.locations.details({ id: location.id })">Szczegóły</a> | 
+		            	<a ui-sref="user.admin.locations.edit({ id: location.id })">Edytuj</a> | 
+		            	<a ng-click="deleteLocation(location.id)">Usuń</a>
+		            </td>
+		        </tr>
+        </table> 	
+</div>

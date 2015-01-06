@@ -1,0 +1,36 @@
+<div class="content"  ng-controller="LocationsController">
+<div class="userList container col-md-10">
+<h2>Szczegóły lokacji</h2>
+
+<table>
+	<tr>		
+		<td>
+					<tr>
+				<td>
+					<b>Dane lokacji:</b>
+				</td>
+				<td valign="top">
+					<button class="btn btn-primary" ui-sref="user.admin.locations.edit({ id: location.id })">Edytuj</button>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Id lokacji: <b>{{location.id}}</b><br />
+					Nazwa: <b>{{location.name}}</b><br />
+					Typ: <b>{{location.type}}</b><br />
+					Ulica: <b>{{location.address}}</b><br />
+					Miejscowość: <b>{{location.city}}</b><br />
+					Kod pocztowy: <b>{{location.zipCode}}</b><br /> 	
+					Województwo: <b>{{location.state}}</b><br /> 	
+					Kraj: <b>{{location.country}}</b><br />
+					Nr telefonu: <b>{{location.phoneNumber}}</b><br />
+					Email: <b>{{location.email}}</b><br /><br />
+				</td>
+			</tr>
+
+			
+		</td>	
+	</tr>
+	
+</table>
+</div>

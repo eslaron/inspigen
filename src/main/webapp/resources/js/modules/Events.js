@@ -99,7 +99,7 @@ Events.controller('EventsController', ['$scope', '$state', '$stateParams', '$fil
 	  for(var i = $scope.persons.length - 1; i >= 0; i--) {	
 		  for(var j = $scope.users.length - 1; j >= 0; j--) {	
 			  if($scope.users[j].role == "Koordynator") {
-				  if($scope.users[j].id == $scope.persons[i].userId)
+				  if($scope.users[j].id == $scope.persons[i].user_id)
 					  $scope.coordinators.push($scope.persons[i]);
 			  }
 		  }	
