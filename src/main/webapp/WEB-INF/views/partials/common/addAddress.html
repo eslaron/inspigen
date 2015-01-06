@@ -1,40 +1,45 @@
-<div class="content"  ng-controller="PersonsController">
+<div class="content"  ng-controller="AddressesController">
 <div class="userList container col-md-3">
 <h2>Adres</h2>
 
-<form name="addPerson_form" ng-submit="addPerson(person)" class="form-horizontal input-border" novalidate>
+<form name="addAddress_form" ng-submit="addAddress(address)" class="form-horizontal input-border" novalidate>
  
     						<div ng-hide="hideMessage" ng-class="messageStyle">
 				                   {{message}}     
 				   			</div>
- 
+ 					<div class="form-group">
+						<div class="col-sm-12">
+							<input type="checkbox" ng-model="registeredAddress"> Adres zameldowania<br />
+	    					<input type="checkbox" ng-model="mailAddress"> Adres korespondencyjny 
+						</div>
+					</div>
 					<div class="form-group">
 						<div class="col-sm-12">
     						<input
     								class="form-control" 
     								type="text" 
-            						placeholder="Imię" 
-            						name="firstName" 
-            						ng-model="person.firstName" 
-            						ng-minlength=3
-            						ng-maxlength=12 
-            						ng-pattern="/^[A-Ź][a-ź]*$/"
+            						placeholder="Ulica" 
+            						name="address" 
+            						ng-model="address.address" 
+            						ng-minlength=5
+            						ng-maxlength=30 
+            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s|\d)/"
             						ng-model-options="{debounce: 1000}"
             						required />
             						
-            				<div class="error-container" ng-show="addPerson_form.firstName.$dirty && addPerson_form.firstName.$invalid">
-							    <small class="error-message" ng-show="addPerson_form.firstName.$error.required">
+            				<div class="error-container" ng-show="addAddress_form.address.$dirty && addAddress_form.address.$invalid">
+							    <small class="error-message" ng-show="addAddress_form.address.$error.required">
 							    	To pole nie może być puste.</small>
 							    <small class="error-message" ng-show="
-							    !addPerson_form.firstName.$error.minlength
-							    && !addPerson_form.firstName.$error.maxlength
-							    && addPerson_form.firstName.$error.pattern">
-							    	Musi zaczynać się od dużej litery oraz zawierać tylko litery.</small>	
+							    !addAddress_form.address.$error.minlength
+							    && !addAddress_form.address.$error.maxlength
+							    && addAddress_form.address.$error.pattern">
+							    	Musi zaczynać się od dużej litery oraz zawierać litery lub cyfry.</small>	
 							    <small class="error-message" ng-show="
-							    	!addPerson_form.firstName.$error.required 
-							    	&& addPerson_form.firstName.$error.minlength
-									|| addPerson_form.firstName.$error.maxlength">
-							    	Pole musi się składać z przynajmniej 3 i niewięcej niż 12 znaków.</small>
+							    	!addAddress_form.address.$error.required 
+							    	&& addAddress_form.address.$error.minlength
+									|| addAddress_form.address.$error.maxlength">
+							    	Pole musi się składać z przynajmniej 5 i niewięcej niż 30 znaków.</small>
   							</div>
 						</div>
 					</div>
@@ -44,28 +49,28 @@
 			    						<input
 			    								class="form-control" 
 			    								type="text" 
-			            						placeholder="Nazwisko" 
-			            						name="lastName" 
-			            						ng-model="person.lastName" 
-			            						ng-minlength=3
+			            						placeholder="Miejscowość" 
+			            						name="city" 
+			            						ng-model="address.city" 
+			            						ng-minlength=5
 			            						ng-maxlength=20 
-			            						ng-pattern="/^[A-Ź][A-ź-]*$/"
+			            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s|\d)/"
 			            						ng-model-options="{debounce: 1000}"
 			            						required />
 			            						
-			            				<div class="error-container" ng-show="addPerson_form.lastName.$dirty && addPerson_form.lastName.$invalid">
-										    <small class="error-message" ng-show="addPerson_form.lastName.$error.required">
+			            				<div class="error-container" ng-show="addAddress_form.city.$dirty && addAddress_form.city.$invalid">
+										    <small class="error-message" ng-show="addAddress_form.city.$error.required">
 										    	To pole nie może być puste.</small>
 										    <small class="error-message" ng-show="
-										    !addPerson_form.lastName.$error.minlength
-										    && !addPerson_form.lastName.$error.maxlength
-										    && addPerson_form.lastName.$error.pattern">
-										    	Musi zaczynać się od dużej litery i ewentualnie zawierać '-'.</small>	
+										    !addAddress_form.city.$error.minlength
+										    && !addAddress_form.city.$error.maxlength
+										    && addAddress_form.city.$error.pattern">
+										    	Musi zaczynać się od dużej litery oraz zawierać litery lub cyfry.</small>	
 										    <small class="error-message" ng-show="
-										    	!addPerson_form.lastName.$error.required 
-										    	&& addPerson_form.lastName.$error.minlength
-												|| addPerson_form.lastName.$error.maxlength">
-										    	Pole musi się składać z przynajmniej 3 i niewięcej niż 20 znaków.</small>
+										    	!addAddress_form.city.$error.required 
+										    	&& addAddress_form.city.$error.minlength
+												|| addAddress_form.city.$error.maxlength">
+										    	Pole musi się składać z przynajmniej 5 i niewięcej niż 20 znaków.</small>
 			  							</div>
 									</div>
 						</div>
@@ -75,28 +80,28 @@
     						<input
     								class="form-control" 
     								type="text" 
-            						placeholder="PESEL" 
-            						name="pesel" 
-            						ng-model="person.pesel" 
-            						ng-minlength=11
-			            			ng-maxlength=11
-									ng-pesel="person.pesel"
+            						placeholder="Kod pocztowy" 
+            						name="zipCode" 
+            						ng-model="address.zipCode" 
+            						ng-minlength=6
+			            			ng-maxlength=6
+			            			ng-pattern="/^[0-9][0-9][-][0-9][0-9][0-9]*$/"
             						ng-model-options="{debounce: 1000}"
             						required />
             						
-            					<div class="error-container" ng-show="addPerson_form.pesel.$dirty && addPerson_form.pesel.$invalid">
-										    <small class="error-message" ng-show="addPerson_form.pesel.$error.required">
+            					<div class="error-container" ng-show="addAddress_form.zipCode.$dirty && addAddress_form.zipCode.$invalid">
+										    <small class="error-message" ng-show="addAddress_form.zipCode.$error.required">
 										    	To pole nie może być puste.</small>
 										    <small class="error-message" ng-show="
-										    !addPerson_form.pesel.$error.minlength
-										    && !addPerson_form.pesel.$error.maxlength
-										    && addPerson_form.pesel.$error.pesel">
-										    	Numer PESEL jest nieprawidłowy.</small>	
+										    !addAddress_form.zipCode.$error.minlength
+										    && !addAddress_form.zipCode.$error.maxlength
+										    && addAddress_form.zipCode.$error.pattern">
+										    	Kod pocztowy jest nieprawidłowy.</small>	
 										    <small class="error-message" ng-show="
-										    	!addPerson_form.pesel.$error.required 
-										    	&& addPerson_form.pesel.$error.minlength
-												|| addPerson_form.pesel.$error.maxlength">
-										    	PESEL musi mieć dokładnie 11 cyfr.</small>
+										    	!addAddress_form.zipCode.$error.required 
+										    	&& addAddress_form.zipCode.$error.minlength
+												|| addAddress_form.zipCode.$error.maxlength">
+										    	Kod pocztowy musi się składać z dokładnie 6 znaków.</small>
 			  							</div>
 									</div>						
 						</div>
@@ -107,32 +112,63 @@
     						<input
     								class="form-control" 
     								type="text" 
-            						placeholder="Numer telefonu" 
-            						name="phoneNumber" 
-            						ng-model="person.phoneNumber" 
-            						ng-minlength=9
-			            			ng-maxlength=11
-            						ng-pattern="/^[0-9]*$/"
+            						placeholder="Województwo" 
+            						name="state" 
+            						ng-model="address.state" 
+            						ng-minlength=5
+			            			ng-maxlength=20
+            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s|\d)/"
             						required />
             						
-            							<div class="error-container" ng-show="addPerson_form.phoneNumber.$dirty && addPerson_form.phoneNumber.$invalid">
-										    <small class="error-message" ng-show="addPerson_form.phoneNumber.$error.required">
+            							<div class="error-container" ng-show="addAddress_form.state.$dirty && addAddress_form.state.$invalid">
+										    <small class="error-message" ng-show="addAddress_form.state.$error.required">
 										    	To pole nie może być puste.</small>
 										    <small class="error-message" ng-show="
-										    !addPerson_form.phoneNumber.$error.minlength
-										    && !addPerson_form.phoneNumber.$error.maxlength
-										    && addPerson_form.phoneNumber.$error.pattern">
-										    	Numer telefonu może zawierać wyłącznie cyfry.</small>	
+										    !addAddress_form.state.$error.minlength
+										    && !addAddress_form.state.$error.maxlength
+										    && addAddress_form.state.$error.pattern">
+										    	Musi zaczynać się od dużej litery oraz zawierać litery i ewentualnie '-'.</small>	
 										    <small class="error-message" ng-show="
-										    	!addPerson_form.phoneNumber.$error.required 
-										    	&& addPerson_form.phoneNumber.$error.minlength
-												|| addPerson_form.phoneNumber.$error.maxlength">
-										    	Numer telefonu nie może być krótszy niż 9 i i niedłuższy niż 11 cyfr.</small>
+										    	!addAddress_form.state.$error.required 
+										    	&& addAddress_form.state.$error.minlength
+												|| addAddress_form.state.$error.maxlength">
+										    	Pole nie może być krótsze niż 5 i i niedłuższe niż 20 znaków.</small>
 			  							</div>
 						</div>
 					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+    						<input
+    								class="form-control" 
+    								type="text" 
+            						placeholder="Kraj" 
+            						name="country" 
+            						ng-model="address.country" 
+            						ng-minlength=4
+			            			ng-maxlength=30
+            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s)/"
+            						required />
+            						
+            							<div class="error-container" ng-show="addAddress_form.country.$dirty && addAddress_form.country.$invalid">
+										    <small class="error-message" ng-show="addAddress_form.country.$error.required">
+										    	To pole nie może być puste.</small>
+										    <small class="error-message" ng-show="
+										    !addAddress_form.country.$error.minlength
+										    && !addAddress_form.country.$error.maxlength
+										    && addAddress_form.country.$error.pattern">
+										    	Musi zaczynać się od dużej litery oraz zawierać tylko litery.</small>	
+										    <small class="error-message" ng-show="
+										    	!addAddress_form.country.$error.required 
+										    	&& addAddress_form.country.$error.minlength
+												|| addAddress_form.country.$error.maxlength">
+										    	Pole nie może być krótsze niż 4 i i niedłuższe niż 30 cyfr.</small>
+			  							</div>
+						</div>
+					</div>
+			
 								
-   <button type="submit" class="btn btn-success btn-sm" ng-disabled="addPerson_form.$invalid">Dodaj dane</button>
+   <button type="submit" class="btn btn-success btn-sm" ng-disabled="addAddress_form.$invalid">Dodaj dane</button>
 </form>
 		
 </div>

@@ -180,10 +180,19 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
   			    }
   			}
               for(var i = $scope.addresses.length - 1; i >= 0; i--) {
-  			    if($scope.addresses[i].user_id == $stateParams.id) {
+  			    if($scope.addresses[i].user_id == $stateParams.id 
+  			    		&& $scope.addresses[i].registeredAddress == true) {
   			       $scope.address = $scope.addresses[i];
   		   }
               }
+              
+              for(var i = $scope.addresses.length - 1; i >= 0; i--) {
+    			    if($scope.addresses[i].user_id == $stateParams.id 
+    			    		&& $scope.addresses[i].mailAddress == true
+    			    			&& $scope.addresses[i].registeredAddress == false) {
+    			       $scope.mailAddress = $scope.addresses[i];
+    		   }
+                }
               
               $scope.isCollapsed = true;
           } 
