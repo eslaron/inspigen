@@ -117,10 +117,13 @@ Persons.controller('AddressesController', ['$scope', '$state', '$stateParams', '
   $scope.editAddress = function(address) {
 	  
 		OneAddress.id = $scope.address.id;
-		OneAddress.firstName = $scope.address.firstName;
-		OneAddress.lastName = $scope.address.lastName;
-		OneAddress.pesel = $scope.address.pesel;
-		OneAddress.phoneNumber = $scope.address.phoneNumber;
+		OneAddress.address = $scope.address.address;
+		OneAddress.city = $scope.address.city;
+		OneAddress.zipCode = $scope.address.zipCode;
+		OneAddress.state = $scope.address.state;
+		OneAddress.country = $scope.address.country;
+		OneAddress.registeredAddress = $scope.address.registeredAddress;
+		OneAddress.mailAddress = $scope.address.mailAddress;
 		OneAddress.user_id = $scope.address.user_id;
 	 
 		OneAddress.put().then(function(response) {
