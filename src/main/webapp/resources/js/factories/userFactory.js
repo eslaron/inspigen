@@ -1,6 +1,10 @@
-Users.factory('User', function($http, $q, Restangular) {
+Users.factory('User', function($http, $q, $rootScope, Restangular) {
     
     var userCache = {};
+    
+    var participating = false;
+    
+    var inEventWithId = 0;
 
     function User(json){
       this.init(json);
@@ -27,6 +31,36 @@ Users.factory('User', function($http, $q, Restangular) {
         return array;
     }
     
+    User.getLoggedUserByUsername = function(username){
+    	var users = User.getAllUsers();
+    	var loggedUser = {};
+    	
+    	 for(var i = users.length - 1; i >= 0; i--) {	
+			  if(users[i].username == username) {
+				  loggedUser = users[i];
+			  }
+    	 }
+        return loggedUser;
+    }
+    
+    User.getLoggedUserIsParticipating = function(){
+    	return participating;
+    }
+    
+    User.setLoggedUserIsParticipating = function(bool){
+    	participating = bool;
+    	return participating;
+    }
+    
+    User.getInEventWithId = function(){
+    	return inEventWithId;
+    }
+    
+    User.setInEventWithId = function(id){
+    	inEventWithId = id;
+    	return inEventWithId;
+    }
+     
     User.loadUsersFromJson = function(){
     	
     	return Restangular.all('users').getList().then(function(response){

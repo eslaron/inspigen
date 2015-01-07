@@ -2,7 +2,7 @@
 <div class="userList container col-md-3">
 <h2>Nowe wydarzenie</h2>
 
-<form name="addEvent_form" ng-submit="addEvent(event)" class="form-horizontal input-border" novalidate>
+<form name="addEvent_form" ng-submit="editEvent(event)" class="form-horizontal input-border" novalidate>
  
     						<div ng-hide="hideMessage" ng-class="messageStyle">
 				                   {{message}}     
@@ -21,18 +21,18 @@
             						ng-model-options="{debounce: 1000}"
             						required />
             						
-            				<div class="error-container" ng-show="addEvent_form.name.$dirty && addEvent_form.name.$invalid">
-							    <small class="error-message" ng-show="addEvent_form.name.$error.required">
+            				<div class="error-container" ng-show="editEvent_form.name.$dirty && editEvent_form.name.$invalid">
+							    <small class="error-message" ng-show="editEvent_form.name.$error.required">
 							    	To pole nie może być puste.</small>
 							    <small class="error-message" ng-show="
-							    !addEvent_form.name.$error.minlength
-							    && !addEvent_form.name.$error.maxlength
-							    && addEvent_form.name.$error.pattern">
+							    !editEvent_form.name.$error.minlength
+							    && !editEvent_form.name.$error.maxlength
+							    && editEvent_form.name.$error.pattern">
 							    	Musi zaczynać się od dużej litery oraz zawierać litery lub cyfry.</small>	
 							    <small class="error-message" ng-show="
-							    	!addEvent_form.name.$error.required 
-							    	&& addEvent_form.name.$error.minlength
-									|| addEvent_form.name.$error.maxlength">
+							    	!editEvent_form.name.$error.required 
+							    	&& editEvent_form.name.$error.minlength
+									|| editEvent_form.name.$error.maxlength">
 							    	Pole musi się składać z przynajmniej 5 i niewięcej niż 30 znaków.</small>
   							</div>
 						</div>
@@ -51,18 +51,18 @@
             						ng-model-options="{debounce: 1000}"
             						required />
             						
-            				<div class="error-container" ng-show="addEvent_form.type.$dirty && addEvent_form.type.$invalid">
-							    <small class="error-message" ng-show="addEvent_form.type.$error.required">
+            				<div class="error-container" ng-show="editEvent_form.type.$dirty && editEvent_form.type.$invalid">
+							    <small class="error-message" ng-show="editEvent_form.type.$error.required">
 							    	To pole nie może być puste.</small>
 							    <small class="error-message" ng-show="
-							    !addEvent_form.type.$error.minlength
-							    && !addEvent_form.type.$error.maxlength
-							    && addEvent_form.type.$error.pattern">
+							    !editEvent_form.type.$error.minlength
+							    && !editEvent_form.type.$error.maxlength
+							    && editEvent_form.type.$error.pattern">
 							    	Musi zaczynać się od dużej litery oraz zawierać litery lub cyfry.</small>	
 							    <small class="error-message" ng-show="
-							    	!addEvent_form.type.$error.required 
-							    	&& addEvent_form.type.$error.minlength
-									|| addEvent_form.type.$error.maxlength">
+							    	!editEvent_form.type.$error.required 
+							    	&& editEvent_form.type.$error.minlength
+									|| editEvent_form.type.$error.maxlength">
 							    	Pole musi się składać z przynajmniej 5 i niewięcej niż 30 znaków.</small>
   							</div>
 						</div>
@@ -76,8 +76,8 @@
 		        					<option ng-repeat="l in locations" value="{{l.id}}" placeholder="Miejsce">{{l.name}}, {{l.city}}</option>
 		      					</select>		
 	
-							<div class="error-container" ng-show="addEvent_form.location_id.$dirty && addEvent_form.location_id.$invalid">
-							    <small class="error-message" ng-show="addEvent_form.location_id.$error.required">
+							<div class="error-container" ng-show="editEvent_form.location_id.$dirty && editEvent_form.location_id.$invalid">
+							    <small class="error-message" ng-show="editEvent_form.location_id.$error.required">
 							    	Wybierz miejsce</small>
   							</div>
 	
@@ -120,10 +120,10 @@
             						ng-maxlength=500
             						ng-model-options="{debounce: 1000}"></textarea>
             						
-      						<div class="error-container" ng-show="addEvent_form.description.$dirty && addEvent_form.description.$invalid">
+      						<div class="error-container" ng-show="editEvent_form.description.$dirty && editEvent_form.description.$invalid">
 							    <small class="error-message" ng-show="
-									addEvent_form.description.$error.minlength
-									|| addEvent_form.description.$error.maxlength">
+									editEvent_form.description.$error.minlength
+									|| editEvent_form.description.$error.maxlength">
 							    	Pole musi się składać z przynajmniej 5 i niewięcej niż 30 znaków.</small>
   							</div>
 						</div>
@@ -136,7 +136,7 @@
 		      					</select>
 		      			</div>
 		      		</div>
-    <button type="submit" class="btn btn-success btn-sm" ng-disabled="addEvent_form.$invalid">Utwórz wydarzenie</button>
+    <button type="submit" class="btn btn-success btn-sm" ng-disabled="editEvent_form.$invalid || editEvent_form.$pristine">Zaktualizuj wydarzenie</button>
 </form>
 
 

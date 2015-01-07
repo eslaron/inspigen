@@ -301,8 +301,8 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 
 //KONTROLERY
 
-Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Address','Settings', 'Context', 'Restangular',
-                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Address,Settings, Context, Restangular) {
+Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Address','Settings', 'Context', 'Restangular',
+                                     function($rootScope, $scope, $state, $stateParams, $filter, ngTableParams, User, Person, Address,Settings, Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;
@@ -346,6 +346,8 @@ Users.controller('UsersController', ['$scope', '$state', '$stateParams', '$filte
   $scope.addToGroup = "";
   $scope.selectedUsers = [];
   
+  $scope.loggedUser = User.getLoggedUserByUsername($rootScope.loggedUsername);
+
   $scope.changeSelection = function(user) {
 	  
 	  if(user.$selected == true)

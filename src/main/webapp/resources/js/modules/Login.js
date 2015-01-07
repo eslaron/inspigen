@@ -47,12 +47,14 @@ var Login = angular.module('inspigen.login', ['ui.router', 'LocalStorageModule',
 				$state.go('login');
 			};
 
-			
 			 /* Try getting valid user from cookie or go to login page */
 			var user = localStorageService.cookie.get('user');
+			$rootScope.loggedUsername = user.username;
 
 			if (user !== null) {
 				$rootScope.user = user;
+				
+				
 				$http.defaults.headers.common[xAuthTokenHeaderName] = user.token;
 
 				/*   if ($rootScope.hasRole("ROLE_ADMIN") == true)

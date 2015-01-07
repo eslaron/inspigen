@@ -1,0 +1,80 @@
+<div class="content"  ng-controller="EventsController">
+<div class="userList container col-md-5">
+<h2>Szczegóły wydarzenia</h2>
+<div ng-hide="hideMessage" ng-class="messageStyle">
+				                   {{message}}     
+				   			</div>
+<table>
+	<tr>		
+		<td>
+					<tr>
+				<td>
+					<b>Dane podstawowe</b>
+				</td>
+				<td valign="top">
+					<button class="btn btn-primary" ui-sref="user.admin.events.edit({ id: event.id })">Edytuj</button>
+				</td>
+			</tr>
+			<tr>
+				
+				<td>
+					Nazwa: <b>{{event.name}}</b><br />
+					Typ: <b>{{event.type}}</b><br />
+					Koordynator: <b>{{eventCoordinator.firstName}} {{eventCoordinator.lastName}}</b><br />
+					Data rozpoczęcia: <b>{{event.startDate  | date:'yyyy-MM-dd HH:mm:ss'}}</b><br />
+					Data zakończenia: <b>{{event.endDate  | date:'yyyy-MM-dd HH:mm:ss'}}</b><br />
+					Opis: <b>{{event.description}}</b><br /><br />
+				</td>
+				<td valign="top">
+					<button class="btn btn-primary" ui-sref="user.admin.users.details({ id: eventCoordinator.user_id })">Profil koordynatora</button>
+				</td>
+			</tr>
+	<tr>
+				<td>
+					<b>Miejsce wydarzenia:</b>
+				</td>
+
+			</tr>
+			<tr>
+				<td>
+					Nazwa: <b>{{location.name}}</b><br />
+					Typ: <b>{{location.type}}</b><br />
+					Ulica: <b>{{location.address}}</b><br />
+					Miejscowość: <b>{{location.city}}</b><br />
+					Kod pocztowy: <b>{{location.zipCode}}</b><br /> 	
+					Województwo: <b>{{location.state}}</b><br /> 	
+					Kraj: <b>{{location.country}}</b><br />
+					Nr telefonu: <b>{{location.phoneNumber}}</b><br />
+					Email: <b>{{location.email}}</b><br /><br />
+				</td>
+			</tr>
+			
+		</td>	
+	</tr>
+</table>
+
+<button class="btn btn-success" ng-show="loggedUserParticipating != true && loggedUser.id != eventCoordinator.user_id" 
+ng-click="addEventParticipant(loggedUser.id,event.id)">Dołącz do wydarzenia</button>
+<button class="btn btn-danger" ng-show="loggedUserParticipating == true && loggedUser.id != eventCoordinator.user_id" 
+ng-click="deleteEventParticipant(loggedUser.id)">Zrezygnuj</button><br /><br />
+
+Wybierz użytkownika:<br /> 
+<select  class="form-control" ng-model="eventParticipant_id">
+	<option selected disabled value="">Przydziel uczestnika</option>
+	<option ng-repeat="p in persons" value="{{p.user_id}}">{{p.firstName}} {{p.lastName}}</option>
+</select><br />
+<button class="btn btn-danger" ng-click="addEventParticipant(eventParticipant_id,event.id)">Dodaj uczestnika</button>
+{{duplicateParticipantMessage}}
+<br /><br />
+Uczestnicy wydarzenia: <br /><br />
+<ul>
+	<li ng-show="eventParticipants == null">brak</li>
+	<li ng-repeat="ep in eventParticipants">
+		{{ep.firstName}} {{ep.lastName}}
+		<button class="btn btn-primary" ui-sref="user.admin.users.details({ id: ep.user_id })">Profil uczestnika</button>
+		<button class="btn btn-danger" ng-click="deleteEventParticipant(ep.user_id)">Usuń uczestnika</button>
+	</li>
+</ul>
+		
+</div>
+

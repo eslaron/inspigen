@@ -125,6 +125,11 @@ public class IndexController {
         return "partials/common/locationDetails";
     }
 	
+	@RequestMapping("/partials/common/eventDetails")
+    public String getEventDetailsPartialPage() {
+        return "partials/common/eventDetails";
+    }
+	
 	@RequestMapping("/partials/common/userDetails")
     public String getUserDetailsPartialPage() {
         return "partials/common/userDetails";
