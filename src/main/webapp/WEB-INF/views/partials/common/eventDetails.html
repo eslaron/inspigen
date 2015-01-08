@@ -75,6 +75,40 @@ Uczestnicy wydarzenia: <br /><br />
 		<button class="btn btn-danger" ng-click="deleteEventParticipant(ep.user_id)">Usuń uczestnika</button>
 	</li>
 </ul>
-		
+	<div ng-controller="AttachmentsController">
+			
+		Dodaj załącznik: <br />
+							
+		<form name="addAttachment_form" ng-submit="addAttachment(loggedUser.id,data)" class="form-horizontal input-border" novalidate>
+ 
+				<div class="form-group">
+						<div class="col-md-12">
+    						<input 
+    								type="file" 
+    								file-upload 
+    								id="files" 
+    								name="files[]" 
+    								multiple
+    								file="data" 
+    								required />
+						</div>
+					</div>
+				<button type="submit" class="btn btn-primary">Dodaj załącznik</button>
+			</form> 
+			{{noFile}}
+			<button class="btn btn-danger" ng-hide="attachment == ''" ng-click="deleteAttachmentByUserId()">Usuń załącznik</button> 
+			
+			<br /><br />
+			List załączników:
+			<ul>
+
+	<li ng-repeat="ea in eventAttachments">
+		{{ea.fileName}} 
+
+		<button class="btn btn-danger" ng-click="deleteEventParticipant(ep.user_id)">Usuń załącznik</button>
+	</li>
+</ul>
+		</div>	
+			
 </div>
 

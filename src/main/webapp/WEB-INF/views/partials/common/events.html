@@ -10,8 +10,6 @@
 		           	<td data-title="'Data zakończenia'" sortable="'endDate'">{{event.endDate  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 		            <td data-title="'Operacje'">
 		            	<a ui-sref="user.admin.events.details({ id: event.id })">Szczegóły</a>&nbsp;
-		            	<a ng-show="loggedUserParticipating != true && loggedUsersEventId != event.id" ng-click="addEventParticipant(event.id)">Dołącz</a>&nbsp;
-		            	<a ng-show="loggedUserParticipating == true && loggedUsersEventId == event.id" ng-click="deleteEventParticipant(loggedUser.id)">Wypisz się</a>&nbsp;
 		            	<a ui-sref="user.admin.events.edit({ id: event.id })">Edytuj</a>&nbsp; 
 		            	<a ng-click="deleteEvent(event.id)">Usuń</a>
 		            </td>

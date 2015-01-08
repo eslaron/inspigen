@@ -18,6 +18,8 @@ public class Attachment extends BaseEntity implements Serializable {
 	
 	private int user_id;
 	
+	private int event_id;
+	
 	public Attachment() {}
 	
 	public String getFileName() {
@@ -50,5 +52,13 @@ public class Attachment extends BaseEntity implements Serializable {
 
 	public void setUser_id(int user_id) {
 		this.user_id = user_id;
+	}
+	
+	public int getEvent_id() {
+		return event_id;
+	}
+
+	public void setEvent_id(int event_id) {
+		this.event_id = event_id;
 	}
 }

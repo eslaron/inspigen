@@ -310,7 +310,13 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
   
  //Usuwanie uczestników wydarzenia
  $scope.deleteEventParticipant = function(userId) {
-	 
+
+	  //Znajdź indeks użytkownika na liście uczestników
+	  for(var j = $scope.eventParticipants.length - 1; j >= 0; j--) {
+		  if($scope.eventParticipants[j].user_id == userId)
+			  var deleteIndex = $scope.eventParticipants.indexOf($scope.eventParticipants[j]);
+	  }	
+		 
 	  //Wypełnij na nowo listę uczestników znajdujących się w bazie.
 	  $scope.participants = Participant.getAllParticipants();
 	  
@@ -323,12 +329,11 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 	  //Znadź id rekordu z uczestnikiem
 	  for(var i = $scope.participants.length - 1; i >= 0; i--) {	
 		  if($scope.participants[i].user_id == userId) {
-			  OneParticipant.id = $scope.participants[i].id;
-			  var deleteIndex = $scope.eventParticipants.indexOf($scope.participants[i]);
+			  OneParticipant.id = $scope.participants[i].id;		
 			  break;
 		  }						  	  
 	  }
-	  
+	  alert(deleteIndex);
 	  //Usuwamy uczestnika z listy znajdującej się w pamięci cache
 	  $scope.eventParticipants.splice(deleteIndex, 1);
 	  
@@ -338,10 +343,10 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 		  $scope.messageStyle = "alert alert-success";
 		  $scope.hideMessage = false;
 		  $scope.message = "Uczestnik został usuniety";
-		  
+
 	  });
   }
-  
+
   //Funckja sterująca tabelą z wydarzeniami
   $scope.tableParams = new ngTableParams({
       page: 1,            //pokaż pierwszą stronę

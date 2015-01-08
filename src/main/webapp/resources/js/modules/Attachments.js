@@ -14,28 +14,48 @@ Attachments.controller('AttachmentsController', ['$scope', '$state', '$statePara
 	
 	  $scope.Attachment = {fileName:"", fileType: "", file:"", user_id:""};
 	  
-	  $scope.image = '';
-	  
+	  $scope.attachment = '';
+	    
 	  $scope.noFile = '';
-
+	  
 	  var AllAttachments = Restangular.all('attachments');
 	  var OneAttachment = Restangular.one('attachments');
 	  var AttachmentWithId = Restangular.one('attachments', $scope.user.id);
-  
-	  $scope.addAttachment = function(data) {
+
+	  $scope.eventAttachments = [];
+	  
+	  $scope.findEventAttachments = function(eventId) {
+		  
+		  AllAttachments.getList().then(function(results) {
+			  		  
+			  for(var i = results.length - 1; i >= 0; i--) {	
+		 		  if(results[i].event_id == eventId) {
+		 			 $scope.eventAttachments.push(results[i]);
+		 		  }
+			  }
+		  });		 
+	  }
+	  
+	  $scope.findEventAttachments($scope.event.id);
+
+	  $scope.addAttachment = function(userId,data) {
 		  
 		  if($scope.data == null) $scope.noFile = 'Wybierz plik';
 		  
 		  if($scope.data != null) {
 			  
 			  $scope.Attachment.file = btoa($scope.data);
-			  $scope.Attachment.user_id = $scope.user.id;
+			  $scope.Attachment.user_id = userId;
 			  	  	
+			  if($scope.event != undefined)
+				  $scope.Attachment.event_id = $scope.event.id;
+				  
+				  
 			  AllAttachments.post($scope.Attachment).then(function(response){
 					 
 					 AttachmentWithId.get()
 					  	.then(function(result) {
-					  		$scope.image = result; 	
+					  		$scope.attachment = result; 	
 					  		$scope.noFile = '';
 					  });
 					 
@@ -49,7 +69,7 @@ Attachments.controller('AttachmentsController', ['$scope', '$state', '$statePara
 		  
 		  AttachmentWithId.get()
 		  	.then(function(result) {
-		  		$scope.image = result;
+		  		$scope.attachment = result;
 		  });
 	  }
 	  
@@ -68,7 +88,7 @@ Attachments.controller('AttachmentsController', ['$scope', '$state', '$statePara
 					 
 				  	AttachmentWithId.get()
 					  	.then(function(result) {
-					  		$scope.image = result; 
+					  		$scope.attachment = result; 
 					  		$scope.noFile = '';
 					  });
 					 
@@ -86,7 +106,7 @@ Attachments.controller('AttachmentsController', ['$scope', '$state', '$statePara
 			  
 			  AttachmentWithId.get()
 			  	.then(function(result) {
-			  		$scope.image = result; 	
+			  		$scope.attachment = result; 	
 			  });
 			 
 		  },function(error) {

@@ -34,6 +34,10 @@ public class AttachmentsController {
 		    	Attachment attachment = new Attachment();
 		    	attachment.setFileName(file.getFileName());
 		    	attachment.setFileType(file.getFileType());
+		    	
+		    	if(file.getEvent_id() != 0)
+		    		attachment.setEvent_id(file.getEvent_id());
+		    	
 		    	attachment.setUser_id(file.getUser_id());
 		    	attachment.setFile(file.getFile());
 	    	
