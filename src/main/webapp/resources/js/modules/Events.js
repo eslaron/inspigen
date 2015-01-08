@@ -107,11 +107,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
   			       $scope.location = $scope.locations[i];
   			    }
   			  }
-              
-              $scope.participant = {};
-              $scope.participant.id = $stateParams.id;
-              $scope.participant = Participant.getParticipantById($stateParams.id);
-              
+
               $scope.isCollapsed = true;
           } 
          },
@@ -253,22 +249,24 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
   
   //Dodawanie uczesnitków do wydarzenia
   $scope.addEventParticipant = function(userId,eventId) {
-	  
+	  	  
+	  //Zerujemy informacje o duplikatach
 	  $scope.duplicateParticipantMessage = '';
 	  $scope.duplicateParticipant = false;
 	  
+	  //Przygotowujemy obiekt do wysłania na serwer.
 	  $scope.participant = {};
 	  $scope.participant.event_id = eventId;
 	  $scope.participant.user_id = userId;
 	  $scope.participant.eventRole = "uczestnik";
 	    
-	  //Zapisz informację o tym, że zalogowany użytkownik dołączył do wydarzenia.
+	  //Zapisujemy do pamięci cache informację o tym, że zalogowany użytkownik dołączył do wydarzenia.
 	  if(userId == $scope.loggedUser.id) {	  
 		  $scope.loggedUserParticipating = User.setLoggedUserIsParticipating(true);
 		  $scope.loggedUsersEventId = User.setInEventWithId(eventId);
 	  } 
 	  
-	  //Zablokuj próbę dodania tej samej osoby.
+	  //Blokujemy próbę dodania tej samej osoby.
 	  for(var i = $scope.eventParticipants.length - 1; i >= 0; i--) {	
  		  if($scope.eventParticipants[i].user_id == userId) {
  			  $scope.duplicateParticipant = true;
@@ -276,30 +274,31 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
  		  }
 	  }
  	  
-	  //Zablokuj próbę dodania koordynatora do uczestników.
+	  //Blokujemy próbę dodania koordynatora do uczestników.
 	  if($scope.eventCoordinator.user_id == userId) {
 		  $scope.duplicateParticipant = true;
 		  $scope.duplicateParticipantMessage = "Ten użytkownik koordynuje to wydarzenie. Wybierz kogoś innego.";
  	  }
  
-	  //Jeżeli dodawany jest zupełnie nowy uczestnik, to zapisz do bazy.
+	  //Jeżeli jest dodawany zupełnie nowy uczestnik, to zapisz do bazy.
 	  if($scope.duplicateParticipant == false) {
+
 		  AllParticipants.post($scope.participant).then(function(response){
 		
 			  $scope.messageStyle = "alert alert-success";
 			  $scope.hideMessage = false;
 			  $scope.message = "Uczestnik dodany";
 			  
+			  //Znajdź dane osobowe nowego uczestnika i dodaj je do listy uczestników.
+			  for(var i = $scope.persons.length - 1; i >= 0; i--) {	
+				  if($scope.persons[i].user_id == userId) {
+							  $scope.eventParticipants.push($scope.persons[i]);
+					  }	  
+			  }	
+			  			  		 
+			  //Załaduj ponownie uczestników z bazy po dodaniu nowego rekordu.
 			  Participant.loadParticipantsFromJson().then(function() {	
-				  
-				  //Znajdź dane osobowe nowego uczestnika i dodaj je do listy uczestników
-				  for(var i = $scope.persons.length - 1; i >= 0; i--) {	
-					  if($scope.persons[i].user_id == userId) {
-								  $scope.eventParticipants.push($scope.persons[i]);
-						  }	  
-				  }	
-				  
-				  $scope.prepareEventParticipantsList();
+
 			  });
 			  		  
 		  }, function(error) {
@@ -309,52 +308,55 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 	  }
   }
   
- //Usuwanie uczesnitków do wydarzenia
+ //Usuwanie uczestników wydarzenia
  $scope.deleteEventParticipant = function(userId) {
+	 
+	  //Wypełnij na nowo listę uczestników znajdujących się w bazie.
+	  $scope.participants = Participant.getAllParticipants();
+	  
+	  //Zapisujemy do pamięci cache informację o tym, że zalogowany użytkownik wypisał się z wydarzenia.
+	  if(userId == $scope.loggedUser.id) {	  
+		  $scope.loggedUserParticipating = User.setLoggedUserIsParticipating(false);
+		  $scope.loggedUsersEventId = User.setInEventWithId(0);
+	  } 
 	  
 	  //Znadź id rekordu z uczestnikiem
 	  for(var i = $scope.participants.length - 1; i >= 0; i--) {	
 		  if($scope.participants[i].user_id == userId) {
 			  OneParticipant.id = $scope.participants[i].id;
-			  
-			  //Znajdź indeks użytkowników na liście uczestników
-			  for(var j = $scope.eventParticipants.length - 1; j >= 0; j--) {
-				  if($scope.eventParticipants[j].user_id == $scope.participants[i].user_id)
-					  var deleteIndex = $scope.eventParticipants.indexOf($scope.eventParticipants[j]);
-			  }	  
+			  var deleteIndex = $scope.eventParticipants.indexOf($scope.participants[i]);
+			  break;
 		  }						  	  
 	  }
 	  
+	  //Usuwamy uczestnika z listy znajdującej się w pamięci cache
+	  $scope.eventParticipants.splice(deleteIndex, 1);
+	  
+	  //Usuwamy uczestnika z bazy i czekamy na odpowiedź serwera.
 	  OneParticipant.remove().then(function(response){
 		  
 		  $scope.messageStyle = "alert alert-success";
 		  $scope.hideMessage = false;
 		  $scope.message = "Uczestnik został usuniety";
 		  
-		  Participant.loadParticipantsFromJson().then(function() {
-			  
-			  //Usuń uczestnika z listy
-			  $scope.eventParticipants.splice(deleteIndex, 1);
-		  });
 	  });
   }
   
   //Funckja sterująca tabelą z wydarzeniami
- 
   $scope.tableParams = new ngTableParams({
-      page: 1,            // show first page
-      count: 10,          // count per page
+      page: 1,            //pokaż pierwszą stronę
+      count: 10,          //ilość na stronę
       sorting: {
-          id: 'asc'     // initial sorting
+          id: 'asc'       //domyślne sortowanie
       }
   }, {
-      total: data.length, // length of data
+      total: data.length, //ilość wierszy w tabeli
       getData: function($defer, params) {
       	        	
       	var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
       	var filteredData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData; 
       	
-      	params.total(filteredData.length); // set total for recalc pagination
+      	params.total(filteredData.length);
       	
           $defer.resolve(filteredData.slice((params.page() - 1) * params.count(), params.page() * params.count()));          
       }

@@ -70,7 +70,7 @@ Uczestnicy wydarzenia: <br /><br />
 <ul>
 	<li ng-show="eventParticipants == null">brak</li>
 	<li ng-repeat="ep in eventParticipants">
-		{{ep.firstName}} {{ep.lastName}}
+		id: {{ep.id}} {{ep.firstName}} {{ep.lastName}} {{ep.pesel}} user_id: {{ep.user_id}}
 		<button class="btn btn-primary" ui-sref="user.admin.users.details({ id: ep.user_id })">Profil uczestnika</button>
 		<button class="btn btn-danger" ng-click="deleteEventParticipant(ep.user_id)">Usuń uczestnika</button>
 	</li>
