@@ -49,11 +49,10 @@ var Login = angular.module('inspigen.login', ['ui.router', 'LocalStorageModule',
 
 			 /* Try getting valid user from cookie or go to login page */
 			var user = localStorageService.cookie.get('user');
-			$rootScope.loggedUsername = user.username;
-
+			
 			if (user !== null) {
 				$rootScope.user = user;
-				
+				$rootScope.loggedUsername = user.username;
 				
 				$http.defaults.headers.common[xAuthTokenHeaderName] = user.token;
 

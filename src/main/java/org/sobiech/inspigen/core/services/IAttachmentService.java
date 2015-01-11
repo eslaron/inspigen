@@ -2,6 +2,7 @@ package org.sobiech.inspigen.core.services;
 
 import java.util.List;
 
+import org.sobiech.inspigen.core.models.dto.AttachmentDto;
 import org.sobiech.inspigen.core.models.entities.Attachment;
 
 
@@ -11,9 +12,13 @@ public interface IAttachmentService {
 	
 	public List<Attachment> findAllAttachments();
 	
-	public Attachment findAttachmentById(long id);
+	public List<AttachmentDto> findAllAttachmentsInfo();
 	
-	public Attachment findAttachmentByUserId(int id);
+	public AttachmentDto findAttachmentById(long id);
+	
+	public byte[] findAttachmentByUserId(int id);
+	
+	public List<AttachmentDto> findAttachmentsByEventId(int id);
 		
 	public void updateAttachment(Attachment data);
 	

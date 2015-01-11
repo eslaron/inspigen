@@ -1,6 +1,8 @@
 package org.sobiech.inspigen.core.repositories.impl;
 
 
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -31,7 +33,21 @@ public class AttachmentDaoImpl implements IAttachmentDao {
 			return (Attachment)query.list().get(0);
 		}
 	}
+	
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Attachment> findAttachmentsbyEventId(int id) {
+		Query query = getCurrentSession().createQuery("from Attachment where event_id = :id ");
+		query.setInteger("id", id);
+		
+		if (query.list().size() == 0 ) {
+			return null;
+		} else {
+			return query.list();
+		}
+	}
+	
 	@Override
 	public void updateAttachmentByUserId(Attachment data) {
 		

@@ -130,6 +130,11 @@ public class IndexController {
         return "partials/common/eventDetails";
     }
 	
+	@RequestMapping("/partials/common/eventAttachment")
+    public String getEventAttachmentPartialPage() {
+        return "partials/common/eventAttachment";
+    }
+	
 	@RequestMapping("/partials/common/userDetails")
     public String getUserDetailsPartialPage() {
         return "partials/common/userDetails";

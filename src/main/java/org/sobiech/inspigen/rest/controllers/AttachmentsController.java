@@ -3,6 +3,7 @@ package org.sobiech.inspigen.rest.controllers;
 
 import java.util.List;
 
+import org.sobiech.inspigen.core.models.dto.AttachmentDto;
 import org.sobiech.inspigen.core.models.entities.Attachment;
 import org.sobiech.inspigen.core.services.IAttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class AttachmentsController {
 		    	if(file.getEvent_id() != 0)
 		    		attachment.setEvent_id(file.getEvent_id());
 		    	
+		    	attachment.setBlobUrl(file.getBlobUrl());
 		    	attachment.setUser_id(file.getUser_id());
 		    	attachment.setFile(file.getFile());
 	    	
@@ -49,13 +51,24 @@ public class AttachmentsController {
 	}
     
     @RequestMapping(method = RequestMethod.GET)
-    public List<Attachment> findAllAttachmentes(){
-       return attachmentService.findAllAttachments();
+    public List<AttachmentDto> findAllAttachments(){
+       return attachmentService.findAllAttachmentsInfo();
     }
     
-    @RequestMapping(value ="/{id}", method = RequestMethod.GET, produces = "image/gif;image/jpeg;image/png;application/pdf;application/msword")
-    public byte[] findAttachmentById(@PathVariable int id) {
-    	return attachmentService.findAttachmentByUserId(id).getFile();   
+    
+    @RequestMapping(value ="/{id}", method = RequestMethod.GET)
+    public AttachmentDto findAttachmentById(@PathVariable int id) {
+    	return attachmentService.findAttachmentById(id);   
+    }
+    
+    @RequestMapping(value ="/user/{id}", method = RequestMethod.GET, produces = "image/jpeg")
+    public byte[] findAttachmentByUserId(@PathVariable int id) {
+    	return attachmentService.findAttachmentByUserId(id);   
+    }
+    
+    @RequestMapping(value ="/event/{id}", method = RequestMethod.GET)
+    public List<AttachmentDto> findAttachmentsByEventId(@PathVariable int id) {   
+    	return attachmentService.findAttachmentsByEventId(id);
     }
             
     @RequestMapping(method = RequestMethod.PUT)
@@ -70,8 +83,21 @@ public class AttachmentsController {
 			jsonResponse.addProperty("message", message);
 			return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
-    
+           
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
+   	public ResponseEntity<String> deleteAttachmentById(@PathVariable int id) {
+       	
+       	message = "attachmentDeleted";
+       	HttpStatus responseStatus = HttpStatus.OK;
+    	
+       	attachmentService.deleteAttachmentById(id);
+       	
+   			JsonObject jsonResponse = new JsonObject();
+   			jsonResponse.addProperty("message", message);
+   			return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
+   	}
+    
+    @RequestMapping(value ="/user/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteAttachmentByUserId(@PathVariable int id) {
     	
     	message = "attachmentDeleted";

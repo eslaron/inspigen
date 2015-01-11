@@ -345,26 +345,5 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 		  $scope.message = "Uczestnik został usuniety";
 
 	  });
-  }
-
-  //Funckja sterująca tabelą z wydarzeniami
-  $scope.tableParams = new ngTableParams({
-      page: 1,            //pokaż pierwszą stronę
-      count: 10,          //ilość na stronę
-      sorting: {
-          id: 'asc'       //domyślne sortowanie
-      }
-  }, {
-      total: data.length, //ilość wierszy w tabeli
-      getData: function($defer, params) {
-      	        	
-      	var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-      	var filteredData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData; 
-      	
-      	params.total(filteredData.length);
-      	
-          $defer.resolve(filteredData.slice((params.page() - 1) * params.count(), params.page() * params.count()));          
-      }
-  });
- 
+  } 
 }]);

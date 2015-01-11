@@ -98,9 +98,11 @@
 			</tr>
 		</td>
 		<td valign="top" ng-controller="AttachmentsController">
-		<img ng-hide="attachment != null" src="resources/images/blank_photo.jpg" width="50%" height="50%">
+		<div ng-controller="UserAttachmentsController">
+				<img ng-hide="attachment != null" src="resources/images/blank_photo.jpg" width="50%" height="50%">
 				<img ng-hide="attachment == null" ng-src="{{attachment}}" width="50%" height="50%">	
-							
+		</div>
+								
 		<form name="addPhoto_form" ng-submit="addAttachment(user.id,data)" class="form-horizontal input-border" ng-hide="attachment != null" novalidate>
  
 				<div class="form-group">

@@ -1,10 +1,12 @@
 package org.sobiech.inspigen.core.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.sobiech.inspigen.core.models.dto.AttachmentDto;
 import org.sobiech.inspigen.core.models.entities.Attachment;
 import org.sobiech.inspigen.core.repositories.IAttachmentDao;
 import org.sobiech.inspigen.core.repositories.common.IGenericDao;
@@ -35,10 +37,83 @@ public class AttachmentServiceImpl implements IAttachmentService {
 	public List<Attachment> findAllAttachments() {
 		return dao.findAll();
 	}
+	
+	@Override
+	public List<AttachmentDto> findAllAttachmentsInfo() {
+		
+		List<AttachmentDto> attachmentDtoList = new ArrayList<AttachmentDto>();
+		List<Attachment> attachments = dao.findAll();
+		
+		for(Attachment attachment : attachments) {
+			
+			AttachmentDto attachmentDto = new AttachmentDto();
+			
+			attachmentDto.setId(attachment.getId());
+			attachmentDto.setFileName(attachment.getFileName());
+			attachmentDto.setFileType(attachment.getFileType());
+			attachmentDto.setUser_id(attachment.getUser_id());
+			attachmentDto.setEvent_id(attachment.getEvent_id());
+
+			attachmentDtoList.add(attachmentDto);
+		}
+		
+		return attachmentDtoList;
+	}
 
 	@Override
-	public Attachment findAttachmentById(long id) {
-		return dao.findOneById(id);
+	public AttachmentDto findAttachmentById(long id) {
+		
+		Attachment attachment = dao.findOneById(id);
+		AttachmentDto attachmentDto = new AttachmentDto();
+
+		attachmentDto.setId(attachment.getId());
+		attachmentDto.setFileName(attachment.getFileName());
+		attachmentDto.setFileType(attachment.getFileType());
+		attachmentDto.setFile(new String(attachment.getFile()));
+		attachmentDto.setBlobUrl(attachment.getBlobUrl());
+		attachmentDto.setUser_id(attachment.getUser_id());
+		attachmentDto.setEvent_id(attachment.getEvent_id());
+		
+		return attachmentDto;
+	}
+	
+	@Override
+	public byte[] findAttachmentByUserId(int id) {
+		
+		byte[] emptyAttachment = new byte[0];
+		
+		if(attachmentDao.findAttachmentByUserId(id) == null)
+			return emptyAttachment;
+		else return attachmentDao.findAttachmentByUserId(id).getFile();
+	}
+	
+	@SuppressWarnings("unused")
+	@Override
+	public List<AttachmentDto> findAttachmentsByEventId(int id) {
+		
+		List<Attachment> attachments = attachmentDao.findAttachmentsbyEventId(id);
+		List<AttachmentDto> emptyAttachmentsList = new ArrayList<AttachmentDto>();
+		List<AttachmentDto> attachmentDtoList = new ArrayList<AttachmentDto>();
+					
+		for(Attachment attachment : attachments) {
+			
+			AttachmentDto attachmentDto = new AttachmentDto();
+			
+			attachmentDto.setId(attachment.getId());
+			attachmentDto.setFileName(attachment.getFileName());
+			attachmentDto.setFileType(attachment.getFileType());
+			attachmentDto.setFile(new String(attachment.getFile()));
+			attachmentDto.setBlobUrl(attachment.getBlobUrl());
+			attachmentDto.setUser_id(attachment.getUser_id());
+			attachmentDto.setEvent_id(attachment.getEvent_id());
+
+			attachmentDtoList.add(attachmentDto);
+		}
+	
+		if(attachmentDtoList == null)
+			return emptyAttachmentsList;
+		
+		else return attachmentDtoList;
 	}
 
 	@Override
@@ -47,27 +122,17 @@ public class AttachmentServiceImpl implements IAttachmentService {
 	}
 
 	@Override
-	public void deleteAttachmentById(long id) {
-		dao.deleteById(id);
-	}
-
-	@Override
-	public Attachment findAttachmentByUserId(int id) {
-		
-		Attachment emptyAttachment = new Attachment();
-		
-		if(attachmentDao.findAttachmentByUserId(id) == null)
-			return emptyAttachment;
-		else return attachmentDao.findAttachmentByUserId(id);
-	}
-
-	@Override
 	public void updateAttachmentByUserId(Attachment data) {
 		attachmentDao.updateAttachmentByUserId(data);	
 	}
-
+	
+	@Override
+	public void deleteAttachmentById(long id) {
+		dao.deleteById(id);
+	}
+	
 	@Override
 	public void deleteAttachmentByUserId(int id) {
 		attachmentDao.deleteAttachmentByUserId(id);
-	}	
+	}
 }

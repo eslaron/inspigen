@@ -1,6 +1,9 @@
 angular.module('inspigen.directives', [])
 
-
+.config(function($compileProvider){
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|data|blob|ftp|mailto|chrome-extension):/);
+})
+  
 .directive('ngMatch', function() {
 return {
 	require: 'ngModel',
@@ -80,4 +83,57 @@ return {
 	      input.addEventListener('change', _handleUpload)
 	    }
 	  }
-});
+})
+
+  .directive('imageUploadr',function($timeout){
+    
+    return {
+      restrict: 'E',
+      scope: {
+        file: '=',
+        filename: '=',
+        filetype: '='
+      },
+      template: '<input type="file"/>',
+      link: function(scope,element){
+        
+        var el = element[0].children[0];
+        
+        el.addEventListener('change',function(e){
+          var file = e.target.files[0];
+          
+          var reader = new FileReader();
+          
+          reader.onload = function(img) {
+            
+            $timeout(function(){
+              scope.file = img.target.result;
+              scope.filename = file.name;
+              scope.filetype = file.type;
+            
+            },0)
+          }
+          
+          reader.readAsDataURL(file);
+        })
+        
+      }
+    }   
+  })
+  
+  .directive('imageDownloadr',function(){
+    
+    return {
+      restrict: 'A',
+      scope: {
+        filename: '='
+      },
+      link: function(scope,element){
+        var el = angular.element(element);
+
+        scope.$watch('filename',function(filename){
+          el.attr('download',filename)
+        })
+      }
+    }
+  });
