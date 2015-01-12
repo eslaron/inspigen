@@ -7,7 +7,7 @@ var Login = angular.module('inspigen.login', ['ui.router', 'LocalStorageModule',
 			Permission.defineRole('anonymous', function (stateParams) {
 		        if ($rootScope.hasRole("ROLE_ADMIN") == false 
 		        		|| $rootScope.hasRole("ROLE_MOD") == false 
-		        			|| $rootScope.hasRole("ROLE_MOD") == false) {
+		        			|| $rootScope.hasRole("ROLE_USER") == false) {
 		          return true;
 		        }
 		        return false;
@@ -35,9 +35,9 @@ var Login = angular.module('inspigen.login', ['ui.router', 'LocalStorageModule',
 		      });
 			
 			$rootScope.hasRole = function(role) {
-					if ($rootScope.user === undefined) return false;
-					if ($rootScope.user.role === undefined) return false;
-				return true;
+					if ($rootScope.user == undefined) return false;
+					if ($rootScope.user.role == role) return true;
+					else return false;
 			};
 
 			$rootScope.logout = function() {
@@ -50,20 +50,20 @@ var Login = angular.module('inspigen.login', ['ui.router', 'LocalStorageModule',
 			 /* Try getting valid user from cookie or go to login page */
 			var user = localStorageService.cookie.get('user');
 			
-			if (user !== null) {
+			if (user != null) {
 				$rootScope.user = user;
 				$rootScope.loggedUsername = user.username;
 				
 				$http.defaults.headers.common[xAuthTokenHeaderName] = user.token;
 
-				/*   if ($rootScope.hasRole("ROLE_ADMIN") == true)
+				  /* if ($rootScope.hasRole("ROLE_ADMIN") == true)
 					   	$state.go('user.admin');
 
 				   else if ($rootScope.hasRole("ROLE_MOD") == true) 
 						$state.go('user.moderator');
   
 				   else if ($rootScope.hasRole("ROLE_USER") == true) 
-					   	$state.go('user.member');	*/				
+					   	$state.go('user.member');		*/	
 			}
 })
 
@@ -112,15 +112,17 @@ Login.controller('LoginController', function($scope, $rootScope, $state, $http, 
 					$rootScope.user = user;
 					$http.defaults.headers.common[ xAuthTokenHeaderName ] = user.token;
 					localStorageService.cookie.set('user', user);	
+	
+					$rootScope.loggedUsername = localStorageService.cookie.get('user').username;
 					
 		      	if (user.role == 'ROLE_ADMIN')
-	        		$state.go('user.admin');
+	        		$state.go('users.admin');
 
 	        	if (user.role == 'ROLE_MOD')
-	        		$state.go('user.moderator');
+	        		$state.go('users.moderator');
 
 	        	if (user.role == 'ROLE_USER')
-	        		$state.go('user.member');			
+	        		$state.go('users.member');			
 				},
 					function(error) {
 						$scope.error = error.data;

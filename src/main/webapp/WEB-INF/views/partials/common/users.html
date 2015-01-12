@@ -15,10 +15,14 @@
 		            <td data-title="'Nieudane logowania'" sortable="'failedLogins'">{{user.failedLogins}}</td>
 		            <td data-title="'Ostatnia próba'" sortable="'lastLoginAttempt'">{{user.lastLoginAttempt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 		            <td data-title="'Operacje'">
-		            	<a ui-sref="user.admin.users.details({ id: user.id })">Szczegóły</a> | 
-		            	<a ui-sref="user.admin.users.edit({ id: user.id })">Edytuj</a> | 
-		            	<a ng-click="deleteUser(user.id)">Usuń</a>
+		            	<a ui-sref="users.details({ id: user.id })">Szczegóły</a>
+		            	<a ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ui-sref="users.edit({ id: user.id })">Edytuj</a> 
+		            	<a ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ng-click="deleteUser(user.id)">Usuń</a>
 		            </td>
 		        </tr>
-        </table> 	
+        </table> 
+        Is admin? : <b>{{hasRole('ROLE_ADMIN')}}</b><br />
+        Is moderator? : <b>{{hasRole('ROLE_MOD')}}</b><br />
+        Is user? : <b>{{hasRole('ROLE_USER')}}</b><br />
+        <a ui-sref="users.add">Dodaj</a>	
 </div>

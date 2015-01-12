@@ -32,12 +32,7 @@ public class IndexController {
     public String getAdminDashboardPartial() {
         return "partials/admin/dashboard";
 	}
-	
-	@RequestMapping("/partials/admin/users")
-    public String getAdminUsersPartial() {
-        return "partials/admin/users";
-	}
-	
+		
 	@RequestMapping("/partials/admin/editUser")
     public String getEditUserPartial() {
         return "partials/admin/editUser";
@@ -58,7 +53,30 @@ public class IndexController {
         return "partials/admin/settings";
     }	
 	
+	
+	// Partiale - MODERATOR
+	
+	@RequestMapping("/partials/mod/navbar")
+	public String getModNavbarPartial() {
+	        return "partials/mod/navbar";
+	}
+		
+	@RequestMapping("/partials/mod/sidebar")
+	public String getModSidebarPartial() {
+	        return "partials/mod/sidebar";
+	}
+		
+	@RequestMapping("/partials/mod/dashboard")
+	public String getModDashboardPartial() {
+	        return "partials/mod/dashboard";
+	}
+	
 	//Partiale - COMMON
+	
+	@RequestMapping("/partials/common/users")
+    public String getAdminUsersPartial() {
+        return "partials/common/users";
+	}
 	
 	@RequestMapping("/partials/common/persons")
     public String getPersonsPartialPage() {

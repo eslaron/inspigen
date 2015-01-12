@@ -4,88 +4,65 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 	
 	$stateProvider
 	
-	.state('user', {
-        url: '/user',
+	.state('users', {
+        url: '/users',
    	 abstract: true,
    	 template: '<div ui-view></div>', 
    	 data: {
             permissions: {
-            	only: ['user','admin','moderator']
+            	only: ['admin','moderator','user']
             }
-        }
-   })
-   
-   .state('user.admin', {
-     title: 'Panel wolontariusza',
-     abstract: false,
-     url: '/admin',
-     views: {
-         'navbar@': {
-       	  templateUrl: 'partials/admin/navbar.html' 
-         },
-         'sidebar@': {
-       	  templateUrl: 'partials/admin/sidebar.html'
-         },
-         'content@': {
-       	  templateUrl: 'partials/admin/dashboard.html',
-       	  controller: 'UsersController'
-         },
-       },
-       data: {
-           permissions: {
-             only: ['admin']
-           }
-       },
-       resolve: {
-    	   settings: ['Settings','Context', function(Settings, Context) {  
+        },
+        resolve: {
+     	   users: ['User','Context', function(User, Context) {  
+ 	      		return  User.loadUsersFromJson()
+ 	    	    .then(function(newlyLoadedUsers){
+ 	    	    	Context.all.users = User.getAllUsers();
+ 	    	    });
+     	   }],   
+     	   persons: ['Person','Context', function(Person, Context) {  
+ 	      		return  Person.loadPersonsFromJson()
+ 	    	    .then(function(newlyLoadedPersons){
+ 	    	    	Context.all.persons = Person.getAllPersons();
+ 	    	    });
+     	   }],
+     	   address: ['Address','Context', function(Address, Context) {  
+ 	      		return  Address.loadAddressesFromJson()
+ 	    	    .then(function(newlyLoadedAddresses){
+ 	    	    	Context.all.addresses = Address.getAllAddresses();
+ 	    	    });
+     	   }],
+     	   events: ['Event','Context', function(Event, Context) {  
+ 	      		return  Event.loadEventsFromJson()
+ 	    	    .then(function(newlyLoadedEvents){
+ 	    	    	Context.all.events = Event.getAllEvents();
+ 	    	    });
+ 	   	   }],
+ 	   	   participants: ['Participant','Context', function(Participant, Context) {  
+ 		      		return  Participant.loadParticipantsFromJson()
+ 		    	    .then(function(newlyLoadedParticipants){
+ 		    	    	Context.all.participants = Participant.getAllParticipants();
+ 		    	    });
+ 	   	   }],
+ 	   	   locations: ['Location','Context', function(Location, Context) {  
+ 	      		return  Location.loadLocationsFromJson()
+ 	    	    .then(function(newlyLoadedLocations){
+ 	    	    	Context.all.locations = Location.getAllLocations();
+ 	    	    });
+ 	   	   }],
+ 		   settings: ['Settings','Context', function(Settings, Context) {  
 	      		return  Settings.loadSettingsFromJson()
 	    	    .then(function(newlyLoadedSettings){
 	    	    	Context.all.settings = Settings.getAllSettings();
 	    	    });
-    	   }],
-    	   users: ['User','Context', function(User, Context) {  
-	      		return  User.loadUsersFromJson()
-	    	    .then(function(newlyLoadedUsers){
-	    	    	Context.all.users = User.getAllUsers();
-	    	    });
-    	   }],   
-    	   persons: ['Person','Context', function(Person, Context) {  
-	      		return  Person.loadPersonsFromJson()
-	    	    .then(function(newlyLoadedPersons){
-	    	    	Context.all.persons = Person.getAllPersons();
-	    	    });
-    	   }],
-    	   address: ['Address','Context', function(Address, Context) {  
-	      		return  Address.loadAddressesFromJson()
-	    	    .then(function(newlyLoadedAddresses){
-	    	    	Context.all.addresses = Address.getAllAddresses();
-	    	    });
-    	   }],
-    	   events: ['Event','Context', function(Event, Context) {  
-	      		return  Event.loadEventsFromJson()
-	    	    .then(function(newlyLoadedEvents){
-	    	    	Context.all.events = Event.getAllEvents();
-	    	    });
-	   	   }],
-	   	   participants: ['Participant','Context', function(Participant, Context) {  
-		      		return  Participant.loadParticipantsFromJson()
-		    	    .then(function(newlyLoadedParticipants){
-		    	    	Context.all.participants = Participant.getAllParticipants();
-		    	    });
-	   	   }],
-	   	   locations: ['Location','Context', function(Location, Context) {  
-	      		return  Location.loadLocationsFromJson()
-	    	    .then(function(newlyLoadedLocations){
-	    	    	Context.all.locations = Location.getAllLocations();
-	    	    });
-	   	   }],
-   	   }
+ 		   }],
+       }
    })
-   
-      .state('user.admin.users', {
-     title: 'Panel wolontariusza',
+      
+      .state('users.list', {
+     title: 'Użytkownicy',
      abstract: false,
-     url: '/users',
+     url: '/list',
      views: {
          'navbar@': {
        	  templateUrl: 'partials/admin/navbar.html' 
@@ -94,19 +71,19 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        	  templateUrl: 'partials/admin/sidebar.html'
          },
          'content@': {
-       	  templateUrl: 'partials/admin/users.html',
+       	  templateUrl: 'partials/common/users.html',
        	  controller: 'UsersController' 
          },
        },
        data: {
            permissions: {
-             only: ['admin']
+        	  only: ['admin','moderator']
            }
        }
    })
    
-   .state('user.admin.users.add', {
-	     title: 'Panel wolontariusza',
+   .state('users.add', {
+	     title: 'Dodaj użytkownika',
 	     abstract: false,
 	     url: '/add',
 	     views: {
@@ -123,13 +100,13 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin']
+	        	   only: ['admin']
 	           }
 	       }
 	   })
    
-     .state('user.admin.users.edit', {
-     title: 'Panel wolontariusza',
+     .state('users.edit', {
+     title: 'Edytuj użytkownika',
      abstract: false,
      url: '/:id/edit',
      views: {
@@ -150,13 +127,13 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        },
        data: {
            permissions: {
-             only: ['admin']
+        	   only: ['admin']
            }
        }
    })
    
-   .state('user.admin.users.details', {
-     title: 'Panel wolontariusza',
+   .state('users.details', {
+     title: 'Profil użytkownika',
      abstract: false,
      url: '/:id/details',
      views: {
@@ -200,12 +177,12 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        },
        data: {
            permissions: {
-             only: ['admin']
+        	   only: ['admin','moderator','user']
            }
        }
    })
    
-   .state('user.admin.groups', {
+   .state('users.groups', {
      title: 'Grupy użytkowników',
      abstract: false,
      url: '/groups',
@@ -224,12 +201,38 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        },
        data: {
            permissions: {
-             only: ['admin']
+        	   only: ['admin']
            }
        }
    })
    
-      .state('user.admin.settings', {
+      .state('users.admin', {
+     title: 'Panel administratora',
+     abstract: false,
+     url: '/admin',
+     views: {
+         'navbar@': {
+       	  templateUrl: 'partials/admin/navbar.html' 
+         },
+         'sidebar@': {
+       	  templateUrl: 'partials/admin/sidebar.html'
+         },
+         'content@': {
+       	  templateUrl: 'partials/admin/dashboard.html',
+       	  controller: 'UsersController'
+         },
+       },
+       data: {
+           permissions: {
+             only: ['admin']
+           }
+       },
+       resolve: {
+    
+       }
+   })
+   
+      .state('users.admin.settings', {
      title: 'Ustawienia',
      abstract: false,
      url: '/settings',
@@ -252,7 +255,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
-   .state('user.member', {
+   .state('users.member', {
      title: 'Panel wolontariusza',
      abstract: false,
      url: '/dashboard',
@@ -264,7 +267,8 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        	  templateUrl: 'partials/user/sidebar.html'
          },
          'content@': {
-       	  templateUrl: 'partials/user/dashboard.html' 
+       	  templateUrl: 'partials/user/dashboard.html', 
+       	  controller: 'UsersController' 
          },
        },
        data: {
@@ -273,28 +277,30 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
            }
        }
    })
-   .state('user.moderator', {
+  
+   
+      .state('users.moderator', {
      title: 'Panel koordynatora',
      abstract: false,
      url: '/mod',
      views: {
-         'navbar': {
+         'navbar@': {
        	  templateUrl: 'partials/mod/navbar.html' 
          },
-         'sidebar': {
+         'sidebar@': {
        	  templateUrl: 'partials/mod/sidebar.html'
          },
-         'content': {
-       	  templateUrl: 'partials/mod/dashboard.html' 
+         'content@': {
+       	  templateUrl: 'partials/mod/dashboard.html', 
+       	  controller: 'UsersController' 
          },
        },
-      data: {
+       data: {
            permissions: {
              only: ['moderator']
            }
-      }
-   })
-   
+       }
+   })  
 }
            
 ]);
@@ -549,24 +555,23 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 		  $scope.message = "Zapisane";			  			  
 	  });
   }
-    
-  $scope.tableParams = new ngTableParams({
-        page: 1,            // show first page
-        count: 10,          // count per page
-        sorting: {
-            id: 'asc'     // initial sorting
-        }
-    }, {
-        total: data.length, // length of data
-        getData: function($defer, params) {
-        	        	
-        	var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-        	var filteredData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData; 
-        	
-        	params.total(filteredData.length); // set total for recalc pagination
-        	
-            $defer.resolve(filteredData.slice((params.page() - 1) * params.count(), params.page() * params.count()));          
-        }
-   });
-	
+  
+	  $scope.tableParams = new ngTableParams({
+	        page: 1,            // show first page
+	        count: 10,          // count per page
+	        sorting: {
+	            id: 'asc'     // initial sorting
+	        }
+	    }, {
+	        total: data.length, // length of data
+	        getData: function($defer, params) {
+	        	        	
+	        	var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+	        	var filteredData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData; 
+	        	
+	        	params.total(filteredData.length); // set total for recalc pagination
+	        	
+	            $defer.resolve(filteredData.slice((params.page() - 1) * params.count(), params.page() * params.count()));          
+	        }
+	   });	
 }]);

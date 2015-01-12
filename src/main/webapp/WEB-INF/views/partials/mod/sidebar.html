@@ -1,0 +1,30 @@
+<div class="sidebar">
+	<div class="sidebar-content">
+
+		
+<accordion close-others="true">
+ 
+    <accordion-group is-open="false">
+        <accordion-heading>
+            Użytkownicy<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        </accordion-heading>
+        <a ui-sref="users.list" ng-href="#/users/list">Lista</a><br />
+    </accordion-group>
+       <accordion-group is-open="false">
+        <accordion-heading>
+            Lokalizacje<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        </accordion-heading>
+         <a ui-sref="user.admin.locations" ng-href="#/user/admin/locations">Lista</a><br />
+       <a ui-sref="user.admin.locations.add" ng-href="#/user/admin/locations/add">Dodaj</a>
+    </accordion-group>
+    <accordion-group is-open="false">
+        <accordion-heading>
+            Wydarzenia<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        </accordion-heading>
+         <a ui-sref="user.admin.events" ng-href="#/user/admin/events">Lista</a><br />
+       <a ui-sref="user.admin.events.add" ng-href="#/user/admin/events/add">Dodaj</a>
+    </accordion-group>
+   
+</accordion>
+	</div>
+</div>
