@@ -63,7 +63,7 @@ Wybierz użytkownika:<br />
 	<option selected disabled value="">Przydziel uczestnika</option>
 	<option ng-repeat="p in persons" value="{{p.user_id}}">{{p.firstName}} {{p.lastName}}</option>
 </select><br />
-<button class="btn btn-danger" ng-click="addEventParticipant(eventParticipant_id,event.id)">Dodaj uczestnika</button>
+<button class="btn btn-danger" ng-click="addEventParticipant(eventParticipant_id,event.id)" ng-disabled="eventParticipant_id == null">Dodaj uczestnika</button>
 {{duplicateParticipantMessage}}
 <br /><br />
 Uczestnicy wydarzenia: <br /><br />
@@ -80,12 +80,13 @@ Uczestnicy wydarzenia: <br /><br />
 		Dodaj załącznik: <br />
 					
 			<image-uploadr file="attachment.file" filename="attachment.fileName" filetype="attachment.fileType"></image-uploadr>
-    		<button class="btn btn-primary" ng-click="addAttachment(loggedUser.id,attachment.file)">Dodaj załącznik</button>
+    		<button class="btn btn-primary" ng-click="addAttachment(loggedUser.id,attachment.file)" ng-disabled="attachment.file == null">Dodaj załącznik</button>
     		{{noFile}}
 			<br /><br />
-			Lista załączników:
-			<ul>
-	<li ng-hide="eventAttachments==null" ng-repeat="ea in eventAttachments">
+			Lista załączników:<br />
+			<img ng-hide="loadingAttachments == false" src="resources/images/loading.gif">
+			<ul ng-hide="loadingAttachments == true">
+	<li ng-hide="eventAttachments==null" ng-repeat="ea in eventAttachments track by $index">
 		{{ea.fileName}} 
 		<a class="btn btn-primary" ng-href="{{ea.file}}" target="_blank" image-downloadr filename="ea.fileName"><i class="fa fa-arrow-circle-o-down fa-lg"></i></a>
 		<button class="btn btn-danger" ng-click="deleteAttachment(ea.id)"><i class="fa fa-trash-o fa-lg"></i></button>

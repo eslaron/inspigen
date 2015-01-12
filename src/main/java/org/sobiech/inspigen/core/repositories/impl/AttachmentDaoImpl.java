@@ -34,6 +34,17 @@ public class AttachmentDaoImpl implements IAttachmentDao {
 		}
 	}
 	
+	@Override
+	public Attachment findPhotoAttachmentByUserId(int id) {
+		Query query = getCurrentSession().createQuery("from Attachment where user_id = :id and event_id = 0");
+		query.setInteger("id", id);
+		
+		if (query.list().size() == 0 ) {
+			return null;
+		} else {
+			return (Attachment)query.list().get(0);
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

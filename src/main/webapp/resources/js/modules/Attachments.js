@@ -22,120 +22,113 @@ var Attachments = angular.module('inspigen.attachments', ['ui.router', 'restangu
 
 Attachments.controller('UserAttachmentsController', ['$scope', '$state', '$stateParams', 'Restangular',
                                                    function($scope, $state, $stateParams, Restangular) {
+	 $scope.attachment = '';
 	//Pobierz zdjecie użytkownika
-	$scope.getAttachmentByUserId();	
+	$scope.getPhotoAttachmentByUserId();	
 }]);
 
-
-Attachments.controller('EventAttachmentsController', ['$scope', '$state', '$stateParams', 'Restangular',
-                                                     function($scope, $state, $stateParams, Restangular) {
-	
-	//$scope.getEventAttachmentByEventId($scope.event.id);
-}]);
-
-Attachments.controller('AttachmentsController', ['$scope', '$window','$document', '$base64', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Settings', 'Context', 'Restangular',
-                                     function($scope, $window, $document, $base64, $state, $stateParams, $filter, ngTableParams, User, Person, Settings, Context, Restangular) {
-	
-	  $scope.Attachment = {fileName:"", fileType: "", file:"", user_id:"", event_id:""};
-	  $scope.eventAttachments = [];
+Attachments.controller('AttachmentsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Settings', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Settings, Context, Restangular) {
+	  $scope.AddAttachment = {};
 	  $scope.attachment = '';
+	  $scope.userPhoto = '';
 	  $scope.noFile = '';
-	  
+	  $scope.eventAttachments = [];
+	  $scope.loadingAttachments = false;
+
+		  
 	  var AllAttachments = Restangular.all('attachments');
 	  var OneAttachment = Restangular.one('attachments');
-	  var UsersAttachment = Restangular.one('attachments/user');
 	  var AttachmentWithId = Restangular.one('attachments', $scope.user.id);
+	  var UsersAttachmentWithId = Restangular.one('attachments/user', $scope.user.id);
 	  
 	  	  //Dodająca nowy załącznik
 		  $scope.addAttachment = function(userId,file) {
-
-			  
-			 
-			  
+		  
 			  if($scope.attachment == null) $scope.noFile = 'Wybierz plik';
 			  
 			  if($scope.attachment != null) {
 				  
+				  $scope.loadingAttachments = true;
+				  
 				  var blob = new Blob([$scope.attachment.file], {type: $scope.attachment.fileType});
 	
-				  $scope.Attachment.fileName = $scope.attachment.fileName;
-				  $scope.Attachment.fileType = $scope.attachment.fileType;
-				  $scope.Attachment.file = btoa($scope.attachment.file);
-				  $scope.Attachment.blobUrl = URL.createObjectURL(blob);
-				  $scope.Attachment.user_id = userId;
+				  $scope.AddAttachment.fileName = $scope.attachment.fileName;
+				  $scope.AddAttachment.fileType = $scope.attachment.fileType;
+				  $scope.AddAttachment.file = btoa($scope.attachment.file);
+				  $scope.AddAttachment.blobUrl = URL.createObjectURL(blob);
+				  $scope.AddAttachment.user_id = userId;
 				  	  	
 				  if($scope.event != undefined)
-					  $scope.Attachment.event_id = $scope.event.id;
-					  					  
-				  AllAttachments.post($scope.Attachment).then(function(response){
+					  $scope.AddAttachment.event_id = $scope.event.id;
+					
+				  AllAttachments.post($scope.AddAttachment).then(function(response){
+					  
+					  $scope.noFile = '';
+					
+					  if($scope.event != undefined) {
+						  $scope.eventAttachments = [];
+						  $scope.getEventAttachmentByEventId($scope.event.id);	
+						  $scope.loadingAttachments = false;
+					  } 
 						 
-						 AttachmentWithId.get()
-						  	.then(function(result) {
-						  		$scope.attachment = result; 	
-						  		$scope.noFile = '';
-						  });
+					  		  
+					  if($scope.event == undefined)
+						  $scope.getPhotoAttachmentByUserId();
 						 
+					  $scope.attachment = '';
+					  
 					 },function(error) {
 			 				  $scope.error = error.data; 					
 			 		 });
 			  }
 		  }
-		  
-		  /*$scope.findEventAttachmentsInfo = function(eventId) {
-			  
-			  AllAttachments.getList().then(function(results) {
-				  		  
-				  for(var i = results.length - 1; i >= 0; i--) {	
-			 		  if(results[i].event_id == eventId) {
-			 			 $scope.eventAttachments.push(results[i]);
-			 		  }
-				  }
-			  });		 
-		  }*/
-		  
-		 //Funkcja pobierająca załącznik na podstawie id użytkownika
-		 $scope.getAttachmentByUserId = function() {
-				  
-				  AttachmentWithId.get()
-				  	.then(function(result) {
-				  		$scope.attachment = result;
-				  });
+	  
+		 //Funkcja pobierająca załącznik na podstawie id użytkownika przy zerowym event_id
+		 $scope.getPhotoAttachmentByUserId = function() {
+			 
+			 UsersAttachmentWithId.get().then(function(result) {
+				  		$scope.userPhoto = result;
+			});
 		 }
-		  
-		  $scope.getEventAttachmentByEventId = function(eventId) {
+		 
+		 //Funkcja pobierająca wszystkie załączniki należące do jednego wydarzenia
+		 $scope.getEventAttachmentByEventId = function(eventId) {
 			  
+			 $scope.loadingAttachments = true;
+			 
 			  Restangular.one('attachments/event', eventId).getList().then(function(results) {
 		
-					 for(var i=0; i< results.length; i++){
-						 $scope.eventAttachments.push(results[i]); 
-					 }
+				  for(var i=0;i<results.length;i++) {					 
+					  $scope.eventAttachments.push(results[i]);	
+				  }
+				  
+				  $scope.loadingAttachments = false;
 			  });		 
-		  }
+		 }
 		 		  
 		  if($scope.event != undefined) {		  
 		  	  $scope.getEventAttachmentByEventId($scope.event.id);
 		  }
-
-		  
+		  	  
 		  //Funkcja aktualizująca załącznik na podstawie id użytkownika
 		  $scope.updateAttachmentByUserId = function(data) {
 			  
-			  if($scope.data == null) $scope.noFile = 'Wybierz plik';
+			  if($scope.attachment == null) $scope.noFile = 'Wybierz plik';
 			  
-			  if($scope.data != null) {
+			  if($scope.attachment != null) {
 	
-				  OneAttachment.fileName = $scope.Attachment.fileName;
-				  OneAttachment.fileType = $scope.Attachment.fileType;
-				  OneAttachment.file = btoa($scope.data);
+				  var blob = new Blob([$scope.attachment.file], {type: $scope.attachment.fileType});
+				  
+				  OneAttachment.fileName = $scope.attachment.fileName;
+				  OneAttachment.fileType =  $scope.attachment.fileType;
+				  OneAttachment.file = btoa($scope.attachment.file);
+				  OneAttachment.blobUrl =  URL.createObjectURL(blob);
 				  OneAttachment.user_id = $scope.user.id;
 				  
 				  OneAttachment.put().then(function(response){
 						 
-					  	AttachmentWithId.get()
-						  	.then(function(result) {
-						  		$scope.attachment = result; 
-						  		$scope.noFile = '';
-						  });
+					  $scope.getPhotoAttachmentByUserId();
 						 
 					 },function(error) {
 			 				  $scope.error = error.data; 					
@@ -146,31 +139,28 @@ Attachments.controller('AttachmentsController', ['$scope', '$window','$document'
 		  //Funkcja usuwająca załącznik o wybranym id
 		  $scope.deleteAttachment = function(id) {
 			  
+			  $scope.loadingAttachments = true;
+			  
 			  OneAttachment.id = id;
 			  
 			  OneAttachment.remove().then(function(response){
 				  
-				  AttachmentWithId.get()
-				  	.then(function(result) {
-				  		$scope.attachment = result; 	
-				  });
-				 
+				  $scope.eventAttachments = [];
+				  $scope.getEventAttachmentByEventId($scope.event.id);
+				  $scope.loadingAttachments = true;
 			  },function(error) {
 					  $scope.error = error.data; 					
 			  });
 		  }
 	  	  
 		 //Funkcja usuwająca załącznik na podstawie id użytkownika
-		 $scope.deleteAttachmentByUserId = function() {
+		 $scope.deletePhotoAttachmentByUserId = function() {
 			  
-			  UsersAttachment.id = $scope.user.id;
+			 UsersAttachmentWithId.id = $scope.user.id;
 			  
-			  UsersAttachment.remove().then(function(response){
-				  
-				  AttachmentWithId.get()
-				  	.then(function(result) {
-				  		$scope.attachment = result; 	
-				  });
+			 UsersAttachmentWithId.remove().then(function(response){
+				 
+				 $scope.getPhotoAttachmentByUserId();
 				 
 			  },function(error) {
 					  $scope.error = error.data; 					

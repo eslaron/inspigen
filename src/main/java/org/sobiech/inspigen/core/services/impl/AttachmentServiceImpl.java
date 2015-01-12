@@ -39,33 +39,13 @@ public class AttachmentServiceImpl implements IAttachmentService {
 	}
 	
 	@Override
-	public List<AttachmentDto> findAllAttachmentsInfo() {
-		
-		List<AttachmentDto> attachmentDtoList = new ArrayList<AttachmentDto>();
-		List<Attachment> attachments = dao.findAll();
-		
-		for(Attachment attachment : attachments) {
-			
-			AttachmentDto attachmentDto = new AttachmentDto();
-			
-			attachmentDto.setId(attachment.getId());
-			attachmentDto.setFileName(attachment.getFileName());
-			attachmentDto.setFileType(attachment.getFileType());
-			attachmentDto.setUser_id(attachment.getUser_id());
-			attachmentDto.setEvent_id(attachment.getEvent_id());
-
-			attachmentDtoList.add(attachmentDto);
-		}
-		
-		return attachmentDtoList;
-	}
-
-	@Override
 	public AttachmentDto findAttachmentById(long id) {
 		
 		Attachment attachment = dao.findOneById(id);
 		AttachmentDto attachmentDto = new AttachmentDto();
-
+		
+		if(attachment != null) {
+			
 		attachmentDto.setId(attachment.getId());
 		attachmentDto.setFileName(attachment.getFileName());
 		attachmentDto.setFileType(attachment.getFileType());
@@ -75,16 +55,52 @@ public class AttachmentServiceImpl implements IAttachmentService {
 		attachmentDto.setEvent_id(attachment.getEvent_id());
 		
 		return attachmentDto;
+		}
+		
+		else return new AttachmentDto();
 	}
 	
 	@Override
-	public byte[] findAttachmentByUserId(int id) {
+	public AttachmentDto findAttachmentByUserId(int id) {
 		
-		byte[] emptyAttachment = new byte[0];
+		Attachment attachment = attachmentDao.findAttachmentByUserId(id);
+		AttachmentDto attachmentDto = new AttachmentDto();
 		
-		if(attachmentDao.findAttachmentByUserId(id) == null)
-			return emptyAttachment;
-		else return attachmentDao.findAttachmentByUserId(id).getFile();
+		if(attachment != null) {
+			
+		attachmentDto.setId(attachment.getId());
+		attachmentDto.setFileName(attachment.getFileName());
+		attachmentDto.setFileType(attachment.getFileType());
+		attachmentDto.setFile(new String(attachment.getFile()));
+		attachmentDto.setBlobUrl(attachment.getBlobUrl());
+		attachmentDto.setUser_id(attachment.getUser_id());
+		attachmentDto.setEvent_id(attachment.getEvent_id());
+		
+		return attachmentDto;
+		}	
+		else return new AttachmentDto();
+	}
+	
+
+	@Override
+	public AttachmentDto findPhotoAttachmentByUserId(int id) {
+		
+		Attachment attachment = attachmentDao.findPhotoAttachmentByUserId(id);
+		AttachmentDto attachmentDto = new AttachmentDto();
+		
+		if(attachment != null) {
+			
+		attachmentDto.setId(attachment.getId());
+		attachmentDto.setFileName(attachment.getFileName());
+		attachmentDto.setFileType(attachment.getFileType());
+		attachmentDto.setFile(new String(attachment.getFile()));
+		attachmentDto.setBlobUrl(attachment.getBlobUrl());
+		attachmentDto.setUser_id(attachment.getUser_id());
+		attachmentDto.setEvent_id(attachment.getEvent_id());
+		
+		return attachmentDto;
+		}	
+		else return new AttachmentDto();
 	}
 	
 	@SuppressWarnings("unused")
@@ -94,20 +110,22 @@ public class AttachmentServiceImpl implements IAttachmentService {
 		List<Attachment> attachments = attachmentDao.findAttachmentsbyEventId(id);
 		List<AttachmentDto> emptyAttachmentsList = new ArrayList<AttachmentDto>();
 		List<AttachmentDto> attachmentDtoList = new ArrayList<AttachmentDto>();
-					
-		for(Attachment attachment : attachments) {
-			
-			AttachmentDto attachmentDto = new AttachmentDto();
-			
-			attachmentDto.setId(attachment.getId());
-			attachmentDto.setFileName(attachment.getFileName());
-			attachmentDto.setFileType(attachment.getFileType());
-			attachmentDto.setFile(new String(attachment.getFile()));
-			attachmentDto.setBlobUrl(attachment.getBlobUrl());
-			attachmentDto.setUser_id(attachment.getUser_id());
-			attachmentDto.setEvent_id(attachment.getEvent_id());
-
-			attachmentDtoList.add(attachmentDto);
+		
+		if(attachments != null) {
+			for(Attachment attachment : attachments) {
+				
+				AttachmentDto attachmentDto = new AttachmentDto();
+				
+				attachmentDto.setId(attachment.getId());
+				attachmentDto.setFileName(attachment.getFileName());
+				attachmentDto.setFileType(attachment.getFileType());
+				attachmentDto.setFile(new String(attachment.getFile()));
+				attachmentDto.setBlobUrl(attachment.getBlobUrl());
+				attachmentDto.setUser_id(attachment.getUser_id());
+				attachmentDto.setEvent_id(attachment.getEvent_id());
+	
+				attachmentDtoList.add(attachmentDto);
+			}
 		}
 	
 		if(attachmentDtoList == null)

@@ -98,46 +98,29 @@
 			</tr>
 		</td>
 		<td valign="top" ng-controller="AttachmentsController">
-		<div ng-controller="UserAttachmentsController">
-				<img ng-hide="attachment != null" src="resources/images/blank_photo.jpg" width="50%" height="50%">
-				<img ng-hide="attachment == null" ng-src="{{attachment}}" width="50%" height="50%">	
-		</div>
-								
-		<form name="addPhoto_form" ng-submit="addAttachment(user.id,data)" class="form-horizontal input-border" ng-hide="attachment != null" novalidate>
- 
+		<div ng-controller="UserAttachmentsController"><!-- blok istnieje tylko dla uruchmomienia funkcji z kontrolera --></div>
+		<img ng-hide="userPhoto.file != null" src="resources/images/blank_photo.jpg" width="50%" height="50%">
+		<img ng-hide="userPhoto.file == null" ng-src="{{userPhoto.file}}" width="50%" height="50%">	
 				<div class="form-group">
 						<div class="col-md-12">
-    						<input 
-    								type="file" 
-    								file-upload 
-    								id="files" 
-    								name="files[]" 
-    								multiple
-    								file="data" 
-    								required />
+							<image-uploadr file="attachment.file" filename="attachment.fileName" filetype="attachment.fileType"></image-uploadr>
+							
+				    		<button class="btn btn-primary" 
+				    				ng-click="addAttachment(loggedUser.id,attachment.file)" 
+				    				ng-hide="userPhoto.file != null" 
+				    				ng-disabled="attachment.file == null">Dodaj zdjęcie</button>
+				    		<button class="btn btn-primary" 
+				    				ng-click="updateAttachmentByUserId(attachment.file)" 
+				    				ng-hide="userPhoto.file == null" 
+				    				ng-disabled="attachment.file == null">Zmień zdjęcie</button>
+				    		{{noFile}}	
+				    			
+				  			<button class="btn btn-danger" 
+				  					ng-click="deletePhotoAttachmentByUserId()"
+				  					ng-disabled="attachment.file == null"
+				  					ng-hide="userPhoto.file == null">Usuń zdjęcie</button> 
 						</div>
-					</div>
-				<button type="submit" class="btn btn-primary">Dodaj zdjęcie</button>
-			</form> 
-			<form name="addPhoto_form" ng-submit="updateAttachmentByUserId(data)" class="form-horizontal input-border" ng-hide="attachment == null" novalidate>
- 
-				<div class="form-group">
-						<div class="col-md-12">
-    						<input 
-    								type="file" 
-    								file-upload 
-    								id="files" 
-    								name="files[]" 
-    								multiple
-    								file="data" 
-    								required />
-						</div>
-					</div>
-				<button type="submit" class="btn btn-primary">Zmień zdjęcie</button>
-			</form>
-			{{noFile}}
-			<button class="btn btn-danger" ng-click="deleteAttachmentByUserId()">Usuń zdjęcie</button> 
-			
+					</div>			
 		</td>	
 	</tr>
 	

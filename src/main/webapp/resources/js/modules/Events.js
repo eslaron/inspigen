@@ -134,7 +134,7 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
   $scope.activate = Context.activate;
   
   var data = $scope.all.events;
-  
+
   $scope.loggedUser = User.getLoggedUserByUsername($rootScope.loggedUsername);
   $scope.loggedUserParticipating = User.getLoggedUserIsParticipating();
   $scope.loggedUsersEventId = User.getInEventWithId();
@@ -346,4 +346,23 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 
 	  });
   } 
+ 
+ 	$scope.tableParams = new ngTableParams({
+     page: 1,            // show first page
+     count: 10,          // count per page
+     sorting: {
+         id: 'asc'     // initial sorting
+     }
+ 	}, {
+     total: data.length, // length of data
+     getData: function($defer, params) {
+     	        	
+     	var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+     	var filteredData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData; 
+     	
+     	params.total(filteredData.length); // set total for recalc pagination
+     	
+         $defer.resolve(filteredData.slice((params.page() - 1) * params.count(), params.page() * params.count()));          
+     }
+});
 }]);

@@ -11,12 +11,12 @@ public interface IAttachmentService {
 	public void createAttachment(Attachment data);
 	
 	public List<Attachment> findAllAttachments();
-	
-	public List<AttachmentDto> findAllAttachmentsInfo();
-	
+
 	public AttachmentDto findAttachmentById(long id);
 	
-	public byte[] findAttachmentByUserId(int id);
+	public AttachmentDto findAttachmentByUserId(int id);
+	
+	public AttachmentDto findPhotoAttachmentByUserId(int id);
 	
 	public List<AttachmentDto> findAttachmentsByEventId(int id);
 		

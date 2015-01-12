@@ -1,5 +1,5 @@
 <div class="content"  ng-controller="EventsController">
-<div class="userList container col-md-5">
+<div class="userList container col-md-6">
 <h2>Wydarzenia</h2>
 
  <table ng-table="tableParams" show-filter="true" class="table"> 
@@ -9,9 +9,15 @@
 		           	<td data-title="'Data rozpoczęcia'" sortable="'startDate'">{{event.startDate  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 		           	<td data-title="'Data zakończenia'" sortable="'endDate'">{{event.endDate  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 		            <td data-title="'Operacje'">
-		            	<a ui-sref="user.admin.events.details({ id: event.id })">Szczegóły</a>&nbsp;
-		            	<a ui-sref="user.admin.events.edit({ id: event.id })">Edytuj</a>&nbsp; 
-		            	<a ng-click="deleteEvent(event.id)">Usuń</a>
+		            	<a class="btn btn-primary" ui-sref="user.admin.events.details({ id: event.id })">
+		            		<i class="fa fa-folder-o"></i>
+		            	</a>
+		            	<a class="btn btn-warning" ui-sref="user.admin.events.edit({ id: event.id })">
+		            		<i class="fa fa-pencil-square-o"></i>
+		            	</a>
+		            	<button class="btn btn-danger" class="btn btn-danger" ng-click="deleteEvent(event.id)">
+		            		<i class="fa fa-trash-o fa-lg"></i>
+		            	</button>
 		            </td>
 		        </tr>
         </table> 	

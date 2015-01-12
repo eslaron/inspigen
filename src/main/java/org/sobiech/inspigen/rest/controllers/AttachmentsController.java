@@ -51,19 +51,18 @@ public class AttachmentsController {
 	}
     
     @RequestMapping(method = RequestMethod.GET)
-    public List<AttachmentDto> findAllAttachments(){
-       return attachmentService.findAllAttachmentsInfo();
+    public List<Attachment> findAllAttachments(){
+       return attachmentService.findAllAttachments();
     }
-    
     
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
     public AttachmentDto findAttachmentById(@PathVariable int id) {
     	return attachmentService.findAttachmentById(id);   
     }
     
-    @RequestMapping(value ="/user/{id}", method = RequestMethod.GET, produces = "image/jpeg")
-    public byte[] findAttachmentByUserId(@PathVariable int id) {
-    	return attachmentService.findAttachmentByUserId(id);   
+    @RequestMapping(value ="/user/{id}", method = RequestMethod.GET)
+    public AttachmentDto findPhotoAttachmentByUserId(@PathVariable int id) {
+    	return attachmentService.findPhotoAttachmentByUserId(id);   
     }
     
     @RequestMapping(value ="/event/{id}", method = RequestMethod.GET)

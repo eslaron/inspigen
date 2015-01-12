@@ -8,6 +8,8 @@ public interface IAttachmentDao {
 	
 	public Attachment findAttachmentByUserId(int id);
 	
+	public Attachment findPhotoAttachmentByUserId(int id);
+	
 	public List<Attachment> findAttachmentsbyEventId(int id);
 	
 	public void updateAttachmentByUserId(Attachment data);
