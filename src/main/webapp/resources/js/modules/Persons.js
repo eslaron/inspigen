@@ -4,7 +4,7 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 	
 	$stateProvider
 	
-	.state('user.admin.persons', {
+	.state('app.persons', {
 		     title: 'Dane osobowe',
 		     abstract: false,
 		     url: '/persons',
@@ -30,7 +30,7 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 		   	   }
 		   }) 
 		   
-		 .state('user.admin.persons.add', {
+		 .state('app.persons.add', {
 	     title: 'Dodaj dane osobowe',
 	     abstract: false,
 	     url: '/:id/add',
@@ -56,7 +56,7 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 	       }
 	   })
 	   
-	    .state('user.admin.persons.edit', {
+	    .state('app.persons.edit', {
 	     title: 'Edytuj dane osobowe',
 	     abstract: false,
 	     url: '/:id/edit',

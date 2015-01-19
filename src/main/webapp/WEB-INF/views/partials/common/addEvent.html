@@ -67,13 +67,18 @@
   							</div>
 						</div>
 					</div>
-
+					<div class="form-group">
+						<div class="col-sm-12">
+						<input class="form-control" placeholder="Wyszukaj miejsce na liście" type="text" ng-model="simpleFilter" />
+							</div>
+					</div>
+						
 					<div class="form-group">
 						<div class="col-sm-12">
 				
 								<select  class="form-control" ng-model="event.location_id" ng-model-options="{debounce: 1000}" required>
 								<option selected disabled value="">Wybierz lokację</option>
-		        					<option ng-repeat="l in locations" value="{{l.id}}" placeholder="Miejsce">{{l.name}}, {{l.city}}</option>
+		        					<option ng-repeat="l in locations | filter:simpleFilter" value="{{l.id}}" placeholder="Miejsce">{{l.name}}, {{l.city}}</option>
 		      					</select>		
 	
 							<div class="error-container" ng-show="addEvent_form.location_id.$dirty && addEvent_form.location_id.$invalid">

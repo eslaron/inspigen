@@ -13,7 +13,7 @@
 		            <td data-title="'Nazwa użytkownika'" sortable="'username'" filter="{ 'username': 'text' }">{{user.username}}</td>
 		            <td data-title="'Rola'" sortable="'role'" filter="{ 'role': 'text' }">{{user.role}}</td>
 		            <td data-title="'Operacje'">
-		            	<a ui-sref="user.admin.users.details({ id: user.id })">Szczegóły</a>
+		            	<a ui-sref="app.users.details({ id: user.id })">Szczegóły</a>
 		            </td>
 		        </tr>
         </table>

@@ -8,21 +8,21 @@
         <accordion-heading>
             Użytkownicy<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
-        <a ui-sref="users.list" ng-href="#/users/list">Lista</a><br />
+        <a ui-sref="app.users.list" ng-href="#/users/list">Lista</a><br />
     </accordion-group>
        <accordion-group is-open="false">
         <accordion-heading>
             Lokalizacje<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
-         <a ui-sref="user.admin.locations" ng-href="#/user/admin/locations">Lista</a><br />
-       <a ui-sref="user.admin.locations.add" ng-href="#/user/admin/locations/add">Dodaj</a>
+         <a ui-sref="app.locations" ng-href="#/locations">Lista</a><br />
+       <a ui-sref="app.locations.add" ng-href="#/locations/add">Dodaj</a>
     </accordion-group>
     <accordion-group is-open="false">
         <accordion-heading>
             Wydarzenia<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
-         <a ui-sref="user.admin.events" ng-href="#/user/admin/events">Lista</a><br />
-       <a ui-sref="user.admin.events.add" ng-href="#/user/admin/events/add">Dodaj</a>
+         <a ui-sref="app.events" ng-href="#/events">Lista</a><br />
+       <a ui-sref="app.events.add" ng-href="#/events/add">Dodaj</a>
     </accordion-group>
    
 </accordion>

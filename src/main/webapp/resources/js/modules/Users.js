@@ -4,8 +4,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 	
 	$stateProvider
 	
-	.state('users', {
-        url: '/users',
+	.state('app', {
    	 abstract: true,
    	 template: '<div ui-view></div>', 
    	 data: {
@@ -58,8 +57,20 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
  		   }],
        }
    })
+	
+	
+	.state('app.users', {
+        url: '/users',
+   	 abstract: true,
+   	 template: '<div ui-view></div>', 
+   	 data: {
+            permissions: {
+            	only: ['admin','moderator','user']
+            }
+        },
+   })
       
-      .state('users.list', {
+      .state('app.users.list', {
      title: 'Użytkownicy',
      abstract: false,
      url: '/list',
@@ -82,7 +93,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
-   .state('users.add', {
+   .state('app.users.add', {
 	     title: 'Dodaj użytkownika',
 	     abstract: false,
 	     url: '/add',
@@ -105,7 +116,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 	       }
 	   })
    
-     .state('users.edit', {
+     .state('app.users.edit', {
      title: 'Edytuj użytkownika',
      abstract: false,
      url: '/:id/edit',
@@ -132,7 +143,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
-   .state('users.details', {
+   .state('app.users.details', {
      title: 'Profil użytkownika',
      abstract: false,
      url: '/:id/details',
@@ -182,7 +193,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
-   .state('users.groups', {
+   .state('app.users.groups', {
      title: 'Grupy użytkowników',
      abstract: false,
      url: '/groups',
@@ -206,7 +217,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
-      .state('users.admin', {
+      .state('app.users.admin', {
      title: 'Panel administratora',
      abstract: false,
      url: '/admin',
@@ -232,7 +243,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
-      .state('users.admin.settings', {
+      .state('app.users.admin.settings', {
      title: 'Ustawienia',
      abstract: false,
      url: '/settings',
@@ -255,7 +266,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
-   .state('users.member', {
+   .state('app.users.member', {
      title: 'Panel wolontariusza',
      abstract: false,
      url: '/dashboard',
@@ -279,7 +290,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
    })
   
    
-      .state('users.moderator', {
+      .state('app.users.moderator', {
      title: 'Panel koordynatora',
      abstract: false,
      url: '/mod',

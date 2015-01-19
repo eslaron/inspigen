@@ -4,7 +4,7 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 	
 	$stateProvider
 	
-	.state('user.admin.addresses', {
+	.state('app.addresses', {
 		     title: 'Adresy',
 		     abstract: false,
 		     url: '/addresses',
@@ -30,7 +30,7 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 		   	   }
 		   }) 
 		   
-		 .state('user.admin.addresses.add', {
+		 .state('app.addresses.add', {
 	     title: 'Dodaj adres',
 	     abstract: false,
 	     url: '/:id/add',
@@ -56,7 +56,7 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 	       }
 	   })
 	   
-	    .state('user.admin.addresses.edit', {
+	    .state('app.addresses.edit', {
 	     title: 'Edytuj adres',
 	     abstract: false,
 	     url: '/:id/edit',

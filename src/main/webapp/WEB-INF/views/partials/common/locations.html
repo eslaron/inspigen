@@ -12,8 +12,8 @@
 		            <td data-title="'Nazwa'" sortable="'name'" filter="{ 'name': 'text' }">{{location.name}}</td>
 		           	<td data-title="'Miejscowość'" sortable="'city'" filter="{ 'city': 'text' }">{{location.city}}</td>
 		            <td data-title="'Operacje'">
-		            	<a ui-sref="user.admin.locations.details({ id: location.id })">Szczegóły</a> | 
-		            	<a ui-sref="user.admin.locations.edit({ id: location.id })">Edytuj</a> | 
+		            	<a ui-sref="app.locations.details({ id: location.id })">Szczegóły</a> | 
+		            	<a ui-sref="app.locations.edit({ id: location.id })">Edytuj</a> | 
 		            	<a ng-click="deleteLocation(location.id)">Usuń</a>
 		            </td>
 		        </tr>

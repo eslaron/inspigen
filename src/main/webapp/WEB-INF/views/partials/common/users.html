@@ -15,8 +15,8 @@
 		            <td data-title="'Nieudane logowania'" sortable="'failedLogins'">{{user.failedLogins}}</td>
 		            <td data-title="'Ostatnia próba'" sortable="'lastLoginAttempt'">{{user.lastLoginAttempt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 		            <td data-title="'Operacje'">
-		            	<a ui-sref="users.details({ id: user.id })">Szczegóły</a>
-		            	<a ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ui-sref="users.edit({ id: user.id })">Edytuj</a> 
+		            	<a ui-sref="app.users.details({ id: user.id })">Szczegóły</a>
+		            	<a ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ui-sref="app.users.edit({ id: user.id })">Edytuj</a> 
 		            	<a ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ng-click="deleteUser(user.id)">Usuń</a>
 		            </td>
 		        </tr>

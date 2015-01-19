@@ -4,7 +4,7 @@ var Participants = angular.module('inspigen.participants', ['ui.router', 'restan
 	
 	$stateProvider
 	
-	.state('user.admin.participants', {
+	.state('app.participants', {
 		     title: 'Wydarzenia',
 		     abstract: false,
 		     url: '/events',

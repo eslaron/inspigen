@@ -4,7 +4,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	
 	$stateProvider
 	
-	.state('user.admin.events', {
+	.state('app.events', {
 		     title: 'Wydarzenia',
 		     abstract: false,
 		     url: '/events',
@@ -29,7 +29,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 		       }
 		   }) 
 		   
-		 .state('user.admin.events.add', {
+		 .state('app.events.add', {
 	     title: 'Dodaj wydarzenie',
 	     abstract: false,
 	     url: '/add',
@@ -54,7 +54,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	       }
 	   })
 	   
-	   .state('user.admin.events.edit', {
+	   .state('app.events.edit', {
 	     title: 'Edytuj wydarzenie',
 	     abstract: false,
 	     url: '/:id/edit',
@@ -82,7 +82,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	       }
 	   })
 	   
-	    .state('user.admin.events.details', {
+	    .state('app.events.details', {
      title: 'Szczegóły wydarzenia',
      abstract: false,
      url: '/:id/details',
@@ -125,7 +125,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 //KONTROLERY
 
 Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 
-                                       'Event', 'Participant','Location', 'Context', 'Restangular',
+                                       'Event', 'Participant','Location', 'Context', 'Restangular', 
                                      function($rootScope, $scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, 
                                     		 Participant, Location, Context, Restangular) {
 	
@@ -346,6 +346,20 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 
 	  });
   } 
+ 
+ 	$scope.confirmation = false;
+ 	$scope.cid = 0;
+ 
+ 	$scope.showConfirmation = function(id) {
+ 		
+ 		$scope.confirmation = true;	
+ 		$scope.cid = id;
+ 	}
+ 	
+ 	$scope.hideConfirmation = function() {
+ 		
+ 		$scope.confirmation = false;	
+ 	}
  
  	$scope.tableParams = new ngTableParams({
      page: 1,            // show first page

@@ -4,7 +4,7 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 	
 	$stateProvider
 	
-	.state('user.admin.locations', {
+	.state('app.locations', {
 		     title: 'Miejsca wydarzeń',
 		     abstract: false,
 		     url: '/locations',
@@ -30,7 +30,7 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 		   	   }
 		   }) 
 		   
-		 .state('user.admin.locations.add', {
+		 .state('app.locations.add', {
 	     title: 'Dodaj miejsce',
 	     abstract: false,
 	     url: '/add',
@@ -53,7 +53,7 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 	       }
 	   })
 	   
-	   .state('user.admin.locations.edit', {
+	   .state('app.locations.edit', {
 	     title: 'Edytuj miejsce',
 	     abstract: false,
 	     url: '/:id/edit',
@@ -81,7 +81,7 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 	       }
 	   })
 	   
-	   .state('user.admin.locations.details', {
+	   .state('app.locations.details', {
      title: 'Szczegóły lokacji',
      abstract: false,
      url: '/:id/details',

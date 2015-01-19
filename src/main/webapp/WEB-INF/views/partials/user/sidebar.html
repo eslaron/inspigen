@@ -11,13 +11,13 @@
         <accordion-heading>
             Wydarzenia<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
-         <a ui-sref="user.admin.events" ng-href="#/user/admin/events">Lista</a><br />
+         <a ui-sref="app.events" ng-href="#/events">Lista</a><br />
     </accordion-group>
     <accordion-group is-open="false">
         <accordion-heading>
             Profil<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
-         <a ui-sref="user.profile" ng-href="#/user/:id/profile">Profil</a><br />
+         <a ui-sref="app.user.profile" ng-href="#/user/:id/profile">Profil</a><br />
     </accordion-group>
 
    

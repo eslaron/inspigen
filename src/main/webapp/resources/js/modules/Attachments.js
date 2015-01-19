@@ -4,7 +4,7 @@ var Attachments = angular.module('inspigen.attachments', ['ui.router', 'restangu
 	
 	$stateProvider
 	
-	.state('user.admin.attachments', {
+	.state('app.attachments', {
         url: '/attachments',
    	 abstract: true,
    	 template: '<div ui-view></div>', 

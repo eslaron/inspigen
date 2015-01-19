@@ -27,7 +27,7 @@ public class EmailConfig {
 		
 		javaMailProperties.setProperty("mail.smtp.auth", "true");
 		javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
-		//javaMailProperties.setProperty("mail.smtp.ssl.trust", "mail.inspigen.pl");
+		javaMailProperties.setProperty("mail.smtp.ssl.trust", "mail.inspigen.pl");
 	
 		sender.setJavaMailProperties(javaMailProperties);
 		
