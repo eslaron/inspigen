@@ -116,13 +116,13 @@ Login.controller('LoginController', function($scope, $rootScope, $state, $http, 
 					$rootScope.loggedUsername = localStorageService.cookie.get('user').username;
 					
 		      	if (user.role == 'ROLE_ADMIN')
-	        		$state.go('users.admin');
+	        		$state.go('app.users.admin');
 
 	        	if (user.role == 'ROLE_MOD')
-	        		$state.go('users.moderator');
+	        		$state.go('app.users.moderator');
 
 	        	if (user.role == 'ROLE_USER')
-	        		$state.go('users.member');			
+	        		$state.go('app.users.member');			
 				},
 					function(error) {
 						$scope.error = error.data;

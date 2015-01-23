@@ -24,7 +24,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 		       },
 		       data: {
 		           permissions: {
-		             only: ['admin']
+		             only: ['admin','mod','user']
 		           }
 		       }
 		   }) 
@@ -49,7 +49,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin']
+	             only: ['admin','mod']
 	           }
 	       }
 	   })
@@ -77,7 +77,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin']
+	             only: ['admin','mod']
 	           }
 	       }
 	   })
@@ -114,7 +114,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
        },
        data: {
            permissions: {
-             only: ['admin']
+             only: ['admin','mod','user']
            }
        }
    })
@@ -154,7 +154,8 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
   $scope.coordinators = [];
   $scope.eventCoordinator = {};
   $scope.eventParticipants = [];
-  
+  $scope.eventLocations = [];
+
   $scope.prepareCoordinatorList = function() {
 	  for(var i = $scope.persons.length - 1; i >= 0; i--) {	
 		  for(var j = $scope.users.length - 1; j >= 0; j--) {	
@@ -347,18 +348,11 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 	  });
   } 
  
- 	$scope.confirmation = false;
  	$scope.cid = 0;
  
- 	$scope.showConfirmation = function(id) {
- 		
- 		$scope.confirmation = true;	
+ 	$scope.getConfirmDeleteId = function(id) {
+
  		$scope.cid = id;
- 	}
- 	
- 	$scope.hideConfirmation = function() {
- 		
- 		$scope.confirmation = false;	
  	}
  
  	$scope.tableParams = new ngTableParams({

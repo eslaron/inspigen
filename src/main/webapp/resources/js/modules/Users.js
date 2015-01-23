@@ -328,7 +328,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
   $scope.isCollapsed = true;	
   
   var data = $scope.all.users;
-  
+    
   $scope.settings = $scope.all.settings[0];
    
   $scope.username = $scope.user.username;
@@ -567,6 +567,13 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 	  });
   }
   
+  $scope.cid = 0;
+  
+	$scope.getConfirmDeleteId = function(id) {
+
+		$scope.cid = id;
+	}
+  
 	  $scope.tableParams = new ngTableParams({
 	        page: 1,            // show first page
 	        count: 10,          // count per page
@@ -576,7 +583,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 	    }, {
 	        total: data.length, // length of data
 	        getData: function($defer, params) {
-	        	        	
+	        		        	        	
 	        	var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
 	        	var filteredData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData; 
 	        	

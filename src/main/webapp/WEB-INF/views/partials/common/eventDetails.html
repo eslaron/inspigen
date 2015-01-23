@@ -12,7 +12,7 @@
 					<b>Dane podstawowe</b>
 				</td>
 				<td valign="top">
-					<button class="btn btn-primary" ui-sref="app.events.edit({ id: event.id })">Edytuj</button>
+					<button class="btn btn-primary" ng-hide="hasRole('ROLE_USER')" ui-sref="app.events.edit({ id: event.id })">Edytuj</button>
 				</td>
 			</tr>
 			<tr>
@@ -64,11 +64,11 @@ Wyszukaj użytkownika na liście: <br />
 
 Wybierz użytkownika z listy:<br /> 
 
-<select  class="form-control" ng-model="eventParticipant_id">
+<select ng-hide="hasRole('ROLE_USER')" class="form-control" ng-model="eventParticipant_id">
 	<option selected disabled value="">Przydziel uczestnika</option>
 	<option ng-repeat="p in persons | filter:simpleFilter" value="{{p.user_id}}">{{p.firstName}} {{p.lastName}}</option>
 </select><br />
-<button class="btn btn-danger" ng-click="addEventParticipant(eventParticipant_id,event.id)" ng-disabled="eventParticipant_id == null">Dodaj uczestnika</button>
+<button ng-hide="hasRole('ROLE_USER')" class="btn btn-danger" ng-click="addEventParticipant(eventParticipant_id,event.id)" ng-disabled="eventParticipant_id == null">Dodaj uczestnika</button>
 {{duplicateParticipantMessage}}
 <br /><br />
 Uczestnicy wydarzenia: <br /><br />
@@ -77,16 +77,17 @@ Uczestnicy wydarzenia: <br /><br />
 	<li ng-repeat="ep in eventParticipants">
 		id: {{ep.id}} {{ep.firstName}} {{ep.lastName}} {{ep.pesel}} user_id: {{ep.user_id}}
 		<button class="btn btn-primary" ui-sref="app.users.details({ id: ep.user_id })">Profil uczestnika</button>
-		<button class="btn btn-danger" ng-click="deleteEventParticipant(ep.user_id)">Usuń uczestnika</button>
+		<button class="btn btn-danger" ng-hide="hasRole('ROLE_USER')" ng-click="deleteEventParticipant(ep.user_id)">Usuń uczestnika</button>
 	</li>
 </ul>
 	<div ng-controller="AttachmentsController">
-			
+		<div ng-hide="hasRole('ROLE_USER')">
 		Dodaj załącznik: <br />
 					
 			<image-uploadr file="attachment.file" filename="attachment.fileName" filetype="attachment.fileType"></image-uploadr>
     		<button class="btn btn-primary" ng-click="addAttachment(loggedUser.id,attachment.file)" ng-disabled="attachment.file == null">Dodaj załącznik</button>
     		{{noFile}}
+    		</div>	
 			<br /><br />
 			Lista załączników:<br />
 			<img ng-hide="loadingAttachments == false" src="resources/images/loading.gif">
@@ -94,7 +95,7 @@ Uczestnicy wydarzenia: <br /><br />
 	<li ng-hide="eventAttachments==null" ng-repeat="ea in eventAttachments track by $index">
 		{{ea.fileName}} 
 		<a class="btn btn-primary" ng-href="{{ea.file}}" target="_blank" image-downloadr filename="ea.fileName"><i class="fa fa-arrow-circle-o-down fa-lg"></i></a>
-		<button class="btn btn-danger" ng-click="deleteAttachment(ea.id)"><i class="fa fa-trash-o fa-lg"></i></button>
+		<button class="btn btn-danger" ng-hide="hasRole('ROLE_USER')" ng-click="deleteAttachment(ea.id)"><i class="fa fa-trash-o fa-lg"></i></button>
 	</li>
 </ul>
 		</div>		

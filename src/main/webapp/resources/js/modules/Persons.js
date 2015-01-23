@@ -51,7 +51,7 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin']
+	             only: ['admin','mod','user']
 	           }
 	       }
 	   })
@@ -79,7 +79,7 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin']
+	             only: ['admin','mod','user']
 	           }
 	       }
 	   })

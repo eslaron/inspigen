@@ -4,28 +4,49 @@
 
  <table ng-table="tableParams" show-filter="true" class="table"> 
 		        <tr ng-repeat="event in $data">
-		            <td data-title="'Id'" sortable="'id'">{{event.id}}</td>
-		            <td data-title="'Nazwa'" sortable="'name'" filter="{ 'name': 'text' }">{{event.name}}</td>
-		           	<td data-title="'Data rozpoczęcia'" sortable="'startDate'">{{event.startDate  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-		           	<td data-title="'Data zakończenia'" sortable="'endDate'">{{event.endDate  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-		            <td data-title="'Operacje'">
-		            	<a class="btn btn-primary" ui-sref="app.events.details({ id: event.id })">
-		            		<i class="fa fa-folder-o"></i>
-		            	</a>
-		            	<a class="btn btn-warning" ui-sref="app.events.edit({ id: event.id })">
-		            		<i class="fa fa-pencil-square-o"></i>
-		            	</a>
-		            	<button class="btn btn-danger" class="btn btn-danger" ng-click="showConfirmation(event.id)">
+		            <td ng-hide="confirmation && cid == event.id" data-title="'Id'" sortable="'id'">{{event.id}}</td>
+		            <td ng-hide="confirmation && cid == event.id" data-title="'Nazwa'" sortable="'name'" filter="{ 'name': 'text' }">{{event.name}}</td>
+		           	<td ng-hide="confirmation && cid == event.id" data-title="'Data rozpoczęcia'" sortable="'startDate'">{{event.startDate  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+		           	<td ng-hide="confirmation && cid == event.id"data-title="'Data zakończenia'" sortable="'endDate'">{{event.endDate  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+					<td ng-hide="confirmation && cid == event.id" data-title="'Miejsce'" sortable="'miejsce'" filter="{ 'location': 'text' }">{{event.location}}</td>
+		      
+		            <td align="right">
+		            	<a class="btn btn-primary" ui-sref="app.events.details({ id: event.id })"><i class="fa fa-folder-o"></i></a>
+		            </td>
+		            <td align="right">
+		            	<a class="btn btn-warning" ng-hide="hasRole('ROLE_USER')" ui-sref="app.events.edit({ id: event.id })"><i class="fa fa-pencil-square-o"></i></a>
+		            </td>
+		            <td align="right">
+		            	<button class="btn btn-danger" ng-hide="hasRole('ROLE_USER')" data-toggle="modal" data-target="#myModal" ng-click="getConfirmDeleteId(event.id)">
 		            		<i class="fa fa-trash-o fa-lg"></i>
 		            	</button>
-		            </td>	            
-		        </tr>
-		        <tr ng-repeat="event in $data">
-		        <td ng-show="confirmation" ng-if="cid == event.id" colspan="5">
-		        	Czy na pewno chcesz usunąć to wydarzenie? 
-		            <button class="btn btn-danger" ng-click="deleteEvent(event.id)">Tak</button> <button class="btn btn-primary" ng-click="hideConfirmation()">Anuluj</button>
-		        </td>
+		            </td>	
+		             <td align="right">
+		            	<button class="btn btn-success" ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_ADMIN')" ng-click="addParticipationRequest(loggedUser.id,event.id)">
+		            		<i class="fa fa-user-plus-o fa-lg"></i>
+		            	</button>
+		            </td>            
 		        </tr>
         </table> 	
+        
+        <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Potwierdzenie</h4>
+      </div>
+      <div class="modal-body">
+        Czy na pewno chcesz usunąć to wydarzenie? 
+      </div>
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-danger" ng-click="deleteEvent(cid)">Usuń</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Anuluj</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 

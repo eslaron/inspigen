@@ -9,12 +9,12 @@ public class Initializer extends
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { DatabaseConfig.class, SecurityConfig.class, EmailConfig.class, CustomBeansConfig.class, ScheduledTasks.class, AppSettings.class};
+        return new Class[] { DatabaseConfig.class, SecurityConfig.class, EmailConfig.class, CustomBeansConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-    	return new Class<?>[] { ThymeleafConfig.class, MultiPartResolverConfig.class, WebAppConfig.class };
+    	return new Class<?>[] { ThymeleafConfig.class, WebAppConfig.class };
     }
 
     @Override

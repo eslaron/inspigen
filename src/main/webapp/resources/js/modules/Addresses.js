@@ -51,7 +51,7 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin']
+	             only: ['admin','mod','user']
 	           }
 	       }
 	   })
@@ -79,7 +79,7 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin']
+	             only: ['admin','mod','user']
 	           }
 	       }
 	   })

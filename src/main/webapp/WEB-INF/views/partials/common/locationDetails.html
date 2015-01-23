@@ -10,7 +10,7 @@
 					<b>Dane lokacji:</b>
 				</td>
 				<td valign="top">
-					<button class="btn btn-primary" ui-sref="app.locations.edit({ id: location.id })">Edytuj</button>
+					<button class="btn btn-primary" ng-hide="hasRole('ROLE_USER')" ui-sref="app.locations.edit({ id: location.id })">Edytuj</button>
 				</td>
 			</tr>
 			<tr>

@@ -6,21 +6,46 @@
 				                   {{message}}     
 				   			</div>
 		 <table ng-table="tableParams" show-filter="true" class="table"> 
+		 	
 		        <tr ng-repeat="user in $data">
 		            <td data-title="'Id'" sortable="'id'">{{user.id}}</td>
 		            <td data-title="'Nazwa użytkownika'" sortable="'username'" filter="{ 'username': 'text' }">{{user.username}}</td>
 		            <td data-title="'Rola'" sortable="'role'" filter="{ 'role': 'text' }">{{user.role}}</td>
 		            <td data-title="'Aktywny'" sortable="'enabled'" filter="{ 'enabled': 'text' }">{{user.enabled}}</td>
 		            <td data-title="'Zablokowany'" sortable="'locked'" filter="{ 'locked': 'text' }">{{user.locked}}</td>
-		            <td data-title="'Nieudane logowania'" sortable="'failedLogins'">{{user.failedLogins}}</td>
-		            <td data-title="'Ostatnia próba'" sortable="'lastLoginAttempt'">{{user.lastLoginAttempt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-		            <td data-title="'Operacje'">
-		            	<a ui-sref="app.users.details({ id: user.id })">Szczegóły</a>
-		            	<a ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ui-sref="app.users.edit({ id: user.id })">Edytuj</a> 
-		            	<a ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ng-click="deleteUser(user.id)">Usuń</a>
+		            <td  align="right">
+		            	<a class="btn btn-primary" ui-sref="app.users.details({ id: user.id })"><i class="fa fa-folder-o"></i></a>
 		            </td>
+		            <td align="right">
+		            	<a class="btn btn-warning" ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ui-sref="app.users.edit({ id: user.id })"><i class="fa fa-pencil-square-o"></i></a>
+		            </td>
+		             <td align="right">
+		            	<button class="btn btn-danger" ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" data-toggle="modal" data-target="#myModal" ng-click="getConfirmDeleteId(user.id)"><i class="fa fa-trash-o fa-lg"></i></button>
+		            </td>			           
 		        </tr>
+	
         </table> 
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Potwierdzenie</h4>
+      </div>
+      <div class="modal-body">
+        Czy na pewno chcesz usunąć tego użytkownika? 
+      </div>
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-danger" ng-click="deleteUser(cid)">Usuń</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Anuluj</button>
+      </div>
+    </div>
+  </div>
+</div>
         Is admin? : <b>{{hasRole('ROLE_ADMIN')}}</b><br />
         Is moderator? : <b>{{hasRole('ROLE_MOD')}}</b><br />
         Is user? : <b>{{hasRole('ROLE_USER')}}</b><br />

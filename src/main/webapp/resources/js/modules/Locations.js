@@ -22,7 +22,7 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 		       },
 		       data: {
 		           permissions: {
-		             only: ['admin']
+		             only: ['admin','mod']
 		           }
 		       },
 		       resolve: {
@@ -48,7 +48,7 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin']
+	             only: ['admin','mod']
 	           }
 	       }
 	   })
@@ -76,7 +76,7 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin']
+	             only: ['admin','mod']
 	           }
 	       }
 	   })
@@ -105,7 +105,7 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
        },
        data: {
            permissions: {
-             only: ['admin']
+             only: ['admin','mod','user']
            }
        }
    })
@@ -176,6 +176,13 @@ Locations.controller('LocationsController', ['$scope', '$state', '$stateParams',
 		  $scope.tableParams.reload();
 	  });
   }
+  
+  $scope.cid = 0;
+  
+	$scope.getConfirmDeleteId = function(id) {
+
+		$scope.cid = id;
+	}
   
   $scope.tableParams = new ngTableParams({
       page: 1,            // show first page
