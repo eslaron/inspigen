@@ -1,11 +1,5 @@
 angular.module('inspigen.filters', [])
 
-.filter('interpolate', ['version', function (version) {
-    return function (text) {
-        return String(text).replace(/\%VERSION\%/mg, version);
-    }
-}])
-
 .filter('range', function() {
   return function(input, min, max) {
 	 

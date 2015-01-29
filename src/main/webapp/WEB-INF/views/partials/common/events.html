@@ -8,13 +8,14 @@
 		            <td ng-hide="confirmation && cid == event.id" data-title="'Nazwa'" sortable="'name'" filter="{ 'name': 'text' }">{{event.name}}</td>
 		           	<td ng-hide="confirmation && cid == event.id" data-title="'Data rozpoczęcia'" sortable="'startDate'">{{event.startDate  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 		           	<td ng-hide="confirmation && cid == event.id"data-title="'Data zakończenia'" sortable="'endDate'">{{event.endDate  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-					<td ng-hide="confirmation && cid == event.id" data-title="'Miejsce'" sortable="'miejsce'" filter="{ 'location': 'text' }">{{event.location}}</td>
 		      
 		            <td align="right">
-		            	<a class="btn btn-primary" ui-sref="app.events.details({ id: event.id })"><i class="fa fa-folder-o"></i></a>
+		            	<a class="btn btn-primary" ng-show="hasRole('ROLE_ADMIN')" ui-sref="app.admin.events.details({ id: event.id })"><i class="fa fa-folder-o"></i></a>
+		            	<a class="btn btn-primary" ng-show="hasRole('ROLE_MOD')" ui-sref="app.moderator.eventDetails({ id: event.id })"><i class="fa fa-folder-o"></i></a>
 		            </td>
 		            <td align="right">
-		            	<a class="btn btn-warning" ng-hide="hasRole('ROLE_USER')" ui-sref="app.events.edit({ id: event.id })"><i class="fa fa-pencil-square-o"></i></a>
+		            	<a class="btn btn-warning" ng-hide="hasRole('ROLE_USER') || hasRole('ROLE_MOD')" ui-sref="app.admin.events.edit({ id: event.id })"><i class="fa fa-pencil-square-o"></i></a>
+		            	<a class="btn btn-warning" ng-hide="hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')" ui-sref="app.moderator.editEvent({ id: event.id })"><i class="fa fa-pencil-square-o"></i></a>
 		            </td>
 		            <td align="right">
 		            	<button class="btn btn-danger" ng-hide="hasRole('ROLE_USER')" data-toggle="modal" data-target="#myModal" ng-click="getConfirmDeleteId(event.id)">
@@ -42,11 +43,12 @@
       </div>
       <div class="modal-footer">
         
-        <button type="button" class="btn btn-danger" ng-click="deleteEvent(cid)">Usuń</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteEvent(cid)">Usuń</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal">Anuluj</button>
       </div>
     </div>
   </div>
+</div>
 </div>
 </div>
 

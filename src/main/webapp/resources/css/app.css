@@ -115,3 +115,8 @@ body {
 	position: relative;
 	font-size: 15px;
 }
+
+.settings_table {
+	padding: 5px;
+	
+}

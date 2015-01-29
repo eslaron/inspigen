@@ -14,10 +14,6 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 		         },
 		         'sidebar@': {
 		       	  templateUrl: 'partials/admin/sidebar.html'
-		         },
-		         'content@': {
-		       	  templateUrl: 'partials/common/persons.html',
-		       	  controller: 'PersonsController'      
 		         }
 		       },
 		       data: {

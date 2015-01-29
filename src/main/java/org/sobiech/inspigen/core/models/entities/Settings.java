@@ -16,15 +16,11 @@ public class Settings extends BaseEntity implements Serializable {
 	
     private int linkExpirationTime; //czas po którym wygaśnie link lub zost(minuty)
     
-    private int authTokenExpirationTime; //czas po którym wygaśnie token identyfikacyjny w ciasteczku
-    
-    private int authCookieExpirationTime; //czas po którym wygaśnie ciasteczko autentykacyjne
-    
     private String emailAddress; //adres z którego będą wysyłane emaile systemowe
     
     private String emailHost; //host z którego będą wysyłane emaile
     
-    private String emailPort; //port z którego będą wysyłane emaile
+    private int emailPort; //port z którego będą wysyłane emaile
     
     private String emailUsername; //nazwa użytkownika skrzynki emailowej
     
@@ -56,22 +52,6 @@ public class Settings extends BaseEntity implements Serializable {
 		this.linkExpirationTime = linkExpirationTime;
 	}
 
-	public int getAuthTokenExpirationTime() {
-		return authTokenExpirationTime;
-	}
-
-	public void setAuthTokenExpirationTime(int authTokenExpirationTime) {
-		this.authTokenExpirationTime = authTokenExpirationTime;
-	}
-
-	public int getAuthCookieExpirationTime() {
-		return authCookieExpirationTime;
-	}
-
-	public void setAuthCookieExpirationTime(int authCookieExpirationTime) {
-		this.authCookieExpirationTime = authCookieExpirationTime;
-	}
-
 	public String getEmailAddress() {
 		return emailAddress;
 	}
@@ -88,11 +68,11 @@ public class Settings extends BaseEntity implements Serializable {
 		this.emailHost = emailHost;
 	}
 
-	public String getEmailPort() {
+	public int getEmailPort() {
 		return emailPort;
 	}
 
-	public void setEmailPort(String emailPort) {
+	public void setEmailPort(int emailPort) {
 		this.emailPort = emailPort;
 	}
 

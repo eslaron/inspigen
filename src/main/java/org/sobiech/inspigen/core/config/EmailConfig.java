@@ -1,6 +1,9 @@
 package org.sobiech.inspigen.core.config;
 
 import java.util.Properties;
+
+import org.sobiech.inspigen.core.models.entities.Settings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -8,20 +11,17 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @Configuration
 public class EmailConfig {
 	
-	private String host = "mail.inspigen.pl";
-	private int port = 25;
-	private String username = "administracja";
-	private String password = "Sebastian999";
-	
+	@Autowired
+	Settings settings;
 	
 	@Bean
 	JavaMailSenderImpl mailSender() {
 		
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();
-		sender.setHost(host);
-		sender.setPort(port);
-		sender.setUsername(username);
-		sender.setPassword(password);
+		sender.setHost(settings.getEmailHost());
+		sender.setPort(settings.getEmailPort());
+		sender.setUsername(settings.getEmailUsername());
+		sender.setPassword(settings.getEmailPassword());
 		
 		Properties javaMailProperties = new Properties();
 		

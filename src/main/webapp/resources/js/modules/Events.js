@@ -4,17 +4,11 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	
 	$stateProvider
 	
-	.state('app.events', {
+	.state('app.admin.events', {
 		     title: 'Wydarzenia',
 		     abstract: false,
 		     url: '/events',
 		     views: {
-		         'navbar@': {
-		       	  templateUrl: 'partials/admin/navbar.html' 
-		         },
-		         'sidebar@': {
-		       	  templateUrl: 'partials/admin/sidebar.html'
-		         },
 		         'content@': {
 		       	  templateUrl: 'partials/common/events.html',
 		       	  controller: function($scope) {
@@ -24,22 +18,35 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 		       },
 		       data: {
 		           permissions: {
-		             only: ['admin','mod','user']
+		             only: ['admin']
 		           }
 		       }
 		   }) 
 		   
-		 .state('app.events.add', {
+		.state('app.moderator.events', {
+	    title: 'Wydarzenia',
+	    abstract: false,
+	    url: '/events',
+	    views: {
+	        'content@': {
+	      	  templateUrl: 'partials/common/events.html',
+	      	 controller: function($scope) {
+	       		  $scope.event = {};      
+	       	  }
+	        }
+	      },
+	      data: {
+	          permissions: {
+	       	  only: ['moderator']
+	          }
+	      }
+	   })  
+		   
+		 .state('app.admin.events.add', {
 	     title: 'Dodaj wydarzenie',
 	     abstract: false,
 	     url: '/add',
 	     views: {
-	         'navbar@': {
-	       	  templateUrl: 'partials/admin/navbar.html' 
-	         },
-	         'sidebar@': {
-	       	  templateUrl: 'partials/admin/sidebar.html'
-	         },
 	         'content@': {
 	       	  templateUrl: 'partials/common/addEvent.html',
 	       	  controller: function($scope) {
@@ -49,22 +56,35 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin','mod']
+	             only: ['admin']
 	           }
 	       }
 	   })
 	   
-	   .state('app.events.edit', {
+	    .state('app.moderator.addEvent', {
+	     title: 'Dodaj wydarzenie',
+	     abstract: false,
+	     url: '/events/add',
+	     views: {
+	         'content@': {
+	       	  templateUrl: 'partials/common/addEvent.html',
+	       	  controller: function($scope) {
+	       		  $scope.event = {};      
+	       	  }    
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['moderator']
+	           }
+	       }
+	   })
+	   
+	   .state('app.admin.events.edit', {
 	     title: 'Edytuj wydarzenie',
 	     abstract: false,
 	     url: '/:id/edit',
 	     views: {
-	         'navbar@': {
-	       	  templateUrl: 'partials/admin/navbar.html' 
-	         },
-	         'sidebar@': {
-	       	  templateUrl: 'partials/admin/sidebar.html'
-	         },
 	         'content@': {
 	       	  templateUrl: 'partials/common/editEvent.html',
 	       	  controller: function($stateParams, $scope, Event) {
@@ -82,17 +102,33 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	       }
 	   })
 	   
-	    .state('app.events.details', {
+	    .state('app.moderator.editEvent', {
+	     title: 'Edytuj wydarzenie',
+	     abstract: false,
+	     url: '/events/:id/edit',
+	     views: {
+	         'content@': {
+	       	  templateUrl: 'partials/common/editEvent.html',
+	       	  controller: function($stateParams, $scope, Event) {
+	       		  $scope.event = {};
+	              $scope.event.id = $stateParams.id;
+	              $scope.event = Event.getEventById($stateParams.id);
+	              $scope.isCollapsed = true;
+	          }      
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['moderator']
+	           }
+	       }
+	   })
+	   
+	 .state('app.admin.events.details', {
      title: 'Szczegóły wydarzenia',
      abstract: false,
      url: '/:id/details',
      views: {
-         'navbar@': {
-       	  templateUrl: 'partials/admin/navbar.html' 
-         },
-         'sidebar@': {
-       	  templateUrl: 'partials/admin/sidebar.html'
-         },
          'content@': {
        	  templateUrl: 'partials/common/eventDetails.html',
        	  controller: function($stateParams, $scope, Event, Location, Participant) {
@@ -114,10 +150,32 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
        },
        data: {
            permissions: {
-             only: ['admin','mod','user']
+             only: ['admin']
            }
        }
    })
+   
+    .state('app.moderator.eventDetails', {
+	     title: 'Szczegóły wydarzenia',
+	     abstract: false,
+	     url: '/events/:id/edit',
+	     views: {
+	         'content@': {
+	       	  templateUrl: 'partials/common/editEvent.html',
+	       	  controller: function($stateParams, $scope, Event) {
+	       		  $scope.event = {};
+	              $scope.event.id = $stateParams.id;
+	              $scope.event = Event.getEventById($stateParams.id);
+	              $scope.isCollapsed = true;
+	          }      
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['moderator']
+	           }
+	       }
+	   })
 }
            
 ]);

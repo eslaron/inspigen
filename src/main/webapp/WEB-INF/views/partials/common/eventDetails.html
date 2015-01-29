@@ -1,22 +1,17 @@
 <div class="content"  ng-controller="EventsController">
-<div class="userList container col-md-5">
-<h2>Szczegóły wydarzenia</h2>
-<div ng-hide="hideMessage" ng-class="messageStyle">
-				                   {{message}}     
-				   			</div>
-<table>
-	<tr>		
-		<td>
-					<tr>
-				<td>
-					<b>Dane podstawowe</b>
-				</td>
+	<div class="userList container col-md-5">
+		<h2>Szczegóły wydarzenia</h2>
+		<div ng-hide="hideMessage" ng-class="messageStyle">{{message}}</div>
+		
+		<table>
+			<tr>		
+				<td><b>Dane podstawowe</b></td>
 				<td valign="top">
-					<button class="btn btn-primary" ng-hide="hasRole('ROLE_USER')" ui-sref="app.events.edit({ id: event.id })">Edytuj</button>
+					<button class="btn btn-primary" ng-hide="hasRole('ROLE_USER') || hasRole('ROLE_MOD')" ui-sref="app.admin.events.edit({ id: event.id })">Edytuj</button>
+					<button class="btn btn-primary" ng-hide="hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')" ui-sref="app.moderator.editEvent({ id: event.id })">Edytuj</button>
 				</td>
 			</tr>
-			<tr>
-				
+			<tr>			
 				<td>
 					Nazwa: <b>{{event.name}}</b><br />
 					Typ: <b>{{event.type}}</b><br />
@@ -24,19 +19,15 @@
 					Data rozpoczęcia: <b>{{event.startDate  | date:'yyyy-MM-dd HH:mm:ss'}}</b><br />
 					Data zakończenia: <b>{{event.endDate  | date:'yyyy-MM-dd HH:mm:ss'}}</b><br />
 					Opis: <b>{{event.description}}</b><br /><br />
-				</td>
+			    </td>
 				<td valign="top">
-					<button class="btn btn-primary" ui-sref="app.users.details({ id: eventCoordinator.user_id })">Profil koordynatora</button>
+					<button class="btn btn-primary" ng-show="hasRole('ROLE_ADMIN')" ui-sref="app.admin.users.details({ id: eventCoordinator.user_id })">Profil koordynatora</button>
+					<button class="btn btn-primary" ng-show="hasRole('ROLE_MOD')" ui-sref="app.moderator.userDetails({ id: eventCoordinator.user_id })">Profil koordynatora</button>
 				</td>
 			</tr>
-	<tr>
+			<tr>				
 				<td>
 					<b>Miejsce wydarzenia:</b>
-				</td>
-
-			</tr>
-			<tr>
-				<td>
 					Nazwa: <b>{{location.name}}</b><br />
 					Typ: <b>{{location.type}}</b><br />
 					Ulica: <b>{{location.address}}</b><br />
@@ -48,56 +39,55 @@
 					Email: <b>{{location.email}}</b><br /><br />
 				</td>
 			</tr>
-			
-		</td>	
-	</tr>
-</table>
-
-<button class="btn btn-success" ng-show="loggedUserParticipating != true && loggedUser.id != eventCoordinator.user_id" 
-ng-click="addEventParticipant(loggedUser.id,event.id)">Dołącz do wydarzenia</button>
-<button class="btn btn-danger" ng-show="loggedUserParticipating == true && loggedUser.id != eventCoordinator.user_id" 
-ng-click="deleteEventParticipant(loggedUser.id)">Zrezygnuj</button><br /><br />
-
-
-Wyszukaj użytkownika na liście: <br />
-<input class="form-control" type="text" ng-model="simpleFilter" />
-
-Wybierz użytkownika z listy:<br /> 
-
-<select ng-hide="hasRole('ROLE_USER')" class="form-control" ng-model="eventParticipant_id">
-	<option selected disabled value="">Przydziel uczestnika</option>
-	<option ng-repeat="p in persons | filter:simpleFilter" value="{{p.user_id}}">{{p.firstName}} {{p.lastName}}</option>
-</select><br />
-<button ng-hide="hasRole('ROLE_USER')" class="btn btn-danger" ng-click="addEventParticipant(eventParticipant_id,event.id)" ng-disabled="eventParticipant_id == null">Dodaj uczestnika</button>
-{{duplicateParticipantMessage}}
-<br /><br />
-Uczestnicy wydarzenia: <br /><br />
-<ul>
-	<li ng-show="eventParticipants == null">brak</li>
-	<li ng-repeat="ep in eventParticipants">
-		id: {{ep.id}} {{ep.firstName}} {{ep.lastName}} {{ep.pesel}} user_id: {{ep.user_id}}
-		<button class="btn btn-primary" ui-sref="app.users.details({ id: ep.user_id })">Profil uczestnika</button>
-		<button class="btn btn-danger" ng-hide="hasRole('ROLE_USER')" ng-click="deleteEventParticipant(ep.user_id)">Usuń uczestnika</button>
-	</li>
-</ul>
-	<div ng-controller="AttachmentsController">
-		<div ng-hide="hasRole('ROLE_USER')">
-		Dodaj załącznik: <br />
-					
-			<image-uploadr file="attachment.file" filename="attachment.fileName" filetype="attachment.fileType"></image-uploadr>
-    		<button class="btn btn-primary" ng-click="addAttachment(loggedUser.id,attachment.file)" ng-disabled="attachment.file == null">Dodaj załącznik</button>
-    		{{noFile}}
-    		</div>	
-			<br /><br />
-			Lista załączników:<br />
-			<img ng-hide="loadingAttachments == false" src="resources/images/loading.gif">
-			<ul ng-hide="loadingAttachments == true">
-	<li ng-hide="eventAttachments==null" ng-repeat="ea in eventAttachments track by $index">
-		{{ea.fileName}} 
-		<a class="btn btn-primary" ng-href="{{ea.file}}" target="_blank" image-downloadr filename="ea.fileName"><i class="fa fa-arrow-circle-o-down fa-lg"></i></a>
-		<button class="btn btn-danger" ng-hide="hasRole('ROLE_USER')" ng-click="deleteAttachment(ea.id)"><i class="fa fa-trash-o fa-lg"></i></button>
-	</li>
-</ul>
-		</div>		
+		</table>
+		
+		<button class="btn btn-success" ng-show="loggedUserParticipating != true && loggedUser.id != eventCoordinator.user_id" 
+		ng-click="addEventParticipant(loggedUser.id,event.id)">Dołącz do wydarzenia</button>
+		<button class="btn btn-danger" ng-show="loggedUserParticipating == true && loggedUser.id != eventCoordinator.user_id" 
+		ng-click="deleteEventParticipant(loggedUser.id)">Zrezygnuj</button><br /><br />
+		
+		Wyszukaj użytkownika na liście:<br />
+		<input class="form-control" type="text" ng-model="simpleFilter" />
+		
+		Wybierz użytkownika z listy:<br /> 
+		<select ng-hide="hasRole('ROLE_USER')" class="form-control" ng-model="eventParticipant_id">
+			<option selected disabled value="">Przydziel uczestnika</option>
+			<option ng-repeat="p in persons | filter:simpleFilter" value="{{p.user_id}}">{{p.firstName}} {{p.lastName}}</option>
+		</select><br />
+		<button ng-hide="hasRole('ROLE_USER')" class="btn btn-danger" ng-click="addEventParticipant(eventParticipant_id,event.id)" ng-disabled="eventParticipant_id == null">Dodaj uczestnika</button>
+		{{duplicateParticipantMessage}}
+		<br /><br />
+		
+		Uczestnicy wydarzenia: <br /><br />
+		<ul>
+			<li ng-show="eventParticipants == null">brak</li>
+			<li ng-repeat="ep in eventParticipants">
+				{{ep.firstName}} {{ep.lastName}}
+				<button class="btn btn-primary" ng-show="hasRole('ROLE_ADMIN')" ui-sref="app.admin.users.details({ id: ep.user_id })">Profil uczestnika</button>
+				<button class="btn btn-primary" ng-show="hasRole('ROLE_MOD')" ui-sref="app.moderator.userDetails({ id: ep.user_id })">Profil uczestnika</button>
+				<button class="btn btn-danger" ng-hide="hasRole('ROLE_USER')" ng-click="deleteEventParticipant(ep.user_id)">Usuń uczestnika</button>
+			</li>
+		</ul>
+		
+			<div ng-controller="AttachmentsController">
+				<div ng-hide="hasRole('ROLE_USER')">
+					Dodaj załącznik: <br />		
+					<image-uploadr file="attachment.file" filename="attachment.fileName" filetype="attachment.fileType"></image-uploadr>
+		    		<button class="btn btn-primary" ng-click="addAttachment(loggedUser.id,attachment.file)" ng-disabled="attachment.file == null">Dodaj załącznik</button>
+		    		{{noFile}}
+		    	</div>	
+		    	
+				<br /><br />
+				
+				Lista załączników:<br />
+				<img ng-hide="loadingAttachments == false" src="resources/images/loading.gif">
+				<ul ng-hide="loadingAttachments == true">
+					<li ng-hide="eventAttachments==null" ng-repeat="ea in eventAttachments track by $index">
+						{{ea.fileName}} 
+						<a class="btn btn-primary" ng-href="{{ea.file}}" target="_blank" image-downloadr filename="ea.fileName"><i class="fa fa-arrow-circle-o-down fa-lg"></i></a>
+						<button class="btn btn-danger" ng-hide="hasRole('ROLE_USER')" ng-click="deleteAttachment(ea.id)"><i class="fa fa-trash-o fa-lg"></i></button>
+					</li>
+				</ul>
+		   </div>		
+	</div>
 </div>
-

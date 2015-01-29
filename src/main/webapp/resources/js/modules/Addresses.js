@@ -14,10 +14,6 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 		         },
 		         'sidebar@': {
 		       	  templateUrl: 'partials/admin/sidebar.html'
-		         },
-		         'content@': {
-		       	  templateUrl: 'partials/common/addresses.html',
-		       	  controller: 'AddressesController'      
 		         }
 		       },
 		       data: {
@@ -35,12 +31,6 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 	     abstract: false,
 	     url: '/:id/add',
 	     views: {
-	         'navbar@': {
-	       	  templateUrl: 'partials/admin/navbar.html' 
-	         },
-	         'sidebar@': {
-	       	  templateUrl: 'partials/admin/sidebar.html'
-	         },
 	         'content@': {
 	       	  templateUrl: 'partials/common/addAddress.html',
 	       	  controller: function($stateParams, $scope, Address) {
@@ -61,12 +51,6 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 	     abstract: false,
 	     url: '/:id/edit',
 	     views: {
-	         'navbar@': {
-	       	  templateUrl: 'partials/admin/navbar.html' 
-	         },
-	         'sidebar@': {
-	       	  templateUrl: 'partials/admin/sidebar.html'
-	         },
 	         'content@': {
 	       	  templateUrl: 'partials/common/editAddress.html',
 	       	  controller: function($stateParams, $scope, Address) {

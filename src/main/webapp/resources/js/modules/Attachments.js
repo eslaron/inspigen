@@ -1,24 +1,5 @@
-var Attachments = angular.module('inspigen.attachments', ['ui.router', 'restangular','ngTable'])
+var Attachments = angular.module('inspigen.attachments', ['ui.router', 'restangular','ngTable']);
 
-.config(['$stateProvider', function ($stateProvider) {
-	
-	$stateProvider
-	
-	.state('app.attachments', {
-        url: '/attachments',
-   	 abstract: true,
-   	 template: '<div ui-view></div>', 
-   	 data: {
-            permissions: {
-            	only: ['user','admin','moderator']
-            }
-        }
-   })
-}
-           
-]);
-
-//KONTROLERY
 
 Attachments.controller('UserAttachmentsController', ['$scope', '$state', '$stateParams', 'Restangular',
                                                    function($scope, $state, $stateParams, Restangular) {

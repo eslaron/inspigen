@@ -4,7 +4,7 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 	
 	$stateProvider
 	
-	.state('app.locations', {
+	.state('app.admin.locations', {
 		     title: 'Miejsca wydarzeń',
 		     abstract: false,
 		     url: '/locations',
@@ -22,7 +22,7 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 		       },
 		       data: {
 		           permissions: {
-		             only: ['admin','mod']
+		             only: ['admin']
 		           }
 		       },
 		       resolve: {
@@ -30,7 +30,24 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 		   	   }
 		   }) 
 		   
-		 .state('app.locations.add', {
+		.state('app.moderator.locations', {
+	    title: 'Użytkownicy',
+	    abstract: false,
+	    url: '/locations',
+	    views: {
+	        'content@': {
+	      	  templateUrl: 'partials/common/locations.html',
+	      	  controller: 'LocationsController' 
+	        },
+	      },
+	      data: {
+	          permissions: {
+	       	  only: ['moderator']
+	          }
+	      }
+	   })
+		   
+		 .state('app.admin.locations.add', {
 	     title: 'Dodaj miejsce',
 	     abstract: false,
 	     url: '/add',
@@ -48,12 +65,29 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin','mod']
+	             only: ['admin']
 	           }
 	       }
 	   })
 	   
-	   .state('app.locations.edit', {
+	    .state('app.moderator.addLocation', {
+	    title: 'Użytkownicy',
+	    abstract: false,
+	    url: '/locations/add',
+	    views: {
+	        'content@': {
+	      	  templateUrl: 'partials/common/addLocation.html',
+	      	  controller: 'LocationsController' 
+	        },
+	      },
+	      data: {
+	          permissions: {
+	       	  only: ['moderator']
+	          }
+	      }
+	   })
+	   
+	   .state('app.admin.locations.edit', {
 	     title: 'Edytuj miejsce',
 	     abstract: false,
 	     url: '/:id/edit',
@@ -76,12 +110,40 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin','mod']
+	             only: ['admin']
 	           }
 	       }
 	   })
 	   
-	   .state('app.locations.details', {
+	   	 .state('app.moderator.editLocation', {
+	     title: 'Edytuj miejsce',
+	     abstract: false,
+	     url: '/locations/:id/edit',
+	     views: {
+	         'navbar@': {
+	       	  templateUrl: 'partials/mod/navbar.html' 
+	         },
+	         'sidebar@': {
+	       	  templateUrl: 'partials/mod/sidebar.html'
+	         },
+	         'content@': {
+	       	  templateUrl: 'partials/common/editLocation.html',
+	       	  controller: function($stateParams, $scope, Location) {
+	       		  $scope.location = {};
+	              $scope.location.id = $stateParams.id;
+	              $scope.location = Location.getLocationById($stateParams.id);
+	              $scope.isCollapsed = true;
+	          }        
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['moderator']
+	           }
+	       }
+	   })
+	   
+	   .state('app.admin.locations.details', {
      title: 'Szczegóły lokacji',
      abstract: false,
      url: '/:id/details',
@@ -105,7 +167,30 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
        },
        data: {
            permissions: {
-             only: ['admin','mod','user']
+             only: ['admin']
+           }
+       }
+   })
+   
+   .state('app.moderator.locationDetails', {
+     title: 'Szczegóły lokacji',
+     abstract: false,
+     url: '/locations/:id/details',
+     views: {
+         'content@': {
+       	  templateUrl: 'partials/common/locationDetails.html',
+       	  controller: function($stateParams, $scope, Location) {
+       		  $scope.location = {};
+              $scope.location.id = $stateParams.id;
+              $scope.location = Location.getLocationById($stateParams.id);
+                
+              $scope.isCollapsed = true;
+          } 
+         },
+       },
+       data: {
+           permissions: {
+             only: ['moderator']
            }
        }
    })

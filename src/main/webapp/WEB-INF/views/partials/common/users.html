@@ -14,7 +14,8 @@
 		            <td data-title="'Aktywny'" sortable="'enabled'" filter="{ 'enabled': 'text' }">{{user.enabled}}</td>
 		            <td data-title="'Zablokowany'" sortable="'locked'" filter="{ 'locked': 'text' }">{{user.locked}}</td>
 		            <td  align="right">
-		            	<a class="btn btn-primary" ui-sref="app.users.details({ id: user.id })"><i class="fa fa-folder-o"></i></a>
+		           		<a class="btn btn-primary" ng-show="hasRole('ROLE_ADMIN')" ui-sref="app.users.details({ id: user.id })"><i class="fa fa-folder-o"></i></a>
+		            	<a class="btn btn-primary" ng-show="hasRole('ROLE_MOD')" ui-sref="app.moderator.userDetails({ id: user.id })"><i class="fa fa-folder-o"></i></a>
 		            </td>
 		            <td align="right">
 		            	<a class="btn btn-warning" ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ui-sref="app.users.edit({ id: user.id })"><i class="fa fa-pencil-square-o"></i></a>
@@ -40,14 +41,10 @@
       </div>
       <div class="modal-footer">
         
-        <button type="button" class="btn btn-danger" ng-click="deleteUser(cid)">Usuń</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteUser(cid)">Usuń</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal">Anuluj</button>
       </div>
     </div>
   </div>
-</div>
-        Is admin? : <b>{{hasRole('ROLE_ADMIN')}}</b><br />
-        Is moderator? : <b>{{hasRole('ROLE_MOD')}}</b><br />
-        Is user? : <b>{{hasRole('ROLE_USER')}}</b><br />
-        <a ui-sref="users.add">Dodaj</a>	
+</div>	
 </div>

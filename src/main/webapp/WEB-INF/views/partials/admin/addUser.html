@@ -1,136 +1,133 @@
 <div class="content"  ng-controller="UsersController">
-<div class="userList container col-md-3">
-<h2>Nowy użytkownik</h2>
-<form name="addUser_form" ng-submit="addUser(add)" class="form-horizontal input-border" novalidate>
- 
-    						<div ng-hide="hideMessage" ng-class="messageStyle">
-				                   {{message}}     
-				   			</div>
- 
-					<div class="form-group">
-						<div class="col-sm-12">
-    						<input
-    								class="form-control" 
-    								type="text" 
-            						placeholder="Nazwa użytkownika" 
-            						name="username" 
-            						ng-model="add.username" 
-            						ng-minlength=5
-            						ng-maxlength=12 
-            						ng-pattern="/^[A-z][A-z0-9]*$/"
-            						ng-model-options="{debounce: 1000}"
-            						required />
-        	
-        						<small class="error-message" ng-show="duplicateUsername && !addUser_form.username.$dirty">
-    								Podana nazwa użytkownika jest już zajęta.
-								</small>
-        			
-        
-  							<div class="error-container" ng-show="addUser_form.username.$dirty && addUser_form.username.$invalid">
-							    <small class="error-message" ng-show="addUser_form.username.$error.required">
-							    	Nazwa użytkownika nie może być pusta.</small>
-							    <small class="error-message" ng-show="
-							    !addUser_form.username.$error.minlength
-							    && !addUser_form.username.$error.maxlength
-							    && addUser_form.username.$error.pattern">
-							    	Musi zaczynać się od litery oraz zawierać tylko litery i cyfry</small>	
-							    <small class="error-message" ng-show="
-							    	!addUser_form.username.$error.required 
-							    	&& addUser_form.username.$error.minlength
-									|| addUser_form.username.$error.maxlength">
-							    	Nazwa użytkownika musi się składać z przynajmniej 5 i niewięcej niż 12 znaków.</small>
-  							</div>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<div class="col-sm-12">
-    						<input
-    								class="form-control" 
-    								type="password" 
-            						placeholder="Hasło" 
-            						name="password" 
-            						ng-model="add.password" 
-            						ng-minlength=5
-            						ng-maxlength=16
-            						ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/"
-            						ng-model-options="{debounce: 1000}"
-            						required />
-  							<div class="error-container" ng-show="addUser_form.password.$dirty 
-  							&& addUser_form.password.$invalid">
-  							
-  							 <small class="error-message" ng-show="addUser_form.password.$error.required">
-							    	Wprowadź hasło.</small>
-							    <small class="error-message" ng-show="
-							    !addUser_form.password.$error.minlength
-							    && !addUser_form.password.$error.maxlength
-							    && addUser_form.password.$error.pattern">
-							    	Hasło musi zawierać przynajmniej jedno duzą literę i jedną cyfrę.</small>	
-							    <small class="error-message" ng-show="
-							    	!addUser_form.password.$error.required 
-							    	&& addUser_form.password.$error.minlength
-									|| addUser_form.password.$error.maxlength">
-							    	Hasło musi się składać z przynajmniej 5 i niewięcej niż 16 znaków.</small>
-  							</div>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<div class="col-sm-12">
-    						<input
-    								class="form-control"
-      								type="email" 
-      								placeholder="Email" 
-      								name="email" 
-      								ng-model="add.email" 
-      								ng-minlength=6 
-      								ng-maxlength=40 
-      								ng-model-options="{debounce: 1000}"
-      								required />
-      						
-      							<small class="error-message" ng-show="duplicateEmail && !addUser_form.email.$dirty">
-    									Podany email jest już zajęty.
-									</small>
-      						
-    						<div class="error-container" ng-show="addUser_form.email.$dirty 
-    						&& addUser_form.email.$invalid">
-							    <small class="error-message" ng-show="addUser_form.email.$error.required">
-							    	Podaj adres email.</small>
-							    <small class="error-message" ng-show="
-							    !addUser_form.email.$error.minlength
-							    && !addUser_form.email.$error.maxlength
-							    && addUser_form.email.$error.email">
-							    	Nieprawidłowy adres email.</small>	
-							    <small class="error-message" ng-show="
-							    	!addUser_form.email.$error.required 
-							    	&& addUser_form.email.$error.minlength
-									|| addUser_form.email.$error.maxlength">
-							    	Email musi się składał z przynajmniej 6 i niewięcej niż 40 znaków.</small>
-    						</div>
-						</div>
-					</div> 
-					<div class="form-group">
-							<div class="col-sm-12">
-		    					<select  class="form-control" ng-model="add.role">
-		        					<option ng-repeat="item in roles" value="{{item.key}}" ng-selected="item.key == 'Wolontariusz'">{{item.key}}</option>
-		      					</select>
-		      						<div class="error-container" ng-show="addUser_form.role.$dirty 
-    						&& addUser_form.role.$invalid">
-							    <small class="error-message" ng-show="addUser_form.role.$error.required">
-							    	Wybierz rolę użytkownika.</small>
-							    	</div>
+	<div class="userList container col-md-3">
+		<h2>Nowy użytkownik</h2>
+		<form name="addUser_form" ng-submit="addUser(add)" class="form-horizontal input-border" novalidate>
+		 
+		    						<div ng-hide="hideMessage" ng-class="messageStyle">
+						                   {{message}}     
+						   			</div>
+		 
+							<div class="form-group">
+								<div class="col-sm-12">
+		    						<input
+		    								class="form-control" 
+		    								type="text" 
+		            						placeholder="Nazwa użytkownika" 
+		            						name="username" 
+		            						ng-model="add.username" 
+		            						ng-minlength=5
+		            						ng-maxlength=12 
+		            						ng-pattern="/^[A-z][A-z0-9]*$/"
+		            						ng-model-options="{debounce: 1000}"
+		            						required />
+		        	
+		        						<small class="error-message" ng-show="duplicateUsername && !addUser_form.username.$dirty">
+		    								Podana nazwa użytkownika jest już zajęta.
+										</small>
+		        			
+		        
+		  							<div class="error-container" ng-show="addUser_form.username.$dirty && addUser_form.username.$invalid">
+									    <small class="error-message" ng-show="addUser_form.username.$error.required">
+									    	Nazwa użytkownika nie może być pusta.</small>
+									    <small class="error-message" ng-show="
+									    !addUser_form.username.$error.minlength
+									    && !addUser_form.username.$error.maxlength
+									    && addUser_form.username.$error.pattern">
+									    	Musi zaczynać się od litery oraz zawierać tylko litery i cyfry</small>	
+									    <small class="error-message" ng-show="
+									    	!addUser_form.username.$error.required 
+									    	&& addUser_form.username.$error.minlength
+											|| addUser_form.username.$error.maxlength">
+									    	Nazwa użytkownika musi się składać z przynajmniej 5 i niewięcej niż 12 znaków.</small>
+		  							</div>
+								</div>
 							</div>
-						</div> 
-						<div class="form-group">
-							<div class="col-sm-12">
-		    				Aktywny <input type="checkbox" ng-model="optionalEnabled">
+							
+							<div class="form-group">
+								<div class="col-sm-12">
+		    						<input
+		    								class="form-control" 
+		    								type="password" 
+		            						placeholder="Hasło" 
+		            						name="password" 
+		            						ng-model="add.password" 
+		            						ng-minlength=5
+		            						ng-maxlength=16
+		            						ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/"
+		            						ng-model-options="{debounce: 1000}"
+		            						required />
+		  							<div class="error-container" ng-show="addUser_form.password.$dirty 
+		  							&& addUser_form.password.$invalid">
+		  							
+		  							 <small class="error-message" ng-show="addUser_form.password.$error.required">
+									    	Wprowadź hasło.</small>
+									    <small class="error-message" ng-show="
+									    !addUser_form.password.$error.minlength
+									    && !addUser_form.password.$error.maxlength
+									    && addUser_form.password.$error.pattern">
+									    	Hasło musi zawierać przynajmniej jedno duzą literę i jedną cyfrę.</small>	
+									    <small class="error-message" ng-show="
+									    	!addUser_form.password.$error.required 
+									    	&& addUser_form.password.$error.minlength
+											|| addUser_form.password.$error.maxlength">
+									    	Hasło musi się składać z przynajmniej 5 i niewięcej niż 16 znaków.</small>
+		  							</div>
+								</div>
 							</div>
-						</div> 
-
-    <button type="submit" class="btn btn-success btn-sm" ng-disabled="addUser_form.$invalid">Zarejestruj</button>
-</form>
-
-
+							
+							<div class="form-group">
+								<div class="col-sm-12">
+		    						<input
+		    								class="form-control"
+		      								type="email" 
+		      								placeholder="Email" 
+		      								name="email" 
+		      								ng-model="add.email" 
+		      								ng-minlength=6 
+		      								ng-maxlength=40 
+		      								ng-model-options="{debounce: 1000}"
+		      								required />
+		      						
+		      							<small class="error-message" ng-show="duplicateEmail && !addUser_form.email.$dirty">
+		    									Podany email jest już zajęty.
+											</small>
+		      						
+		    						<div class="error-container" ng-show="addUser_form.email.$dirty 
+		    						&& addUser_form.email.$invalid">
+									    <small class="error-message" ng-show="addUser_form.email.$error.required">
+									    	Podaj adres email.</small>
+									    <small class="error-message" ng-show="
+									    !addUser_form.email.$error.minlength
+									    && !addUser_form.email.$error.maxlength
+									    && addUser_form.email.$error.email">
+									    	Nieprawidłowy adres email.</small>	
+									    <small class="error-message" ng-show="
+									    	!addUser_form.email.$error.required 
+									    	&& addUser_form.email.$error.minlength
+											|| addUser_form.email.$error.maxlength">
+									    	Email musi się składał z przynajmniej 6 i niewięcej niż 40 znaków.</small>
+		    						</div>
+								</div>
+							</div> 
+							<div class="form-group">
+									<div class="col-sm-12">
+				    					<select  class="form-control" ng-model="add.role">
+				        					<option ng-repeat="item in roles" value="{{item.key}}" ng-selected="item.key == 'Wolontariusz'">{{item.key}}</option>
+				      					</select>
+				      						<div class="error-container" ng-show="addUser_form.role.$dirty 
+		    						&& addUser_form.role.$invalid">
+									    <small class="error-message" ng-show="addUser_form.role.$error.required">
+									    	Wybierz rolę użytkownika.</small>
+									    	</div>
+									</div>
+								</div> 
+								<div class="form-group">
+									<div class="col-sm-12">
+				    				Aktywny <input type="checkbox" ng-model="optionalEnabled">
+									</div>
+								</div> 
 		
+		    <button type="submit" class="btn btn-success btn-sm" ng-disabled="addUser_form.$invalid">Zarejestruj</button>
+		</form>			
+	</div>
 </div>
-

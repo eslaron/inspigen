@@ -1,175 +1,175 @@
 <div class="content"  ng-controller="AddressesController">
-<div class="userList container col-md-3">
-<h2>Adres - edycja</h2>
-
-<form name="editAddress_form" ng-submit="editAddress(address)" class="form-horizontal input-border" novalidate>
- 
-    						<div ng-hide="hideMessage" ng-class="messageStyle">
-				                   {{message}}     
-				   			</div>
- 					<div class="form-group">
-						<div class="col-sm-12">
-							<input type="checkbox" ng-model="address.registeredAddress"> Adres zameldowania<br />
-	    					<input type="checkbox" ng-model="address.mailAddress"> Adres korespondencyjny 
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-12">
-    						<input
-    								class="form-control" 
-    								type="text" 
-            						placeholder="Ulica" 
-            						name="address" 
-            						ng-model="address.address" 
-            						ng-minlength=5
-            						ng-maxlength=30 
-            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s|\d)/"
-            						ng-model-options="{debounce: 1000}"
-            						required />
-            						
-            				<div class="error-container" ng-show="editAddress_form.address.$dirty && editAddress_form.address.$invalid">
-							    <small class="error-message" ng-show="editAddress_form.address.$error.required">
-							    	To pole nie może być puste.</small>
-							    <small class="error-message" ng-show="
-							    !editAddress_form.address.$error.minlength
-							    && !editAddress_form.address.$error.maxlength
-							    && editAddress_form.address.$error.pattern">
-							    	Musi zaczynać się od dużej litery oraz zawierać litery lub cyfry.</small>	
-							    <small class="error-message" ng-show="
-							    	!editAddress_form.address.$error.required 
-							    	&& editAddress_form.address.$error.minlength
-									|| editAddress_form.address.$error.maxlength">
-							    	Pole musi się składać z przynajmniej 5 i niewięcej niż 30 znaków.</small>
-  							</div>
-						</div>
-					</div>
+	<div class="userList container col-md-3">
+	<h2>Adres - edycja</h2>
+	
+		<form name="editAddress_form" ng-submit="editAddress(address)" class="form-horizontal input-border" novalidate>
+		 
+		    						<div ng-hide="hideMessage" ng-class="messageStyle">
+						                   {{message}}     
+						   			</div>
+		 					<div class="form-group">
+								<div class="col-sm-12">
+									<input type="checkbox" ng-model="address.registeredAddress"> Adres zameldowania<br />
+			    					<input type="checkbox" ng-model="address.mailAddress"> Adres korespondencyjny 
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+		    						<input
+		    								class="form-control" 
+		    								type="text" 
+		            						placeholder="Ulica" 
+		            						name="address" 
+		            						ng-model="address.address" 
+		            						ng-minlength=5
+		            						ng-maxlength=30 
+		            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s|\d)/"
+		            						ng-model-options="{debounce: 1000}"
+		            						required />
+		            						
+		            				<div class="error-container" ng-show="editAddress_form.address.$dirty && editAddress_form.address.$invalid">
+									    <small class="error-message" ng-show="editAddress_form.address.$error.required">
+									    	To pole nie może być puste.</small>
+									    <small class="error-message" ng-show="
+									    !editAddress_form.address.$error.minlength
+									    && !editAddress_form.address.$error.maxlength
+									    && editAddress_form.address.$error.pattern">
+									    	Musi zaczynać się od dużej litery oraz zawierać litery lub cyfry.</small>	
+									    <small class="error-message" ng-show="
+									    	!editAddress_form.address.$error.required 
+									    	&& editAddress_form.address.$error.minlength
+											|| editAddress_form.address.$error.maxlength">
+									    	Pole musi się składać z przynajmniej 5 i niewięcej niż 30 znaków.</small>
+		  							</div>
+								</div>
+							</div>
+							
+							<div class="form-group">
+											<div class="col-sm-12">
+					    						<input
+					    								class="form-control" 
+					    								type="text" 
+					            						placeholder="Miejscowość" 
+					            						name="city" 
+					            						ng-model="address.city" 
+					            						ng-minlength=5
+					            						ng-maxlength=20 
+					            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s|\d)/"
+					            						ng-model-options="{debounce: 1000}"
+					            						required />
+					            						
+					            				<div class="error-container" ng-show="editAddress_form.city.$dirty && editAddress_form.city.$invalid">
+												    <small class="error-message" ng-show="editAddress_form.city.$error.required">
+												    	To pole nie może być puste.</small>
+												    <small class="error-message" ng-show="
+												    !editAddress_form.city.$error.minlength
+												    && !editAddress_form.city.$error.maxlength
+												    && editAddress_form.city.$error.pattern">
+												    	Musi zaczynać się od dużej litery oraz zawierać litery lub cyfry.</small>	
+												    <small class="error-message" ng-show="
+												    	!editAddress_form.city.$error.required 
+												    	&& editAddress_form.city.$error.minlength
+														|| editAddress_form.city.$error.maxlength">
+												    	Pole musi się składać z przynajmniej 5 i niewięcej niż 20 znaków.</small>
+					  							</div>
+											</div>
+								</div>
+							
+							<div class="form-group">
+								<div class="col-sm-12">
+		    						<input
+		    								class="form-control" 
+		    								type="text" 
+		            						placeholder="Kod pocztowy" 
+		            						name="zipCode" 
+		            						ng-model="address.zipCode" 
+		            						ng-minlength=6
+					            			ng-maxlength=6
+					            			ng-pattern="/^[0-9][0-9][-][0-9][0-9][0-9]*$/"
+		            						ng-model-options="{debounce: 1000}"
+		            						required />
+		            						
+		            					<div class="error-container" ng-show="editAddress_form.zipCode.$dirty && editAddress_form.zipCode.$invalid">
+												    <small class="error-message" ng-show="editAddress_form.zipCode.$error.required">
+												    	To pole nie może być puste.</small>
+												    <small class="error-message" ng-show="
+												    !editAddress_form.zipCode.$error.minlength
+												    && !editAddress_form.zipCode.$error.maxlength
+												    && editAddress_form.zipCode.$error.pattern">
+												    	Kod pocztowy jest nieprawidłowy.</small>	
+												    <small class="error-message" ng-show="
+												    	!editAddress_form.zipCode.$error.required 
+												    	&& editAddress_form.zipCode.$error.minlength
+														|| editAddress_form.zipCode.$error.maxlength">
+												    	Kod pocztowy musi się składać z dokładnie 6 znaków.</small>
+					  							</div>
+											</div>						
+								</div>
+				
+							
+							<div class="form-group">
+								<div class="col-sm-12">
+		    						<input
+		    								class="form-control" 
+		    								type="text" 
+		            						placeholder="Województwo" 
+		            						name="state" 
+		            						ng-model="address.state" 
+		            						ng-minlength=5
+					            			ng-maxlength=20
+		            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s|\d)/"
+		            						required />
+		            						
+		            							<div class="error-container" ng-show="editAddress_form.state.$dirty && editAddress_form.state.$invalid">
+												    <small class="error-message" ng-show="editAddress_form.state.$error.required">
+												    	To pole nie może być puste.</small>
+												    <small class="error-message" ng-show="
+												    !editAddress_form.state.$error.minlength
+												    && !editAddress_form.state.$error.maxlength
+												    && editAddress_form.state.$error.pattern">
+												    	Musi zaczynać się od dużej litery oraz zawierać litery i ewentualnie '-'.</small>	
+												    <small class="error-message" ng-show="
+												    	!editAddress_form.state.$error.required 
+												    	&& editAddress_form.state.$error.minlength
+														|| editAddress_form.state.$error.maxlength">
+												    	Pole nie może być krótsze niż 5 i i niedłuższe niż 20 znaków.</small>
+					  							</div>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="col-sm-12">
+		    						<input
+		    								class="form-control" 
+		    								type="text" 
+		            						placeholder="Kraj" 
+		            						name="country" 
+		            						ng-model="address.country" 
+		            						ng-minlength=4
+					            			ng-maxlength=30
+		            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s)/"
+		            						required />
+		            						
+		            							<div class="error-container" ng-show="editAddress_form.country.$dirty && editAddress_form.country.$invalid">
+												    <small class="error-message" ng-show="editAddress_form.country.$error.required">
+												    	To pole nie może być puste.</small>
+												    <small class="error-message" ng-show="
+												    !editAddress_form.country.$error.minlength
+												    && !editAddress_form.country.$error.maxlength
+												    && editAddress_form.country.$error.pattern">
+												    	Musi zaczynać się od dużej litery oraz zawierać tylko litery.</small>	
+												    <small class="error-message" ng-show="
+												    	!editAddress_form.country.$error.required 
+												    	&& editAddress_form.country.$error.minlength
+														|| editAddress_form.country.$error.maxlength">
+												    	Pole nie może być krótsze niż 4 i i niedłuższe niż 30 cyfr.</small>
+					  							</div>
+								</div>
+							</div>
 					
-					<div class="form-group">
-									<div class="col-sm-12">
-			    						<input
-			    								class="form-control" 
-			    								type="text" 
-			            						placeholder="Miejscowość" 
-			            						name="city" 
-			            						ng-model="address.city" 
-			            						ng-minlength=5
-			            						ng-maxlength=20 
-			            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s|\d)/"
-			            						ng-model-options="{debounce: 1000}"
-			            						required />
-			            						
-			            				<div class="error-container" ng-show="editAddress_form.city.$dirty && editAddress_form.city.$invalid">
-										    <small class="error-message" ng-show="editAddress_form.city.$error.required">
-										    	To pole nie może być puste.</small>
-										    <small class="error-message" ng-show="
-										    !editAddress_form.city.$error.minlength
-										    && !editAddress_form.city.$error.maxlength
-										    && editAddress_form.city.$error.pattern">
-										    	Musi zaczynać się od dużej litery oraz zawierać litery lub cyfry.</small>	
-										    <small class="error-message" ng-show="
-										    	!editAddress_form.city.$error.required 
-										    	&& editAddress_form.city.$error.minlength
-												|| editAddress_form.city.$error.maxlength">
-										    	Pole musi się składać z przynajmniej 5 i niewięcej niż 20 znaków.</small>
-			  							</div>
-									</div>
-						</div>
-					
-					<div class="form-group">
-						<div class="col-sm-12">
-    						<input
-    								class="form-control" 
-    								type="text" 
-            						placeholder="Kod pocztowy" 
-            						name="zipCode" 
-            						ng-model="address.zipCode" 
-            						ng-minlength=6
-			            			ng-maxlength=6
-			            			ng-pattern="/^[0-9][0-9][-][0-9][0-9][0-9]*$/"
-            						ng-model-options="{debounce: 1000}"
-            						required />
-            						
-            					<div class="error-container" ng-show="editAddress_form.zipCode.$dirty && editAddress_form.zipCode.$invalid">
-										    <small class="error-message" ng-show="editAddress_form.zipCode.$error.required">
-										    	To pole nie może być puste.</small>
-										    <small class="error-message" ng-show="
-										    !editAddress_form.zipCode.$error.minlength
-										    && !editAddress_form.zipCode.$error.maxlength
-										    && editAddress_form.zipCode.$error.pattern">
-										    	Kod pocztowy jest nieprawidłowy.</small>	
-										    <small class="error-message" ng-show="
-										    	!editAddress_form.zipCode.$error.required 
-										    	&& editAddress_form.zipCode.$error.minlength
-												|| editAddress_form.zipCode.$error.maxlength">
-										    	Kod pocztowy musi się składać z dokładnie 6 znaków.</small>
-			  							</div>
-									</div>						
-						</div>
-		
-					
-					<div class="form-group">
-						<div class="col-sm-12">
-    						<input
-    								class="form-control" 
-    								type="text" 
-            						placeholder="Województwo" 
-            						name="state" 
-            						ng-model="address.state" 
-            						ng-minlength=5
-			            			ng-maxlength=20
-            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s|\d)/"
-            						required />
-            						
-            							<div class="error-container" ng-show="editAddress_form.state.$dirty && editAddress_form.state.$invalid">
-										    <small class="error-message" ng-show="editAddress_form.state.$error.required">
-										    	To pole nie może być puste.</small>
-										    <small class="error-message" ng-show="
-										    !editAddress_form.state.$error.minlength
-										    && !editAddress_form.state.$error.maxlength
-										    && editAddress_form.state.$error.pattern">
-										    	Musi zaczynać się od dużej litery oraz zawierać litery i ewentualnie '-'.</small>	
-										    <small class="error-message" ng-show="
-										    	!editAddress_form.state.$error.required 
-										    	&& editAddress_form.state.$error.minlength
-												|| editAddress_form.state.$error.maxlength">
-										    	Pole nie może być krótsze niż 5 i i niedłuższe niż 20 znaków.</small>
-			  							</div>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<div class="col-sm-12">
-    						<input
-    								class="form-control" 
-    								type="text" 
-            						placeholder="Kraj" 
-            						name="country" 
-            						ng-model="address.country" 
-            						ng-minlength=4
-			            			ng-maxlength=30
-            						ng-pattern="/^[A-Z](?=[A-Z]|[a-z]|\s)/"
-            						required />
-            						
-            							<div class="error-container" ng-show="editAddress_form.country.$dirty && editAddress_form.country.$invalid">
-										    <small class="error-message" ng-show="editAddress_form.country.$error.required">
-										    	To pole nie może być puste.</small>
-										    <small class="error-message" ng-show="
-										    !editAddress_form.country.$error.minlength
-										    && !editAddress_form.country.$error.maxlength
-										    && editAddress_form.country.$error.pattern">
-										    	Musi zaczynać się od dużej litery oraz zawierać tylko litery.</small>	
-										    <small class="error-message" ng-show="
-										    	!editAddress_form.country.$error.required 
-										    	&& editAddress_form.country.$error.minlength
-												|| editAddress_form.country.$error.maxlength">
-										    	Pole nie może być krótsze niż 4 i i niedłuższe niż 30 cyfr.</small>
-			  							</div>
-						</div>
-					</div>
-			
-								
-   <button type="submit" class="btn btn-success btn-sm" ng-disabled="editAddress_form.$invalid || editAddress_form.$pristine">Zmień dane</button>
-</form>
-		
+										
+		   <button type="submit" class="btn btn-success btn-sm" ng-disabled="editAddress_form.$invalid || editAddress_form.$pristine">Zmień dane</button>
+		</form>	
+	</div>
 </div>
 

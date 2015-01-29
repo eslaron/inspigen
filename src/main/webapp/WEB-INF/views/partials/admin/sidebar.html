@@ -6,7 +6,8 @@
  
     <accordion-group is-open="false">
         <accordion-heading>
-            <a ui-sref="users.admin">Panel administracyjny</a><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            <a ui-sref="app.admin.dashboard" ng-href="#/admin/dashboard">Panel administracyjny</a>
+            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
        Sekcje w budowie
     </accordion-group>
@@ -14,29 +15,29 @@
         <accordion-heading>
             Użytkownicy<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
-        <a ui-sref="app.users.list" ng-href="#/users/list">Lista</a><br />
-        <a ui-sref="app.users.add" ng-href="#/user/admin/add">Dodaj</a><br />
-        <a ui-sref="app.users.groups" ng-href="#/user/admin/groups">Grupy</a><br />
+        <a ui-sref="app.admin.users.list" ng-href="#/admin/users/list">Lista</a><br />
+        <a ui-sref="app.admin.users.add" ng-href="#/admin/users/add">Dodaj</a><br />
+        <a ui-sref="app.admin.users.groups" ng-href="#/admin/users/groups">Grupy</a><br />
     </accordion-group>
        <accordion-group is-open="false">
         <accordion-heading>
             Lokalizacje<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
-         <a ui-sref="app.locations" ng-href="#/locations">Lista</a><br />
-       <a ui-sref="app.locations.add" ng-href="#/locations/add">Dodaj</a>
+         <a ui-sref="app.admin.locations" ng-href="#/admin/locations">Lista</a><br />
+       <a ui-sref="app.admin.locations.add" ng-href="#/admin/locations/add">Dodaj</a>
     </accordion-group>
     <accordion-group is-open="false">
         <accordion-heading>
             Wydarzenia<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
-         <a ui-sref="app.events" ng-href="#/events">Lista</a><br />
-       <a ui-sref="app.events.add" ng-href="#/events/add">Dodaj</a>
+         <a ui-sref="app.admin.events" ng-href="#/admin/events">Lista</a><br />
+       <a ui-sref="app.admin.events.add" ng-href="#/admin/events/add">Dodaj</a>
     </accordion-group>
     <accordion-group is-open="false">
         <accordion-heading>
             Ustawienia<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </accordion-heading>
-       <a ui-sref="app.users.admin.settings" ng-href="#/users/admin/settings">Główne</a>
+       <a ui-sref="app.admin.settings" ng-href="#/admin/settings">System</a>
     </accordion-group>
    
 </accordion>

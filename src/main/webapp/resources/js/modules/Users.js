@@ -38,10 +38,10 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
  	    	    });
  	   	   }],
  	   	   participants: ['Participant','Context', function(Participant, Context) {  
- 		      		return  Participant.loadParticipantsFromJson()
- 		    	    .then(function(newlyLoadedParticipants){
+ 		      	return  Participant.loadParticipantsFromJson()
+ 		    	.then(function(newlyLoadedParticipants){
  		    	    	Context.all.participants = Participant.getAllParticipants();
- 		    	    });
+ 		    	});
  	   	   }],
  	   	   locations: ['Location','Context', function(Location, Context) {  
  	      		return  Location.loadLocationsFromJson()
@@ -57,9 +57,28 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
  		   }],
        }
    })
+   
+      
+     .state('app.admin', {
+        url: '/admin',
+   	 	abstract: false,
+   	 	views: {
+         'navbar@': {
+       	  templateUrl: 'partials/admin/navbar.html' 
+         },
+         'sidebar@': {
+       	  templateUrl: 'partials/admin/sidebar.html'
+         }
+   	 	},
+   	 	data: {
+            permissions: {
+            	only: ['admin']
+            }
+        },
+     })
 	
 	
-	.state('app.users', {
+	.state('app.admin.users', {
         url: '/users',
    	 abstract: true,
    	 template: '<div ui-view></div>', 
@@ -70,17 +89,11 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
         },
    })
       
-      .state('app.users.list', {
+      .state('app.admin.users.list', {
      title: 'Użytkownicy',
      abstract: false,
      url: '/list',
      views: {
-         'navbar@': {
-       	  templateUrl: 'partials/admin/navbar.html' 
-         },
-         'sidebar@': {
-       	  templateUrl: 'partials/admin/sidebar.html'
-         },
          'content@': {
        	  templateUrl: 'partials/common/users.html',
        	  controller: 'UsersController' 
@@ -93,17 +106,11 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
-   .state('app.users.add', {
+   .state('app.admin.users.add', {
 	     title: 'Dodaj użytkownika',
 	     abstract: false,
 	     url: '/add',
 	     views: {
-	         'navbar@': {
-	       	  templateUrl: 'partials/admin/navbar.html' 
-	         },
-	         'sidebar@': {
-	       	  templateUrl: 'partials/admin/sidebar.html'
-	         },
 	         'content@': {
 	       	  templateUrl: 'partials/admin/addUser.html',
 	       	  controller: 'UsersController'      
@@ -116,17 +123,11 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 	       }
 	   })
    
-     .state('app.users.edit', {
+     .state('app.admin.users.edit', {
      title: 'Edytuj użytkownika',
      abstract: false,
      url: '/:id/edit',
      views: {
-         'navbar@': {
-       	  templateUrl: 'partials/admin/navbar.html' 
-         },
-         'sidebar@': {
-       	  templateUrl: 'partials/admin/sidebar.html'
-         },
          'content@': {
        	  templateUrl: 'partials/admin/editUser.html',
        	  controller: function($stateParams, $scope, User) {
@@ -143,17 +144,11 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
-   .state('app.users.details', {
+   .state('app.admin.users.details', {
      title: 'Profil użytkownika',
      abstract: false,
      url: '/:id/details',
      views: {
-         'navbar@': {
-       	  templateUrl: 'partials/admin/navbar.html' 
-         },
-         'sidebar@': {
-       	  templateUrl: 'partials/admin/sidebar.html'
-         },
          'content@': {
        	  templateUrl: 'partials/common/userDetails.html',
        	  controller: function($stateParams, $scope, User, Person, Address) {
@@ -193,17 +188,11 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
-   .state('app.users.groups', {
+   .state('app.admin.users.groups', {
      title: 'Grupy użytkowników',
      abstract: false,
      url: '/groups',
      views: {
-         'navbar@': {
-       	  templateUrl: 'partials/admin/navbar.html' 
-         },
-         'sidebar@': {
-       	  templateUrl: 'partials/admin/sidebar.html'
-         },
          'content@': {
        	  templateUrl: 'partials/admin/groups.html',
        	  controller: 'UsersController'
@@ -217,66 +206,45 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        }
    })
    
-      .state('app.users.admin', {
+      .state('app.admin.dashboard', {
      title: 'Panel administratora',
-     abstract: false,
-     url: '/admin',
-     views: {
-         'navbar@': {
-       	  templateUrl: 'partials/admin/navbar.html' 
-         },
-         'sidebar@': {
-       	  templateUrl: 'partials/admin/sidebar.html'
-         },
-         'content@': {
-       	  templateUrl: 'partials/admin/dashboard.html',
-       	  controller: 'UsersController'
-         },
-       },
-       data: {
-           permissions: {
-             only: ['admin']
-           }
-       },
-       resolve: {
-    
-       }
-   })
-   
-      .state('app.users.admin.settings', {
-     title: 'Ustawienia',
-     abstract: false,
-     url: '/settings',
-     views: {
-         'navbar@': {
-       	  templateUrl: 'partials/admin/navbar.html' 
-         },
-         'sidebar@': {
-       	  templateUrl: 'partials/admin/sidebar.html'
-         },
-         'content@': {
-       	  templateUrl: 'partials/admin/settings.html',
-       	  controller: 'UsersController' 
-         },
-       },
-       data: {
-           permissions: {
-             only: ['admin']
-           }
-       }
-   })
-   
-   .state('app.users.member', {
-     title: 'Panel wolontariusza',
      abstract: false,
      url: '/dashboard',
      views: {
+         'content@': {
+       	  templateUrl: 'partials/admin/dashboard.html',
+         },
+       },
+       data: {
+           permissions: {
+             only: ['admin']
+           }
+       }
+    })
+    
+     .state('app.member', {
+        url: '/member',
+   	 	abstract: false,
+   	 	views: {
          'navbar@': {
        	  templateUrl: 'partials/user/navbar.html' 
          },
          'sidebar@': {
        	  templateUrl: 'partials/user/sidebar.html'
-         },
+         }
+   	 	},
+   	 	data: {
+            permissions: {
+            	only: ['admin']
+            }
+        },
+     })
+   
+   .state('app.member.dashboard', {
+     title: 'Panel wolontariusza',
+     abstract: false,
+     url: '/dashboard',
+     views: {
          'content@': {
        	  templateUrl: 'partials/user/dashboard.html', 
        	  controller: 'UsersController' 
@@ -288,19 +256,30 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
            }
        }
    })
-  
    
-      .state('app.users.moderator', {
-     title: 'Panel koordynatora',
-     abstract: false,
-     url: '/mod',
+   	.state('app.moderator', {
+        url: '/mod',
+   	 abstract: false,
      views: {
          'navbar@': {
        	  templateUrl: 'partials/mod/navbar.html' 
          },
          'sidebar@': {
        	  templateUrl: 'partials/mod/sidebar.html'
-         },
+         }
+       },
+   	 data: {
+            permissions: {
+            	only: ['moderator']
+            }
+        },
+     })
+   
+     .state('app.moderator.dashboard', {
+     title: 'Panel koordynatora',
+     abstract: false,
+     url: '/dashboard',
+     views: {
          'content@': {
        	  templateUrl: 'partials/mod/dashboard.html', 
        	  controller: 'UsersController' 
@@ -311,8 +290,70 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
              only: ['moderator']
            }
        }
-   })  
+   }) 
+     
+    .state('app.moderator.userList', {
+    title: 'Użytkownicy',
+    abstract: false,
+    url: '/users/list',
+    views: {
+        'content@': {
+      	  templateUrl: 'partials/common/users.html',
+      	  controller: 'UsersController' 
+        },
+      },
+      data: {
+          permissions: {
+       	  only: ['admin','moderator']
+          }
+      }
+  })
+  
+  .state('app.moderator.userDetails', {
+    title: 'Użytkownicy',
+    abstract: false,
+    url: '/users/:id/details',
+    views: {
+    	'content@': {
+        	  templateUrl: 'partials/common/userDetails.html',
+        	  controller: function($stateParams, $scope, User, Person, Address) {
+               $scope.user.id = $stateParams.id;
+               $scope.user = User.getUserById($stateParams.id);
+               $scope.persons = Person.getAllPersons();
+               $scope.addresses = Address.getAllAddresses();
+                      
+               for(var i = $scope.persons.length - 1; i >= 0; i--) {
+   			    if($scope.persons[i].user_id == $stateParams.id) {
+   			       $scope.person = $scope.persons[i];
+   			    }
+   			}
+               for(var i = $scope.addresses.length - 1; i >= 0; i--) {
+   			    if($scope.addresses[i].user_id == $stateParams.id 
+   			    		&& $scope.addresses[i].registeredAddress == true) {
+   			       $scope.address = $scope.addresses[i];
+   		   }
+               }
+               
+               for(var i = $scope.addresses.length - 1; i >= 0; i--) {
+     			    if($scope.addresses[i].user_id == $stateParams.id 
+     			    		&& $scope.addresses[i].mailAddress == true
+     			    			&& $scope.addresses[i].registeredAddress == false) {
+     			       $scope.mailAddress = $scope.addresses[i];
+     		   }
+                 }
+               
+               $scope.isCollapsed = true;
+           } 
+          },
+        },
+      data: {
+          permissions: {
+       	  only: ['moderator']
+          }
+      }
+  })
 }
+
            
 ]);
 
@@ -548,25 +589,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 		  $scope.tableParams.reload();
 	  });
   }
-  
-  $scope.editSettings = function(settings) {
-	  
-	  var EditSettings = Restangular.one('settings');
-	  
-	  EditSettings.id = 0;
-	  EditSettings.maxLoginAttempts = $scope.settings.maxLoginAttempts;
-	  EditSettings.accountLockTime = $scope.settings.accountLockTime;
-	  EditSettings.linkExpirationTime = $scope.settings.linkExpirationTime;
-	  EditSettings.inactiveAccountsDeletionTime = $scope.settings.inactiveAccountsDeletionTime;
-	
-	  EditSettings.put().then(function(response){
-		
-		  $scope.messageStyle = "alert alert-success";
-		  $scope.hideMessage = false;
-		  $scope.message = "Zapisane";			  			  
-	  });
-  }
-  
+    
   $scope.cid = 0;
   
 	$scope.getConfirmDeleteId = function(id) {

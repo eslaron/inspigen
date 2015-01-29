@@ -7,6 +7,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.sobiech.inspigen.core.models.entities.Settings;
 import org.sobiech.inspigen.core.services.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -18,6 +19,9 @@ public class EmailServiceImpl implements IEmailService {
 	
 	@Autowired
 	JavaMailSenderImpl mailSender;
+	
+	@Autowired
+	Settings settings;
 	
 	@Override
 	public void  sendTokenMail(String email, String tokenType, String token) {
@@ -34,7 +38,7 @@ public class EmailServiceImpl implements IEmailService {
 			mimeHelper = new MimeMessageHelper(message,true);
 			mimeHelper.setTo(email);
 			
-			mimeHelper.setFrom("administracja@inspigen.pl");
+			mimeHelper.setFrom(settings.getEmailAddress());
 			
 			if (tokenType == "activationToken") {
 				mimeHelper.setSubject("Witamy w systemie Inspigen!");
