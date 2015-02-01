@@ -15,6 +15,7 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+//Klasa konfigurująca dostęp do bazy danych
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"org.sobiech.inspigen.core.repositories", 
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @PropertySource("classpath:database.properties")
 public class DatabaseConfig {
 
+	//Pola z wartościami znajdującymi się w pliku database.properties (katalog main/resources)
     private static final String PROPERTY_NAME_DATABASE_DRIVER   = "db.driver";
     private static final String PROPERTY_NAME_DATABASE_PASSWORD = "db.password";
     private static final String PROPERTY_NAME_DATABASE_URL      = "db.url";
@@ -35,6 +37,7 @@ public class DatabaseConfig {
     @Resource
     private Environment env;
 
+    //Konfiguracja źrodła danych, czyli ustawienie danych umożliwiających dostęp do bazy danych
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -47,6 +50,7 @@ public class DatabaseConfig {
         return dataSource;
     }
 
+    //Dodatkowe właściwości konfigurujące Hibernate
     private Properties hibProperties() {
         Properties properties = new Properties();
         properties.put(PROPERTY_NAME_HIBERNATE_DIALECT, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_DIALECT));
@@ -54,6 +58,7 @@ public class DatabaseConfig {
         return properties;
     }
 
+    //Bean z menedżerem transakcji dla Hibernate
     @Bean
     public HibernateTransactionManager transactionManager() {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
@@ -61,6 +66,7 @@ public class DatabaseConfig {
         return transactionManager;
     }
 
+    //Bean z fabryką sesji dla transkacji w bazie danych
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();

@@ -15,9 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Sifts through all incoming requests and installs a Spring Security principal
- * if a header corresponding to a valid user is found.
- *
+ * Klasa definiująca nowy filtr do autoryzacji za pomocą tokena
+ * 
  * @author Philip W. Sorst (philip@sorst.net)
  * @author Josh Long (josh@joshlong.com)
  */
@@ -31,6 +30,7 @@ public class XAuthTokenFilter extends GenericFilterBean {
         this.detailsService = userDetailsService;
     }
 
+    //Filtr przechwytujący wszystkie przychodzące żądania i dołączający identyfikator jeżeli użytkownik istnieje
     @Override
     public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain filterChain) throws IOException, ServletException {
         try {
@@ -52,5 +52,4 @@ public class XAuthTokenFilter extends GenericFilterBean {
             throw new RuntimeException(ex);
         }
     }
-
 }

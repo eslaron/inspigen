@@ -7,9 +7,11 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
+//Klasa konfigurująca silnik renderowania widokow
 @Configuration
 public class ThymeleafConfig {
 
+	//Bean konfigurujący resolver szablonow HTML
     @Bean
     public TemplateResolver templateResolver() {
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
@@ -20,6 +22,7 @@ public class ThymeleafConfig {
         return templateResolver;
     }
 
+    //Bean konfigurujący silnik szablonow
     @Bean
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -27,6 +30,7 @@ public class ThymeleafConfig {
         return templateEngine;
     }
 
+  	//Bean konfigurujący resolver widokow HTML
     @Bean
     public ThymeleafViewResolver thymeleafViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();

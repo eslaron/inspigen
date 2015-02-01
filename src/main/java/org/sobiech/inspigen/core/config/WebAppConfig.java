@@ -8,17 +8,18 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+//Klasa z ogolną konfiguracją aplikacji
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"org.sobiech.inspigen"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
     
-    // Maps resources path to webapp/resources
+    //Mapowanie zasobow do scieżki do katalogu webapp/resources
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
-    // Provides internationalization of messages
+    //Internacjonalizacja komunikatow
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource source = new ResourceBundleMessageSource();

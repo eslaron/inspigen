@@ -7,6 +7,8 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
+ * Klasa dodająca nowy filtr do zabezpieczeń przy autoryzacji tokenem
+ * 
  * @author Philip W. Sorst (philip@sorst.net)
  * @author Josh Long (josh@joshlong.com)
  */
@@ -18,10 +20,10 @@ public class XAuthTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecur
 		this.detailsService = detailsService;
 	}
 	
+	//Nadpisana metoda w ktorej dodajemy nasz filtr
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		XAuthTokenFilter customFilter = new XAuthTokenFilter(detailsService);
 		http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
 	}
-
 }

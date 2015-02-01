@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+//Klasa zawierająca dodatkowe beany inicjalizowane wraz ze startem aplikacji
 @Configuration
 public class CustomBeansConfig {
 		
 	@Autowired
 	ISettingsService settingsService;
 	
+	//Bean inicjalizujący ustawienia aplikacji
     @Bean
     public Settings getSettings() {
     	Settings settings = settingsService.getSettings().get(0);

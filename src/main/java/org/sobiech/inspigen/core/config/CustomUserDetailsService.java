@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 
+//Klasa zawierająca nadpisane metody wykorzystywane przy identyfikacji użytkownika
 public class CustomUserDetailsService extends JdbcDaoImpl implements UserDetailsService {
  
 	@Autowired
@@ -65,7 +66,8 @@ public class CustomUserDetailsService extends JdbcDaoImpl implements UserDetails
 		super.setAuthoritiesByUsernameQuery(queryString);
 	}
  
-	//override to get accountNonLocked  
+	/* Nadpisana metoda pozwalająca na pobranie informacji o użytkowniku, w tym informacji o tym
+	czy jest zablokowany */
 	@Override
 	public List<UserDetails> loadUsersByUsername(String username) {
 	  return getJdbcTemplate().query(super.getUsersByUsernameQuery(), new String[] { username },
@@ -85,7 +87,7 @@ public class CustomUserDetailsService extends JdbcDaoImpl implements UserDetails
 	  });
 	}
  
-	//override to pass accountNonLocked
+	//Metoda nadpisana w celu przekazania wartości statusow użytkownika, w tym blokady użytkownika
 	@Override
 	public UserDetails createUserDetails(String username, UserDetails userFromUserQuery,
 			List<GrantedAuthority> combinedAuthorities) {

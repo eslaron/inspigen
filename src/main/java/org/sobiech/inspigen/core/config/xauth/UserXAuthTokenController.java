@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonObject;
 
 /**
- * This controller generates the token that must be present in subsequent REST
- * invocations.
+ * Kontroler obsługujący proces autoryzacji użytkownika (logowania się do systemu)
+ * 
  *
  * @author Philip W. Sorst (philip@sorst.net)
  * @author Josh Long (josh@joshlong.com)
@@ -38,6 +38,7 @@ public class UserXAuthTokenController {
 	private final CustomDaoAuthenticationProvider provider;
 
 	
+	//Konstruktor z atrybutami zawierajacymi instancję kluczowych klas i interfejsow biorących udział przy logowaniu użytkownika
 	@Autowired
 	public UserXAuthTokenController(AuthenticationManager am, CustomUserDetailsService userDetailsService, CustomDaoAuthenticationProvider p) {
 		this.authenticationManager = am;
@@ -45,10 +46,11 @@ public class UserXAuthTokenController {
 		this.provider = p;
 	}
 
+	//Zmapowana metoda obsługująca żądanie POST autoryzujące użytkownika
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<String> authorize(@RequestParam String username, @RequestParam String password) {
 
-		HttpStatus responseStatus = HttpStatus.OK;
+		HttpStatus responseStatus = HttpStatus.OK;		
 		JsonObject jsonResponse = new JsonObject();
 		
 		try {	

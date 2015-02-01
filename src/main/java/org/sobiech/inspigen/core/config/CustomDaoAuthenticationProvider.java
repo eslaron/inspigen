@@ -14,7 +14,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
-
+//Klasa zawierająca nadpisane metody odpowiedzialne za autentykację
 public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
 	@Autowired
@@ -35,28 +35,38 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 		this.loginFailureError = loginFailureError;
 	}
 
+		//Nadpisana metoda wychwytująca nieudane proby logowania i blokująca konta po N nieudanych probach
 		@Override
 		public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		    
+			//Pobieramy nazwę użytkownika podaną podczas logowania
 			username = authentication.getName();
 			
+			//Sprawdzamy czy użytkownik znajduje się w bazie danych
 			User userByName = userService.findUserByUsername(username);
 			
 		      try {
 		    	
+		    	//Jeśli użytkownik został znaleziony w bazie  
 		    	if (userByName != null) {
+		    		
+		    		//Jeśli konto jest odblokowane, to wyzeruj liczbę prob i zaktualizuj użytkownika
 		    		if(userByName.getAccountNonLocked() == true) {
 			    		userByName.setFailedLogins(0);
 			    		userService.updateUser(userByName);
 		    		}
+		    		
+		    		//Pobieramy datę ostatniej proby i formatujemy ją
 		    		Date lastAttempt  = userByName.getLastLoginAttempt();
 			  		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			  		format.format(lastAttempt);
 			  		
+			  		//Ustawiamy czas po ktorym konto ma być odblokowane
 			  		Calendar unlockTime = Calendar.getInstance();
 			  		unlockTime = format.getCalendar();
 			  		unlockTime.add(Calendar.MINUTE, settings.getAccountLockTime());
-			  			
+			  		
+			  		//Jeżeli czas blokady upłynął, to wyzeruj proby, odblokuj i zaktualizuj użytkownika
 			  		if(Calendar.getInstance().getTime().after(unlockTime.getTime()) == true) {
 			  			userByName.setFailedLogins(0);
 			  			userByName.setAccountNonLocked(true);
@@ -64,19 +74,23 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 			  		}
 		      }
 		    	  	return super.authenticate(authentication);
-		        
+
 		      } catch (BadCredentialsException e) {	
 		    	  
 		    	  setLoginFailureError("invalidCredentials");
 		    	  
+		    	//Jeśli użytkownik został znaleziony w bazie 
 		    	  if (userByName != null) {
-		    		  
+		    		
+		    		//Pobierz liczbę nieudanych prob  
 		    		int attempts = userByName.getFailedLogins(); 
 		    		
+		    		//Zwiększ za każdym błędnym logowaniem
 		    		attempts++;
 		    		userByName.setFailedLogins(attempts);
 		    		userByName.setLastLoginAttempt(new Date());
 		    		
+		    		//Jeśli zostanie przekroczona liczba N prob, to zablokuj konto
 		    		if (attempts > settings.getMaxLoginAttempts()-1) {
 		    			userByName.setAccountNonLocked(false);
 		    			setLoginFailureError("accountLocked");
