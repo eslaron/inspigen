@@ -521,10 +521,13 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 	  for(var i = 0; i < $scope.selectedUsers.length; i++) {	
 		  assignGroup.id = $scope.selectedUsers[i];
 		  assignGroup.role = $scope.addToGroup;
+		  assignGroup.enabled = true;
 		  assignGroup.put().then(function(response){
-			  
-			  $scope.user.role = $scope.addToGroup;
-			  $scope.tableParams.reload();
+			  return  User.loadUsersFromJson()
+	    	    .then(function(newlyLoadedUsers){
+	    	    	Context.all.users = User.getAllUsers();
+	    	    	$scope.tableParams.reload();
+	    	    });			  
 		  });
 	  }
   }

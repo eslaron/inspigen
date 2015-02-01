@@ -13,7 +13,7 @@ public class CustomBeansConfig {
 	ISettingsService settingsService;
 	
     @Bean
-    Settings getSettings() {
+    public Settings getSettings() {
     	Settings settings = settingsService.getSettings().get(0);
     	return settings;
     }

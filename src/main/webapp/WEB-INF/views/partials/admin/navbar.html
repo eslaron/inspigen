@@ -10,10 +10,11 @@
           <div class="navbar-brand nav-font">INSPIGEN</div>
         </div>
         <div class="collapse navbar-collapse" id="navigationbar">
-          <ul class="nav navbar-nav navbar-right">
-          	<li>Witaj {{loggedUser.username}}</li>
-            <li><a ng-click="logout()">Wyloguj</a></li>
-          </ul>
+          <div class="nav navbar-nav navbar-right settings_table">
+          	Witaj {{loggedUser.username}} | 
+          	<a ui-sref="app.admin.users.details({ id: loggedUser.id })" ng-href="#/admin/{{loggedUser.id}}/details">Profil</a> | 
+            <a ng-click="logout()">Wyloguj</a> 
+          </div>
         </div>
       </div>
 </nav>

@@ -239,7 +239,7 @@ public class User extends BaseEntity implements UserDetails {
                 authorities.add(authority);
         }
  
-        System.out.println(authorities);*/
+        */
     	return null;
 	}	
 }

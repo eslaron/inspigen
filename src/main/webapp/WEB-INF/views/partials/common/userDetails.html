@@ -46,7 +46,7 @@
 							<b>Adres zameldowania:</b>
 						</td>
 						<td valign="top">
-							<button class="btn btn-primary"  ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ui-sref="app.admin.adresses.edit({ id: address.id })">Edytuj</button>
+							<button class="btn btn-primary"  ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ui-sref="app.admin.addresses.edit({ id: address.id })">Edytuj</button>
 							<button class="btn btn-primary"  ng-hide="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER') || user.role=='Administrator'" ui-sref="app.moderator.editAddress({ id: address.id })">Edytuj</button>
 							<button class="btn btn-primary"  ng-hide="(hasRole('ROLE_ADMIN') || hasRole('ROLE_MOD')) || user.id != loggedUser.id" ui-sref="app.member.editAddress({ id: address.id })">Edytuj</button>
 						</td>
@@ -65,7 +65,7 @@
 							<b>Adres korespondencyjny:</b>
 						</td>
 						<td valign="top">
-							<button class="btn btn-primary" ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ui-sref="app.admin.adresses.edit({ id: mailAddress.id })">Edytuj</button>
+							<button class="btn btn-primary" ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_USER')" ui-sref="app.admin.addresses.edit({ id: mailAddress.id })">Edytuj</button>
 							<button class="btn btn-primary" ng-hide="hasRole('ROLE_ADMIN') || hasRole('ROLE_USER') || user.role=='Administrator'" ui-sref="app.moderator.editAddress({ id: mailAddress.id })">Edytuj</button>
 							<button class="btn btn-primary" ng-hide="(hasRole('ROLE_ADMIN') || hasRole('ROLE_MOD')) || user.id != loggedUser.id" ui-sref="app.member.editAddress({ id: mailAddress.id  })">Edytuj</button>
 						</td>
@@ -80,7 +80,7 @@
 						</td>
 					</tr>
 					
-					<tr ng-hide="person != null && person.user_id == user.id || user.role=='Administrator'">
+					<tr ng-hide="person != null && person.user_id == user.id">
 						<td>
 							Uzupełnij dane osobowe		
 						</td>
@@ -91,7 +91,7 @@
 						</td>
 					</tr>
 					
-					<tr ng-hide="address != null && address.user_id == user.id && address.registeredAddress == true  || user.role=='Administrator'">
+					<tr ng-hide="address != null && address.user_id == user.id && address.registeredAddress == true">
 						<td>
 							Uzupełnij adres zameldowania		
 						</td>
@@ -101,7 +101,7 @@
 						<button class="btn btn-primary" ng-hide="hasRole('ROLE_ADMIN') || hasRole('ROLE_MOD') || user.id != loggedUser.id" ui-sref="app.member.addAddress({ id: user.id })">Dodaj</button>
 						</td>
 					</tr>
-					<tr ng-hide="mailAddress != null && mailAddress.user_id == user.id || address.mailAddress == true  || user.role=='Administrator'">
+					<tr ng-hide="mailAddress != null && mailAddress.user_id == user.id || address.mailAddress == true">
 						<td>
 							Uzupełnij adres korespondencyjny			
 						</td>
@@ -116,7 +116,7 @@
 					<div ng-controller="UserAttachmentsController"><!-- blok istnieje tylko dla uruchmomienia funkcji z kontrolera --></div>
 					<img ng-hide="userPhoto.file != null" src="resources/images/blank_photo.jpg" width="50%" height="50%">
 					<img ng-hide="userPhoto.file == null" ng-src="{{userPhoto.file}}" width="50%" height="50%">	
-							<div ng-hide="hasRole('ROLE_USER') && user.id != loggedUser.id || user.role=='Administrator'" class="form-group">
+							<div ng-hide="hasRole('ROLE_USER') && user.id != loggedUser.id" class="form-group">
 				
 										<image-uploadr file="attachment.file" filename="attachment.fileName" filetype="attachment.fileType"></image-uploadr>
 										

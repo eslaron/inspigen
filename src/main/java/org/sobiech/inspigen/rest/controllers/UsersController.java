@@ -44,9 +44,7 @@ public class UsersController {
     	
     	message = "userUpdated";
     	HttpStatus responseStatus = HttpStatus.OK;
- 	
-    	System.out.println(data.getEnabled());
-    	System.out.println(data.getLocked());
+
     	userService.updateUser(data);
     	
 			JsonObject jsonResponse = new JsonObject();

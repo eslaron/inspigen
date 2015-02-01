@@ -54,7 +54,7 @@ public class EmailServiceImpl implements IEmailService {
 			}
 			
 			if (tokenType == "passwordToken") {
-				mimeHelper.setSubject("Przypomnienie hasła - Inspigen");
+				mimeHelper.setSubject("Reset hasła - Inspigen");
 				
 				msg = "<html><body>Hej :)<br/>Aby zresetować swoje hasło kliknij w poniższy link: <br/>"
 						+ "<a href='http://inspigen.pl:8080/#/newPassword/"
