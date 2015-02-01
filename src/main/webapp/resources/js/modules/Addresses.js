@@ -4,7 +4,7 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 	
 	$stateProvider
 	
-	.state('app.addresses', {
+	.state('app.admin.addresses', {
 		     title: 'Adresy',
 		     abstract: false,
 		     url: '/addresses',
@@ -26,7 +26,7 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 		   	   }
 		   }) 
 		   
-		 .state('app.addresses.add', {
+		 .state('app.admin.addresses.add', {
 	     title: 'Dodaj adres',
 	     abstract: false,
 	     url: '/:id/add',
@@ -41,12 +41,12 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin','mod','user']
+	             only: ['admin']
 	           }
 	       }
 	   })
 	   
-	    .state('app.addresses.edit', {
+	    .state('app.admin.addresses.edit', {
 	     title: 'Edytuj adres',
 	     abstract: false,
 	     url: '/:id/edit',
@@ -63,7 +63,135 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin','mod','user']
+	             only: ['admin']
+	           }
+	       }
+	   })
+	   
+	   .state('app.moderator.addresses', {
+		     title: 'Adresy',
+		     abstract: false,
+		     url: '/addresses',
+		     views: {
+		         'navbar@': {
+		       	  templateUrl: 'partials/admin/navbar.html' 
+		         },
+		         'sidebar@': {
+		       	  templateUrl: 'partials/admin/sidebar.html'
+		         }
+		       },
+		       data: {
+		           permissions: {
+		             only: ['moderator']
+		           }
+		       },
+		       resolve: {
+
+		   	   }
+		   }) 
+		   
+		 .state('app.moderator.addAddress', {
+	     title: 'Dodaj adres',
+	     abstract: false,
+	     url: '/addresses/:id/add',
+	     views: {
+	         'content@': {
+	       	  templateUrl: 'partials/common/addAddress.html',
+	       	  controller: function($stateParams, $scope, Address) {
+	       		  $scope.address = {user_id:""};
+	              $scope.address.user_id = $stateParams.id;
+	          }      
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['moderator']
+	           }
+	       }
+	   })
+	   
+	    .state('app.moderator.editAddress', {
+	     title: 'Edytuj adres',
+	     abstract: false,
+	     url: '/addresses/:id/edit',
+	     views: {
+	         'content@': {
+	       	  templateUrl: 'partials/common/editAddress.html',
+	       	  controller: function($stateParams, $scope, Address) {
+	       		  $scope.address = {};
+	              $scope.address.id = $stateParams.id;
+	              $scope.address = Address.getAddressById($stateParams.id);
+	              $scope.isCollapsed = true;
+	          }    
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['moderator']
+	           }
+	       }
+	   })
+	   
+	   .state('app.member.addresses', {
+		     title: 'Adresy',
+		     abstract: false,
+		     url: '/addresses',
+		     views: {
+		         'navbar@': {
+		       	  templateUrl: 'partials/admin/navbar.html' 
+		         },
+		         'sidebar@': {
+		       	  templateUrl: 'partials/admin/sidebar.html'
+		         }
+		       },
+		       data: {
+		           permissions: {
+		             only: ['user']
+		           }
+		       },
+		       resolve: {
+
+		   	   }
+		   }) 
+		   
+		 .state('app.member.addAddress', {
+	     title: 'Dodaj adres',
+	     abstract: false,
+	     url: '/addresses/:id/add',
+	     views: {
+	         'content@': {
+	       	  templateUrl: 'partials/common/addAddress.html',
+	       	  controller: function($stateParams, $scope, Address) {
+	       		  $scope.address = {user_id:""};
+	              $scope.address.user_id = $stateParams.id;
+	          }      
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['user']
+	           }
+	       }
+	   })
+	   
+	    .state('app.member.editAddress', {
+	     title: 'Edytuj adres',
+	     abstract: false,
+	     url: '/addresses/:id/edit',
+	     views: {
+	         'content@': {
+	       	  templateUrl: 'partials/common/editAddress.html',
+	       	  controller: function($stateParams, $scope, Address) {
+	       		  $scope.address = {};
+	              $scope.address.id = $stateParams.id;
+	              $scope.address = Address.getAddressById($stateParams.id);
+	              $scope.isCollapsed = true;
+	          }    
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['user']
 	           }
 	       }
 	   })
@@ -82,6 +210,8 @@ Persons.controller('AddressesController', ['$scope', '$state', '$stateParams', '
   
   $scope.registeredAddress = true;
   $scope.mailAddress = false;
+  
+  $scope.addresses = Context.all.addresses;
   
   var AllAddresses = Restangular.all('addresses');
   var OneAddress = Restangular.one('addresses');
@@ -109,12 +239,31 @@ Persons.controller('AddressesController', ['$scope', '$state', '$stateParams', '
 		OneAddress.registeredAddress = $scope.address.registeredAddress;
 		OneAddress.mailAddress = $scope.address.mailAddress;
 		OneAddress.user_id = $scope.address.user_id;
-	 
+		
 		OneAddress.put().then(function(response) {
+			if($scope.address.mailAddress == true 
+					&& $scope.address.registeredAddress == true) {
+				for(var i=0; i < $scope.addresses.length; i++) {	
+					if($scope.addresses[i].user_id == $scope.address.user_id 
+							&&  (($scope.addresses[i].registeredAddress == false 
+									&& $scope.addresses[i].mailAddress == true)
+										|| ($scope.addresses[i].registeredAddress == true 
+											&& $scope.addresses[i].mailAddress == false))) {
+						$scope.deleteAddress($scope.addresses[i].id);
+					}
+				}
+			}		
 			Address.loadAddressesFromJson();
 		  }, function(error) {
 			  $scope.error = error.data; 					
 		  });		  
   }
   
+  $scope.deleteAddress = function(id) {
+	      
+	  OneAddress.id = id;
+		  
+	  OneAddress.remove().then(function(response){});
+  }
+	  
 }]);

@@ -40,6 +40,25 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	       	  only: ['moderator']
 	          }
 	      }
+	   }) 
+	   
+	   .state('app.member.events', {
+	    title: 'Wydarzenia',
+	    abstract: false,
+	    url: '/events',
+	    views: {
+	        'content@': {
+	      	  templateUrl: 'partials/common/events.html',
+	      	 controller: function($scope) {
+	       		  $scope.event = {};      
+	       	  }
+	        }
+	      },
+	      data: {
+	          permissions: {
+	       	  only: ['user']
+	          }
+	      }
 	   })  
 		   
 		 .state('app.admin.events.add', {
@@ -158,21 +177,61 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
     .state('app.moderator.eventDetails', {
 	     title: 'Szczegóły wydarzenia',
 	     abstract: false,
-	     url: '/events/:id/edit',
+	     url: '/events/:id/details',
 	     views: {
-	         'content@': {
-	       	  templateUrl: 'partials/common/editEvent.html',
-	       	  controller: function($stateParams, $scope, Event) {
-	       		  $scope.event = {};
-	              $scope.event.id = $stateParams.id;
-	              $scope.event = Event.getEventById($stateParams.id);
-	              $scope.isCollapsed = true;
-	          }      
-	         }
-	       },
+	    	 'content@': {
+	          	  templateUrl: 'partials/common/eventDetails.html',
+	          	  controller: function($stateParams, $scope, Event, Location, Participant) {
+	          		  $scope.event = {};
+	                 $scope.event.id = $stateParams.id;
+	                 $scope.event = Event.getEventById($stateParams.id);
+	                
+	                 $scope.locations = Location.getAllLocations();
+	         
+	                 for(var i = $scope.locations.length - 1; i >= 0; i--) {
+	     			    if($scope.locations[i].id == $scope.event.location_id) {
+	     			       $scope.location = $scope.locations[i];
+	     			    }
+	     			  }
+
+	                 $scope.isCollapsed = true;
+	             } 
+	            },
+	          },
 	       data: {
 	           permissions: {
 	             only: ['moderator']
+	           }
+	       }
+	   })
+	   
+	   .state('app.member.eventDetails', {
+	     title: 'Szczegóły wydarzenia',
+	     abstract: false,
+	     url: '/events/:id/details',
+	     views: {
+	    	 'content@': {
+	          	  templateUrl: 'partials/common/eventDetails.html',
+	          	  controller: function($stateParams, $scope, Event, Location, Participant) {
+	          		  $scope.event = {};
+	                 $scope.event.id = $stateParams.id;
+	                 $scope.event = Event.getEventById($stateParams.id);
+	                
+	                 $scope.locations = Location.getAllLocations();
+	         
+	                 for(var i = $scope.locations.length - 1; i >= 0; i--) {
+	     			    if($scope.locations[i].id == $scope.event.location_id) {
+	     			       $scope.location = $scope.locations[i];
+	     			    }
+	     			  }
+
+	                 $scope.isCollapsed = true;
+	             } 
+	            },
+	          },
+	       data: {
+	           permissions: {
+	             only: ['user']
 	           }
 	       }
 	   })
@@ -234,11 +293,23 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
   }
   
   $scope.prepareEventParticipantsList = function() {
+	  
+	  $scope.tempParticipant = {id:"", firstName:"", lastName:"", user_id:"", approved:""};
+	  
 	  for(var i = $scope.participants.length - 1; i >= 0; i--) {	
 		  if($scope.participants[i].event_id == $scope.event.id) {
 			  for(var j = $scope.persons.length - 1; j >= 0; j--) {
-				  if($scope.persons[j].user_id == $scope.participants[i].user_id)
-					  $scope.eventParticipants.push($scope.persons[j]);
+				  if($scope.persons[j].user_id == $scope.participants[i].user_id) {
+					  
+					  $scope.tempParticipant.id = $scope.persons[j].id;
+					  $scope.tempParticipant.firstName = $scope.persons[j].firstName;
+					  $scope.tempParticipant.lastName = $scope.persons[j].lastName;
+					  $scope.tempParticipant.user_id = $scope.persons[j].user_id;
+				  	  $scope.tempParticipant.approved = $scope.participants[i].approved;
+					  
+					  $scope.eventParticipants.push($scope.tempParticipant);
+					  $scope.tempParticipant = {};
+				  }		  				
 			  }	  
 		  }						  	  
 	  }  
@@ -318,7 +389,13 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 	  $scope.participant.event_id = eventId;
 	  $scope.participant.user_id = userId;
 	  $scope.participant.eventRole = "uczestnik";
-	    
+	  
+	  if($rootScope.hasRole('ROLE_USER') == true)
+		  $scope.participant.approved = false;
+	  
+	  if($rootScope.hasRole('ROLE_ADMIN') == true || $rootScope.hasRole('ROLE_MOD'))
+		  $scope.participant.approved = true;
+	      
 	  //Zapisujemy do pamięci cache informację o tym, że zalogowany użytkownik dołączył do wydarzenia.
 	  if(userId == $scope.loggedUser.id) {	  
 		  $scope.loggedUserParticipating = User.setLoggedUserIsParticipating(true);
@@ -330,6 +407,7 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
  		  if($scope.eventParticipants[i].user_id == userId) {
  			  $scope.duplicateParticipant = true;
  			  $scope.duplicateParticipantMessage = "Uczestnik został już dodany.";
+ 			  $scope.alreadyParticipating = "Zgłosiłeś się już do uczestnictwa.";
  		  }
 	  }
  	  

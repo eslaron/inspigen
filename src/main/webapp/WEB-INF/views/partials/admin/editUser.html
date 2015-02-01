@@ -1,14 +1,15 @@
 <div class="content"  ng-controller="UsersController">
 	<div class="userList container col-md-3">
-		<h2>{{editedUser}} - edycja</h2>
-		ID użytkownika: <b>{{user.id}}</b><br /><br />
+		<h2 ng-hide="hasRole('ROLE_USER')">{{editedUser}} - edycja</h2>
+		<h2 ng-show="hasRole('ROLE_USER')">Edycja profilu</h2>
+		<h4 ng-hide="hasRole('ROLE_USER')">ID użytkownika: <b>{{user.id}}</b></h4><br /><br />
 			<form name="editUser_form" ng-submit="editUser(user)" class="form-horizontal input-border" novalidate>
 	 
 	    						<div ng-hide="hideMessage" ng-class="messageStyle">
 					                   {{message}}     
 					   			</div>
 	 
-						<div class="form-group">
+						<div class="form-group" ng-hide="hasRole('ROLE_USER')">
 							<div class="col-sm-12">
 	    						<input
 	    								class="form-control" 
@@ -43,7 +44,7 @@
 							</div>
 						</div>
 						
-						<div class="form-group">
+						<div class="form-group" ng-hide="user.id != loggedUser.id">
 							<div class="col-sm-12">
 	    						<input
 	    								class="form-control" 
@@ -74,8 +75,8 @@
 	  		
 							</div>
 						</div>
-						
-						<div class="form-group">
+										
+						<div class="form-group" ng-hide="user.id != loggedUser.id">
 							<div class="col-sm-12">
 	    						<input
 	    								class="form-control"
@@ -111,19 +112,19 @@
 							</div>
 						</div> 
 						
-							<div class="form-group">
+							<div class="form-group" ng-hide="hasRole('ROLE_USER')">
 								<div class="col-sm-12">
 			    					<select  class="form-control" ng-model="selectedRole.key">
 			        					<option ng-repeat="item in roles" value="{{item.key}}" ng-selected="selectedRole.key == item.key">{{item.key}}</option>
 			      					</select>
 								</div>
 							</div> 
-							<div class="form-group">
+							<div class="form-group" ng-hide="hasRole('ROLE_USER')">
 								<div class="col-sm-12">
 			    				Aktywny <input type="checkbox" ng-model="enabled">
 								</div>
 							</div> 	
-							<div class="form-group">
+							<div class="form-group" ng-hide="hasRole('ROLE_USER')">
 								<div class="col-sm-12">
 			    				Zablokowany <input type="checkbox" ng-model="locked">
 								</div>

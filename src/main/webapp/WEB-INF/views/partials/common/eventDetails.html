@@ -5,7 +5,7 @@
 		
 		<table>
 			<tr>		
-				<td><b>Dane podstawowe</b></td>
+				<td><b>Dane podstawowe:</b></td>
 				<td valign="top">
 					<button class="btn btn-primary" ng-hide="hasRole('ROLE_USER') || hasRole('ROLE_MOD')" ui-sref="app.admin.events.edit({ id: event.id })">Edytuj</button>
 					<button class="btn btn-primary" ng-hide="hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')" ui-sref="app.moderator.editEvent({ id: event.id })">Edytuj</button>
@@ -27,7 +27,7 @@
 			</tr>
 			<tr>				
 				<td>
-					<b>Miejsce wydarzenia:</b>
+					<b>Miejsce wydarzenia:</b><br />
 					Nazwa: <b>{{location.name}}</b><br />
 					Typ: <b>{{location.type}}</b><br />
 					Ulica: <b>{{location.address}}</b><br />
@@ -44,19 +44,22 @@
 		<button class="btn btn-success" ng-show="loggedUserParticipating != true && loggedUser.id != eventCoordinator.user_id" 
 		ng-click="addEventParticipant(loggedUser.id,event.id)">Dołącz do wydarzenia</button>
 		<button class="btn btn-danger" ng-show="loggedUserParticipating == true && loggedUser.id != eventCoordinator.user_id" 
-		ng-click="deleteEventParticipant(loggedUser.id)">Zrezygnuj</button><br /><br />
+		ng-click="deleteEventParticipant(loggedUser.id)">Zrezygnuj</button>
+		{{alreadyParticipating}}<br /><br />
 		
-		Wyszukaj użytkownika na liście:<br />
-		<input class="form-control" type="text" ng-model="simpleFilter" />
-		
-		Wybierz użytkownika z listy:<br /> 
-		<select ng-hide="hasRole('ROLE_USER')" class="form-control" ng-model="eventParticipant_id">
-			<option selected disabled value="">Przydziel uczestnika</option>
-			<option ng-repeat="p in persons | filter:simpleFilter" value="{{p.user_id}}">{{p.firstName}} {{p.lastName}}</option>
-		</select><br />
-		<button ng-hide="hasRole('ROLE_USER')" class="btn btn-danger" ng-click="addEventParticipant(eventParticipant_id,event.id)" ng-disabled="eventParticipant_id == null">Dodaj uczestnika</button>
-		{{duplicateParticipantMessage}}
-		<br /><br />
+		<div ng-hide="hasRole('ROLE_USER')">
+			Wyszukaj użytkownika na liście:<br />
+			<input class="form-control" type="text" ng-model="simpleFilter" />
+			
+			Wybierz użytkownika z listy:<br /> 
+			<selectclass="form-control" ng-model="eventParticipant_id">
+				<option selected disabled value="">Przydziel uczestnika</option>
+				<option ng-repeat="p in persons | filter:simpleFilter" value="{{p.user_id}}">{{p.firstName}} {{p.lastName}}</option>
+			</select><br />
+			<button ng-hide="hasRole('ROLE_USER')" class="btn btn-danger" ng-click="addEventParticipant(eventParticipant_id,event.id)" ng-disabled="eventParticipant_id == null">Dodaj uczestnika</button>
+			{{duplicateParticipantMessage}}
+			<br /><br />
+		</div>
 		
 		Uczestnicy wydarzenia: <br /><br />
 		<ul>
@@ -65,7 +68,9 @@
 				{{ep.firstName}} {{ep.lastName}}
 				<button class="btn btn-primary" ng-show="hasRole('ROLE_ADMIN')" ui-sref="app.admin.users.details({ id: ep.user_id })">Profil uczestnika</button>
 				<button class="btn btn-primary" ng-show="hasRole('ROLE_MOD')" ui-sref="app.moderator.userDetails({ id: ep.user_id })">Profil uczestnika</button>
+				<button class="btn btn-primary" ng-show="hasRole('ROLE_USER')" ui-sref="app.member.userDetails({ id: ep.user_id })">Profil uczestnika</button>
 				<button class="btn btn-danger" ng-hide="hasRole('ROLE_USER')" ng-click="deleteEventParticipant(ep.user_id)">Usuń uczestnika</button>
+				<small class="error-message" ng-hide="ep.approved == true">(Oczekuje na akceptację zgłoszenia)</small>			
 			</li>
 		</ul>
 		
@@ -76,9 +81,7 @@
 		    		<button class="btn btn-primary" ng-click="addAttachment(loggedUser.id,attachment.file)" ng-disabled="attachment.file == null">Dodaj załącznik</button>
 		    		{{noFile}}
 		    	</div>	
-		    	
-				<br /><br />
-				
+			
 				Lista załączników:<br />
 				<img ng-hide="loadingAttachments == false" src="resources/images/loading.gif">
 				<ul ng-hide="loadingAttachments == true">

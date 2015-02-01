@@ -16,6 +16,8 @@ public class Participant extends BaseEntity implements Serializable {
 	
 	private int user_id;
 	
+	private Boolean approved;
+	
 	private String eventRole;
 	
 	public Participant() {}
@@ -36,6 +38,14 @@ public class Participant extends BaseEntity implements Serializable {
 		this.event_id = event_id;
 	}
 
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
+	}
+	
 	public String getEventRole() {
 		return eventRole;
 	}

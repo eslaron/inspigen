@@ -1,26 +1,19 @@
-<div class="sidebar">
+<div class="sidebar" ng-controller="UsersController">
 	<div class="sidebar-content">
-
-		
-<accordion close-others="true">
- 
-
-
-
-    <accordion-group is-open="false">
-        <accordion-heading>
-            Wydarzenia<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-        </accordion-heading>
-         <a ui-sref="app.events" ng-href="#/events">Lista</a><br />
-    </accordion-group>
-    <accordion-group is-open="false">
-        <accordion-heading>
-            Profil<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-        </accordion-heading>
-         <a ui-sref="app.user.profile" ng-href="#/user/:id/profile">Profil</a><br />
-    </accordion-group>
-
-   
-</accordion>
+		<accordion close-others="true">
+		 <accordion-group is-open="false">
+	        <accordion-heading>
+	            <a ui-sref="app.member.dashboard" ng-href="#/member/dashboard">Panel wolontariusza</a>
+	            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+	        </accordion-heading>
+       		Sekcje w budowie
+    	</accordion-group>
+		    <accordion-group is-open="false">
+		        <accordion-heading>
+		            Wydarzenia<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+		        </accordion-heading>
+		         <a ui-sref="app.member.events" ng-href="#/member/events">Lista</a><br />
+		    </accordion-group>
+		</accordion>
 	</div>
 </div>

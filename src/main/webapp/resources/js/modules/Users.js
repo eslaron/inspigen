@@ -183,7 +183,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
        },
        data: {
            permissions: {
-        	   only: ['admin','moderator','user']
+        	   only: ['admin']
            }
        }
    })
@@ -235,7 +235,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
    	 	},
    	 	data: {
             permissions: {
-            	only: ['admin']
+            	only: ['user']
             }
         },
      })
@@ -256,6 +256,71 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
            }
        }
    })
+   
+     .state('app.member.editUser', {
+     title: 'Edytuj użytkownika',
+     abstract: false,
+     url: '/users/:id/edit',
+     views: {
+         'content@': {
+       	  templateUrl: 'partials/admin/editUser.html',
+       	  controller: function($stateParams, $scope, User) {
+              $scope.user.id = $stateParams.id;
+              $scope.user = User.getUserById($stateParams.id);
+              $scope.isCollapsed = true;
+          } 
+         },
+       },
+       data: {
+           permissions: {
+        	   only: ['user']
+           }
+       }
+   })
+   
+   .state('app.member.userDetails', {
+    title: 'Użytkownicy',
+    abstract: false,
+    url: '/users/:id/details',
+    views: {
+    	'content@': {
+        	  templateUrl: 'partials/common/userDetails.html',
+        	  controller: function($stateParams, $scope, User, Person, Address) {
+               $scope.user.id = $stateParams.id;
+               $scope.user = User.getUserById($stateParams.id);
+               $scope.persons = Person.getAllPersons();
+               $scope.addresses = Address.getAllAddresses();
+                      
+               for(var i = $scope.persons.length - 1; i >= 0; i--) {
+   			    if($scope.persons[i].user_id == $stateParams.id) {
+   			       $scope.person = $scope.persons[i];
+   			    }
+   			}
+               for(var i = $scope.addresses.length - 1; i >= 0; i--) {
+   			    if($scope.addresses[i].user_id == $stateParams.id 
+   			    		&& $scope.addresses[i].registeredAddress == true) {
+   			       $scope.address = $scope.addresses[i];
+   		   }
+               }
+               
+               for(var i = $scope.addresses.length - 1; i >= 0; i--) {
+     			    if($scope.addresses[i].user_id == $stateParams.id 
+     			    		&& $scope.addresses[i].mailAddress == true
+     			    			&& $scope.addresses[i].registeredAddress == false) {
+     			       $scope.mailAddress = $scope.addresses[i];
+     		   }
+                 }
+               
+               $scope.isCollapsed = true;
+           } 
+          },
+        },
+      data: {
+          permissions: {
+       	  only: ['user']
+          }
+      }
+  })
    
    	.state('app.moderator', {
         url: '/mod',
@@ -304,11 +369,11 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
       },
       data: {
           permissions: {
-       	  only: ['admin','moderator']
+       	  only: ['moderator']
           }
       }
   })
-  
+   
   .state('app.moderator.userDetails', {
     title: 'Użytkownicy',
     abstract: false,
@@ -406,6 +471,14 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
   
   $scope.loggedUser = User.getLoggedUserByUsername($rootScope.loggedUsername);
 
+	
+  $scope.loggedUserId = 0;
+	  
+  for(var i=0; i<data.length; i++) {
+
+	  
+  }
+  
   $scope.changeSelection = function(user) {
 	  
 	  if(user.$selected == true)

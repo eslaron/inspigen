@@ -4,7 +4,7 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 	
 	$stateProvider
 	
-	.state('app.persons', {
+	.state('app.admin.persons', {
 		     title: 'Dane osobowe',
 		     abstract: false,
 		     url: '/persons',
@@ -26,17 +26,11 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 		   	   }
 		   }) 
 		   
-		 .state('app.persons.add', {
+		 .state('app.admin.persons.add', {
 	     title: 'Dodaj dane osobowe',
 	     abstract: false,
 	     url: '/:id/add',
 	     views: {
-	         'navbar@': {
-	       	  templateUrl: 'partials/admin/navbar.html' 
-	         },
-	         'sidebar@': {
-	       	  templateUrl: 'partials/admin/sidebar.html'
-	         },
 	         'content@': {
 	       	  templateUrl: 'partials/common/addPerson.html',
 	       	  controller: function($stateParams, $scope, Person) {
@@ -47,22 +41,16 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin','mod','user']
+	             only: ['admin']
 	           }
 	       }
 	   })
 	   
-	    .state('app.persons.edit', {
+	    .state('app.admin.persons.edit', {
 	     title: 'Edytuj dane osobowe',
 	     abstract: false,
 	     url: '/:id/edit',
 	     views: {
-	         'navbar@': {
-	       	  templateUrl: 'partials/admin/navbar.html' 
-	         },
-	         'sidebar@': {
-	       	  templateUrl: 'partials/admin/sidebar.html'
-	         },
 	         'content@': {
 	       	  templateUrl: 'partials/common/editPerson.html',
 	       	  controller: function($stateParams, $scope, Person) {
@@ -75,7 +63,135 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 	       },
 	       data: {
 	           permissions: {
-	             only: ['admin','mod','user']
+	             only: ['admin']
+	           }
+	       }
+	   })
+	   
+	   .state('app.moderator.persons', {
+		     title: 'Dane osobowe',
+		     abstract: false,
+		     url: '/persons',
+		     views: {
+		         'navbar@': {
+		       	  templateUrl: 'partials/admin/navbar.html' 
+		         },
+		         'sidebar@': {
+		       	  templateUrl: 'partials/admin/sidebar.html'
+		         }
+		       },
+		       data: {
+		           permissions: {
+		             only: ['moderator']
+		           }
+		       },
+		       resolve: {
+
+		   	   }
+		   }) 
+		   
+		 .state('app.moderator.addPerson', {
+	     title: 'Dodaj dane osobowe',
+	     abstract: false,
+	     url: '/persons/:id/add',
+	     views: {
+	         'content@': {
+	       	  templateUrl: 'partials/common/addPerson.html',
+	       	  controller: function($stateParams, $scope, Person) {
+	       		  $scope.person = {user_id:""};
+	              $scope.person.user_id = $stateParams.id;
+	          }      
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['moderator']
+	           }
+	       }
+	   })
+	   
+	    .state('app.moderator.editPerson', {
+	     title: 'Edytuj dane osobowe',
+	     abstract: false,
+	     url: '/persons/:id/edit',
+	     views: {
+	         'content@': {
+	       	  templateUrl: 'partials/common/editPerson.html',
+	       	  controller: function($stateParams, $scope, Person) {
+	       		  $scope.person = {};
+	              $scope.person.id = $stateParams.id;
+	              $scope.person = Person.getPersonById($stateParams.id);
+	              $scope.isCollapsed = true;
+	          }    
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['moderator']
+	           }
+	       }
+	   })
+	   
+	   .state('app.member.persons', {
+		     title: 'Dane osobowe',
+		     abstract: false,
+		     url: '/persons',
+		     views: {
+		         'navbar@': {
+		       	  templateUrl: 'partials/admin/navbar.html' 
+		         },
+		         'sidebar@': {
+		       	  templateUrl: 'partials/admin/sidebar.html'
+		         }
+		       },
+		       data: {
+		           permissions: {
+		             only: ['user']
+		           }
+		       },
+		       resolve: {
+
+		   	   }
+		   }) 
+		   
+		 .state('app.member.addPerson', {
+	     title: 'Dodaj dane osobowe',
+	     abstract: false,
+	     url: '/persons/:id/add',
+	     views: {
+	         'content@': {
+	       	  templateUrl: 'partials/common/addPerson.html',
+	       	  controller: function($stateParams, $scope, Person) {
+	       		  $scope.person = {user_id:""};
+	              $scope.person.user_id = $stateParams.id;
+	          }      
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['user']
+	           }
+	       }
+	   })
+	   
+	    .state('app.member.editPerson', {
+	     title: 'Edytuj dane osobowe',
+	     abstract: false,
+	     url: '/persons/:id/edit',
+	     views: {
+	         'content@': {
+	       	  templateUrl: 'partials/common/editPerson.html',
+	       	  controller: function($stateParams, $scope, Person) {
+	       		  $scope.person = {};
+	              $scope.person.id = $stateParams.id;
+	              $scope.person = Person.getPersonById($stateParams.id);
+	              $scope.isCollapsed = true;
+	          }    
+	         }
+	       },
+	       data: {
+	           permissions: {
+	             only: ['user']
 	           }
 	       }
 	   })

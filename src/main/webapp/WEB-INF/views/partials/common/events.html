@@ -12,6 +12,7 @@
 		            <td align="right">
 		            	<a class="btn btn-primary" ng-show="hasRole('ROLE_ADMIN')" ui-sref="app.admin.events.details({ id: event.id })"><i class="fa fa-folder-o"></i></a>
 		            	<a class="btn btn-primary" ng-show="hasRole('ROLE_MOD')" ui-sref="app.moderator.eventDetails({ id: event.id })"><i class="fa fa-folder-o"></i></a>
+		            	<a class="btn btn-primary" ng-show="hasRole('ROLE_USER')" ui-sref="app.member.eventDetails({ id: event.id })"><i class="fa fa-folder-o"></i></a>
 		            </td>
 		            <td align="right">
 		            	<a class="btn btn-warning" ng-hide="hasRole('ROLE_USER') || hasRole('ROLE_MOD')" ui-sref="app.admin.events.edit({ id: event.id })"><i class="fa fa-pencil-square-o"></i></a>
@@ -21,12 +22,7 @@
 		            	<button class="btn btn-danger" ng-hide="hasRole('ROLE_USER')" data-toggle="modal" data-target="#myModal" ng-click="getConfirmDeleteId(event.id)">
 		            		<i class="fa fa-trash-o fa-lg"></i>
 		            	</button>
-		            </td>	
-		             <td align="right">
-		            	<button class="btn btn-success" ng-hide="hasRole('ROLE_MOD') || hasRole('ROLE_ADMIN')" ng-click="addParticipationRequest(loggedUser.id,event.id)">
-		            		<i class="fa fa-user-plus-o fa-lg"></i>
-		            	</button>
-		            </td>            
+		            </td>	          
 		        </tr>
         </table> 	
         
