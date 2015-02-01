@@ -374,6 +374,27 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
       }
   })
    
+  .state('app.moderator.editUser', {
+     title: 'Edytuj użytkownika',
+     abstract: false,
+     url: '/users/:id/edit',
+     views: {
+         'content@': {
+       	  templateUrl: 'partials/admin/editUser.html',
+       	  controller: function($stateParams, $scope, User) {
+              $scope.user.id = $stateParams.id;
+              $scope.user = User.getUserById($stateParams.id);
+              $scope.isCollapsed = true;
+          } 
+         },
+       },
+       data: {
+           permissions: {
+        	   only: ['moderator']
+           }
+       }
+   })
+  
   .state('app.moderator.userDetails', {
     title: 'Użytkownicy',
     abstract: false,

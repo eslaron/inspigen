@@ -255,6 +255,7 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
   $scope.loggedUser = User.getLoggedUserByUsername($rootScope.loggedUsername);
   $scope.loggedUserParticipating = User.getLoggedUserIsParticipating();
   $scope.loggedUsersEventId = User.getInEventWithId();
+  $scope.participantApproved = false;
   
   var AllEvents = Restangular.all('events');
   var OneEvent = Restangular.one('events');
@@ -323,10 +324,14 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
   	    
 	  AllEvents.post($scope.event).then(function(response){
 	
-		  Event.loadEventsFromJson();
 		  $scope.messageStyle = "alert alert-success";
 		  $scope.hideMessage = false;
-		  $scope.message = "Wydarzenie dodane";			
+		  $scope.message = "Wydarzenie dodane";		
+		  
+		  return  Event.loadEventsFromJson()
+	  	    .then(function(newlyLoadedEvents){
+	  	    	Context.all.events = Event.getAllEvents();
+	  	    });
 	
 	  }, function(error) {
 		  $scope.error = error.data;
@@ -429,7 +434,15 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 			  //Znajdź dane osobowe nowego uczestnika i dodaj je do listy uczestników.
 			  for(var i = $scope.persons.length - 1; i >= 0; i--) {	
 				  if($scope.persons[i].user_id == userId) {
-							  $scope.eventParticipants.push($scope.persons[i]);
+					  
+					  $scope.tempParticipant.id = $scope.persons[i].id;
+					  $scope.tempParticipant.firstName = $scope.persons[i].firstName;
+					  $scope.tempParticipant.lastName = $scope.persons[i].lastName;
+					  $scope.tempParticipant.user_id = $scope.persons[i].user_id;
+				  	  $scope.tempParticipant.approved = $scope.participant.approved;
+					  
+					  $scope.eventParticipants.push($scope.tempParticipant);
+					  $scope.tempParticipant = {};
 					  }	  
 			  }	
 			  			  		 
@@ -437,12 +450,41 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 			  Participant.loadParticipantsFromJson().then(function() {	
 
 			  });
-			  		  
+				  		  
 		  }, function(error) {
 			  $scope.error = error.data;
 			 			
 		  });
 	  }
+  }
+  
+  $scope.approveParticipant = function(eventId,userId) {
+	      
+	  //Znadź id rekordu z uczestnikiem
+	  for(var i = $scope.participants.length - 1; i >= 0; i--) {	
+		  if($scope.participants[i].user_id == userId) {
+			  OneParticipant.id = $scope.participants[i].id;		
+			  break;
+		  }						  	  
+	  }
+
+	  OneParticipant.event_id = eventId;
+	  OneParticipant.user_id = userId;
+	  OneParticipant.eventRole = "uczestnik";
+	  OneParticipant.approved = true;
+	  	  
+	  OneParticipant.put().then(function(response){
+
+		  //Znajdź indeks użytkownika na liście uczestników
+		  for(var j = $scope.eventParticipants.length - 1; j >= 0; j--) {
+			  if($scope.eventParticipants[j].user_id == userId)
+			  $scope.eventParticipants[j].approved = true;
+		  }	
+		  
+	  }, function(error) {
+		  $scope.error = error.data;
+		 			
+	  });
   }
   
  //Usuwanie uczestników wydarzenia
@@ -470,7 +512,7 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 			  break;
 		  }						  	  
 	  }
-	  alert(deleteIndex);
+
 	  //Usuwamy uczestnika z listy znajdującej się w pamięci cache
 	  $scope.eventParticipants.splice(deleteIndex, 1);
 	  

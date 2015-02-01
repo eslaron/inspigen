@@ -215,8 +215,11 @@ Locations.controller('LocationsController', ['$scope', '$state', '$stateParams',
 
   $scope.addLocation = function(location) {
   
-	  		AllLocations.post($scope.location).then(function(response) {
-	  			  Location.loadLocationsFromJson();
+	  		AllLocations.post($scope.location).then(function(response) {	  
+	  			 return  Location.loadLocationsFromJson()
+		 	  	    .then(function(newlyLoadedLocations){
+		 	  	    	Context.all.locations = Location.getAllLocations();
+		 	  	    });
 			  }, function(error) {
 				  $scope.error = error.data; 					
 			  });		  

@@ -3,7 +3,13 @@
 
 		
 <accordion close-others="true">
- 
+  	<accordion-group is-open="false">
+        <accordion-heading>
+            <a ui-sref="app.moderator.dashboard" ng-href="#/mod/dashboard">Panel koordynatora</a>
+            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        </accordion-heading>
+       Sekcje w budowie
+    </accordion-group>
     <accordion-group is-open="false">
         <accordion-heading>
             Użytkownicy<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
