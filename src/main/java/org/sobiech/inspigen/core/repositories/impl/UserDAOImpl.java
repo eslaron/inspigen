@@ -9,17 +9,19 @@ import org.springframework.stereotype.Repository;
 import org.sobiech.inspigen.core.repositories.IUserDao;
 import org.sobiech.inspigen.core.models.entities.User;
 
-
+//Klasa implementujaca interfejs IUserDao
 @Repository
 public class UserDAOImpl implements IUserDao {
 
 	@Autowired
 	private SessionFactory sessionFactory;
-	     
+	
+	//Uzyskanie dostępu do sesji
 	private Session getCurrentSession() { 
 	        return sessionFactory.getCurrentSession();
 	}
 	
+	//Implementacja znajdowania użytkownika po nazwie
 	@Override
 	public User findUserByUsername(String userName) {
 
@@ -33,6 +35,7 @@ public class UserDAOImpl implements IUserDao {
 		}
 	}
 	
+	//Implementacja znajdowania użytkownika po emailu
 	@Override
 	public User findUserByEmail(String email) {
 
@@ -46,6 +49,7 @@ public class UserDAOImpl implements IUserDao {
 		}
 	}
 
+	//Implementacja znajdowania użytkownika po tokenie
 	@Override
 	public User findUserByToken(String tokenType, String token) {
 		Query query = getCurrentSession().createQuery("from User where "+tokenType+" = :token ");
