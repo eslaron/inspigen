@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+//Klasa implementujaca interfejs IAttachmentService
 @Service
 public class EmailServiceImpl implements IEmailService {
 	
@@ -23,6 +24,7 @@ public class EmailServiceImpl implements IEmailService {
 	@Autowired
 	Settings settings;
 	
+	//Implementacja metody wysyłąjące emaila z linkiem zawierającym odpowiedni token
 	@Override
 	public void  sendTokenMail(String email, String tokenType, String token) {
 		
@@ -31,15 +33,19 @@ public class EmailServiceImpl implements IEmailService {
 		Multipart mp = new MimeMultipart();
 		MimeBodyPart mbp = new MimeBodyPart();
 		
-		
+		//Tworzmy nową wiadomość
 		MimeMessage message =  mailSender.createMimeMessage();
 		MimeMessageHelper mimeHelper;
 		try {
 			mimeHelper = new MimeMessageHelper(message,true);
+			
+			//Ustawiamy odbiorcę
 			mimeHelper.setTo(email);
 			
+			//Ustawiamy nadawcę
 			mimeHelper.setFrom(settings.getEmailAddress());
 			
+			//Jeśli typ tokena to token aktywacyjny, to treść wiadmości jest następująca
 			if (tokenType == "activationToken") {
 				mimeHelper.setSubject("Witamy w systemie Inspigen!");
 			
@@ -48,11 +54,13 @@ public class EmailServiceImpl implements IEmailService {
 						+ "<a href='http://inspigen.pl:8080/#/activateAccount/"
 						+token+"'>LINK</a></body></html>";
 			
+				//Ustawiamy kodowanie wiadomości
 				mbp.setContent(msg, "text/html; charset=UTF-8");
 				mp.addBodyPart(mbp);
 				message.setContent(mp);
 			}
 			
+			//Jeśli typ tokena to token hasła, to treść wiadmości jest następująca
 			if (tokenType == "passwordToken") {
 				mimeHelper.setSubject("Reset hasła - Inspigen");
 				
@@ -60,15 +68,16 @@ public class EmailServiceImpl implements IEmailService {
 						+ "<a href='http://inspigen.pl:8080/#/newPassword/"
 						+token+"'>LINK</a></body></html>";
 				
+				//Ustawiamy kodowanie wiadomości
 				mbp.setContent(msg, "text/html; charset=UTF-8");
 				mp.addBodyPart(mbp);
 				message.setContent(mp);
 			}
 			
+			//Wysyłamy wiadomość
 			mailSender.send(message);
 		} catch (MessagingException e) {
 			System.out.println("Error Sending email "+ e.getMessage());
-		}
-		
+		}		
 	}
 }

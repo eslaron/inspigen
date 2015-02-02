@@ -28,12 +28,14 @@ import org.sobiech.inspigen.core.services.IUserService;
 
 import com.google.gson.JsonObject;
 
+//Klasa implementujaca interfejs IUserService
 @Service
 @Transactional
 public class UserServiceImpl implements IUserService {
 	
 	IGenericDao<User> dao;
-	 
+	
+	//Ustawienie klasy, na ktorej ma operowac DAO
 	   @Autowired
 	   public void setDao(IGenericDao<User> daoToSet){
 	      dao = daoToSet;
@@ -56,6 +58,8 @@ public class UserServiceImpl implements IUserService {
 	IEmailService emailService;
     
     // UŻYTKOWNIK
+    
+    //Implementacja dodawania użytkownika do tabeli
 	@Override
 	public void createUser(UserDto data){
 		
@@ -63,27 +67,38 @@ public class UserServiceImpl implements IUserService {
 		
 		newUser.setUsername(data.getUsername());
 	
+		//Pobieramy niezaszyfrowane hasło
      	String password = data.getPassword();
+     	
+     	//Szyfrujemy hasło
     	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(newUser));
+    	
+    	//Ustawiamy zaszyfrowane hasło
     	newUser.setPassword(encodedPassword);
     	
     	newUser.setEmail(data.getEmail());
     	
+    	//Generujemy token dla hasła
     	String passwordToken = setToken();
       	newUser.setPasswordToken(passwordToken);
       	
+      	//Generujemy datę wygaśnięcia tokenu dla hasła
       	Date passwordTokenExpiration = setTokenExpirationDate();
     	newUser.setPasswordTokenExpiration(passwordTokenExpiration);
     	
+    	//Generujemy datę wygaśnięcia tokenu aktywacyjnego
       	Date activationTokenExpiration = setTokenExpirationDate();
     	newUser.setActivationTokenExpiration(activationTokenExpiration);
       	
+    	//Generujemy token aktywacyjny
     	String activationToken = setToken();
     	newUser.setActivationToken(activationToken);
-    	    	
+    	
+    	//Jeśli rola jest pusta, to domyślnie nadajemy rolę użytkownika
     	if(data.getRole() == null)
     		newUser.setRole("ROLE_USER");
     	
+    	//w przeciwnym przypadku nadajemy odpowiednie role
     	else {
     		
     	if(data.getRole().equals("Wolontariusz"))
@@ -96,9 +111,11 @@ public class UserServiceImpl implements IUserService {
     		newUser.setRole("ROLE_ADMIN");
     	}
     	
+    	//Jeśli status aktywności jest pusty, to ustaw fałsz
     	if(data.getEnabled() == null)
     		newUser.setEnabled(false);
     	
+    	//W przeciwnym przypadku ustaw odpowiednie statusy
     	else {  		
     		if(data.getEnabled().equals("Tak"))
         		newUser.setEnabled(true);
@@ -111,39 +128,49 @@ public class UserServiceImpl implements IUserService {
     	newUser.setAccountNonExpired(true);
     	newUser.setCredentialsNonExpired(true);
     
+    	//Dodaj nowego użytkownika
 		dao.create(newUser);
 		
+		//Jeśli użytkownik jest nieaktywny, to wyślij email aktywacyjny
 		if(newUser.getEnabled() == false)
 			emailService.sendTokenMail(data.getEmail(), "activationToken", activationToken);
 	}
 	
+	//Implementacja wyszukiwania użytkownika po id
 	@Override
 	public User findUserById(long id) {
 		return dao.findOneById(id);
 	}
 	
+	//Implementacja wyszukiwania użytkownika po nazwie
 	@Override
 	public User findUserByUsername(String username) {
 		return userDao.findUserByUsername(username);
 	}
 
+	//Implementacja wyszukiwania użytkownika po emailu
 	@Override
 	public User findUserByEmail(String email) {
 		return userDao.findUserByEmail(email);
 	}
 
+	//Implementacja wyszukiwania użytkownika po tokenie
 	@Override
 	public User findUserByToken(String tokenType, String token) {
 		return userDao.findUserByToken(tokenType, token);
 	}
 	
+	//Implementacja wyszukiwania wszystkich użytkownikow
 	@Override
 	public List<UserDto> findAllUsers() {
 		
+		//Tworzymy listę transportową
 		List<UserDto> userDtoList = new ArrayList<UserDto>();
 		
+		//Wyszukujemy użytkownikow
 		List<User> users = dao.findAll();
 		
+		//Przepisujemy wybrane informacje o użytkownikach do listy transportowej
 		for(User user : users) {
 			
 			UserDto userDto = new UserDto();
@@ -184,19 +211,24 @@ public class UserServiceImpl implements IUserService {
 		return userDtoList;
 	}
 	
+	//Implementacja aktualizacji użytkownika
 	@Override
 	public void updateUser(User data) {
 		dao.update(data);
 	}
 	
+	//Implementacja aktualizacji użytkownika na podstawie obiektu transportowego
 	@Override
 	public void updateUser(UserDto data) {
 		
+		//Wyszukaj użytkownika po id
 		User user = findUserById(data.getId());
 		
+		//Jeśli nazwa użytkownika jest podana, to nadaj ją obiektowi do aktualizacji
 		if(data.getUsername() != null)
 		user.setUsername(data.getUsername());
 		
+		//Jeśli hasło zostało podane, to zaszyfruj i nadaj je obiektowi do aktualizacji
 		if(data.getPassword() != null) {
 			
 			String password = data.getPassword();
@@ -204,6 +236,7 @@ public class UserServiceImpl implements IUserService {
 	    	user.setPassword(encodedPassword);
 		} 
 		
+		//Jeśli email jest podany, to nadaj go obiektowi do aktualizacji
 		if(data.getEmail() != null)			
 		user.setEmail(data.getEmail());
 		
@@ -215,9 +248,12 @@ public class UserServiceImpl implements IUserService {
 		
 		if(data.getRole().equals("Administrator"))
 			user.setRole("ROLE_ADMIN");
-	
+
+		//Jeśli status aktywności jest pusty, to ustaw status na fałsz
 		if(data.getEnabled() == null)
 			user.setEnabled(false);
+		
+		//W przeciwnym przypadku nadaj odpowiednie statusy
 		else {	
 			if(data.getEnabled().equals("Tak"))
 				user.setEnabled(true);
@@ -226,10 +262,12 @@ public class UserServiceImpl implements IUserService {
 				user.setEnabled(false);
 		}
 		
+		//Jeśli status niezablokowania jest pusty, to wyzeruj proby i ustaw na fałsz
 		if(data.getLocked() == null) {
 			user.setAccountNonLocked(true);
 			user.setFailedLogins(0);
 		}
+		//W przeciwnym przypadku ustaw odpowiednie statusy
 		else {
 			if(data.getLocked().equals("Tak")) 
 				user.setAccountNonLocked(false);
@@ -240,20 +278,23 @@ public class UserServiceImpl implements IUserService {
 			}
 		}
 		
+		//Zaktualizuj użytkownika
 		dao.update(user);
 	}
 
+	//Implementacja usuwania użytkownika
 	@Override
 	public void deleteUser(User data) {
 		dao.delete(data);
 	}
 	
-
+	//Implementacja usuwania użytkownika po id
 	@Override
 	public void deleteUserById(long id) {
 		dao.deleteById(id);
 	}
 	
+	//Nadpisana metoda ładowania użytkownika pod nazwie
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
@@ -265,61 +306,81 @@ public class UserServiceImpl implements IUserService {
     
 	// TOKEN
 	
+    //Implementacja generowania tokena
 	@Override
 	public String setToken() {
 		
+		//Zestaw znakow do losowania
 		char[] VALID_CHARACTERS =
 	    	    "abcdefghijklmnopqrstuvwxyz0123456879".toCharArray();
 		
+		//Instancja Secure Random
 		SecureRandom srand = new SecureRandom();
+		
+		//Instancja pseudolosowania
 	    Random random = new Random();
+	    
+	    //Bufor na 16 znakow
 	    char[] buff = new char[16];
 
+	    //Generowanie tokena i zapis do bufora
 	    for (int i = 0; i < 16; ++i) {
-	      // reseed random once you've used up all available entropy bits
+
 	      if ((i % 10) == 0) {
-	          random.setSeed(srand.nextLong()); // 64 bits of random!
+	          random.setSeed(srand.nextLong());
 	      }
 	      buff[i] = VALID_CHARACTERS[random.nextInt(VALID_CHARACTERS.length)];
-	    }		    
+	    }
+	    
+	    //Zwrocenie wartości tekstowej bufora
 	    return  String.valueOf(buff);
 	}
 	
+	//Implementacja ustawiania daty wygaśnięcia
 	@Override
 	public Date setTokenExpirationDate() {
 		
+		//Pobieramy i formatujemy aktualną datę
 		Date currentDate = new Date();
 		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		format.format(currentDate);
 
+		//Pobieramy aktualną datę z kalendarza, formatujemy i dodajemy czas wygasania linkow
 		Calendar cal=Calendar.getInstance();
 		cal=format.getCalendar();	
 		cal.add(Calendar.MINUTE, settings.getLinkExpirationTime());
 	
+		//Zwracamy nową datę
 		return (Date)cal.getTime();
 	}
 	
+	//Implementacja sprawdzania czy token wygasł
 	@Override
 	public Boolean checkIfTokenExpired(String tokenType, String token) {
 		
+		//Znajdź użytkownika po tokenie
 		User userByToken = userDao.findUserByToken(tokenType, token);
 		
 		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
+		//Formatowanie odpowiednich dat wygaśnięcia według podanego wzorca
 		if(tokenType == "activationToken")
 		format.format(userByToken.getActivationTokenExpiration());
 		
 		if(tokenType == "passwordToken")
 		format.format(userByToken.getPasswordTokenExpiration());
 		
+		//Pobranie aktualnej daty z kalendarza
 		Calendar expire=Calendar.getInstance();
 		expire = format.getCalendar();		
-			
+		
+		//Sprawdzenie czy link z tokenem wygasł
 		if(Calendar.getInstance().getTime().after(expire.getTime()) == true) {
 			return true;
 		} else return false;
 	}
 
+	//Implementacja szyfrowania hasła
 	@Override
 	public String encodePassword(User data) {
 	
@@ -329,17 +390,26 @@ public class UserServiceImpl implements IUserService {
     	return encodedPassword;
 	}
 
+	//Implementacja rejestracji użytkownika
 	@Override
 	public ResponseEntity<String> addUser(UserDto data) {
 		
+		//Staus(kod) odpowiedzi
 		HttpStatus responseStatus = HttpStatus.CREATED;
+		
+		//Odpowiedź w notacji JSON
     	JsonObject jsonResponse = new JsonObject();
+    	
+    	//Wyszukaj użytkownika po nazwie
     	User userFoundByName = findUserByUsername(data.getUsername().toLowerCase());
+    	
+    	//Wyszukaj użytkownika po emailu
     	User userFoundByEmail = findUserByEmail(data.getEmail().toLowerCase());
     	
 			boolean userNameFound = false;
 			boolean emailFound =  false;
-				
+			
+			//Wysyłanie adekwatnych odpowiedzi w zależności czy znaleziono duplikat nazwy użytkownika lub emailu
 		    if (userFoundByName != null) {
 		    	userNameFound = true;
 		    	responseStatus = HttpStatus.CONFLICT;
@@ -365,6 +435,7 @@ public class UserServiceImpl implements IUserService {
 		    	jsonResponse.addProperty("message", "Create Success");
 		    }
 		
+		//Wyślij odpowiedź zawierającą status i komunikat JSON
     	return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
 }

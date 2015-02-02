@@ -8,41 +8,42 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.sobiech.inspigen.core.models.dto.UserDto;
 import org.sobiech.inspigen.core.models.entities.User;
 
+//Interfejs zawierajacy prototypy metod operujących na klasie User
 public interface IUserService extends UserDetailsService {
 	
 	// UŻYTKOWNIK
 	
-	public void createUser(UserDto data);
+	public void createUser(UserDto data);									//Dodawanie użytkownika do tabeli
 	
-	public User findUserById(long id);
+	public User findUserById(long id);										//Wyszukiwanie użytkownika po id
 	
-	public User findUserByUsername(String username);
+	public User findUserByUsername(String username);						//Wyszukiwanie użytkownika po nazwie
 	
-	public User findUserByEmail(String email);
+	public User findUserByEmail(String email);								//Wyszukiwanie użytkownika po emailu
 	
-	public User findUserByToken(String tokenType, String token);
+	public User findUserByToken(String tokenType, String token);			//Wyszukiwanie użytkownika po tokenie
 	
-	public List<UserDto> findAllUsers();
+	public List<UserDto> findAllUsers();									//Wyszukiwanie wszystkich użytkownikow
 	
-	public void updateUser(User data);
+	public void updateUser(User data);										//Aktualizacja użytkownika
 	
-	public void updateUser(UserDto data);
+	public void updateUser(UserDto data);									//Aktualizacja użytkownika na podstawie obiektu transportowego
 	
-	public void deleteUser(User data);
+	public void deleteUser(User data);										//Usuwanie użytkownika
 	
-	public void deleteUserById(long id);
+	public void deleteUserById(long id);									//Usuwanie użytkownika po id
 	
-	public ResponseEntity<String> addUser(UserDto data);
+	public ResponseEntity<String> addUser(UserDto data);					//Rejestracja użytkownika		
 	  
     // TOKEN
        
-    public String setToken();
+    public String setToken();												//Generowanie tokena
       
-    public Date setTokenExpirationDate();
+    public Date setTokenExpirationDate();									//Ustawianie daty wygaśnięcia
     
-	public Boolean checkIfTokenExpired(String tokenType, String token);
+	public Boolean checkIfTokenExpired(String tokenType, String token);		//Sprawdzanie czy token wygasł
 	
 	// HASŁO
 	
-	public String encodePassword(User data);
+	public String encodePassword(User data);								//Szyfrowanie hasła
 }
