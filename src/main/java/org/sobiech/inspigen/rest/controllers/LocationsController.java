@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
 
-@RestController
-@RequestMapping("/api/v1/locations")
+@RestController							//Oznaczenie jako kontroler typu REST
+@RequestMapping("/api/v1/locations")	//Mapowanie zasobu
 public class LocationsController {
 	
 	String message = "";	
@@ -23,11 +23,12 @@ public class LocationsController {
 	@Autowired
 	ILocationService locationService;
 
+	//Ządanie POST dodające nową lokację do tabeli
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> create(@RequestBody Location data) {
     	
     	message = "locationCreated";
-    	HttpStatus responseStatus = HttpStatus.OK;
+    	HttpStatus responseStatus = HttpStatus.CREATED;
     
     	locationService.createLocation(data);
     	JsonObject jsonResponse = new JsonObject();
@@ -35,16 +36,19 @@ public class LocationsController {
 		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
     
+    //Ządanie GET zwracające wszystkie lokacje
     @RequestMapping(method = RequestMethod.GET)
     public List<Location> findAllLocations(){
        return locationService.findAllLocations();
     }
     
+    //Ządanie GET zwracające lokację po id
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
     public Location findLocationById(@PathVariable int id){
        return locationService.findLocationById(id);
     }
-        
+    
+    //Ządanie PUT aktualizujące lokację po id
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<String> updateLocation(@RequestBody Location data) {
     	
@@ -58,6 +62,7 @@ public class LocationsController {
 			return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
     
+    //Ządanie DELETE usuwające lokację po id
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteLocationById(@PathVariable long id) {
     	

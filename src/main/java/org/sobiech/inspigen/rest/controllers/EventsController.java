@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
 
-@RestController
-@RequestMapping("/api/v1/events")
+@RestController							//Oznaczenie jako kontroler typu REST
+@RequestMapping("/api/v1/events")		//Mapowanie zasobu
 public class EventsController {
 	
 	String message = "";	
@@ -24,11 +24,12 @@ public class EventsController {
 	@Autowired
 	IEventService eventService;
 
+	//Ządanie POST dodające nowe wydarzenie do tabeli
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> create(@RequestBody Event data) {
     	
     	message = "eventCreated";
-    	HttpStatus responseStatus = HttpStatus.OK;
+    	HttpStatus responseStatus = HttpStatus.CREATED;
     
     	eventService.createEvent(data);
     	JsonObject jsonResponse = new JsonObject();
@@ -36,16 +37,19 @@ public class EventsController {
 		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
     
+    //Ządanie GET zwracające wszystkie wydarzenia
     @RequestMapping(method = RequestMethod.GET)
     public List<Event> findAllEvents(){
        return eventService.findAllEvents();
     }
     
+    //Ządanie GET zwracajace wydarzenie po id
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
     public Event findEventById(@PathVariable int id){
        return eventService.findEventById(id);
     }
-        
+     
+    //Ządanie PUT aktualizujące wydarzenie
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<String> updateEvent(@RequestBody Event data) {
     	
@@ -59,6 +63,7 @@ public class EventsController {
 			return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
     
+    //Ządanie DELETE usuwające wydarzenie po id
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteEventById(@PathVariable long id) {
     	

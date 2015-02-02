@@ -5,18 +5,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@Controller
-@RequestMapping(value = "/")
+@Controller							//Oznaczenie jako zwykły kontroler
+@RequestMapping(value = "/")		//Mapowanie zasobu
 public class IndexController {
 
-	// INDEX
+	/* Mapowanie szablonow i partiali HTML */
 	
+	// INDEX -  głowny szablon HTML
 	@RequestMapping
     public String getIndexPage() {
         return "index";
     }
 
-	// Partiale - ADMIN
+	// Partiale - Admin
 	
 	@RequestMapping("/partials/admin/navbar")
     public String getAdminNavbarPartial() {
@@ -52,9 +53,8 @@ public class IndexController {
     public String getSettingsPartialPage() {
         return "partials/admin/settings";
     }	
-	
-	
-	// Partiale - MODERATOR
+		
+	// Partiale - Moderator
 	
 	@RequestMapping("/partials/mod/navbar")
 	public String getModNavbarPartial() {
@@ -71,7 +71,7 @@ public class IndexController {
 	        return "partials/mod/dashboard";
 	}
 	
-	//Partiale - COMMON
+	//Partiale - wspolne
 	
 	@RequestMapping("/partials/common/users")
     public String getAdminUsersPartial() {
@@ -158,7 +158,7 @@ public class IndexController {
         return "partials/common/userDetails";
     }
 	
-	// Partiale - USER
+	// Partiale - Wolontariusz
 	
 	@RequestMapping("/partials/user/navbar")
     public String getUserNavbarPartial() {
@@ -175,7 +175,7 @@ public class IndexController {
         return "partials/user/dashboard";
 	}
 	
-	// Partiale - OTHER
+	// Partiale - anonimowy użytkownik
 	
 	@RequestMapping("/partials/navbar")
 	public String getNavbarPartial() {

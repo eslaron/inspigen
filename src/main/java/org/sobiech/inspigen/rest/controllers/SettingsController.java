@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
 
-@RestController
-@RequestMapping("/api/v1/settings")
+@RestController							//Oznaczenie jako kontroler typu REST
+@RequestMapping("/api/v1/settings")		//Mapowanie zasobu
 public class SettingsController {
 	
 	String message = "";	
@@ -23,11 +23,13 @@ public class SettingsController {
 	@Autowired
 	ISettingsService settingsService;
     
+	//Ządanie GET zwrcające ustawienia
     @RequestMapping(method = RequestMethod.GET)
     public List<Settings> getSettings() {
        return settingsService.getSettings();
     }
-        
+    
+    //Ządanie PUT aktualizujące ustawienia po id
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<String> updateSettingsById(@RequestBody Settings data) {
     	

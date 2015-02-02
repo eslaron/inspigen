@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller
-@RequestMapping("/login")
+@Controller						//Oznaczenie jako zwykły kontroler
+@RequestMapping("/login")		//Mapowanie zasobu
 public class LoginController {
 
+	//Ządanie GET sprawdzające czy użytkownik jest zalogowany
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody Boolean isUserLogged() {
  

@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
 
-@RestController
-@RequestMapping("/api/v1/attachments")
+@RestController								//Oznaczenie jako kontroler typu REST
+@RequestMapping("/api/v1/attachments")		//Mapowanie zasobu
 public class AttachmentsController {
 	
 	String message = "";	
@@ -26,11 +26,14 @@ public class AttachmentsController {
 	@Autowired
 	IAttachmentService attachmentService;
 
+	//Ządanie POST dodające nowy załącznik
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> create(@RequestBody Attachment file) {
   	
     	message = "attachmentCreated";
-    	HttpStatus responseStatus = HttpStatus.OK;
+    	
+    	//Status odpowiedzi
+    	HttpStatus responseStatus = HttpStatus.CREATED;
  	
 		    	Attachment attachment = new Attachment();
 		    	attachment.setFileName(file.getFileName());
@@ -47,29 +50,36 @@ public class AttachmentsController {
       
     	JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
+		
+		//Wyślij odpowiedź zawierajacą status i komunikat JSON
 		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
     
+    //Ządanie GET zwracające wszystkie załączniki
     @RequestMapping(method = RequestMethod.GET)
     public List<Attachment> findAllAttachments(){
        return attachmentService.findAllAttachments();
     }
     
+    //Ządanie GET zwracające załącznik pod id
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
     public AttachmentDto findAttachmentById(@PathVariable int id) {
     	return attachmentService.findAttachmentById(id);   
     }
     
+    //Ządanie GET zwracające załącznik po id użytkownika
     @RequestMapping(value ="/user/{id}", method = RequestMethod.GET)
     public AttachmentDto findPhotoAttachmentByUserId(@PathVariable int id) {
     	return attachmentService.findPhotoAttachmentByUserId(id);   
     }
     
+    //Ządanie GET zwracające załączniki po id wydarzenia
     @RequestMapping(value ="/event/{id}", method = RequestMethod.GET)
     public List<AttachmentDto> findAttachmentsByEventId(@PathVariable int id) {   
     	return attachmentService.findAttachmentsByEventId(id);
     }
-            
+    
+    //Ządanie PUT aktualizujące załącznik po id użytkownika
     @RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<String> updateAttachmentByUserId(@RequestBody Attachment data) {
     	
@@ -82,7 +92,8 @@ public class AttachmentsController {
 			jsonResponse.addProperty("message", message);
 			return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
-           
+    
+    //Ządanie DELETE usuwające załącznik po id
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
    	public ResponseEntity<String> deleteAttachmentById(@PathVariable int id) {
        	
@@ -96,6 +107,7 @@ public class AttachmentsController {
    			return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
    	}
     
+    //Zadanie DELETE usuwające załącznik po id użytkownika
     @RequestMapping(value ="/user/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteAttachmentByUserId(@PathVariable int id) {
     	

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
 
-@RestController
-@RequestMapping("/api/v1/participants")
+@RestController								//Oznaczenie jako kontroler typu REST
+@RequestMapping("/api/v1/participants")		//Mapowanie zasobu
 public class ParticipantsController {
 	
 	String message = "";	
@@ -23,11 +23,12 @@ public class ParticipantsController {
 	@Autowired
 	IParticipantService participantService;
 
+	//Ządanie POST dodające uczestnika do tabeli
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> create(@RequestBody Participant data) {
     	
     	message = "participantCreated";
-    	HttpStatus responseStatus = HttpStatus.OK;
+    	HttpStatus responseStatus = HttpStatus.CREATED;
     
     	participantService.createParticipant(data);
     	JsonObject jsonResponse = new JsonObject();
@@ -35,16 +36,19 @@ public class ParticipantsController {
 		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
     
+    //Ządanie GET zwracające wszystkich uczestnikow
     @RequestMapping(method = RequestMethod.GET)
     public List<Participant> findAllParticipants(){
        return participantService.findAllParticipants();
     }
     
+    //Ządanie GET zwracajace uczestnika po id
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
     public Participant findParticipantById(@PathVariable int id){
        return participantService.findParticipantById(id);
     }
-        
+       
+    //Ządanie PUT aktualizujące uczestnika
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<String> updateParticipant(@RequestBody Participant data) {
     	
@@ -58,6 +62,7 @@ public class ParticipantsController {
 			return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
     
+    //Ządanie DELETE usuwające uczestnika po id
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteParticipantById(@PathVariable long id) {
     	

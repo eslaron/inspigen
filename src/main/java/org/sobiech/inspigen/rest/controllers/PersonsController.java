@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
 
-@RestController
-@RequestMapping("/api/v1/persons")
+@RestController							//Oznaczenie jako kontroler typu REST
+@RequestMapping("/api/v1/persons")		//Mapowanie zasobu
 public class PersonsController {
 	
 	String message = "";	
@@ -24,11 +24,12 @@ public class PersonsController {
 	@Autowired
 	IPersonService personService;
 
+	//Ządanie POST dodające nowe dane osobowe do tabeli
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> create(@RequestBody Person data) {
 
     	message = "personCreated";
-    	HttpStatus responseStatus = HttpStatus.OK;
+    	HttpStatus responseStatus = HttpStatus.CREATED;
     
     	personService.createPerson(data);
     	
@@ -37,11 +38,13 @@ public class PersonsController {
 		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
     
+    //Ządanie GET zwracające wszystkie dane osobowe
     @RequestMapping(method = RequestMethod.GET)
     public List<Person> findAllPersons(){
        return personService.findAllPersons();
     }
-        
+    
+    //Ządanie PUT aktualizujące dane osobowe
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<String> updatePerson(@RequestBody Person data) {
     	
@@ -55,6 +58,7 @@ public class PersonsController {
 			return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
     
+    //Ządanie DELETE usuwające dane osobowe
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deletePerson(@PathVariable long id) {
     	

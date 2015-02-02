@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
 
-@RestController
-@RequestMapping("/api/v1/users")
+@RestController						//Oznaczenie jako kontroler typu REST
+@RequestMapping("/api/v1/users")	//Mapowanie zasobu
 public class UsersController {
 	
 	String message = "";	
@@ -28,17 +28,20 @@ public class UsersController {
 	@Autowired
 	IEmailService emailService;
 	
+	//Ządanie POST dodające użytkownika do tabeli
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> create(@RequestBody UserDto data) {
     	
     	return userService.addUser(data);
     }
     
+    //Ządanie GET zwracajace wszystkich użytkownikow
     @RequestMapping(method = RequestMethod.GET)
     public List<UserDto> findAll(){
        return userService.findAllUsers();
     }
-        
+      
+    //Ządanie PUT aktualizujące użytkownika
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<String> updateUser(@RequestBody UserDto data) {
     	
@@ -52,8 +55,9 @@ public class UsersController {
 			return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
     
+    //Ządanie DELETE usuwające użytkownika po id
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteUser(@PathVariable long id) {
+	public ResponseEntity<String> deleteUserById(@PathVariable long id) {
     	
     	message = "userDeleted";
     	HttpStatus responseStatus = HttpStatus.OK;
