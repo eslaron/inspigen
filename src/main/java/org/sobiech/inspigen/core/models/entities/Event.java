@@ -6,27 +6,29 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity  
-@Table(name="ig_events")
+@Entity  																//oznaczenie klasy jako encji
+@Table(name="ig_events")												//nazwa tabeli w bazie danych	
 public class Event extends BaseEntity implements Serializable {
 	
 	private static final long serialVersionUID = -508277826502034614L;
 	
-	private String name;
+	private String name;				//nazwa wydarzenia
+						
+	private String type;				//typ wydarzenia
 	
-	private String type;
+	private Date startDate;				//data rozpoczęcia
 	
-	private Date startDate;
+	private Date endDate;				//data zakończenia
 	
-	private Date endDate;
+	private String description;			//opis
 	
-	private String description;
+	private int location_id;			//id miejsca, w ktorym ma się odbyć wydarzenie
 	
-	private int location_id;
-	
-	private int user_id;
+	private int user_id;				//id koordynatora wydarzenia
 	
 	public Event() {}
+	
+	//Gettery i settery
 	
 	public String getName() {
 		return name;

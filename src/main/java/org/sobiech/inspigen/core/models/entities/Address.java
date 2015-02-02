@@ -4,29 +4,31 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity  
-@Table(name="ig_addresses")
+@Entity  															//oznaczenie klasy jako encji
+@Table(name="ig_addresses") 										//nazwa tabeli w bazie danych
 public class Address extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 7921700639539462190L;
 
-	private String address;
+	private String address;					//ulica, numer domu, numer lokalu
 	
-	private String city;
+	private String city;					//miasto
 	
-	private String zipCode;
+	private String zipCode;					//kod pocztowy
 	
-	private String state;
+	private String state;					//wojewodztwo
 	
-	private String country;
+	private String country;					//kraj
 	
-	private Boolean registeredAddress;
+	private Boolean registeredAddress;		//adres zameldowania
 	
-	private Boolean mailAddress;
+	private Boolean mailAddress;			//adres korespondencyjny
 	
-	private int user_id;
+	private int user_id;					//id użytkownika do ktorego należy adres
 	
 	public Address() {}
+	
+	//Gettery i settery
 	
 	public String getAddress() {
 		return address;

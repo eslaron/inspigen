@@ -4,31 +4,33 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity  
-@Table(name="ig_event_locations")
+@Entity 																	//oznaczenie klasy jako encji
+@Table(name="ig_event_locations")											//nazwa tabeli w bazie danych
 public class Location extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 3879277972207055944L;
 	
-	private String name;
+	private String name;				//nazwa lokacji
 	
-	private String type;
+	private String type;				//typ lokacji
 
-	private String address;
+	private String address;				//adres lokacji (ulica itp. itd.)
 	
-	private String city;
+	private String city;				//miasto
 	
-	private String zipCode;
+	private String zipCode;				//kod pocztowy
 	
-	private String state;
+	private String state;				//wojewodztwo
 	
-	private String country;
+	private String country;				//kraj
 	
-	private String phoneNumber;
+	private String phoneNumber;			//numer telefonu(opcjonalny)
 	
-	private String email;	
+	private String email;				//email kontaktowy(opcjonalny)
 	
 	public Location() {}
+	
+	//Gettery i settery
 	
 	public String getName() {
 		return name;

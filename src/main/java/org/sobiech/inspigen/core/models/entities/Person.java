@@ -1,38 +1,29 @@
 package org.sobiech.inspigen.core.models.entities;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-@Entity  
-@Table(name="ig_persons")
+@Entity  															//oznaczenie klasy jako encji
+@Table(name="ig_persons")											//nazwa tabeli w bazie danych
 public class Person extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = -8562484446335390991L;
-	static Logger logger = LoggerFactory.getLogger(Person.class);
+ 
+    private String firstName;       //imię
     
-	@Column(name = "firstName")
-    private String firstName;
+    private String lastName;		//nazwisko
     
-    @Column(name = "lastName")
-    private String lastName;
+    private String pesel;			//PESEL
     
-    @Column(name = "pesel")
-    private String pesel;
+    private String phoneNumber;		//numer telefonu
     
-    @Column(name = "phoneNumber")
-    private String phoneNumber;
-    
-    @Column(name = "user_id")
-    private int user_id;
+    private int user_id;			//id użytkownika, do ktorego należą dane osobowe
 
 	public Person() {}
     
+	//Gettery i settery
+	
     public String getFirstName() {
 		return firstName;
 	}

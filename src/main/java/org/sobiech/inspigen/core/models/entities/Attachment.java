@@ -4,25 +4,27 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity  
-@Table(name="ig_attachments")
+@Entity  																//oznaczenie klasy jako encji
+@Table(name="ig_attachments")											//nazwa tabeli w bazie danych
 public class Attachment extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 9211655507105029935L;
 	
-	private String fileName;
+	private String fileName;			//nazwa pliku
 	
-	private String fileType;
+	private String fileType;			//typ pliku
 	
-	private byte[] file;
+	private byte[] file;				//plik
 	
-	private String blobUrl;
+	private String blobUrl;				//odnośnik do bloba
 	
-	private int user_id;
+	private int user_id;				//id użytkownika do ktorego należy załącznik
 	
-	private int event_id;
+	private int event_id;				//id wydarzenia do ktorego nalezy załącznik
 	
 	public Attachment() {}
+	
+	//Gettery i settery
 	
 	public String getFileName() {
 		return fileName;

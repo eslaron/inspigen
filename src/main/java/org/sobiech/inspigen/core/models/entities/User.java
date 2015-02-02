@@ -2,65 +2,47 @@ package org.sobiech.inspigen.core.models.entities;
 
 import java.util.Date;
 import java.util.Collection;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Entity  
-@Table(name="ig_users")
+@Entity  															//oznaczenie klasy jako encji
+@Table(name="ig_users")												//nazwa tabeli w bazie danych
 public class User extends BaseEntity implements UserDetails {
 
     private static final long serialVersionUID = 6311364761937265306L;
-    static Logger logger = LoggerFactory.getLogger(User.class);
-        
-    @Column(name = "username", unique=true)
-    private String username;
+   
+    private String username;						//nazwa użytkownika
 
-    @Column(name = "password")
-    private String password;
+    private String password;						//hasło
     
-    @Column(name = "email", unique=true)
-    private String email;
+    private String email;							//adres email
     
-    @Column(name="role")
-    private String role;
+    private String role;							//rola użytkownika
     
-    @Column(name = "enabled", columnDefinition = "TINYINT(1)")
-    private Boolean enabled;
+    private Boolean enabled;						//konto aktywne (Tak lub Nie)
     
-	@Column(name = "accountNonLocked", columnDefinition = "TINYINT(1)")
-    private Boolean accountNonLocked;
+    private Boolean accountNonLocked;				//konto niezablokowane(Tak lub Nie)
 
-	@Column(name = "accountNonExpired", columnDefinition = "TINYINT(1)")
-    private Boolean accountNonExpired;
+    private Boolean accountNonExpired;				//konto nie wygasłe(Tak lub Nie)
     
-    @Column(name = "credentialsNonExpired", columnDefinition = "TINYINT(1)")
-    private Boolean credentialsNonExpired;
+    private Boolean credentialsNonExpired;			//hasło nie wygasło (Tak lub Nie)
     
-	@Column(name = "passwordToken")
-	private String passwordToken;
+	private String passwordToken;                   //token do resetowania hasła
 	
-	@Column(name = "activationToken")
-	private String activationToken;
+	private String activationToken;					//token do aktywacji konta
 	
-	@Column(name = "passwordTokenExpiration")
-	private Date passwordTokenExpiration;
+	private Date passwordTokenExpiration;			//data wygaśnięcia tokena do resetu hasła
 	
-	@Column(name = "activationTokenExpiration")
-	private Date activationTokenExpiration;
+	private Date activationTokenExpiration;			//data wygaśnięcia tokena do aktywacji konta
 	
-	@Column(name = "failedLogins")
-	private int failedLogins;
+	private int failedLogins;                       //liczba nieudanych logowań
 	
-	@Column(name = "lastLoginAttempt")
-	private Date lastLoginAttempt;
-		  
+	private Date lastLoginAttempt;					//data ostatniego nieudanego logowania
+		
+	//Konstruktory
+	
 	public User() {}
 	
 	public User(String username, String role) {
@@ -89,6 +71,8 @@ public class User extends BaseEntity implements UserDetails {
     	this.failedLogins = failedLogins;
     	this.lastLoginAttempt = lastLoginAttempt;
     }
+    
+    //Gettery i settery
     
     public String getUsername() {
         return username;

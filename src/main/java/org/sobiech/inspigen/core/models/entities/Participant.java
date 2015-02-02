@@ -6,21 +6,23 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 
-@Entity  
-@Table(name="ig_event_participants")
+@Entity  																	//oznaczenie klasy jako encji
+@Table(name="ig_event_participants")										//nazwa tabeli w bazie danych
 public class Participant extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 3146080687613852144L;
 	
-	private int event_id;
+	private int event_id;			//id wydarzenia, w ktorym ma uczestniczyć członek organizacji
 	
-	private int user_id;
+	private int user_id;			//id uczestnika
 	
-	private Boolean approved;
+	private Boolean approved;		//status akceptacji uczestnictwa w wydarzeniu
 	
-	private String eventRole;
+	private String eventRole;		//rola pełniona w wydarzeniu
 	
 	public Participant() {}
+	
+	//Gettery i settery
 	
 	public int getUser_id() {
 		return user_id;

@@ -4,29 +4,31 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity  
-@Table(name="ig_system_settings")
+@Entity  																//oznaczenie klasy jako encji
+@Table(name="ig_system_settings")										//nazwa tabeli w bazie danych
 public class Settings extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = -6053786706744243022L;
 
-	private int maxLoginAttempts; //maksymalna liczba podejść
+	private int maxLoginAttempts; 			//maksymalna liczba podejść
 	
-	private int accountLockTime; //czas blokady użytkownika w minutach
+	private int accountLockTime; 			//czas blokady użytkownika w minutach
 	
-    private int linkExpirationTime; //czas po którym wygaśnie link lub zost(minuty)
+    private int linkExpirationTime; 		//czas po którym wygaśnie link lub zost(minuty)
     
-    private String emailAddress; //adres z którego będą wysyłane emaile systemowe
+    private String emailAddress; 			//adres z którego będą wysyłane emaile systemowe
     
-    private String emailHost; //host z którego będą wysyłane emaile
+    private String emailHost; 				//host z którego będą wysyłane emaile
     
-    private int emailPort; //port z którego będą wysyłane emaile
+    private int emailPort; 					//port z którego będą wysyłane emaile
     
-    private String emailUsername; //nazwa użytkownika skrzynki emailowej
+    private String emailUsername; 			//nazwa użytkownika skrzynki emailowej
     
-    private String emailPassword; //hasło do skrzynki emailowej;
+    private String emailPassword; 			//hasło do skrzynki emailowej;
     
     public Settings() {}
+    
+    //Gettery i settery
     
 	public int getMaxLoginAttempts() {
 		return maxLoginAttempts;

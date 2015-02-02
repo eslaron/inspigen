@@ -1,23 +1,25 @@
 package org.sobiech.inspigen.core.models.dto;
 
-
+//Klasa do transportu wybranych informacji o załącznikach
 public class AttachmentDto {
 	
-	private Long id;
+	private Long id;			//id załącznika
 	
-	private String fileName;
+	private String fileName;    //nazwa pliku
 	
-	private String fileType;
+	private String fileType;	//typ pliku
 	
-	private String file;
+	private String file;		//plik
 
-	private String blobUrl;
+	private String blobUrl; 	//odnośnik do bloba
 	
-	private int user_id;
+	private int user_id;		//id użytkownika, ktory dodał ten załacznik
 	
-	private int event_id;
+	private int event_id;       //id wydarzenia, do ktorego należy załącznik
 	
 	public AttachmentDto() {}
+	
+	//Gettery i settery
 	
 	public Long getId() {
 		return id;
