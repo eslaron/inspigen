@@ -1,5 +1,7 @@
+//Fabryka dla zasobu participants
 Participants.factory('Participant', function($http, $q, Restangular) {
     
+	//cache dla adresów dla uczestników
     var participantCache = {};
 
     function Participant(json){
@@ -15,10 +17,12 @@ Participants.factory('Participant', function($http, $q, Restangular) {
       participantCache[self.id] = self;
     };
     
+    //Pobierz uczestnika po id
     Participant.getParticipantById = function(id){
       return participantCache[id]
     }
     
+    //Pobierz wszystkich uczestników
     Participant.getAllParticipants = function(){
     	var array = [];
         angular.forEach(participantCache, function(Participant){
@@ -27,6 +31,7 @@ Participants.factory('Participant', function($http, $q, Restangular) {
         return array;
     }
     
+    //Załąduj uczestników do pamięci Cache
     Participant.loadParticipantsFromJson = function(){
     	
     	return Restangular.all('participants').getList().then(function(response){

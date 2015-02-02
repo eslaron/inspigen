@@ -1,5 +1,7 @@
+//Fabryka dla zasobu attachments
 Attachments.factory('Attachment', function($http, $q, Restangular) {
     
+	//cache dla załączników
     var attachmentCache = {};
 
     function Attachment(json){
@@ -15,10 +17,12 @@ Attachments.factory('Attachment', function($http, $q, Restangular) {
       attachmentCache[self.id] = self;
     };
     
+    //Pobierz załącznik po id
     Attachment.getAttachmentById = function(id){
       return attachmentCache[id]
     }
     
+    //Pobierz wszystkie załączniki
     Attachment.getAllAttachments = function(){
     	var array = [];
         angular.forEach(attachmentCache, function(Attachment){
@@ -27,14 +31,9 @@ Attachments.factory('Attachment', function($http, $q, Restangular) {
         return array;
     }
     
+    //Załąduj załączniki do pamięci Cache
     Attachment.loadAttachmentByIdFromJson = function(id){
     	
-    	alert("It was resolved");
-    	/*return Restangular.all('attachments/user', id).get().then(function(response){
-        return response.map(function(AttachmentJson){
-          return new Attachment(AttachmentJson)
-        })
-      })*/
     }
-    return Attachment; //returns the constructor function - that's what will be called when we do "new Attachment(someJson);"
+    return Attachment;
   });

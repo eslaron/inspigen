@@ -1,5 +1,7 @@
+//Fabryka dla zasobu persons
 Users.factory('Person', function($http, $q, Restangular) {
     
+	//cache dla danych osobowych
     var personCache = {};
 
     function Person(json){
@@ -15,10 +17,12 @@ Users.factory('Person', function($http, $q, Restangular) {
       personCache[self.id] = self;
     };
     
+    //Pobierz dane osobowe po id
     Person.getPersonById = function(id){
       return personCache[id]
     }
     
+    //Pobierz wszystkie dane osobowe
     Person.getPersonByUserId = function(id){
         return personCache[id]
       }
@@ -31,6 +35,7 @@ Users.factory('Person', function($http, $q, Restangular) {
         return array;
     }
     
+    //Załąduj dane osobowe do pamięci Cache
     Person.loadPersonsFromJson = function(){
     	
     	return Restangular.all('persons').getList().then(function(response){
@@ -40,5 +45,5 @@ Users.factory('Person', function($http, $q, Restangular) {
       })
     }
     
-    return Person; //returns the constructor function - that's what will be called when we do "new Person(someJson);"
+    return Person;
   });

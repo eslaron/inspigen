@@ -1,5 +1,7 @@
+//Fabryka dla zasobu addresses
 Addresses.factory('Address', function($http, $q, Restangular) {
     
+	//cache dla adresów
     var addressCache = {};
 
     function Address(json){
@@ -11,14 +13,16 @@ Addresses.factory('Address', function($http, $q, Restangular) {
       angular.forEach(json,function(value,key){
         self[key] = value;
       });
-      //Add the new one to our addressCache
+      
       addressCache[self.id] = self;
     };
     
+    //Pobierz adres po id
     Address.getAddressById = function(id){
       return addressCache[id]
     }
     
+    //Pobierz wszystkie adresy
     Address.getAllAddresses = function(){
     	var array = [];
         angular.forEach(addressCache, function(Address){
@@ -27,6 +31,7 @@ Addresses.factory('Address', function($http, $q, Restangular) {
         return array;
     }
     
+    //Załaduj adresy do pamięci Cache
     Address.loadAddressesFromJson = function(){
     	
     	return Restangular.all('addresses').getList().then(function(response){
@@ -36,5 +41,5 @@ Addresses.factory('Address', function($http, $q, Restangular) {
       })
     }
     
-    return Address; //returns the constructor function - that's what will be called when we do "new Address(someJson);"
+    return Address; 
   });

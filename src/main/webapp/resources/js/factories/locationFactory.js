@@ -1,5 +1,7 @@
+//Fabryka dla zasobu locations
 Locations.factory('Location', function($http, $q, Restangular) {
     
+	//cache dla dla lokacji
     var locationCache = {};
 
     function Location(json){
@@ -15,10 +17,12 @@ Locations.factory('Location', function($http, $q, Restangular) {
       locationCache[self.id] = self;
     };
     
+    //Pobierz lokację po id
     Location.getLocationById = function(id){
       return locationCache[id]
     }
     
+    //Pobierz wszystkie lokacje
     Location.getAllLocations = function(){
     	var array = [];
         angular.forEach(locationCache, function(Location){
@@ -27,6 +31,7 @@ Locations.factory('Location', function($http, $q, Restangular) {
         return array;
     }
     
+    //Załaduj lokacje do pamięci Cache
     Location.loadLocationsFromJson = function(){
     	
     	return Restangular.all('locations').getList().then(function(response){
@@ -36,5 +41,5 @@ Locations.factory('Location', function($http, $q, Restangular) {
       })
     }
     
-    return Location; //returns the constructor function - that's what will be called when we do "new Location(someJson);"
+    return Location;
   });

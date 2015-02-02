@@ -1,5 +1,7 @@
+//Fabryka dla zasobu events
 Events.factory('Event', function($http, $q, Restangular) {
     
+	//cache dla wydarzeń
     var eventCache = {};
 
     function Event(json){
@@ -15,10 +17,12 @@ Events.factory('Event', function($http, $q, Restangular) {
       eventCache[self.id] = self;
     };
     
+    //Pobierz wydarzenie po id
     Event.getEventById = function(id){
       return eventCache[id]
     }
     
+    //Pobierz wszystkie wydarzenia
     Event.getAllEvents = function(){
     	var array = [];
         angular.forEach(eventCache, function(Event){
@@ -27,6 +31,7 @@ Events.factory('Event', function($http, $q, Restangular) {
         return array;
     }
     
+    //Załąduj wydarzenia do pamięci Cache
     Event.loadEventsFromJson = function(){
     	
     	return Restangular.all('events').getList().then(function(response){
@@ -36,5 +41,5 @@ Events.factory('Event', function($http, $q, Restangular) {
       })
     }
     
-    return Event; //returns the constructor function - that's what will be called when we do "new Event(someJson);"
+    return Event;
   });

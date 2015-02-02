@@ -1,5 +1,7 @@
+//Fabryka dla zasobu settings
 Users.factory('Settings', function($http, $q, Restangular) {
     
+	//cache dla ustawień
     var settingsCache = {};
 
     function Settings(json){
@@ -14,10 +16,12 @@ Users.factory('Settings', function($http, $q, Restangular) {
       settingsCache[self.id] = self;
     };
     
+    //Pobierz ustawienia po id
     Settings.getSettingsById = function(id){
       return settingsCache[id]
     }
-        
+     
+    //Pobierz wszystkie ustawienia
     Settings.getAllSettings = function(){
     	var array = [];
         angular.forEach(settingsCache, function(Settings){
@@ -26,6 +30,7 @@ Users.factory('Settings', function($http, $q, Restangular) {
         return array;
     }
     
+    //Załąduj ustawienia do pamięci Cache
     Settings.loadSettingsFromJson = function(){
     	
     	return Restangular.all('settings').getList().then(function(response){

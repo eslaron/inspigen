@@ -1,5 +1,7 @@
+//Fabryka dla zasobu users
 Users.factory('User', function($http, $q, $rootScope, Restangular) {
     
+	//cache dla użytkowników
     var userCache = {};
     
     var participating = false;
@@ -19,10 +21,12 @@ Users.factory('User', function($http, $q, $rootScope, Restangular) {
       userCache[self.id] = self;
     };
     
+    //Pobierz użytkownika po id
     User.getUserById = function(id){
       return userCache[id]
     }
     
+    //Pobierz wszystkich użytkownikow
     User.getAllUsers = function(){
     	var array = [];
         angular.forEach(userCache, function(User){
@@ -31,6 +35,7 @@ Users.factory('User', function($http, $q, $rootScope, Restangular) {
         return array;
     }
     
+    //Pobieranie zalogowanego użytkownika na podstawie jego nazwy
     User.getLoggedUserByUsername = function(username){
     	var users = User.getAllUsers();
     	var loggedUser = {};
@@ -43,24 +48,29 @@ Users.factory('User', function($http, $q, $rootScope, Restangular) {
         return loggedUser;
     }
     
+    //Getter dla statusu uczestnictwa zalogowanego użytkownika
     User.getLoggedUserIsParticipating = function(){
     	return participating;
     }
     
+    //Setter dla statusu uczestnictwa zalogowanego użytkownika
     User.setLoggedUserIsParticipating = function(bool){
     	participating = bool;
     	return participating;
     }
     
+    //Getter dla statusu w wydarzeniu z id
     User.getInEventWithId = function(){
     	return inEventWithId;
     }
     
+    //Getter dla statusu w wydarzeniu z id
     User.setInEventWithId = function(id){
     	inEventWithId = id;
     	return inEventWithId;
     }
-     
+    
+    //Załąduj użytkownikow do pamięci Cache
     User.loadUsersFromJson = function(){
     	
     	return Restangular.all('users').getList().then(function(response){
@@ -70,5 +80,5 @@ Users.factory('User', function($http, $q, $rootScope, Restangular) {
       })
     }
     
-    return User; //returns the constructor function - that's what will be called when we do "new User(someJson);"
+    return User;
   });
