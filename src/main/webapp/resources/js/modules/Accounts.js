@@ -1,7 +1,11 @@
+//Moduł obsługujący konta użytkowników
 var Accounts = angular.module('inspigen.accounts', ['ui.router', 'restangular'])
 
+//Konfiguracja
 .config(['$stateProvider', function ($stateProvider) {
    
+	//Routing stanów (widoków)
+	
       $stateProvider
       
         .state('register', {
@@ -85,12 +89,14 @@ var Accounts = angular.module('inspigen.accounts', ['ui.router', 'restangular'])
 
 //KONTROLERY
 
+//Kontroler aktywacji użytkowników
 Accounts.controller('AccountActivationController', function($scope, $stateParams, Restangular) {
 	
 	var Account = Restangular.one('accounts/accountActivation');
 	
 	Account.activationToken = $stateParams.token;
 	
+	//Ządanie PUT aktywujące konto nowo zarejestrowanego użytkownika
 	Account.put().then(function(response){
 	
 		  if (response.message == "activationLinkExpired") {
@@ -117,6 +123,7 @@ Accounts.controller('AccountActivationController', function($scope, $stateParams
 	});
 });
 
+//Kontroler kont
 Accounts.controller('AccountsController', function($scope, $timeout, $state, $stateParams, Restangular) {
 
 	$scope.Accounts = Restangular.all('accounts');
@@ -131,6 +138,7 @@ Accounts.controller('AccountsController', function($scope, $timeout, $state, $st
 	
 	$scope.user = {username:"", password:"", email:""};
 	
+	//Funkcja rejestrująca użytkownika
 	$scope.registerUser = function() {
 		
 		$scope.hideMessage = true;
@@ -169,6 +177,7 @@ Accounts.controller('AccountsController', function($scope, $timeout, $state, $st
 		});
 	}
 	
+	//Funkcja wysyłająca email resetujący hasło
 	$scope.sendResetPasswordEmail = function() { 
 		
 		$scope.hideMessage = true;
@@ -201,6 +210,7 @@ Accounts.controller('AccountsController', function($scope, $timeout, $state, $st
 			);
 	}
 	
+	//Funkcja resetująca hasło
 	$scope.resetPassword = function() {
 		
 		$scope.passwordReset.password = $scope.reset.password;
@@ -249,6 +259,7 @@ Accounts.controller('AccountsController', function($scope, $timeout, $state, $st
 		);
 	}
 	
+	//Funkcja czyszcząca formularz rejestracji
 	$scope.resetRegisterForm = function() {
 		
 		$scope.signup.username = '';

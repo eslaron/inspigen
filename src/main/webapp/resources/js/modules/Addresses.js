@@ -1,6 +1,10 @@
+//Moduł obsługujący adresy
 var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular','ngTable'])
 
+//Konfiguracja
 .config(['$stateProvider', function ($stateProvider) {
+	
+	//Routing stanów (widoków)
 	
 	$stateProvider
 	
@@ -201,6 +205,7 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 
 //KONTROLERY
 
+//Kontroler adresów
 Persons.controller('AddressesController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Address', 'Event', 'Participant','Location', 'Context', 'Restangular', 
                                      function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Address, Event, Participant, Location, Context, Restangular) {
 	
@@ -216,6 +221,7 @@ Persons.controller('AddressesController', ['$scope', '$state', '$stateParams', '
   var AllAddresses = Restangular.all('addresses');
   var OneAddress = Restangular.one('addresses');
   
+  //Funkcja dodająca adres
   $scope.addAddress = function(address) {
 
 	  $scope.address.registeredAddress = $scope.registeredAddress;
@@ -228,6 +234,7 @@ Persons.controller('AddressesController', ['$scope', '$state', '$stateParams', '
 			  });		  
   }
   
+  //Funkcja edytująca adres
   $scope.editAddress = function(address) {
 	  
 		OneAddress.id = $scope.address.id;
@@ -259,6 +266,7 @@ Persons.controller('AddressesController', ['$scope', '$state', '$stateParams', '
 		  });		  
   }
   
+  //Funkcja usuwająca adres
   $scope.deleteAddress = function(id) {
 	      
 	  OneAddress.id = id;

@@ -1,6 +1,9 @@
+//Moduł obsługujący załączniki
 var Attachments = angular.module('inspigen.attachments', ['ui.router', 'restangular','ngTable']);
 
+//KONTROLERY
 
+//Kontroler załączników użytkownika
 Attachments.controller('UserAttachmentsController', ['$scope', '$state', '$stateParams', 'Restangular',
                                                    function($scope, $state, $stateParams, Restangular) {
 	 $scope.attachment = '';
@@ -8,6 +11,7 @@ Attachments.controller('UserAttachmentsController', ['$scope', '$state', '$state
 	$scope.getPhotoAttachmentByUserId();	
 }]);
 
+//Kontroler załączników
 Attachments.controller('AttachmentsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Settings', 'Context', 'Restangular',
                                      function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Settings, Context, Restangular) {
 	  $scope.AddAttachment = {};
@@ -17,13 +21,13 @@ Attachments.controller('AttachmentsController', ['$scope', '$state', '$statePara
 	  $scope.eventAttachments = [];
 	  $scope.loadingAttachments = false;
 
-		  
+	  //Mapowania zasobów REST API
 	  var AllAttachments = Restangular.all('attachments');
 	  var OneAttachment = Restangular.one('attachments');
 	  var AttachmentWithId = Restangular.one('attachments', $scope.user.id);
 	  var UsersAttachmentWithId = Restangular.one('attachments/user', $scope.user.id);
 	  
-	  	  //Dodająca nowy załącznik
+	  	  //Funkcja dodająca nowy załącznik
 		  $scope.addAttachment = function(userId,file) {
 		  
 			  if($scope.attachment == null) $scope.noFile = 'Wybierz plik';

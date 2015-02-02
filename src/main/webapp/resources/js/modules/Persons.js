@@ -1,6 +1,10 @@
+//Moduł obsługujący dane osobowe
 var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ngTable'])
 
+//Konfiguracja
 .config(['$stateProvider', function ($stateProvider) {
+	
+	//Routing stanów (widoków)
 	
 	$stateProvider
 	
@@ -201,6 +205,7 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 
 //KONTROLERY
 
+//Kontroler danych osobowych
 Persons.controller('PersonsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event', 'Participant','Location', 'Context', 'Restangular', 
                                      function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Participant, Location, Context, Restangular) {
 	
@@ -208,9 +213,11 @@ Persons.controller('PersonsController', ['$scope', '$state', '$stateParams', '$f
   $scope.active = Context.active;
   $scope.activate = Context.activate;
   
+  //Mapowania zasobów dla REST API
   var AllPersons = Restangular.all('persons');
   var OnePerson = Restangular.one('persons');
   
+  //Funkcja dodająca dane osobowe
   $scope.addPerson = function(person) {
 
 	  		  AllPersons.post($scope.person).then(function(response) {
@@ -220,6 +227,7 @@ Persons.controller('PersonsController', ['$scope', '$state', '$stateParams', '$f
 			  });		  
   }
   
+  //Funkcja aktualizująca dane osobowe
   $scope.editPerson = function(person) {
 	  
 		OnePerson.id = $scope.person.id;

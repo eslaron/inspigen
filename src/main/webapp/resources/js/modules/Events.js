@@ -1,6 +1,10 @@
+//Moduł obsługujący wydarzenia
 var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTable'])
 
+//Konfiguracja
 .config(['$stateProvider', function ($stateProvider) {
+	
+	//Routing stanów(widoków)
 	
 	$stateProvider
 	
@@ -241,6 +245,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 
 //KONTROLERY
 
+//Kontroler wydarzeń
 Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 
                                        'Event', 'Participant','Location', 'Context', 'Restangular', 
                                      function($rootScope, $scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, 
@@ -250,30 +255,37 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
   $scope.active = Context.active;
   $scope.activate = Context.activate;
   
+  //Zmienna globalna dla listy wydarzeń
   var data = $scope.all.events;
 
+  //Informacje o zalogowanym użytkowniku
   $scope.loggedUser = User.getLoggedUserByUsername($rootScope.loggedUsername);
   $scope.loggedUserParticipating = User.getLoggedUserIsParticipating();
   $scope.loggedUsersEventId = User.getInEventWithId();
   $scope.participantApproved = false;
+  $scope.duplicateParticipant = false;
   
+  //Mapowania zasobów REST API
   var AllEvents = Restangular.all('events');
   var OneEvent = Restangular.one('events');
   var AllParticipants = Restangular.all('participants');
   var OneParticipant = Restangular.one('participants');
   
+  //Ładowanie całych kolekcji do zmiennych
   $scope.users = User.getAllUsers();
   $scope.persons = Person.getAllPersons();
   $scope.locations = Location.getAllLocations();
   $scope.participants = Participant.getAllParticipants();
   
-  $scope.duplicateParticipant = false;
-  
+  //Listy
   $scope.coordinators = [];
-  $scope.eventCoordinator = {};
   $scope.eventParticipants = [];
   $scope.eventLocations = [];
+  
+  //Koordynator wydarzenia
+  $scope.eventCoordinator = {};
 
+  //Funkcja przygotowujaca listę koordynatorów
   $scope.prepareCoordinatorList = function() {
 	  for(var i = $scope.persons.length - 1; i >= 0; i--) {	
 		  for(var j = $scope.users.length - 1; j >= 0; j--) {	
@@ -285,6 +297,7 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 	  }	
   }
   
+  //Funkcja wyszukująca koordynatora wydarzenia
   $scope.findEventCoordinator = function() {
 	  for(var i = $scope.coordinators.length - 1; i >= 0; i--) {	
  		  if($scope.coordinators[i].user_id == $scope.event.user_id) {
@@ -293,6 +306,7 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 	  }
   }
   
+  //Funkcja przygotowująca listę uczestników
   $scope.prepareEventParticipantsList = function() {
 	  
 	  $scope.tempParticipant = {id:"", firstName:"", lastName:"", user_id:"", approved:""};
@@ -316,10 +330,12 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 	  }  
   }
   
+  //Wywołanie funkcji przygotowujących listy
   $scope.prepareCoordinatorList();
   $scope.findEventCoordinator();
   $scope.prepareEventParticipantsList();
   
+  //Funkcja dodająca wydarzenie
   $scope.addEvent = function(event) {
   	    
 	  AllEvents.post($scope.event).then(function(response){
@@ -339,6 +355,7 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 	  });
   }
   
+  //Funkcja aktualizująca wydarzenie
   $scope.editEvent = function(event) {
 	    
 	  OneEvent.id = $scope.event.id;
@@ -363,6 +380,7 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 	  });
   }
   
+  //Funkcja usuwająca wydarzenie
   $scope.deleteEvent = function(id) {
 	    
 	  OneEvent.id = id;
@@ -526,6 +544,7 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 	  });
   } 
  
+ 	//Potwierdzenie usunięcia wydarzenia
  	$scope.cid = 0;
  
  	$scope.getConfirmDeleteId = function(id) {
@@ -533,20 +552,21 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
  		$scope.cid = id;
  	}
  
+ 	//Funkcja obsługująca tabelę z wydarzeniami
  	$scope.tableParams = new ngTableParams({
-     page: 1,            // show first page
-     count: 10,          // count per page
+     page: 1,            
+     count: 10,          
      sorting: {
-         id: 'asc'     // initial sorting
+         id: 'asc'     
      }
  	}, {
-     total: data.length, // length of data
+     total: data.length, 
      getData: function($defer, params) {
      	        	
      	var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
      	var filteredData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData; 
      	
-     	params.total(filteredData.length); // set total for recalc pagination
+     	params.total(filteredData.length); 
      	
          $defer.resolve(filteredData.slice((params.page() - 1) * params.count(), params.page() * params.count()));          
      }

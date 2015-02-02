@@ -1,7 +1,10 @@
 Users.service('Context', function($q, User, Person, Address, Event, Participant, Location, Settings, Attachment) {
 	
+//Serwis pozwalający ustalać i nadawać kontekst obiektów z kolekcji pobieranych z REST API
+	
   var context = this;
   
+  //Aktywny
   this.active = {
     'user' :{},
     'person': {},
@@ -12,6 +15,8 @@ Users.service('Context', function($q, User, Person, Address, Event, Participant,
     'settings': {},
     'attachment': {}
   };
+  
+  //Wszystkie
   this.all = {
     'user': [],
   	'person': [],
@@ -23,6 +28,7 @@ Users.service('Context', function($q, User, Person, Address, Event, Participant,
   	'attachment': []
   };
 
+  //Aktywuj
   this.activate = {
     'user' : function(user){
       context.active.user = user;

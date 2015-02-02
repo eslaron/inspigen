@@ -1,9 +1,12 @@
+//Moduł zawierający dyrektywy rozrzerzające standardowy HTML
 angular.module('inspigen.directives', [])
 
+//Konfiguracja
 .config(function($compileProvider){
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|data|blob|ftp|mailto|chrome-extension):/);
 })
-  
+ 
+//Dyrektywa sprawdzająca zgodność dwóch pól tekstowych
 .directive('ngMatch', function() {
 return {
 	require: 'ngModel',
@@ -20,6 +23,7 @@ return {
 	}	
 })
 
+//Dyrektywa walidująca numer PESEL
 .directive('ngPesel', function() {
 	
 	/*
@@ -62,6 +66,7 @@ return {
 	}
 })
 
+//Dyrektywa do uploadu plików
 .directive('fileUpload', function() {
 
 	  return {
@@ -85,7 +90,8 @@ return {
 	  }
 })
 
-  .directive('imageUploadr',function($timeout){
+//Dyrektywa do uploadu plików graficznych
+.directive('imageUploadr',function($timeout){
     
     return {
       restrict: 'E',
@@ -120,8 +126,9 @@ return {
       }
     }   
   })
-  
-  .directive('imageDownloadr',function(){
+
+//Dyrektywa do pobierania plików graficznych
+.directive('imageDownloadr',function(){
     
     return {
       restrict: 'A',

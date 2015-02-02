@@ -1,9 +1,14 @@
+//Nazwa nagłówka
 var xAuthTokenHeaderName = 'x-auth-token';
 
+//Moduł obsługujący logowanie użytkownika i zabezpieczenia
 var Login = angular.module('inspigen.login', ['ui.router', 'LocalStorageModule', 'permission'])
 
+//Podczas działania aplikacji wykonywane są operacje
 .run(function($http, $rootScope, $state, Permission, localStorageService) {
 
+			//Definicje ról użytkowników
+	
 			Permission.defineRole('anonymous', function (stateParams) {
 		        if ($rootScope.hasRole("ROLE_ADMIN") == false 
 		        		|| $rootScope.hasRole("ROLE_MOD") == false 
@@ -34,12 +39,14 @@ var Login = angular.module('inspigen.login', ['ui.router', 'LocalStorageModule',
 		        return false;
 		      });
 			
+			//Globalna funkcja sprawdzająca czy zalogowany uzytkownik posiada daną role
 			$rootScope.hasRole = function(role) {
 					if ($rootScope.user == undefined) return false;
 					if ($rootScope.user.role == role) return true;
 					else return false;
 			};
 
+			//Globalna funkcja wylogowywująca użytkownika
 			$rootScope.logout = function() {
 				delete $rootScope.user;
 				delete $http.defaults.headers.common[xAuthTokenHeaderName];
@@ -47,9 +54,10 @@ var Login = angular.module('inspigen.login', ['ui.router', 'LocalStorageModule',
 				$state.go('login');
 			};
 
-			 /* Try getting valid user from cookie or go to login page */
+			//Pobranie zawartości ciasteczka z tokenem autoryzującym
 			var user = localStorageService.cookie.get('user');
 			
+			//Jeśli ciasteczko nie jest puste, to pobierz informacje o zalogowanym użytkowniku
 			if (user != null) {
 				$rootScope.user = user;
 				$rootScope.loggedUsername = user.username;
@@ -67,15 +75,18 @@ var Login = angular.module('inspigen.login', ['ui.router', 'LocalStorageModule',
 			}
 })
 
+//Konfiguracja
 .config(['$stateProvider', 'localStorageServiceProvider',
          function ($stateProvider, localStorageServiceProvider) {
 
-	
+	 //Parametry pliku cookie przechowywane w pamięci przeglądarki
 	 localStorageServiceProvider
 	    .setPrefix('inspigen')
 	    .setStorageType('sessionStorage')
 	    .setNotify(true, true)
 	    .setStorageCookie(5, '/');
+	 
+	 //Routing stanów (widoków)
 	 
       $stateProvider
       
@@ -101,20 +112,25 @@ var Login = angular.module('inspigen.login', ['ui.router', 'LocalStorageModule',
   ]
 );
 		
+//KONTROLERY
 
+//Kontroler logowania
 Login.controller('LoginController', function($scope, $rootScope, $state, $http, LoginService, localStorageService) {
 	
 	  $scope.hideMessage = true;
 		$scope.loginMessage = 'Niepoprawny login lub hasło';
 		
+			//Funkcja autentykująca użytkownika
 			$scope.login = function() {
 				LoginService.authenticate($.param({username: $scope.username, password: $scope.password}), function(user) {
 					$rootScope.user = user;
 					$http.defaults.headers.common[ xAuthTokenHeaderName ] = user.token;
 					localStorageService.cookie.set('user', user);	
 	
+					//Pobierz nazwę zalogowanego użytkownika z pliku Cookie
 					$rootScope.loggedUsername = localStorageService.cookie.get('user').username;
-					
+				
+				//Przekieruj do odpowiedni paneli użytkownika według roli zawartej w pliku cookie	
 		      	if (user.role == 'ROLE_ADMIN')
 	        		$state.go('app.admin.dashboard');
 
@@ -127,6 +143,7 @@ Login.controller('LoginController', function($scope, $rootScope, $state, $http, 
 					function(error) {
 						$scope.error = error.data;
 						
+						//Obsługa błędnej próby logowania
 						if($scope.error.description == "invalidCredentials") {
 							$scope.messageStyle = "alert alert-info";
 							$scope.hideMessage = false;

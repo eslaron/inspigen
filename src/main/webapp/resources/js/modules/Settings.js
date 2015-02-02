@@ -1,7 +1,11 @@
+//Moduł obsługujący ustawienia
 var Settings = angular.module('inspigen.settings', ['ui.router', 'restangular','ngTable'])
 
+//Konfiguracja
 .config(['$stateProvider', function ($stateProvider) {
 		
+		//Routing stanów(widoków)
+	
 		$stateProvider
 			    
 		      .state('app.admin.settings', {
@@ -28,6 +32,8 @@ var Settings = angular.module('inspigen.settings', ['ui.router', 'restangular','
 		   })  	   	
 	    }	           
 ]);
+
+//KONTROLERY
 
 //Kontroler modułu ustawień
 Settings.controller('SettingsController', ['$rootScope', '$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Address','Settings', 'Context', 'Restangular',

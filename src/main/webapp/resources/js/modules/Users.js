@@ -1,6 +1,10 @@
+//Moduł obsługujący użytkowników
 var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTable'])
 
+//Konfiguracja
 .config(['$stateProvider', function ($stateProvider) {
+	
+	//Routing stanów(widoków)
 	
 	$stateProvider
 	
@@ -445,6 +449,7 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 
 //KONTROLERY
 
+//Kontroler użytkowników
 Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Address','Settings', 'Context', 'Restangular',
                                      function($rootScope, $scope, $state, $stateParams, $filter, ngTableParams, User, Person, Address,Settings, Context, Restangular) {
 	
@@ -454,6 +459,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
   
   $scope.isCollapsed = true;	
   
+  //Zmienna globalna zawierająca listę wszystkich użytkowników
   var data = $scope.all.users;
     
   $scope.settings = $scope.all.settings[0];
@@ -462,6 +468,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
   $scope.password = $scope.user.password;
   $scope.email = $scope.user.email;
   
+  //Role użytkowników
   $scope.roles = [{key: "Wolontariusz"},
                   {key: "Koordynator"},
                   {key: "Administrator"}];
@@ -470,7 +477,8 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
   $scope.selectedRole.key = $scope.user.role;
   
   $scope.optionalEnabled = false;
-    
+  
+  //Translacja statusów użytkownika
   if($scope.user.enabled == "Tak")
 	  $scope.enabled = true;
   if($scope.user.enabled == "Nie")
@@ -490,16 +498,12 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
   $scope.addToGroup = "";
   $scope.selectedUsers = [];
   
+  //Pobranie informacji o zalogowanym użytkowniku
   $scope.loggedUser = User.getLoggedUserByUsername($rootScope.loggedUsername);
 
-	
   $scope.loggedUserId = 0;
-	  
-  for(var i=0; i<data.length; i++) {
 
-	  
-  }
-  
+  //Funkcja sterująca wybieraniem wielu użytkowników w sekcji "Grupy"
   $scope.changeSelection = function(user) {
 	  
 	  if(user.$selected == true)
@@ -513,6 +517,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 	  }
   }
   
+  //Funkcja przypisująca do grupy użytkowników
   $scope.assignToGroup = function() {
 	  
 	  var assignGroup = Restangular.one('users');
@@ -532,6 +537,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 	  }
   }
   
+  //Funkcja szukająca duplikatów
   $scope.findDuplicate = function(type, value) { 
 		  for(var i = data.length - 1; i >= 0; i--) {
 			  if(type == "username") {
@@ -547,6 +553,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 			}
   }
   
+  //Funkcja dodajaca nowego użytkownika
   $scope.addUser = function(add) {
 	  
 	  	 $scope.hideMessage = true;
@@ -605,6 +612,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 		  }
 	  }
   
+  //Funkcja aktualizująca użytkownika
   $scope.editUser = function(user) {
 	 
 	 $scope.hideMessage = true; 
@@ -666,6 +674,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 	  }
   }
 
+  //Funkcja usuwająca użytkownika
   $scope.deleteUser = function(id) {
 	  
 	  var Delete = Restangular.one('users');
@@ -687,6 +696,8 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 	  });
   }
     
+  //Potwierdzenie usunięcia użytkownika
+  
   $scope.cid = 0;
   
 	$scope.getConfirmDeleteId = function(id) {
@@ -694,11 +705,12 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 		$scope.cid = id;
 	}
   
+	//Funkcja obsługująca tabelę z użytkownikami
 	  $scope.tableParams = new ngTableParams({
-	        page: 1,            // show first page
-	        count: 10,          // count per page
+	        page: 1,            
+	        count: 10,          
 	        sorting: {
-	            id: 'asc'     // initial sorting
+	            id: 'asc'     
 	        }
 	    }, {
 	        total: data.length, // length of data
@@ -707,7 +719,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 	        	var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
 	        	var filteredData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData; 
 	        	
-	        	params.total(filteredData.length); // set total for recalc pagination
+	        	params.total(filteredData.length); 
 	        	
 	            $defer.resolve(filteredData.slice((params.page() - 1) * params.count(), params.page() * params.count()));          
 	        }

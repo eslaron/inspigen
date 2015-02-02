@@ -1,6 +1,10 @@
+//Moduł obsługujący lokacje
 var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular','ngTable'])
 
+//Konfiguracja
 .config(['$stateProvider', function ($stateProvider) {
+	
+	//Routing stanów (widoków)
 	
 	$stateProvider
 	
@@ -200,6 +204,7 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 
 //KONTROLERY
 
+//Kontroler lokacji
 Locations.controller('LocationsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event', 'Participant','Location', 'Context', 'Restangular',
                                      function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Participant, Location, Context, Restangular) {
 	
@@ -207,12 +212,14 @@ Locations.controller('LocationsController', ['$scope', '$state', '$stateParams',
   $scope.active = Context.active;
   $scope.activate = Context.activate;
   
+  //Zmienna globalna zawierająca listę lokacji
   var data = $scope.all.locations;
   
+  //Mapowania zasobów dla REST API
   var AllLocations = Restangular.all('locations');
   var OneLocation = Restangular.one('locations');
   
-
+  //Funkcja dodająca lokację
   $scope.addLocation = function(location) {
   
 	  		AllLocations.post($scope.location).then(function(response) {	  
@@ -225,6 +232,7 @@ Locations.controller('LocationsController', ['$scope', '$state', '$stateParams',
 			  });		  
   }
   
+  //Funkcja aktualizując lokację
   $scope.editLocation = function(location) {
 	  
 		OneLocation.id = $scope.location.id;
@@ -246,6 +254,7 @@ Locations.controller('LocationsController', ['$scope', '$state', '$stateParams',
 		  });		  
   }
   
+  //Funkcja usuwajaca lokację
   $scope.deleteLocation = function(id) {
 	    
 	  OneLocation.id = id;
@@ -265,6 +274,7 @@ Locations.controller('LocationsController', ['$scope', '$state', '$stateParams',
 	  });
   }
   
+  //Potwierdzenie usuniecia lokacji
   $scope.cid = 0;
   
 	$scope.getConfirmDeleteId = function(id) {
@@ -272,20 +282,21 @@ Locations.controller('LocationsController', ['$scope', '$state', '$stateParams',
 		$scope.cid = id;
 	}
   
+  //Funkcja obsługująca tabele z lokacjami
   $scope.tableParams = new ngTableParams({
-      page: 1,            // show first page
-      count: 10,          // count per page
+      page: 1,            
+      count: 10,          
       sorting: {
-          id: 'asc'     // initial sorting
+          id: 'asc'     
       }
   }, {
-      total: data.length, // length of data
+      total: data.length, 
       getData: function($defer, params) {
       	        	
       	var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
       	var filteredData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData; 
       	
-      	params.total(filteredData.length); // set total for recalc pagination
+      	params.total(filteredData.length); 
       	
           $defer.resolve(filteredData.slice((params.page() - 1) * params.count(), params.page() * params.count()));          
       }
