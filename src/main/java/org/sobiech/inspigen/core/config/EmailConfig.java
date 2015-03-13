@@ -32,7 +32,7 @@ public class EmailConfig {
 		javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
 		
 		//Odkomentować w razie, gdyby serwer poczty na serwerze VPS odrzucał połączenie
-		javaMailProperties.setProperty("mail.smtp.ssl.trust", settings.getEmailHost());
+		//javaMailProperties.setProperty("mail.smtp.ssl.trust", settings.getEmailHost());
 	
 		sender.setJavaMailProperties(javaMailProperties);
 		
