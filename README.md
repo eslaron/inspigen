@@ -1,12 +1,12 @@
-InspiGen - Aplikacja webowa wspierająca organizację wolontariacką oparta na wzorcu REST i modelu SPA
+InspiGen - Web application for supporting a voluntary work organisation based on REST and SPA
 ======================================================================================================
 
-Aplikacja webowa przeznaczona na projekt dyplomowy.
+Webapp built for my university thesis project
 
-Kierunek: Informatyka
+Field: Computer Science
 
-Profil: Inżynierski
+Degree: Engineer
 
-Uczelnia: Uniwersytet Rzeszowski
+UNIVERSITY OF RZESZOW
 
-Autor: Sebastian Sobiech
+Author: Sebastian Sobiech
