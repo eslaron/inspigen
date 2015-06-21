@@ -42,6 +42,8 @@ public class User extends BaseEntity implements UserDetails {
 	private Date lastLoginAttempt;					//data ostatniego nieudanego logowania
 		
 	//Konstruktory
+	//Time to refactor this shit!
+
 	
 	public User() {}
 	
