@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.sobiech.inspigen.core.models.entities.Attachment;
+import org.sobiech.inspigen.core.models.entity.Attachment;
 import org.sobiech.inspigen.core.repositories.IAttachmentDao;
 
 //Klasa implementujaca interfejs IAttachmentDao

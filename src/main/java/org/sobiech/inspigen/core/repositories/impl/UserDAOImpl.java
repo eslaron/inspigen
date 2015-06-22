@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.sobiech.inspigen.core.repositories.IUserDao;
-import org.sobiech.inspigen.core.models.entities.User;
+import org.sobiech.inspigen.core.models.entity.User;
 
 //Klasa implementujaca interfejs IUserDao
 @Repository

@@ -2,7 +2,7 @@ package org.sobiech.inspigen.core.repositories;
 
 import java.util.List;
 
-import org.sobiech.inspigen.core.models.entities.Attachment;
+import org.sobiech.inspigen.core.models.entity.Attachment;
 
 //Interfejs zawierajacy prototypy metod operujących na klasie Attachment
 public interface IAttachmentDao {

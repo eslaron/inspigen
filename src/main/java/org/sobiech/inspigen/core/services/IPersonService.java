@@ -1,7 +1,7 @@
 package org.sobiech.inspigen.core.services;
 
 import java.util.List;
-import org.sobiech.inspigen.core.models.entities.Person;
+import org.sobiech.inspigen.core.models.entity.Person;
 
 //Interfejs zawierajacy prototypy metod operujących na klasie Person
 public interface IPersonService {

@@ -1,6 +1,6 @@
 package org.sobiech.inspigen.core.config.xauth;
 
-import org.sobiech.inspigen.core.models.entities.Settings;
+import org.sobiech.inspigen.core.models.entity.Settings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.codec.Hex;

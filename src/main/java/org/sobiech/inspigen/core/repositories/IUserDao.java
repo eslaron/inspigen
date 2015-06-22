@@ -1,6 +1,6 @@
 package org.sobiech.inspigen.core.repositories;
 
-import org.sobiech.inspigen.core.models.entities.User;
+import org.sobiech.inspigen.core.models.entity.User;
 
 //Interfejs zawierajacy prototypy metod operujących na klasie User
 public interface IUserDao {

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.sobiech.inspigen.core.models.dto.AttachmentDto;
-import org.sobiech.inspigen.core.models.entities.Attachment;
+import org.sobiech.inspigen.core.models.entity.Attachment;
 import org.sobiech.inspigen.core.repositories.IAttachmentDao;
 import org.sobiech.inspigen.core.repositories.common.IGenericDao;
 import org.sobiech.inspigen.core.services.IAttachmentService;

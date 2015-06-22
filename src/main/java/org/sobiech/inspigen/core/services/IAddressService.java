@@ -2,7 +2,7 @@ package org.sobiech.inspigen.core.services;
 
 import java.util.List;
 
-import org.sobiech.inspigen.core.models.entities.Address;
+import org.sobiech.inspigen.core.models.entity.Address;
 
 //Interfejs zawierajacy prototypy metod operujących na klasie Address
 public interface IAddressService {

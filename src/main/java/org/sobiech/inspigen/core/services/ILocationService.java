@@ -2,7 +2,7 @@ package org.sobiech.inspigen.core.services;
 
 import java.util.List;
 
-import org.sobiech.inspigen.core.models.entities.Location;
+import org.sobiech.inspigen.core.models.entity.Location;
 
 //Interfejs zawierajacy prototypy metod operujących na klasie Location
 public interface ILocationService {

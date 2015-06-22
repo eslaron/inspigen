@@ -2,7 +2,7 @@ package org.sobiech.inspigen.core.services.impl;
 
 import java.util.List;
 
-import org.sobiech.inspigen.core.models.entities.Event;
+import org.sobiech.inspigen.core.models.entity.Event;
 import org.sobiech.inspigen.core.repositories.common.IGenericDao;
 import org.sobiech.inspigen.core.services.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;

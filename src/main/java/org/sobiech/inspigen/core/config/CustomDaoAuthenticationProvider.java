@@ -5,8 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.sobiech.inspigen.core.models.entities.Settings;
-import org.sobiech.inspigen.core.models.entities.User;
+import org.sobiech.inspigen.core.models.entity.Settings;
+import org.sobiech.inspigen.core.models.entity.User;
 import org.sobiech.inspigen.core.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;

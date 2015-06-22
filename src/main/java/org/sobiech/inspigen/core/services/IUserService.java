@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.sobiech.inspigen.core.models.dto.UserDto;
-import org.sobiech.inspigen.core.models.entities.User;
+import org.sobiech.inspigen.core.models.entity.User;
 
 //Interfejs zawierajacy prototypy metod operujących na klasie User
 public interface IUserService extends UserDetailsService {

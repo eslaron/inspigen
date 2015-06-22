@@ -7,7 +7,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.sobiech.inspigen.core.models.entities.Settings;
+import org.sobiech.inspigen.core.models.entity.Settings;
 import org.sobiech.inspigen.core.services.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;

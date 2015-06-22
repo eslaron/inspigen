@@ -2,7 +2,7 @@ package org.sobiech.inspigen.core.services;
 
 import java.util.List;
 
-import org.sobiech.inspigen.core.models.entities.Participant;
+import org.sobiech.inspigen.core.models.entity.Participant;
 
 //Interfejs zawierajacy prototypy metod operujących na klasie Participant
 public interface IParticipantService {

@@ -2,7 +2,7 @@ package org.sobiech.inspigen.core.services;
 
 import java.util.List;
 
-import org.sobiech.inspigen.core.models.entities.Event;
+import org.sobiech.inspigen.core.models.entity.Event;
 
 //Interfejs zawierajacy prototypy metod operujących na klasie Event
 public interface IEventService {
