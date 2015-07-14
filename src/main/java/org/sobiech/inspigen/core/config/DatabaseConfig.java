@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"org.sobiech.inspigen.core.repositories", 
-								"org.sobiech.inspigen.core.models.entities", 
+								"org.sobiech.inspigen.core.models",
 								"org.sobiech.inspigen.core.services"})
 @PropertySource("classpath:database.properties")
 public class DatabaseConfig {

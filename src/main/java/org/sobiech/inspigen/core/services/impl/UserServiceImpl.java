@@ -50,10 +50,7 @@ public class UserServiceImpl implements IUserService {
     
     @Autowired 
     ReflectionSaltSource saltSource;
-    
-    @Autowired
-    Settings settings;
-    
+
     @Autowired
 	IEmailService emailService;
     
@@ -348,7 +345,7 @@ public class UserServiceImpl implements IUserService {
 		//Pobieramy aktualną datę z kalendarza, formatujemy i dodajemy czas wygasania linkow
 		Calendar cal=Calendar.getInstance();
 		cal=format.getCalendar();	
-		cal.add(Calendar.MINUTE, settings.getLinkExpirationTime());
+		cal.add(Calendar.MINUTE, 2280);
 	
 		//Zwracamy nową datę
 		return (Date)cal.getTime();

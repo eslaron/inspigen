@@ -11,20 +11,17 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 //Klasa konfigurująca wysyłanie wiadomości email
 @Configuration
 public class EmailConfig {
-	
-	@Autowired
-	Settings settings;
-	
+
 	//Bean z konfiguracją mailsendera
 	@Bean
 	JavaMailSenderImpl mailSender() {
 		
 		//Podajemy dane serwera pocztowego
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();
-		sender.setHost(settings.getEmailHost());
-		sender.setPort(settings.getEmailPort());
-		sender.setUsername(settings.getEmailUsername());
-		sender.setPassword(settings.getEmailPassword());
+		sender.setHost("smtp.gmail.com");
+		sender.setPort(587);
+		sender.setUsername("system.inspigen");
+		sender.setPassword("qwertyui7");
 		
 		//Ustawiamy dodatkowe opcje
 		Properties javaMailProperties = new Properties();	

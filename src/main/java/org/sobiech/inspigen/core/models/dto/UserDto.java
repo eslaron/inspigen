@@ -2,31 +2,28 @@ package org.sobiech.inspigen.core.models.dto;
 
 import java.util.Date;
 
-//Klasa do transportu wybranych informacji o u¿ytkownikach
 public class UserDto {
 
-    private Long id;                    //id u¿ytkownika
+    private Long id;
 
-    private String username;            //nazwa u¿ytkownika
+    private String username;
 
-    private String password;            //has³o
+    private String password;
 
-    private String email;                //adres email
+    private String email;
 
-    private String role;                //rola u¿ytkownika
+    private String role;
 
-    private String enabled;                //informacja o aktywnoœci konta(Tak lub Nie)
+    private String enabled;
 
-    private String locked;                //informacja o blokadzie konta(Tak lub Nie)
+    private String locked;
 
-    private int failedLogins;            //liczba nieudanych prob logowania
+    private int failedLogins;
 
-    private Date lastLoginAttempt;      //ostatnia nieudana proba logowania
+    private Date lastLoginAttempt;
 
     public UserDto() {
     }
-
-    //Gettery i settery
 
     public Long getId() {
         return id;

@@ -15,9 +15,6 @@ import java.security.NoSuchAlgorithmException;
  * @author Josh Long (josh@joshlong.com)
  */
 public class TokenUtils {
-	
-	@Autowired
-	Settings settings;
 
     public static final String MAGIC_KEY = "obfuscate";
 

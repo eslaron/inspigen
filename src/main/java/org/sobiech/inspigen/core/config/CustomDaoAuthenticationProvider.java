@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.sobiech.inspigen.core.models.entity.Settings;
 import org.sobiech.inspigen.core.models.entity.User;
 import org.sobiech.inspigen.core.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +18,7 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
 	@Autowired
 	IUserService userService;
-	
-	@Autowired
-	Settings settings;
-	
+
 	private String username;
 	
 	private String loginFailureError = "";
@@ -64,7 +60,7 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 			  		//Ustawiamy czas po ktorym konto ma być odblokowane
 			  		Calendar unlockTime = Calendar.getInstance();
 			  		unlockTime = format.getCalendar();
-			  		unlockTime.add(Calendar.MINUTE, settings.getAccountLockTime());
+			  		unlockTime.add(Calendar.MINUTE, 15);
 			  		
 			  		//Jeżeli czas blokady upłynął, to wyzeruj proby, odblokuj i zaktualizuj użytkownika
 			  		if(Calendar.getInstance().getTime().after(unlockTime.getTime()) == true) {
@@ -91,7 +87,7 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 		    		userByName.setLastLoginAttempt(new Date());
 		    		
 		    		//Jeśli zostanie przekroczona liczba N prob, to zablokuj konto
-		    		if (attempts > settings.getMaxLoginAttempts()-1) {
+		    		if (attempts > 3-1) {
 		    			userByName.setAccountNonLocked(false);
 		    			setLoginFailureError("accountLocked");
 		    		}
