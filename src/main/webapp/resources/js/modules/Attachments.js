@@ -12,8 +12,8 @@ Attachments.controller('UserAttachmentsController', ['$scope', '$state', '$state
 }]);
 
 //Kontroler załączników
-Attachments.controller('AttachmentsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Settings', 'Context', 'Restangular',
-                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Settings, Context, Restangular) {
+Attachments.controller('AttachmentsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Context, Restangular) {
 	  $scope.AddAttachment = {};
 	  $scope.attachment = '';
 	  $scope.userPhoto = '';

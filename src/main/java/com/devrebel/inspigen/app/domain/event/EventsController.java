@@ -2,7 +2,6 @@ package com.devrebel.inspigen.app.domain.event;
 
 import java.util.List;
 
-import com.devrebel.inspigen.core.service.SimpleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class EventsController {
 	String message = "";	
 
 	@Autowired
-	SimpleService<Long,Event> eventService;
+	EventRepository repository;
 
 	//Ządanie POST dodające nowe wydarzenie do tabeli
     @RequestMapping(method = RequestMethod.POST)
@@ -29,8 +28,8 @@ public class EventsController {
     	
     	message = "eventCreated";
     	HttpStatus responseStatus = HttpStatus.CREATED;
-    
-    	eventService.create(data);
+
+		repository.save(data);
     	JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
 		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
@@ -39,13 +38,13 @@ public class EventsController {
     //Ządanie GET zwracające wszystkie wydarzenia
     @RequestMapping(method = RequestMethod.GET)
     public List<Event> findAll(){
-       return eventService.findAll();
+       return repository.findAll();
     }
     
     //Ządanie GET zwracajace wydarzenie po id
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
     public Event findEventById(@PathVariable long id){
-       return eventService.findById(id);
+       return repository.findOne(id);
     }
      
     //Ządanie PUT aktualizujące wydarzenie
@@ -55,7 +54,7 @@ public class EventsController {
     	message = "participantUpdated";
     	HttpStatus responseStatus = HttpStatus.OK;
 
-    	eventService.update(data);
+		repository.saveAndFlush(data);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);
@@ -69,7 +68,7 @@ public class EventsController {
     	message = "eventDeleted";
     	HttpStatus responseStatus = HttpStatus.OK;
  	
-    	eventService.deleteById(id);
+    	repository.delete(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

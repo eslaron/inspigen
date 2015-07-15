@@ -2,7 +2,6 @@ package com.devrebel.inspigen.app.domain.person;
 
 import java.util.List;
 
-import com.devrebel.inspigen.core.service.SimpleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class PersonsController {
 	String message = "";	
 
 	@Autowired
-	SimpleService<Long,Person> personService;
+	PersonRepository repository;
 
 	//Ządanie POST dodające nowe dane osobowe do tabeli
     @RequestMapping(method = RequestMethod.POST)
@@ -30,7 +29,7 @@ public class PersonsController {
     	message = "personCreated";
     	HttpStatus responseStatus = HttpStatus.CREATED;
     
-    	personService.create(data);
+    	repository.save(data);
     	
     	JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
@@ -40,7 +39,7 @@ public class PersonsController {
     //Ządanie GET zwracające wszystkie dane osobowe
     @RequestMapping(method = RequestMethod.GET)
     public List<Person> findAllPersons(){
-       return personService.findAll();
+       return repository.findAll();
     }
     
     //Ządanie PUT aktualizujące dane osobowe
@@ -50,7 +49,7 @@ public class PersonsController {
     	message = "personUpdated";
     	HttpStatus responseStatus = HttpStatus.OK;
 
-    	personService.update(data);
+    	repository.saveAndFlush(data);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);
@@ -64,7 +63,7 @@ public class PersonsController {
     	message = "personDeleted";
     	HttpStatus responseStatus = HttpStatus.OK;
  	
-    	personService.deleteById(id);
+    	repository.delete(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

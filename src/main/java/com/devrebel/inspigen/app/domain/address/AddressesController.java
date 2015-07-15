@@ -2,7 +2,6 @@ package com.devrebel.inspigen.app.domain.address;
 
 import java.util.List;
 
-import com.devrebel.inspigen.core.service.SimpleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class AddressesController {
 	String message = "";	
 
 	@Autowired
-	SimpleService<Long,Address> addressService;
+	AddressRepository repository;
 
 	//Ządanie POSt dodające nowy adres
     @RequestMapping(method = RequestMethod.POST)
@@ -31,8 +30,8 @@ public class AddressesController {
     	
     	//Status odpowiedzi
     	HttpStatus responseStatus = HttpStatus.CREATED;
-    
-    	addressService.create(data);
+
+		repository.save(data);
     	JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
 		
@@ -43,13 +42,13 @@ public class AddressesController {
     //Ządanie GET zwracajace wszystkie adresy
     @RequestMapping(method = RequestMethod.GET)
     public List<Address> findAllAddresses(){
-       return addressService.findAll();
+       return repository.findAll();
     }
     
     //Ządanie GET zwracające jeden adres po podanym id
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
     public Address findAddressById(@PathVariable long id){
-       return addressService.findById(id);
+       return repository.findOne(id);
     }
     
     //Ządanie PUT aktualizujące adres
@@ -61,7 +60,7 @@ public class AddressesController {
     	//Status odpowiedzi
     	HttpStatus responseStatus = HttpStatus.OK;
 
-    	addressService.update(data);
+		repository.saveAndFlush(data);
     	
 		JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
@@ -78,8 +77,8 @@ public class AddressesController {
     	
     	//Status odpowiedzi
     	HttpStatus responseStatus = HttpStatus.OK;
- 	
-    	addressService.deleteById(id);
+
+		repository.delete(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

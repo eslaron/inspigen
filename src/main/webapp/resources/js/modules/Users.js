@@ -53,12 +53,6 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
  	    	    	Context.all.locations = Location.getAllLocations();
  	    	    });
  	   	   }],
- 		   settings: ['Settings','Context', function(Settings, Context) {  
-	      		return  Settings.loadSettingsFromJson()
-	    	    .then(function(newlyLoadedSettings){
-	    	    	Context.all.settings = Settings.getAllSettings();
-	    	    });
- 		   }],
        }
    })
    
@@ -450,8 +444,8 @@ var Users = angular.module('inspigen.users', ['ui.router', 'restangular','ngTabl
 //KONTROLERY
 
 //Kontroler użytkowników
-Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Address','Settings', 'Context', 'Restangular',
-                                     function($rootScope, $scope, $state, $stateParams, $filter, ngTableParams, User, Person, Address,Settings, Context, Restangular) {
+Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Address', 'Context', 'Restangular',
+                                     function($rootScope, $scope, $state, $stateParams, $filter, ngTableParams, User, Person, Address, Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;
@@ -461,9 +455,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
   
   //Zmienna globalna zawierająca listę wszystkich użytkowników
   var data = $scope.all.users;
-    
-  $scope.settings = $scope.all.settings[0];
-   
+
   $scope.username = $scope.user.username;
   $scope.password = $scope.user.password;
   $scope.email = $scope.user.email;
