@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.core.system;
+package com.devrebel.inspigen.core.system.email;
 
 import java.util.Properties;
 

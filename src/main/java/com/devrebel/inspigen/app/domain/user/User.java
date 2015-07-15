@@ -5,13 +5,13 @@ import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.devrebel.inspigen.app.domain.common.BaseEntity;
+import com.devrebel.inspigen.core.common.AbstractEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity  															//oznaczenie klasy jako encji
 @Table(name="ig_users")												//nazwa tabeli w bazie danych
-public class User extends BaseEntity implements UserDetails {
+public class User extends AbstractEntity implements UserDetails {
 
     private static final long serialVersionUID = 6311364761937265306L;
    

@@ -5,11 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.devrebel.inspigen.app.domain.common.BaseEntity;
+import com.devrebel.inspigen.core.common.AbstractEntity;
 
 @Entity
 @Table(name="ig_system_settings")
-public class Settings extends BaseEntity implements Serializable {
+public class Settings extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = -6053786706744243022L;
 

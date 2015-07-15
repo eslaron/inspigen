@@ -4,11 +4,11 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.devrebel.inspigen.app.domain.common.BaseEntity;
+import com.devrebel.inspigen.core.common.AbstractEntity;
 
 @Entity 																	//oznaczenie klasy jako encji
 @Table(name="ig_event_locations")											//nazwa tabeli w bazie danych
-public class Location extends BaseEntity implements Serializable {
+public class Location extends AbstractEntity implements Serializable {
 
 	private static final long serialVersionUID = 3879277972207055944L;
 	

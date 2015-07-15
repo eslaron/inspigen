@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.core.system;
+package com.devrebel.inspigen.core.system.webapp;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

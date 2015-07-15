@@ -1,7 +1,5 @@
-package com.devrebel.inspigen.core.system.authorization;
+package com.devrebel.inspigen.core.system.security.authentication;
 
-import com.devrebel.inspigen.core.system.CustomDaoAuthenticationProvider;
-import com.devrebel.inspigen.core.system.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

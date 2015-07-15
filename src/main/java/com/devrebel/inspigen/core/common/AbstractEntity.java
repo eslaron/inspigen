@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.app.domain.common;
+package com.devrebel.inspigen.core.common;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -9,7 +9,7 @@ import com.google.common.base.Objects;
 
 //Klasa stanowiąca bazową encję, zawierającą id rekordu
 @MappedSuperclass()
-public abstract class BaseEntity {
+public abstract class AbstractEntity {
 
     @Id						//informacja dla bazy danych, że te pole reprezentuje id rekordu
     @GeneratedValue			//wartość wygenerowana
@@ -41,8 +41,8 @@ public abstract class BaseEntity {
         if (o == null)
             return false;
 
-        if (o instanceof BaseEntity) {
-            final BaseEntity other = (BaseEntity) o;
+        if (o instanceof AbstractEntity) {
+            final AbstractEntity other = (AbstractEntity) o;
             return Objects.equal(getId(), other.getId());
         }
         return false;

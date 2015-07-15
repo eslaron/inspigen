@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.core.system;
+package com.devrebel.inspigen.core.system.security.authentication;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

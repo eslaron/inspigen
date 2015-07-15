@@ -1,10 +1,12 @@
-package com.devrebel.inspigen.core.system;
+package com.devrebel.inspigen.core.system.security;
 
 import javax.sql.DataSource;
 
 import com.devrebel.inspigen.app.domain.user.UserServiceImpl;
-import com.devrebel.inspigen.core.system.authorization.XAuthTokenFilter;
-import com.devrebel.inspigen.core.system.authorization.XAuthTokenConfigurer;
+import com.devrebel.inspigen.core.system.security.authentication.CustomDaoAuthenticationProvider;
+import com.devrebel.inspigen.core.system.security.authentication.CustomUserDetailsService;
+import com.devrebel.inspigen.core.system.security.authentication.XAuthTokenFilter;
+import com.devrebel.inspigen.core.system.security.authentication.XAuthTokenConfigurer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -93,8 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     } 
     
     //Bean z konfiguracją i instancją klasy CustomDaoAuthenticationProvider
-    @Bean
-    CustomDaoAuthenticationProvider customAuthenticationProvider() {
+    @Bean CustomDaoAuthenticationProvider customAuthenticationProvider() {
     	
     	CustomDaoAuthenticationProvider provider = new CustomDaoAuthenticationProvider();
     	
@@ -106,8 +107,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     
     //Bean z instancją klasy CustomUserDetailsService
-    @Bean
-    CustomUserDetailsService customUserDetailsService() { 	
+    @Bean CustomUserDetailsService customUserDetailsService() {
     	return new CustomUserDetailsService();
     }   
     

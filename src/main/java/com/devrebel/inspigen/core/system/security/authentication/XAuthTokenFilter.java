@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.core.system.authorization;
+package com.devrebel.inspigen.core.system.security.authentication;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

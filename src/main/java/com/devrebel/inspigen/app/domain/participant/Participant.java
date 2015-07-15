@@ -5,11 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.devrebel.inspigen.app.domain.common.BaseEntity;
+import com.devrebel.inspigen.core.common.AbstractEntity;
 
 @Entity  																	//oznaczenie klasy jako encji
 @Table(name="ig_event_participants")										//nazwa tabeli w bazie danych
-public class Participant extends BaseEntity implements Serializable {
+public class Participant extends AbstractEntity implements Serializable {
 
 	private static final long serialVersionUID = 3146080687613852144L;
 	

@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.core.system.authorization;
+package com.devrebel.inspigen.core.system.security.authentication;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

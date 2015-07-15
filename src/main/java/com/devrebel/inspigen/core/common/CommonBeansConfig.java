@@ -1,8 +1,8 @@
-package com.devrebel.inspigen.core.system;
+package com.devrebel.inspigen.core.common;
 
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class CustomBeansConfig {
+public class CommonBeansConfig {
 
 }
