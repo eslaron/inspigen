@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.sobiech</groupId>
+    <groupId>com.devrebel</groupId>
     <artifactId>inspigen</artifactId>
     <name>InspiGen</name>
     <packaging>war</packaging>
@@ -334,13 +334,6 @@
                 <configuration>
                     <warName>ROOT</warName>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <webResources>
-                        <resource>
-                            <directory>frontend/build</directory>
-                            <targetPath>/</targetPath>
-                            <filtering>false</filtering>
-                        </resource>
-                    </webResources>
                 </configuration>
             </plugin>
             <!-- ### Used for unit tests ### -->
