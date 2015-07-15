@@ -14,6 +14,7 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,7 +22,7 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 
 //Klasa konfigurująca zabezpieczenia
 @Configuration
-@EnableWebMvcSecurity
+@EnableWebSecurity
 @ComponentScan(basePackageClasses=org.sobiech.inspigen.core.services.impl.UserServiceImpl.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	

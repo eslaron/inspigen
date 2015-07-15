@@ -1,8 +1,7 @@
-package org.sobiech.inspigen.web;
+package org.sobiech.inspigen.app.domain.participant;
 
 import java.util.List;
-import org.sobiech.inspigen.core.models.entity.Participant;
-import org.sobiech.inspigen.core.services.IParticipantService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class ParticipantsController {
 	String message = "";	
 
 	@Autowired
-	IParticipantService participantService;
+	ParticipantRepository repository;
 
 	//Ządanie POST dodające uczestnika do tabeli
     @RequestMapping(method = RequestMethod.POST)
@@ -30,7 +29,7 @@ public class ParticipantsController {
     	message = "participantCreated";
     	HttpStatus responseStatus = HttpStatus.CREATED;
     
-    	participantService.createParticipant(data);
+    	repository.save(data);
     	JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
 		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
@@ -39,13 +38,13 @@ public class ParticipantsController {
     //Ządanie GET zwracające wszystkich uczestnikow
     @RequestMapping(method = RequestMethod.GET)
     public List<Participant> findAllParticipants(){
-       return participantService.findAllParticipants();
+       return repository.findAll();
     }
     
     //Ządanie GET zwracajace uczestnika po id
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
-    public Participant findParticipantById(@PathVariable int id){
-       return participantService.findParticipantById(id);
+    public Participant findParticipantById(@PathVariable long id){
+       return repository.findOne(id);
     }
        
     //Ządanie PUT aktualizujące uczestnika
@@ -55,7 +54,7 @@ public class ParticipantsController {
     	message = "participantUpdated";
     	HttpStatus responseStatus = HttpStatus.OK;
 
-    	participantService.updateParticipant(data);
+    	repository.saveAndFlush(data);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);
@@ -69,7 +68,7 @@ public class ParticipantsController {
     	message = "participantDeleted";
     	HttpStatus responseStatus = HttpStatus.OK;
  	
-    	participantService.deleteParticipantById(id);
+    	repository.delete(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

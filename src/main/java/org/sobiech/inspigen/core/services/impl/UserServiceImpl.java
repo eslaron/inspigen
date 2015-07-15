@@ -1,6 +1,7 @@
 package org.sobiech.inspigen.core.services.impl;
 
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,45 +10,35 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import org.sobiech.inspigen.app.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.sobiech.inspigen.core.models.dto.UserDto;
-import org.sobiech.inspigen.core.models.entity.Settings;
-import org.sobiech.inspigen.core.models.entity.User;
-import org.sobiech.inspigen.core.repositories.common.IGenericDao;
-import org.sobiech.inspigen.core.repositories.IUserDao;
+
+import org.sobiech.inspigen.app.domain.user.UserDto;
+import org.sobiech.inspigen.app.domain.user.User;
+
 import org.sobiech.inspigen.core.services.IEmailService;
 import org.sobiech.inspigen.core.services.IUserService;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.JsonObject;
 
-//Klasa implementujaca interfejs IUserService
 @Service
 @Transactional
-public class UserServiceImpl implements IUserService {
-	
-	IGenericDao<User> dao;
-	
-	//Ustawienie klasy, na ktorej ma operowac DAO
-	   @Autowired
-	   public void setDao(IGenericDao<User> daoToSet){
-	      dao = daoToSet;
-	      dao.setClazz(User.class);
-	   }
-	
-	@Autowired
-	IUserDao userDao;
-	
+public class UserServiceImpl implements IUserService,UserDetailsService {
+
+    @Autowired
+    UserRepository repository;
+
     @Autowired
     Md5PasswordEncoder passwordEncoder;
-    
     @Autowired 
     ReflectionSaltSource saltSource;
 
@@ -126,7 +117,7 @@ public class UserServiceImpl implements IUserService {
     	newUser.setCredentialsNonExpired(true);
     
     	//Dodaj nowego użytkownika
-		dao.create(newUser);
+		repository.save(newUser);
 		
 		//Jeśli użytkownik jest nieaktywny, to wyślij email aktywacyjny
 		if(newUser.getEnabled() == false)
@@ -136,25 +127,25 @@ public class UserServiceImpl implements IUserService {
 	//Implementacja wyszukiwania użytkownika po id
 	@Override
 	public User findUserById(long id) {
-		return dao.findOneById(id);
+		return repository.findOne(id);
 	}
 	
 	//Implementacja wyszukiwania użytkownika po nazwie
 	@Override
 	public User findUserByUsername(String username) {
-		return userDao.findUserByUsername(username);
+		return repository.findByUsername(username);
 	}
 
 	//Implementacja wyszukiwania użytkownika po emailu
 	@Override
 	public User findUserByEmail(String email) {
-		return userDao.findUserByEmail(email);
+		return null;
 	}
 
 	//Implementacja wyszukiwania użytkownika po tokenie
 	@Override
 	public User findUserByToken(String tokenType, String token) {
-		return userDao.findUserByToken(tokenType, token);
+		return null;
 	}
 	
 	//Implementacja wyszukiwania wszystkich użytkownikow
@@ -165,7 +156,7 @@ public class UserServiceImpl implements IUserService {
 		List<UserDto> userDtoList = new ArrayList<UserDto>();
 		
 		//Wyszukujemy użytkownikow
-		List<User> users = dao.findAll();
+		List<User> users = repository.findAll();
 		
 		//Przepisujemy wybrane informacje o użytkownikach do listy transportowej
 		for(User user : users) {
@@ -211,7 +202,7 @@ public class UserServiceImpl implements IUserService {
 	//Implementacja aktualizacji użytkownika
 	@Override
 	public void updateUser(User data) {
-		dao.update(data);
+		repository.saveAndFlush(data);
 	}
 	
 	//Implementacja aktualizacji użytkownika na podstawie obiektu transportowego
@@ -276,19 +267,19 @@ public class UserServiceImpl implements IUserService {
 		}
 		
 		//Zaktualizuj użytkownika
-		dao.update(user);
+		repository.saveAndFlush(user);
 	}
 
 	//Implementacja usuwania użytkownika
 	@Override
 	public void deleteUser(User data) {
-		dao.delete(data);
+		repository.delete(data);
 	}
 	
 	//Implementacja usuwania użytkownika po id
 	@Override
 	public void deleteUserById(long id) {
-		dao.deleteById(id);
+		repository.delete(id);
 	}
 	
 	//Nadpisana metoda ładowania użytkownika pod nazwie
@@ -354,10 +345,9 @@ public class UserServiceImpl implements IUserService {
 	//Implementacja sprawdzania czy token wygasł
 	@Override
 	public Boolean checkIfTokenExpired(String tokenType, String token) {
-		
-		//Znajdź użytkownika po tokenie
-		User userByToken = userDao.findUserByToken(tokenType, token);
-		
+
+        User userByToken = repository.findByActivationToken(token);
+
 		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 		//Formatowanie odpowiednich dat wygaśnięcia według podanego wzorca

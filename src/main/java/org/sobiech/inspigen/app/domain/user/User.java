@@ -1,9 +1,11 @@
-package org.sobiech.inspigen.core.models.entity;
+package org.sobiech.inspigen.app.domain.user;
 
 import java.util.Date;
 import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import org.sobiech.inspigen.core.models.entity.BaseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

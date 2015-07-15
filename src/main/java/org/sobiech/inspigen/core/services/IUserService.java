@@ -4,12 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.sobiech.inspigen.core.models.dto.UserDto;
-import org.sobiech.inspigen.core.models.entity.User;
+import org.sobiech.inspigen.app.domain.user.UserDto;
+import org.sobiech.inspigen.app.domain.user.User;
 
 //Interfejs zawierajacy prototypy metod operujących na klasie User
-public interface IUserService extends UserDetailsService {
+public interface IUserService {
 	
 	// UŻYTKOWNIK
 	

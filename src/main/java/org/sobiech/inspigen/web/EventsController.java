@@ -3,7 +3,7 @@ package org.sobiech.inspigen.web;
 import java.util.List;
 
 import org.sobiech.inspigen.core.models.entity.Event;
-import org.sobiech.inspigen.core.services.IEventService;
+import org.sobiech.inspigen.core.services.SimpleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class EventsController {
 	String message = "";	
 
 	@Autowired
-	IEventService eventService;
+	SimpleService<Long,Event> eventService;
 
 	//Ządanie POST dodające nowe wydarzenie do tabeli
     @RequestMapping(method = RequestMethod.POST)
@@ -31,7 +31,7 @@ public class EventsController {
     	message = "eventCreated";
     	HttpStatus responseStatus = HttpStatus.CREATED;
     
-    	eventService.createEvent(data);
+    	eventService.create(data);
     	JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
 		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
@@ -39,14 +39,14 @@ public class EventsController {
     
     //Ządanie GET zwracające wszystkie wydarzenia
     @RequestMapping(method = RequestMethod.GET)
-    public List<Event> findAllEvents(){
-       return eventService.findAllEvents();
+    public List<Event> findAll(){
+       return eventService.findAll();
     }
     
     //Ządanie GET zwracajace wydarzenie po id
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
-    public Event findEventById(@PathVariable int id){
-       return eventService.findEventById(id);
+    public Event findEventById(@PathVariable long id){
+       return eventService.findById(id);
     }
      
     //Ządanie PUT aktualizujące wydarzenie
@@ -56,7 +56,7 @@ public class EventsController {
     	message = "participantUpdated";
     	HttpStatus responseStatus = HttpStatus.OK;
 
-    	eventService.updateEvent(data);
+    	eventService.update(data);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);
@@ -70,7 +70,7 @@ public class EventsController {
     	message = "eventDeleted";
     	HttpStatus responseStatus = HttpStatus.OK;
  	
-    	eventService.deleteEventById(id);
+    	eventService.deleteById(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

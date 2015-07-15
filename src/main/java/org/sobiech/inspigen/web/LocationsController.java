@@ -2,7 +2,7 @@ package org.sobiech.inspigen.web;
 
 import java.util.List;
 import org.sobiech.inspigen.core.models.entity.Location;
-import org.sobiech.inspigen.core.services.ILocationService;
+import org.sobiech.inspigen.core.services.SimpleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class LocationsController {
 	String message = "";	
 
 	@Autowired
-	ILocationService locationService;
+	SimpleService<Long,Location> locationService;
 
 	//Ządanie POST dodające nową lokację do tabeli
     @RequestMapping(method = RequestMethod.POST)
@@ -30,7 +30,7 @@ public class LocationsController {
     	message = "locationCreated";
     	HttpStatus responseStatus = HttpStatus.CREATED;
     
-    	locationService.createLocation(data);
+    	locationService.create(data);
     	JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
 		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
@@ -39,13 +39,13 @@ public class LocationsController {
     //Ządanie GET zwracające wszystkie lokacje
     @RequestMapping(method = RequestMethod.GET)
     public List<Location> findAllLocations(){
-       return locationService.findAllLocations();
+       return locationService.findAll();
     }
     
     //Ządanie GET zwracające lokację po id
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
-    public Location findLocationById(@PathVariable int id){
-       return locationService.findLocationById(id);
+    public Location findLocationById(@PathVariable long id){
+       return locationService.findById(id);
     }
     
     //Ządanie PUT aktualizujące lokację po id
@@ -55,7 +55,7 @@ public class LocationsController {
     	message = "locationUpdated";
     	HttpStatus responseStatus = HttpStatus.OK;
 
-    	locationService.updateLocation(data);
+    	locationService.update(data);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);
@@ -69,7 +69,7 @@ public class LocationsController {
     	message = "locationDeleted";
     	HttpStatus responseStatus = HttpStatus.OK;
  	
-    	locationService.deleteLocationById(id);
+    	locationService.deleteById(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

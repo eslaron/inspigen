@@ -2,7 +2,7 @@ package org.sobiech.inspigen.web;
 
 import java.util.List;
 import org.sobiech.inspigen.core.models.entity.Address;
-import org.sobiech.inspigen.core.services.IAddressService;
+import org.sobiech.inspigen.core.services.SimpleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class AddressesController {
 	String message = "";	
 
 	@Autowired
-	IAddressService addressService;
+	SimpleService<Long,Address> addressService;
 
 	//Ządanie POSt dodające nowy adres
     @RequestMapping(method = RequestMethod.POST)
@@ -32,7 +32,7 @@ public class AddressesController {
     	//Status odpowiedzi
     	HttpStatus responseStatus = HttpStatus.CREATED;
     
-    	addressService.createAddress(data);
+    	addressService.create(data);
     	JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
 		
@@ -43,13 +43,13 @@ public class AddressesController {
     //Ządanie GET zwracajace wszystkie adresy
     @RequestMapping(method = RequestMethod.GET)
     public List<Address> findAllAddresses(){
-       return addressService.findAllAddresses();
+       return addressService.findAll();
     }
     
     //Ządanie GET zwracające jeden adres po podanym id
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
-    public Address findAddressById(@PathVariable int id){
-       return addressService.findAddressById(id);
+    public Address findAddressById(@PathVariable long id){
+       return addressService.findById(id);
     }
     
     //Ządanie PUT aktualizujące adres
@@ -61,7 +61,7 @@ public class AddressesController {
     	//Status odpowiedzi
     	HttpStatus responseStatus = HttpStatus.OK;
 
-    	addressService.updateAddress(data);
+    	addressService.update(data);
     	
 		JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
@@ -79,7 +79,7 @@ public class AddressesController {
     	//Status odpowiedzi
     	HttpStatus responseStatus = HttpStatus.OK;
  	
-    	addressService.deleteAddressById(id);
+    	addressService.deleteById(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

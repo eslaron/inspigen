@@ -1,4 +1,4 @@
-package org.sobiech.inspigen.core.models.dto;
+package org.sobiech.inspigen.app.domain.user;
 
 import java.util.Date;
 

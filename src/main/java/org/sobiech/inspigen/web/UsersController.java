@@ -2,7 +2,7 @@ package org.sobiech.inspigen.web;
 
 import java.util.List;
 
-import org.sobiech.inspigen.core.models.dto.UserDto;
+import org.sobiech.inspigen.app.domain.user.UserDto;
 import org.sobiech.inspigen.core.services.IEmailService;
 import org.sobiech.inspigen.core.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;

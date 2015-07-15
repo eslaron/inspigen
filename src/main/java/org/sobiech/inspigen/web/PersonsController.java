@@ -3,7 +3,7 @@ package org.sobiech.inspigen.web;
 import java.util.List;
 
 import org.sobiech.inspigen.core.models.entity.Person;
-import org.sobiech.inspigen.core.services.IPersonService;
+import org.sobiech.inspigen.core.services.SimpleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class PersonsController {
 	String message = "";	
 
 	@Autowired
-	IPersonService personService;
+	SimpleService<Long,Person> personService;
 
 	//Ządanie POST dodające nowe dane osobowe do tabeli
     @RequestMapping(method = RequestMethod.POST)
@@ -31,7 +31,7 @@ public class PersonsController {
     	message = "personCreated";
     	HttpStatus responseStatus = HttpStatus.CREATED;
     
-    	personService.createPerson(data);
+    	personService.create(data);
     	
     	JsonObject jsonResponse = new JsonObject();
 		jsonResponse.addProperty("message", message);
@@ -41,7 +41,7 @@ public class PersonsController {
     //Ządanie GET zwracające wszystkie dane osobowe
     @RequestMapping(method = RequestMethod.GET)
     public List<Person> findAllPersons(){
-       return personService.findAllPersons();
+       return personService.findAll();
     }
     
     //Ządanie PUT aktualizujące dane osobowe
@@ -51,7 +51,7 @@ public class PersonsController {
     	message = "personUpdated";
     	HttpStatus responseStatus = HttpStatus.OK;
 
-    	personService.updatePerson(data);
+    	personService.update(data);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);
@@ -65,7 +65,7 @@ public class PersonsController {
     	message = "personDeleted";
     	HttpStatus responseStatus = HttpStatus.OK;
  	
-    	personService.deletePersonById(id);
+    	personService.deleteById(id);
     	
 			JsonObject jsonResponse = new JsonObject();
 			jsonResponse.addProperty("message", message);

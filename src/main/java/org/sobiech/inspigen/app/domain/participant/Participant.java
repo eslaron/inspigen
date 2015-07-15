@@ -1,10 +1,11 @@
-package org.sobiech.inspigen.core.models.entity;
+package org.sobiech.inspigen.app.domain.participant;
 
 import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.sobiech.inspigen.core.models.entity.BaseEntity;
 
 @Entity  																	//oznaczenie klasy jako encji
 @Table(name="ig_event_participants")										//nazwa tabeli w bazie danych

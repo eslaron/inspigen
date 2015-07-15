@@ -5,7 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.sobiech.inspigen.core.models.entity.User;
+import org.sobiech.inspigen.app.domain.user.User;
+import org.sobiech.inspigen.app.domain.user.UserRepository;
 import org.sobiech.inspigen.core.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,7 +18,7 @@ import org.springframework.security.core.AuthenticationException;
 public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
 	@Autowired
-	IUserService userService;
+	UserRepository repository;
 
 	private String username;
 	
@@ -39,7 +40,7 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 			username = authentication.getName();
 			
 			//Sprawdzamy czy użytkownik znajduje się w bazie danych
-			User userByName = userService.findUserByUsername(username);
+			User userByName = repository.findByUsername(username);
 			
 		      try {
 		    	
@@ -49,7 +50,7 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 		    		//Jeśli konto jest odblokowane, to wyzeruj liczbę prob i zaktualizuj użytkownika
 		    		if(userByName.getAccountNonLocked() == true) {
 			    		userByName.setFailedLogins(0);
-			    		userService.updateUser(userByName);
+			    		repository.saveAndFlush(userByName);
 		    		}
 		    		
 		    		//Pobieramy datę ostatniej proby i formatujemy ją
@@ -66,7 +67,7 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 			  		if(Calendar.getInstance().getTime().after(unlockTime.getTime()) == true) {
 			  			userByName.setFailedLogins(0);
 			  			userByName.setAccountNonLocked(true);
-			  			userService.updateUser(userByName);
+			  			repository.saveAndFlush(userByName);
 			  		}
 		      }
 		    	  	return super.authenticate(authentication);
@@ -91,7 +92,7 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 		    			userByName.setAccountNonLocked(false);
 		    			setLoginFailureError("accountLocked");
 		    		}
-		    		userService.updateUser(userByName);
+					  repository.saveAndFlush(userByName);
 		    	  }
 			        throw e;
 		      }

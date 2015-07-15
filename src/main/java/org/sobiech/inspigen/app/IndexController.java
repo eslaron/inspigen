@@ -1,4 +1,4 @@
-package org.sobiech.inspigen.web;
+package org.sobiech.inspigen.app;
 
 
 import org.springframework.stereotype.Controller;
