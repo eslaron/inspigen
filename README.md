@@ -1,12 +1,26 @@
-InspiGen - Web application for supporting a voluntary work organisation based on REST and SPA
-======================================================================================================
+InspiGen 
+========================================================================================
 
-Webapp built for my university thesis project
+Description: Web application that manages a voluntary work organization.
 
-Field: Computer Science
+Type - Web Application
 
-Degree: Engineer
+Methodology - REST, SPA, DDD
 
-UNIVERSITY OF RZESZOW
+Stack:
 
-Author: Sebastian Sobiech
+- MySQL 5.x
+- Hibernate 4.3.x
+- Spring 4.1.x
+- AngularJS 1.3.x
+- Bootstrap 3.2.x
+
+Progress: 
+
+- Redesigning the business logic and project structure,
+- Code reduction and refactoring,
+- Rewriting current features.
+
+Goal:
+
+Full feature REST API structured according to DDD pattern consumed by a SPA frontend.
