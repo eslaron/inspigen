@@ -1,5 +1,6 @@
-InspiGen - Web application that manages a voluntary work organization
-=======================================================================
+InspiGen 
+
+Description: Web application that manages a voluntary work organization.
 
 TYPE - Web Application
 
