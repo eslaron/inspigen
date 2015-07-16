@@ -1,12 +1,13 @@
 InspiGen 
+========================================================================================
 
 Description: Web application that manages a voluntary work organization.
 
-TYPE - Web Application
+Type - Web Application
 
-METHODOLOGY - REST, SPA, DDD
+Methodology - REST, SPA, DDD
 
-STACK:
+Stack:
 
 - MySQL 5.x
 - Hibernate 4.3.x
@@ -14,12 +15,12 @@ STACK:
 - AngularJS 1.3.x
 - Bootstrap 3.2.x
 
-PROGRESS: 
+Progress: 
 
 - Redesigning the business logic and project structure,
 - Code reduction and refactoring,
 - Rewriting current features.
 
-GOAL:
+Goal:
 
 Full feature REST API structured according to DDD pattern consumed by a SPA frontend.
