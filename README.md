@@ -1,5 +1,9 @@
-InspiGen - Web application for supporting a voluntary work organization based on REST and SPA
-===============================================================================================
+InspiGen - Web application that manages a voluntary work organization
+=======================================================================
+
+TYPE - Web Application
+
+METHODOLOGY - REST, SPA, DDD
 
 STACK:
 
@@ -14,3 +18,7 @@ PROGRESS:
 - Redesigning the business logic and project structure,
 - Code reduction and refactoring,
 - Rewriting current features.
+
+GOAL:
+
+Full feature REST API structured according to DDD pattern consumed by a SPA frontend.
