@@ -206,8 +206,8 @@ var Persons = angular.module('inspigen.persons', ['ui.router', 'restangular','ng
 //KONTROLERY
 
 //Kontroler danych osobowych
-Persons.controller('PersonsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event', 'Participant','Location', 'Context', 'Restangular', 
-                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Participant, Location, Context, Restangular) {
+Persons.controller('PersonsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event','Location', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Location, Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;

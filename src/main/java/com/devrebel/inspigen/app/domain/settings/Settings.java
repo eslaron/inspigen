@@ -1,11 +1,10 @@
 package com.devrebel.inspigen.app.domain.settings;
 
-import java.io.Serializable;
+import com.devrebel.inspigen.core.common.AbstractEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import com.devrebel.inspigen.core.common.AbstractEntity;
+import java.io.Serializable;
 
 @Entity
 @Table(name="ig_system_settings")
@@ -15,7 +14,7 @@ public class Settings extends AbstractEntity implements Serializable {
 
     private int maxLoginAttempts;
     private int accountLockTime;
-    private int linkExpirationTime;
+    private int urlExpirationTime;
     private String emailAddress;
     private String emailHost;
     private int emailPort;
@@ -40,12 +39,12 @@ public class Settings extends AbstractEntity implements Serializable {
         this.accountLockTime = accountLockTime;
     }
 
-    public int getLinkExpirationTime() {
-        return linkExpirationTime;
+    public int getUrlExpirationTime() {
+        return urlExpirationTime;
     }
 
-    public void setLinkExpirationTime(int linkExpirationTime) {
-        this.linkExpirationTime = linkExpirationTime;
+    public void setUrlExpirationTime(int urlExpirationTime) {
+        this.urlExpirationTime = urlExpirationTime;
     }
 
     public String getEmailAddress() {

@@ -1,18 +1,19 @@
 package com.devrebel.inspigen.app.domain.event;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.devrebel.inspigen.core.common.AbstractEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import com.devrebel.inspigen.core.common.AbstractEntity;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity  																//oznaczenie klasy jako encji
 @Table(name="ig_events")												//nazwa tabeli w bazie danych	
 public class Event extends AbstractEntity implements Serializable {
 	
 	private static final long serialVersionUID = -508277826502034614L;
+
+	private static final String D_EVENT = "ig_events";
 	
 	private String name;				//nazwa wydarzenia
 						
@@ -23,10 +24,9 @@ public class Event extends AbstractEntity implements Serializable {
 	private Date endDate;				//data zakończenia
 	
 	private String description;			//opis
-	
-	private int location_id;			//id miejsca, w ktorym ma się odbyć wydarzenie
-	
-	private int user_id;				//id koordynatora wydarzenia
+
+    private Long user_id;				//id koordynatora wydarzenia
+
 	
 	public Event() {}
 	
@@ -46,14 +46,6 @@ public class Event extends AbstractEntity implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public int getLocation_id() {
-		return location_id;
-	}
-
-	public void setLocation_id(int location_id) {
-		this.location_id = location_id;
 	}
 
 	public Date getStartDate() {
@@ -79,13 +71,13 @@ public class Event extends AbstractEntity implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public int getUser_id() {
-		return user_id;
-	}
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
-	}
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
+    }
 }
 

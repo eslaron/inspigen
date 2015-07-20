@@ -1,13 +1,13 @@
 package com.devrebel.inspigen.app.domain.location;
 
-import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import com.devrebel.inspigen.core.common.AbstractEntity;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.io.Serializable;
+
 @Entity 																	//oznaczenie klasy jako encji
-@Table(name="ig_event_locations")											//nazwa tabeli w bazie danych
+@Table(name="ig_locations")											//nazwa tabeli w bazie danych
 public class Location extends AbstractEntity implements Serializable {
 
 	private static final long serialVersionUID = 3879277972207055944L;
@@ -25,8 +25,8 @@ public class Location extends AbstractEntity implements Serializable {
 	private String state;				//wojewodztwo
 	
 	private String country;				//kraj
-	
-	private String phoneNumber;			//numer telefonu(opcjonalny)
+
+	private String phone;			//numer telefonu(opcjonalny)
 	
 	private String email;				//email kontaktowy(opcjonalny)
 	
@@ -91,20 +91,20 @@ public class Location extends AbstractEntity implements Serializable {
 		this.country = country;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 }
 

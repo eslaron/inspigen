@@ -1,24 +1,22 @@
 package com.devrebel.inspigen.core.common;
 
+import com.google.common.base.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import com.google.common.base.Objects;
-
-//Klasa stanowiąca bazową encję, zawierającą id rekordu
-@MappedSuperclass()
+@MappedSuperclass
 public abstract class AbstractEntity {
 
-    @Id						//informacja dla bazy danych, że te pole reprezentuje id rekordu
-    @GeneratedValue			//wartość wygenerowana
-    @Column(name = "id")
-    private Long id; 		//id rekordu
+    public static final String D_ID = "id";
 
-    
-    //Gettery i settery
-    
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private Long id;
+
     public Long getId() {
         return id;
     }
@@ -27,13 +25,11 @@ public abstract class AbstractEntity {
         this.id = id;
     }
 
-    //Nadpisana metoda wypisująca ID informacje z nim związane na konsolę
     @Override
     public String toString() {
         return String.format("%s(id=%d)", this.getClass().getSimpleName(), this.getId());
     }
 
-    //Nadpisana metoda do porownywania ID roznych encji
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -48,7 +44,6 @@ public abstract class AbstractEntity {
         return false;
     }
 
-    //Nadpisana metoda generujaca haszkod obiektu danej encji
     @Override
     public int hashCode() {
         return Objects.hashCode(getId());

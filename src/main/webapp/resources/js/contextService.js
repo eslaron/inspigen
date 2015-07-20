@@ -1,4 +1,4 @@
-Users.service('Context', function($q, User, Person, Address, Event, Participant, Location, Attachment) {
+Users.service('Context', function($q, User, Person, Address, Event, Location, Attachment) {
 	
 //Serwis pozwalający ustalać i nadawać kontekst obiektów z kolekcji pobieranych z REST API
 	
@@ -10,7 +10,6 @@ Users.service('Context', function($q, User, Person, Address, Event, Participant,
     'person': {},
     'address': {},
     'event': {},
-    'participant': {},
     'location': {},
     'attachment': {}
   };
@@ -21,7 +20,6 @@ Users.service('Context', function($q, User, Person, Address, Event, Participant,
   	'person': [],
   	'address': [],
   	'event': [],
-  	'participant': [],
   	'location': [],
   	'attachment': []
   };
@@ -43,10 +41,6 @@ Users.service('Context', function($q, User, Person, Address, Event, Participant,
     'event' : function(event){
         context.active.event = event;
         return event;
-    },
-    'participant' : function(participant){
-        context.active.participant = participant;
-        return participant;
     },
     'location' : function(location){
         context.active.location = location;

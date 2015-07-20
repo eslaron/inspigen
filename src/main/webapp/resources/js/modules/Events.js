@@ -154,7 +154,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
      views: {
          'content@': {
        	  templateUrl: 'partials/common/eventDetails.html',
-       	  controller: function($stateParams, $scope, Event, Location, Participant) {
+       	  controller: function($stateParams, $scope, Event, Location) {
        		  $scope.event = {};
               $scope.event.id = $stateParams.id;
               $scope.event = Event.getEventById($stateParams.id);
@@ -185,7 +185,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	     views: {
 	    	 'content@': {
 	          	  templateUrl: 'partials/common/eventDetails.html',
-	          	  controller: function($stateParams, $scope, Event, Location, Participant) {
+	          	  controller: function($stateParams, $scope, Event, Location) {
 	          		  $scope.event = {};
 	                 $scope.event.id = $stateParams.id;
 	                 $scope.event = Event.getEventById($stateParams.id);
@@ -216,7 +216,7 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 	     views: {
 	    	 'content@': {
 	          	  templateUrl: 'partials/common/eventDetails.html',
-	          	  controller: function($stateParams, $scope, Event, Location, Participant) {
+	          	  controller: function($stateParams, $scope, Event, Location) {
 	          		  $scope.event = {};
 	                 $scope.event.id = $stateParams.id;
 	                 $scope.event = Event.getEventById($stateParams.id);
@@ -247,9 +247,9 @@ var Events = angular.module('inspigen.events', ['ui.router', 'restangular','ngTa
 
 //Kontroler wydarzeń
 Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 
-                                       'Event', 'Participant','Location', 'Context', 'Restangular', 
+                                       'Event','Location', 'Context', 'Restangular',
                                      function($rootScope, $scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, 
-                                    		 Participant, Location, Context, Restangular) {
+                                    		  Location, Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;
@@ -260,26 +260,19 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 
   //Informacje o zalogowanym użytkowniku
   $scope.loggedUser = User.getLoggedUserByUsername($rootScope.loggedUsername);
-  $scope.loggedUserParticipating = User.getLoggedUserIsParticipating();
   $scope.loggedUsersEventId = User.getInEventWithId();
-  $scope.participantApproved = false;
-  $scope.duplicateParticipant = false;
   
   //Mapowania zasobów REST API
   var AllEvents = Restangular.all('events');
   var OneEvent = Restangular.one('events');
-  var AllParticipants = Restangular.all('participants');
-  var OneParticipant = Restangular.one('participants');
   
   //Ładowanie całych kolekcji do zmiennych
   $scope.users = User.getAllUsers();
   $scope.persons = Person.getAllPersons();
   $scope.locations = Location.getAllLocations();
-  $scope.participants = Participant.getAllParticipants();
   
   //Listy
   $scope.coordinators = [];
-  $scope.eventParticipants = [];
   $scope.eventLocations = [];
   
   //Koordynator wydarzenia
@@ -305,35 +298,11 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
  		  }
 	  }
   }
-  
-  //Funkcja przygotowująca listę uczestników
-  $scope.prepareEventParticipantsList = function() {
-	  
-	  $scope.tempParticipant = {id:"", firstName:"", lastName:"", user_id:"", approved:""};
-	  
-	  for(var i = $scope.participants.length - 1; i >= 0; i--) {	
-		  if($scope.participants[i].event_id == $scope.event.id) {
-			  for(var j = $scope.persons.length - 1; j >= 0; j--) {
-				  if($scope.persons[j].user_id == $scope.participants[i].user_id) {
-					  
-					  $scope.tempParticipant.id = $scope.persons[j].id;
-					  $scope.tempParticipant.firstName = $scope.persons[j].firstName;
-					  $scope.tempParticipant.lastName = $scope.persons[j].lastName;
-					  $scope.tempParticipant.user_id = $scope.persons[j].user_id;
-				  	  $scope.tempParticipant.approved = $scope.participants[i].approved;
-					  
-					  $scope.eventParticipants.push($scope.tempParticipant);
-					  $scope.tempParticipant = {};
-				  }		  				
-			  }	  
-		  }						  	  
-	  }  
-  }
+
   
   //Wywołanie funkcji przygotowujących listy
   $scope.prepareCoordinatorList();
   $scope.findEventCoordinator();
-  $scope.prepareEventParticipantsList();
   
   //Funkcja dodająca wydarzenie
   $scope.addEvent = function(event) {
@@ -399,151 +368,7 @@ Events.controller('EventsController', ['$rootScope','$scope', '$state', '$stateP
 		  $scope.tableParams.reload();
 	  });
   }
-  
-  //Dodawanie uczesnitków do wydarzenia
-  $scope.addEventParticipant = function(userId,eventId) {
-	  	  
-	  //Zerujemy informacje o duplikatach
-	  $scope.duplicateParticipantMessage = '';
-	  $scope.duplicateParticipant = false;
-	  
-	  //Przygotowujemy obiekt do wysłania na serwer.
-	  $scope.participant = {};
-	  $scope.participant.event_id = eventId;
-	  $scope.participant.user_id = userId;
-	  $scope.participant.eventRole = "uczestnik";
-	  
-	  if($rootScope.hasRole('ROLE_USER') == true)
-		  $scope.participant.approved = false;
-	  
-	  if($rootScope.hasRole('ROLE_ADMIN') == true || $rootScope.hasRole('ROLE_MOD'))
-		  $scope.participant.approved = true;
-	      
-	  //Zapisujemy do pamięci cache informację o tym, że zalogowany użytkownik dołączył do wydarzenia.
-	  if(userId == $scope.loggedUser.id) {	  
-		  $scope.loggedUserParticipating = User.setLoggedUserIsParticipating(true);
-		  $scope.loggedUsersEventId = User.setInEventWithId(eventId);
-	  } 
-	  
-	  //Blokujemy próbę dodania tej samej osoby.
-	  for(var i = $scope.eventParticipants.length - 1; i >= 0; i--) {	
- 		  if($scope.eventParticipants[i].user_id == userId) {
- 			  $scope.duplicateParticipant = true;
- 			  $scope.duplicateParticipantMessage = "Uczestnik został już dodany.";
- 			  $scope.alreadyParticipating = "Zgłosiłeś się już do uczestnictwa.";
- 		  }
-	  }
- 	  
-	  //Blokujemy próbę dodania koordynatora do uczestników.
-	  if($scope.eventCoordinator.user_id == userId) {
-		  $scope.duplicateParticipant = true;
-		  $scope.duplicateParticipantMessage = "Ten użytkownik koordynuje to wydarzenie. Wybierz kogoś innego.";
- 	  }
- 
-	  //Jeżeli jest dodawany zupełnie nowy uczestnik, to zapisz do bazy.
-	  if($scope.duplicateParticipant == false) {
 
-		  AllParticipants.post($scope.participant).then(function(response){
-		
-			  $scope.messageStyle = "alert alert-success";
-			  $scope.hideMessage = false;
-			  $scope.message = "Uczestnik dodany";
-			  
-			  //Znajdź dane osobowe nowego uczestnika i dodaj je do listy uczestników.
-			  for(var i = $scope.persons.length - 1; i >= 0; i--) {	
-				  if($scope.persons[i].user_id == userId) {
-					  
-					  $scope.tempParticipant.id = $scope.persons[i].id;
-					  $scope.tempParticipant.firstName = $scope.persons[i].firstName;
-					  $scope.tempParticipant.lastName = $scope.persons[i].lastName;
-					  $scope.tempParticipant.user_id = $scope.persons[i].user_id;
-				  	  $scope.tempParticipant.approved = $scope.participant.approved;
-					  
-					  $scope.eventParticipants.push($scope.tempParticipant);
-					  $scope.tempParticipant = {};
-					  }	  
-			  }	
-			  			  		 
-			  //Załaduj ponownie uczestników z bazy po dodaniu nowego rekordu.
-			  Participant.loadParticipantsFromJson().then(function() {	
-
-			  });
-				  		  
-		  }, function(error) {
-			  $scope.error = error.data;
-			 			
-		  });
-	  }
-  }
-  
-  $scope.approveParticipant = function(eventId,userId) {
-	      
-	  //Znadź id rekordu z uczestnikiem
-	  for(var i = $scope.participants.length - 1; i >= 0; i--) {	
-		  if($scope.participants[i].user_id == userId) {
-			  OneParticipant.id = $scope.participants[i].id;		
-			  break;
-		  }						  	  
-	  }
-
-	  OneParticipant.event_id = eventId;
-	  OneParticipant.user_id = userId;
-	  OneParticipant.eventRole = "uczestnik";
-	  OneParticipant.approved = true;
-	  	  
-	  OneParticipant.put().then(function(response){
-
-		  //Znajdź indeks użytkownika na liście uczestników
-		  for(var j = $scope.eventParticipants.length - 1; j >= 0; j--) {
-			  if($scope.eventParticipants[j].user_id == userId)
-			  $scope.eventParticipants[j].approved = true;
-		  }	
-		  
-	  }, function(error) {
-		  $scope.error = error.data;
-		 			
-	  });
-  }
-  
- //Usuwanie uczestników wydarzenia
- $scope.deleteEventParticipant = function(userId) {
-
-	  //Znajdź indeks użytkownika na liście uczestników
-	  for(var j = $scope.eventParticipants.length - 1; j >= 0; j--) {
-		  if($scope.eventParticipants[j].user_id == userId)
-			  var deleteIndex = $scope.eventParticipants.indexOf($scope.eventParticipants[j]);
-	  }	
-		 
-	  //Wypełnij na nowo listę uczestników znajdujących się w bazie.
-	  $scope.participants = Participant.getAllParticipants();
-	  
-	  //Zapisujemy do pamięci cache informację o tym, że zalogowany użytkownik wypisał się z wydarzenia.
-	  if(userId == $scope.loggedUser.id) {	  
-		  $scope.loggedUserParticipating = User.setLoggedUserIsParticipating(false);
-		  $scope.loggedUsersEventId = User.setInEventWithId(0);
-	  } 
-	  
-	  //Znadź id rekordu z uczestnikiem
-	  for(var i = $scope.participants.length - 1; i >= 0; i--) {	
-		  if($scope.participants[i].user_id == userId) {
-			  OneParticipant.id = $scope.participants[i].id;		
-			  break;
-		  }						  	  
-	  }
-
-	  //Usuwamy uczestnika z listy znajdującej się w pamięci cache
-	  $scope.eventParticipants.splice(deleteIndex, 1);
-	  
-	  //Usuwamy uczestnika z bazy i czekamy na odpowiedź serwera.
-	  OneParticipant.remove().then(function(response){
-		  
-		  $scope.messageStyle = "alert alert-success";
-		  $scope.hideMessage = false;
-		  $scope.message = "Uczestnik został usuniety";
-
-	  });
-  } 
- 
  	//Potwierdzenie usunięcia wydarzenia
  	$scope.cid = 0;
  

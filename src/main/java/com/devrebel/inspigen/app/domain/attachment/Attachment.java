@@ -1,10 +1,11 @@
 package com.devrebel.inspigen.app.domain.attachment;
 
-import java.io.Serializable;
+import com.devrebel.inspigen.core.common.AbstractEntity;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import com.devrebel.inspigen.core.common.AbstractEntity;
+import java.io.Serializable;
 
 @Entity  																//oznaczenie klasy jako encji
 @Table(name="ig_attachments")											//nazwa tabeli w bazie danych
@@ -15,15 +16,12 @@ public class Attachment extends AbstractEntity implements Serializable {
 	private String fileName;			//nazwa pliku
 	
 	private String fileType;			//typ pliku
-	
+
+	@Column(columnDefinition = "LONGBLOB")
 	private byte[] file;				//plik
-	
-	private String blobUrl;				//odnośnik do bloba
-	
-	private int user_id;				//id użytkownika do ktorego należy załącznik
-	
-	private int event_id;				//id wydarzenia do ktorego nalezy załącznik
-	
+
+	private Long user_id;				//id użytkownika do ktorego należy załącznik
+
 	public Attachment() {}
 	
 	//Gettery i settery
@@ -51,28 +49,12 @@ public class Attachment extends AbstractEntity implements Serializable {
 	public void setFile(byte[] file) {
 		this.file = file;
 	}
-	
-	public String getBlobUrl() {
-		return blobUrl;
-	}
 
-	public void setBlobUrl(String blobUrl) {
-		this.blobUrl = blobUrl;
-	}
-	
-	public int getUser_id() {
+	public Long getUser_id() {
 		return user_id;
 	}
 
-	public void setUser_id(int user_id) {
+	public void setUser_id(Long user_id) {
 		this.user_id = user_id;
-	}
-	
-	public int getEvent_id() {
-		return event_id;
-	}
-
-	public void setEvent_id(int event_id) {
-		this.event_id = event_id;
 	}
 }

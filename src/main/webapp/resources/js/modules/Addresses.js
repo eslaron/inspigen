@@ -206,8 +206,8 @@ var Addresses = angular.module('inspigen.addresses', ['ui.router', 'restangular'
 //KONTROLERY
 
 //Kontroler adresów
-Persons.controller('AddressesController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Address', 'Event', 'Participant','Location', 'Context', 'Restangular', 
-                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Address, Event, Participant, Location, Context, Restangular) {
+Persons.controller('AddressesController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Address', 'Event','Location', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Address, Event, Location, Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;

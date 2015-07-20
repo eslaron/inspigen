@@ -1,10 +1,10 @@
 package com.devrebel.inspigen.app.domain.address;
 
-import java.io.Serializable;
+import com.devrebel.inspigen.core.common.AbstractEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import com.devrebel.inspigen.core.common.AbstractEntity;
+import java.io.Serializable;
 
 @Entity  															//oznaczenie klasy jako encji
 @Table(name="ig_addresses") 										//nazwa tabeli w bazie danych
@@ -25,9 +25,7 @@ public class Address extends AbstractEntity implements Serializable {
 	private Boolean registeredAddress;		//adres zameldowania
 	
 	private Boolean mailAddress;			//adres korespondencyjny
-	
-	private int user_id;					//id użytkownika do ktorego należy adres
-	
+
 	public Address() {}
 	
 	//Gettery i settery
@@ -86,14 +84,6 @@ public class Address extends AbstractEntity implements Serializable {
 
 	public void setMailAddress(Boolean mailAddress) {
 		this.mailAddress = mailAddress;
-	}
-	
-	public int getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
 	}
 }
 

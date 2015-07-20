@@ -1,83 +1,67 @@
 package com.devrebel.inspigen.app.domain.user;
 
-import java.util.Date;
-import java.util.Collection;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import com.devrebel.inspigen.core.common.AbstractEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Entity  															//oznaczenie klasy jako encji
-@Table(name="ig_users")												//nazwa tabeli w bazie danych
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.Collection;
+import java.util.Date;
+
+@Entity
+@Table(name = "ig_users")
 public class User extends AbstractEntity implements UserDetails {
 
     private static final long serialVersionUID = 6311364761937265306L;
-   
-    private String username;						//nazwa użytkownika
 
-    private String password;						//hasło
-    
-    private String email;							//adres email
-    
-    private String role;							//rola użytkownika
-    
-    private Boolean enabled;						//konto aktywne (Tak lub Nie)
-    
-    private Boolean accountNonLocked;				//konto niezablokowane(Tak lub Nie)
+    public static final String D_USER = "User";
 
-    private Boolean accountNonExpired;				//konto nie wygasłe(Tak lub Nie)
-    
-    private Boolean credentialsNonExpired;			//hasło nie wygasło (Tak lub Nie)
-    
-	private String passwordToken;                   //token do resetowania hasła
-	
-	private String activationToken;					//token do aktywacji konta
-	
-	private Date passwordTokenExpiration;			//data wygaśnięcia tokena do resetu hasła
-	
-	private Date activationTokenExpiration;			//data wygaśnięcia tokena do aktywacji konta
-	
-	private int failedLogins;                       //liczba nieudanych logowań
-	
-	private Date lastLoginAttempt;					//data ostatniego nieudanego logowania
-		
-	//Konstruktory
-	//Time to refactor this shit!
+    private String username;
+    private String password;
+    private String email;
+    private String role;
+    private Boolean enabled;
+    private Boolean accountNonLocked;
+    private Boolean accountNonExpired;
+    private Boolean credentialsNonExpired;
+    private String passwordToken;
+    private String activationToken;
+    private Date passwordTokenExpiration;
+    private Date activationTokenExpiration;
+    private int failedLogins;
+    private Date lastLoginAttempt;
 
-	
-	public User() {}
-	
-	public User(String username, String role) {
-	  	
-		this.username = username;
-		this.role = role;
-	}
-
-    public User(String username, String password, String email, String role, boolean enabled, 
-    			boolean accountNonLocked, boolean accountNonExpired, 
-    			boolean credentialsNonExpired, String passwordToken, Date passwordTokenExpiration,
-    			String activationToken, Date activationTokenExpiration, int failedLogins, Date lastLoginAttempt) {
-    	
-    	this.username = username;
-    	this.password = password;
-    	this.email =  email;
-    	this.role = role;
-    	this.enabled = enabled;
-    	this.accountNonLocked = accountNonLocked;
-    	this.accountNonExpired = accountNonExpired;
-    	this.credentialsNonExpired = credentialsNonExpired;
-    	this.passwordToken = passwordToken;
-    	this.passwordTokenExpiration = passwordTokenExpiration;
-    	this.activationToken = activationToken;
-    	this.activationTokenExpiration = activationTokenExpiration;
-    	this.failedLogins = failedLogins;
-    	this.lastLoginAttempt = lastLoginAttempt;
+    public User() {
     }
-    
-    //Gettery i settery
-    
+
+    public User(String username, String role) {
+        this.username = username;
+        this.role = role;
+    }
+
+    public User(String username, String password, String email, String role, boolean enabled,
+                boolean accountNonLocked, boolean accountNonExpired,
+                boolean credentialsNonExpired, String passwordToken, Date passwordTokenExpiration,
+                String activationToken, Date activationTokenExpiration, int failedLogins, Date lastLoginAttempt) {
+
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.enabled = enabled;
+        this.accountNonLocked = accountNonLocked;
+        this.accountNonExpired = accountNonExpired;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.passwordToken = passwordToken;
+        this.passwordTokenExpiration = passwordTokenExpiration;
+        this.activationToken = activationToken;
+        this.activationTokenExpiration = activationTokenExpiration;
+        this.failedLogins = failedLogins;
+        this.lastLoginAttempt = lastLoginAttempt;
+    }
+
+
     public String getUsername() {
         return username;
     }
@@ -93,132 +77,126 @@ public class User extends AbstractEntity implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public String getEmail() {
- 		return email;
- 	}
+        return email;
+    }
 
- 	public void setEmail(String email) {
- 		this.email = email;
- 	}
- 	
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getRole() {
-		return role;
-	}
+        return role;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
- 	
- 	public Boolean getEnabled() {
- 		return enabled;
- 	}
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
-    
-    
+
     public Boolean getAccountNonLocked() {
-		return accountNonLocked;
-	}
+        return accountNonLocked;
+    }
 
     public void setAccountNonLocked(Boolean accountNonLocked) {
-  		this.accountNonLocked = accountNonLocked;
-  	}
-    
-	public Boolean getAccountNonExpired() {
-		return accountNonExpired;
-	}
+        this.accountNonLocked = accountNonLocked;
+    }
 
-	public void setAccountNonExpired(Boolean accountNonExpired) {
-		this.accountNonExpired = accountNonExpired;
-	}
-	
-	public Boolean getCredentialsNonExpired() {
-		return credentialsNonExpired;
-	}
-    
-	public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
-		this.credentialsNonExpired = credentialsNonExpired;
-	}
-    
-	public String getPasswordToken() {
-		return passwordToken;
-	}
+    public Boolean getAccountNonExpired() {
+        return accountNonExpired;
+    }
 
-	public void setPasswordToken(String passwordToken) {
-		this.passwordToken = passwordToken;
-	}
-	
-	public String getActivationToken() {
-		return activationToken;
-	}
+    public void setAccountNonExpired(Boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
 
-	public void setActivationToken(String activationToken) {
-		this.activationToken = activationToken;
-	}
+    public Boolean getCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
 
-	public Date getPasswordTokenExpiration() {
-		return passwordTokenExpiration;
-	}
+    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
 
-	public void setPasswordTokenExpiration(Date passwordTokenExpiration) {
-		this.passwordTokenExpiration = passwordTokenExpiration;
-	}
+    public String getPasswordToken() {
+        return passwordToken;
+    }
 
-	public Date getActivationTokenExpiration() {
-		return activationTokenExpiration;
-	}
+    public void setPasswordToken(String passwordToken) {
+        this.passwordToken = passwordToken;
+    }
 
-	public void setActivationTokenExpiration(Date activationTokenExpiration) {
-		this.activationTokenExpiration = activationTokenExpiration;
-	}
-	
-	public int getFailedLogins() {
-		return failedLogins;
-	}
+    public String getActivationToken() {
+        return activationToken;
+    }
 
-	public void setFailedLogins(int failedLogins) {
-		this.failedLogins = failedLogins;
-	}
+    public void setActivationToken(String activationToken) {
+        this.activationToken = activationToken;
+    }
 
-	public Date getLastLoginAttempt() {
-		return lastLoginAttempt;
-	}
+    public Date getPasswordTokenExpiration() {
+        return passwordTokenExpiration;
+    }
 
-	public void setLastLoginAttempt(Date lastLoginAttempt) {
-		this.lastLoginAttempt = lastLoginAttempt;
-	}
-    
-	//Czy konto nie wygasło
+    public void setPasswordTokenExpiration(Date passwordTokenExpiration) {
+        this.passwordTokenExpiration = passwordTokenExpiration;
+    }
+
+    public Date getActivationTokenExpiration() {
+        return activationTokenExpiration;
+    }
+
+    public void setActivationTokenExpiration(Date activationTokenExpiration) {
+        this.activationTokenExpiration = activationTokenExpiration;
+    }
+
+    public int getFailedLogins() {
+        return failedLogins;
+    }
+
+    public void setFailedLogins(int failedLogins) {
+        this.failedLogins = failedLogins;
+    }
+
+    public Date getLastLoginAttempt() {
+        return lastLoginAttempt;
+    }
+
+    public void setLastLoginAttempt(Date lastLoginAttempt) {
+        this.lastLoginAttempt = lastLoginAttempt;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return this.getAccountNonExpired();
     }
 
-    //Czy konto jest odblokowane
     @Override
     public boolean isAccountNonLocked() {
-    	return this.getAccountNonLocked();
+        return this.getAccountNonLocked();
     }
 
-    //Czy has�o nie wygassło
     @Override
     public boolean isCredentialsNonExpired() {
-    	return this.getCredentialsNonExpired();
+        return this.getCredentialsNonExpired();
     }
 
-    //Czy konto jest włączone
     @Override
     public boolean isEnabled() {
         return this.getEnabled();
     }
 
-    //Pobierz role
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		/*Collection<GrantedAuthority> authorities = new ArrayList<>();
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        /*Collection<GrantedAuthority> authorities = new ArrayList<>();
 		
         User userRole = new User(getUsername(),getRole());
         
@@ -228,6 +206,6 @@ public class User extends AbstractEntity implements UserDetails {
         }
  
         */
-    	return null;
-	}	
+        return null;
+    }
 }

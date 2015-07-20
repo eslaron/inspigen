@@ -205,8 +205,8 @@ var Locations = angular.module('inspigen.locations', ['ui.router', 'restangular'
 //KONTROLERY
 
 //Kontroler lokacji
-Locations.controller('LocationsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event', 'Participant','Location', 'Context', 'Restangular',
-                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Participant, Location, Context, Restangular) {
+Locations.controller('LocationsController', ['$scope', '$state', '$stateParams', '$filter', 'ngTableParams', 'User', 'Person', 'Event','Location', 'Context', 'Restangular',
+                                     function($scope, $state, $stateParams, $filter, ngTableParams, User, Person, Event, Location, Context, Restangular) {
 	
   $scope.all = Context.all;
   $scope.active = Context.active;
