@@ -1,15 +1,7 @@
 package com.devrebel.inspigen.app.domain.user;
 
-import java.security.SecureRandom;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-
 import com.devrebel.inspigen.app.domain.account.AccountService;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,295 +11,135 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.gson.JsonObject;
+import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @Transactional
-public class UserServiceImpl implements IUserService,UserDetailsService {
+public class UserServiceImpl implements IUserService, UserDetailsService {
 
     @Autowired
     UserRepository repository;
 
     @Autowired
     Md5PasswordEncoder passwordEncoder;
+
     @Autowired 
     ReflectionSaltSource saltSource;
 
 	@Autowired
     AccountService accountService;
 
-    public UserServiceImpl() {}
-
-    // UŻYTKOWNIK
-    
-    //Implementacja dodawania użytkownika do tabeli
 	@Override
-	public void createUser(UserDto data){
-		
-		User newUser = new User(); 
-		
-		newUser.setUsername(data.getUsername());
-	
-		//Pobieramy niezaszyfrowane hasło
-     	String password = data.getPassword();
-     	
-     	//Szyfrujemy hasło
-    	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(newUser));
-    	
-    	//Ustawiamy zaszyfrowane hasło
-    	newUser.setPassword(encodedPassword);
-    	
-    	newUser.setEmail(data.getEmail());
-    	
-    	//Generujemy token dla hasła
-    	String passwordToken = setToken();
-      	newUser.setPasswordToken(passwordToken);
-      	
-      	//Generujemy datę wygaśnięcia tokenu dla hasła
-      	Date passwordTokenExpiration = setTokenExpirationDate();
-    	newUser.setPasswordTokenExpiration(passwordTokenExpiration);
-    	
-    	//Generujemy datę wygaśnięcia tokenu aktywacyjnego
-      	Date activationTokenExpiration = setTokenExpirationDate();
-    	newUser.setActivationTokenExpiration(activationTokenExpiration);
-      	
-    	//Generujemy token aktywacyjny
-    	String activationToken = setToken();
-    	newUser.setActivationToken(activationToken);
-    	
-    	//Jeśli rola jest pusta, to domyślnie nadajemy rolę użytkownika
-    	if(data.getRole() == null)
-    		newUser.setRole("ROLE_USER");
-    	
-    	//w przeciwnym przypadku nadajemy odpowiednie role
-    	else {
-    		
-    	if(data.getRole().equals("Wolontariusz"))
-    		newUser.setRole("ROLE_USER");
-    	
-    	if(data.getRole().equals("Koordynator"))
-    		newUser.setRole("ROLE_MOD");
-    	
-    	if(data.getRole().equals("Administrator"))
-    		newUser.setRole("ROLE_ADMIN");
-    	}
-    	
-    	//Jeśli status aktywności jest pusty, to ustaw fałsz
-    	if(data.getEnabled() == null)
-    		newUser.setEnabled(false);
-    	
-    	//W przeciwnym przypadku ustaw odpowiednie statusy
-    	else {  		
-    		if(data.getEnabled().equals("Tak"))
-        		newUser.setEnabled(true);
-        	
-        	if(data.getEnabled().equals("Nie"))
-            	newUser.setEnabled(false);
-    	}
-    	
-    	newUser.setAccountNonLocked(true);
-    	newUser.setAccountNonExpired(true);
-    	newUser.setCredentialsNonExpired(true);
-    
-    	//Dodaj nowego użytkownika
-		repository.save(newUser);
-		
-		//Jeśli użytkownik jest nieaktywny, to wyślij email aktywacyjny
+	public void createUser(User data){
+
+        String password = data.getPassword();
+        String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(data));
+        String passwordToken = setToken();
+        Date passwordTokenExpiration = setTokenExpirationDate();
+        String activationToken = setToken();
+        Date activationTokenExpiration = setTokenExpirationDate();
+        Boolean userEnabled = enableUser(data);
+        UserRole assingedRole = assignUserRole(data);
+
+	    User newUser = new User.UserBuilder(data.getUsername(),assingedRole)
+             .password(encodedPassword)
+             .email(data.getEmail())
+             .enabled(userEnabled)
+             .passwordToken(passwordToken)
+             .passwordTokenExpiration(passwordTokenExpiration)
+             .activationToken(activationToken)
+             .activationTokenExpiration(activationTokenExpiration)
+             .accountNonLocked(true)
+             .accountNonExpired(true)
+             .credentialsNonExpired(true)
+             .build();
+
+        repository.save(newUser);
+
 		if(newUser.getEnabled() == false)
-			accountService.sendTokenMail(data.getEmail(), "activationToken", activationToken);
-	}
-	
-	//Implementacja wyszukiwania użytkownika po id
-	@Override
-	public User findUserById(long id) {
-		return repository.findOne(id);
-	}
-	
-	//Implementacja wyszukiwania użytkownika po nazwie
-	@Override
-	public User findUserByUsername(String username) {
-		return repository.findByUsername(username);
-	}
+            sendRegistrationEmail(data, activationToken);
+    }
 
-	//Implementacja wyszukiwania użytkownika po emailu
-	@Override
-	public User findUserByEmail(String email) {
-		return null;
-	}
+    private Boolean enableUser(User data) {
+        if(!data.getEnabled()) return false;
+    	else return true;
+    }
 
-	//Implementacja wyszukiwania użytkownika po tokenie
-	@Override
-	public User findUserByToken(String tokenType, String token) {
-		return null;
-	}
-	
-	//Implementacja wyszukiwania wszystkich użytkownikow
-	@Override
-	public List<UserDto> findAllUsers() {
-		
-		//Tworzymy listę transportową
-		List<UserDto> userDtoList = new ArrayList<UserDto>();
-		
-		//Wyszukujemy użytkownikow
+    private UserRole assignUserRole(User data) {
+        UserRole role = UserRole.ROLE_USER;
+
+            if (data.getRole().equals("Wolontariusz"))
+                role = UserRole.ROLE_USER;
+
+            if (data.getRole().equals("Koordynator"))
+                role = UserRole.ROLE_MOD;
+
+            if (data.getRole().equals("Administrator"))
+                role = UserRole.ROLE_ADMIN;
+
+        return  role;
+    }
+
+    private void sendRegistrationEmail(User data, String activationToken) {
+        accountService.sendTokenMail(data.getEmail(), "activationToken", activationToken);
+    }
+
+	public List<User> findAllUsers() {
+		List<User> userDtoList = new ArrayList<User>();
 		List<User> users = repository.findAll();
-		
-		//Przepisujemy wybrane informacje o użytkownikach do listy transportowej
-		for(User user : users) {
-			
-			UserDto userDto = new UserDto();
-			
-			userDto.setId(user.getId());
-			userDto.setUsername(user.getUsername());
-			userDto.setEmail(user.getEmail());
-			
-			String role = user.getRole();
 
-			if(role.contains("ROLE_USER"))
-				userDto.setRole("Wolontariusz");
-			
-			if(role.contains("ROLE_MOD"))
-				userDto.setRole("Koordynator");
-			
-			if(role.contains("ROLE_ADMIN"))
-				userDto.setRole("Administrator");
-			
-			if(user.getEnabled() == true)
-				userDto.setEnabled("Tak");
-			
-			if(user.getEnabled() == false)
-				userDto.setEnabled("Nie");
-			
-			if(user.getAccountNonLocked() == true)
-				userDto.setLocked("Nie");
-			
-			if(user.getAccountNonLocked() == false)
-				userDto.setLocked("Tak");
-			
-			userDto.setFailedLogins(user.getFailedLogins());
-			userDto.setLastLoginAttempt(user.getLastLoginAttempt());
+        users.forEach(user -> {
+            User userDto = new User.UserBuilder(user.getUsername(), user.getRole())
+                    .id(user.getId())
+                    .email(user.getEmail())
+                    .failedLogins(user.getFailedLogins())
+                    .lastLoginAttempt(user.getLastLoginAttempt())
+                    .build();
 
-			userDtoList.add(userDto);
-		}
-		
+            userDtoList.add(userDto);
+        });
+
 		return userDtoList;
 	}
-	
-	//Implementacja aktualizacji użytkownika
+
 	@Override
 	public void updateUser(User data) {
-		repository.saveAndFlush(data);
-	}
-	
-	//Implementacja aktualizacji użytkownika na podstawie obiektu transportowego
-	@Override
-	public void updateUser(UserDto data) {
-		
-		//Wyszukaj użytkownika po id
-		User user = findUserById(data.getId());
-		
-		//Jeśli nazwa użytkownika jest podana, to nadaj ją obiektowi do aktualizacji
-		if(data.getUsername() != null)
-		user.setUsername(data.getUsername());
-		
-		//Jeśli hasło zostało podane, to zaszyfruj i nadaj je obiektowi do aktualizacji
-		if(data.getPassword() != null) {
-			
-			String password = data.getPassword();
-	    	String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(user));
-	    	user.setPassword(encodedPassword);
-		} 
-		
-		//Jeśli email jest podany, to nadaj go obiektowi do aktualizacji
-		if(data.getEmail() != null)			
-		user.setEmail(data.getEmail());
-		
-		if(data.getRole().equals("Wolontariusz"))
-			user.setRole("ROLE_USER");
-		
-		if(data.getRole().equals("Koordynator"))
-			user.setRole("ROLE_MOD");
-		
-		if(data.getRole().equals("Administrator"))
-			user.setRole("ROLE_ADMIN");
+        String password = data.getPassword();
+        String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(data));
+        User updatedUser = new User.UserBuilder(data.getUsername(), data.getRole())
+                .password(encodedPassword)
+                .email(data.getEmail())
+                .build();
 
-		//Jeśli status aktywności jest pusty, to ustaw status na fałsz
-		if(data.getEnabled() == null)
-			user.setEnabled(false);
-		
-		//W przeciwnym przypadku nadaj odpowiednie statusy
-		else {	
-			if(data.getEnabled().equals("Tak"))
-				user.setEnabled(true);
-			
-			if(data.getEnabled().equals("Nie"))
-				user.setEnabled(false);
-		}
-		
-		//Jeśli status niezablokowania jest pusty, to wyzeruj proby i ustaw na fałsz
-		if(data.getLocked() == null) {
-			user.setAccountNonLocked(true);
-			user.setFailedLogins(0);
-		}
-		//W przeciwnym przypadku ustaw odpowiednie statusy
-		else {
-			if(data.getLocked().equals("Tak")) 
-				user.setAccountNonLocked(false);
-			
-			if(data.getLocked().equals("Nie")) {
-				user.setAccountNonLocked(true);
-				user.setFailedLogins(0);
-			}
-		}
-		
-		//Zaktualizuj użytkownika
-		repository.saveAndFlush(user);
+		repository.saveAndFlush(updatedUser);
 	}
 
-	//Implementacja usuwania użytkownika
-	@Override
-	public void deleteUser(User data) {
-		repository.delete(data);
-	}
-	
-	//Implementacja usuwania użytkownika po id
-	@Override
-	public void deleteUserById(long id) {
-		repository.delete(id);
-	}
-	
-	//Nadpisana metoda ładowania użytkownika pod nazwie
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            return findUserByUsername(username);
+            return repository.findByUsername(username);
         } catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage());
         }
     }
-    
-	// TOKEN
-	
-    //Implementacja generowania tokena
+
 	@Override
 	public String setToken() {
-		
-		//Zestaw znakow do losowania
+
 		char[] VALID_CHARACTERS =
 	    	    "abcdefghijklmnopqrstuvwxyz0123456879".toCharArray();
-		
-		//Instancja Secure Random
+
 		SecureRandom srand = new SecureRandom();
-		
-		//Instancja pseudolosowania
+
 	    Random random = new Random();
-	    
-	    //Bufor na 16 znakow
+
 	    char[] buff = new char[16];
 
-	    //Generowanie tokena i zapis do bufora
 	    for (int i = 0; i < 16; ++i) {
 
 	      if ((i % 10) == 0) {
@@ -315,55 +147,45 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 	      }
 	      buff[i] = VALID_CHARACTERS[random.nextInt(VALID_CHARACTERS.length)];
 	    }
-	    
-	    //Zwrocenie wartości tekstowej bufora
+
 	    return  String.valueOf(buff);
 	}
-	
-	//Implementacja ustawiania daty wygaśnięcia
+
 	@Override
 	public Date setTokenExpirationDate() {
-		
-		//Pobieramy i formatujemy aktualną datę
+
 		Date currentDate = new Date();
 		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		format.format(currentDate);
 
-		//Pobieramy aktualną datę z kalendarza, formatujemy i dodajemy czas wygasania linkow
 		Calendar cal=Calendar.getInstance();
 		cal=format.getCalendar();	
 		cal.add(Calendar.MINUTE, 2280);
-	
-		//Zwracamy nową datę
+
 		return (Date)cal.getTime();
 	}
-	
-	//Implementacja sprawdzania czy token wygasł
+
 	@Override
 	public Boolean checkIfTokenExpired(String tokenType, String token) {
 
         User userByToken = repository.findByActivationToken(token);
 
 		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
-		//Formatowanie odpowiednich dat wygaśnięcia według podanego wzorca
+
 		if(tokenType == "activationToken")
 		format.format(userByToken.getActivationTokenExpiration());
 		
 		if(tokenType == "passwordToken")
 		format.format(userByToken.getPasswordTokenExpiration());
-		
-		//Pobranie aktualnej daty z kalendarza
+
 		Calendar expire=Calendar.getInstance();
 		expire = format.getCalendar();		
-		
-		//Sprawdzenie czy link z tokenem wygasł
+
 		if(Calendar.getInstance().getTime().after(expire.getTime()) == true) {
 			return true;
 		} else return false;
 	}
 
-	//Implementacja szyfrowania hasła
 	@Override
 	public String encodePassword(User data) {
 	
@@ -373,26 +195,20 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
     	return encodedPassword;
 	}
 
-	//Implementacja rejestracji użytkownika
 	@Override
-	public ResponseEntity<String> addUser(UserDto data) {
-		
-		//Staus(kod) odpowiedzi
+	public ResponseEntity<String> addUser(User data) {
+
 		HttpStatus responseStatus = HttpStatus.CREATED;
-		
-		//Odpowiedź w notacji JSON
+
     	JsonObject jsonResponse = new JsonObject();
-    	
-    	//Wyszukaj użytkownika po nazwie
-    	User userFoundByName = findUserByUsername(data.getUsername().toLowerCase());
-    	
-    	//Wyszukaj użytkownika po emailu
-    	User userFoundByEmail = findUserByEmail(data.getEmail().toLowerCase());
+
+    	User userFoundByName = repository.findByUsername(data.getUsername().toLowerCase());
+
+    	User userFoundByEmail = repository.findByEmail(data.getEmail().toLowerCase());
     	
 			boolean userNameFound = false;
 			boolean emailFound =  false;
-			
-			//Wysyłanie adekwatnych odpowiedzi w zależności czy znaleziono duplikat nazwy użytkownika lub emailu
+
 		    if (userFoundByName != null) {
 		    	userNameFound = true;
 		    	responseStatus = HttpStatus.CONFLICT;
@@ -417,8 +233,7 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 		    	createUser(data);
 		    	jsonResponse.addProperty("message", "Create Success");
 		    }
-		
-		//Wyślij odpowiedź zawierającą status i komunikat JSON
+
     	return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
 	}
 }

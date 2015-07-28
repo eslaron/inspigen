@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 //Klasa z ogolną konfiguracją aplikacji
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.devrebel.inspigen.app"})
+@ComponentScan(basePackages = {"com.devrebel.inspigen"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     //Mapowanie zasobow do scieżki do katalogu webapp/resources
