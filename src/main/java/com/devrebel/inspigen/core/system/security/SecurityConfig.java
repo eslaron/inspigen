@@ -2,7 +2,7 @@ package com.devrebel.inspigen.core.system.security;
 
 import javax.sql.DataSource;
 
-import com.devrebel.inspigen.app.domain.user.UserServiceImpl;
+import com.devrebel.inspigen.app.domain.user.SimpleUserService;
 import com.devrebel.inspigen.core.system.security.authentication.CustomDaoAuthenticationProvider;
 import com.devrebel.inspigen.core.system.security.authentication.CustomUserDetailsService;
 import com.devrebel.inspigen.core.system.security.authentication.XAuthTokenFilter;
@@ -26,7 +26,7 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 //Klasa konfigurująca zabezpieczenia
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackageClasses=UserServiceImpl.class)
+@ComponentScan(basePackageClasses=SimpleUserService.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
