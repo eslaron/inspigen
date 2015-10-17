@@ -62,12 +62,12 @@ public class SimpleUserService implements UserService, UserDetailsService {
     private UserRole assignUserRole(User data) {
         UserRole role = UserRole.ROLE_USER;
 
-        if (data.getRole().equals("Wolontariusz"))
+       /* if (data.getRole().equals("Wolontariusz"))
             role = UserRole.ROLE_USER;
         if (data.getRole().equals("Koordynator"))
             role = UserRole.ROLE_MOD;
         if (data.getRole().equals("Administrator"))
-            role = UserRole.ROLE_ADMIN;
+            role = UserRole.ROLE_ADMIN;*/
 
         return role;
     }

@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonObject;
 
 /**
- * Kontroler obsługujący proces autoryzacji użytkownika (logowania się do systemu)
- * 
+ * Kontroler obsługujący proces autoryzacji użytkownika
  *
  * @author Philip W. Sorst (philip@sorst.net)
  * @author Josh Long (josh@joshlong.com)
@@ -34,44 +33,38 @@ public class UserXAuthTokenController {
 	private final CustomUserDetailsService userDetailsService;
 	private final CustomDaoAuthenticationProvider provider;
 
-	
-	//Konstruktor z atrybutami zawierajacymi instancję kluczowych klas i interfejsow biorących udział przy logowaniu użytkownika
 	@Autowired
-	public UserXAuthTokenController(AuthenticationManager am, CustomUserDetailsService userDetailsService, CustomDaoAuthenticationProvider p) {
+	public UserXAuthTokenController(AuthenticationManager am, CustomUserDetailsService userDetailsService, CustomDaoAuthenticationProvider provider) {
 		this.authenticationManager = am;
 		this.userDetailsService = userDetailsService;
-		this.provider = p;
+		this.provider = provider;
 	}
 
-	//Zmapowana metoda obsługująca żądanie POST autoryzujące użytkownika
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<String> authorize(@RequestParam String username, @RequestParam String password) {
-
-		HttpStatus responseStatus = HttpStatus.OK;		
+		HttpStatus responseStatus = HttpStatus.OK;
 		JsonObject jsonResponse = new JsonObject();
-		
-		try {	
-			
+
+		try {
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
 			Authentication authentication = this.authenticationManager.authenticate(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			UserDetails details = this.userDetailsService.loadUserByUsername(username);
-
 			String role ="";
+
 			for (GrantedAuthority authority : details.getAuthorities())
 				role = authority.toString();
-		
+
 			jsonResponse.addProperty("username", details.getUsername());
 			jsonResponse.addProperty("role", role);
-			jsonResponse.addProperty("token", tokenUtils.createToken(details)); 
-		
-		} catch (AuthenticationException failed) {
+			jsonResponse.addProperty("token", tokenUtils.createToken(details));
 
+		} catch (AuthenticationException failed) {
 			responseStatus = HttpStatus.UNAUTHORIZED;
 			jsonResponse.addProperty("id", "Authentication Failed");
 			jsonResponse.addProperty("description", provider.getLoginFailureError());
 		}
-			
-		return new ResponseEntity<String>(jsonResponse.toString(), responseStatus);
+
+		return new ResponseEntity<>(jsonResponse.toString(), responseStatus);
 	}
 }

@@ -11,19 +11,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * 
  * @author Philip W. Sorst (philip@sorst.net)
  * @author Josh Long (josh@joshlong.com)
+ * @author Sebastian Sobiech (sebastian.sobiech@gmail.com)
  */
 public class XAuthTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-	private UserDetailsService detailsService;
+	private UserDetailsService userDetailsService;
 
-	public XAuthTokenConfigurer(UserDetailsService detailsService) {
-		this.detailsService = detailsService;
+	public XAuthTokenConfigurer(UserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
 	}
-	
-	//Nadpisana metoda w ktorej dodajemy nasz filtr
+
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		XAuthTokenFilter customFilter = new XAuthTokenFilter(detailsService);
-		http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
+		XAuthTokenFilter tokenFilter = new XAuthTokenFilter(userDetailsService);
+		http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 }

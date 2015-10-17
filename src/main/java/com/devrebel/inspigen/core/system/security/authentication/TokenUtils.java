@@ -16,13 +16,11 @@ public class TokenUtils {
 
     public static final String MAGIC_KEY = "obfuscate";
 
-    //Metoda tworząca token autoryzujący
     public String createToken(UserDetails userDetails) {
-        long expires = System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 5;
+        long expires = System.currentTimeMillis() + 1000L * 60 * 60 * 24;
         return userDetails.getUsername() + ":" + expires + ":" + computeSignature(userDetails, expires);
     }
 
-    //Metoda obliczająca sygnaturę dla tokena
     public String computeSignature(UserDetails userDetails, long expires) {
         StringBuilder signatureBuilder = new StringBuilder();
         signatureBuilder.append(userDetails.getUsername()).append(":");
@@ -31,6 +29,7 @@ public class TokenUtils {
         signatureBuilder.append(TokenUtils.MAGIC_KEY);
 
         MessageDigest digest;
+
         try {
             digest = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
@@ -39,7 +38,6 @@ public class TokenUtils {
         return new String(Hex.encode(digest.digest(signatureBuilder.toString().getBytes())));
     }
 
-    //Metoda pobierajaca nazwę użytkownika zawartą w tokenie
     public String getUserNameFromToken(String authToken) {
         if (null == authToken) {
             return null;
@@ -48,7 +46,6 @@ public class TokenUtils {
         return parts[0];
     }
 
-    //Metoda sprawdzająca poprawność tokena
     public boolean validateToken(String authToken, UserDetails userDetails) {
         String[] parts = authToken.split(":");
         long expires = Long.parseLong(parts[1]);

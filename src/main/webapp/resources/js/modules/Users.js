@@ -560,12 +560,13 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 		 		  
 			  var Add = Restangular.all('users');
 			  	
-			  if( $scope.optionalEnabled == true)
+			  /*if( $scope.optionalEnabled == true)
 				  $scope.add.enabled = "Tak";
 			  
 			  if( $scope.optionalEnabled == false) 
-				  $scope.add.enabled = "Nie";
-			  		  
+				  $scope.add.enabled = "Nie";*/
+			  $scope.add.enabled = $scope.optionalEnabled;
+
 			  Add.post($scope.add).then(function(response){
 				  $scope.duplicateUsername = false;
 				  $scope.duplicateEmail = false;

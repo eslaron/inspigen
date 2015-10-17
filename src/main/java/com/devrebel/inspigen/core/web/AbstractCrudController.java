@@ -1,10 +1,6 @@
 package com.devrebel.inspigen.core.web;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.google.gson.JsonObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
@@ -14,22 +10,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.Serializable;
+import java.util.List;
+
 public abstract class AbstractCrudController<T, ID extends Serializable, R extends JpaRepository<T,ID>> {
 
     public static final HttpStatus HTTP_RESPONSE_STATUS_CREATED = HttpStatus.CREATED;
     public static final HttpStatus HTTP_RESPONSE_STATUS_OK = HttpStatus.OK;
+    public static final HttpStatus HTTP_RESPONSE_STATUS_FOUND = HttpStatus.FOUND;
+    public static final HttpStatus HTTP_RESPONSE_STATUS_NOT_FOUND = HttpStatus.NOT_FOUND;
 
     @Autowired
     R repository;
 
-    Class<T> entityClass;
-    String message = "";
-    String response = "";
+    //Class<T> entityClass;
+    public String message = "";
+    public String response = "";
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> create(@RequestBody T entity) {
         repository.save(entity);
-        message = entityClass.getName() + " Created";
+        message = "Created";
         JsonObject jsonResponse = new JsonObject();
         jsonResponse.addProperty("message", message);
         response = jsonResponse.toString();
@@ -50,7 +51,7 @@ public abstract class AbstractCrudController<T, ID extends Serializable, R exten
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
     public ResponseEntity<String> update(@RequestBody T data) {
         repository.saveAndFlush(data);
-        message = entityClass.getName() + " Updated";
+        message = "Updated";
         JsonObject jsonResponse = new JsonObject();
         jsonResponse.addProperty("message", message);
         response = jsonResponse.toString();
@@ -61,7 +62,7 @@ public abstract class AbstractCrudController<T, ID extends Serializable, R exten
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> delete(@PathVariable ID id) {
         repository.delete(id);
-        message = entityClass.getName() + " Deleted";
+        message = "Deleted";
         JsonObject jsonResponse = new JsonObject();
         jsonResponse.addProperty("message", message);
         response = jsonResponse.toString();

@@ -19,6 +19,7 @@ import java.io.IOException;
  * 
  * @author Philip W. Sorst (philip@sorst.net)
  * @author Josh Long (josh@joshlong.com)
+ * @author Sebastian Sobiech (sebastian.sobiech@gmail.com)
  */
 public class XAuthTokenFilter extends GenericFilterBean {
 
@@ -30,26 +31,32 @@ public class XAuthTokenFilter extends GenericFilterBean {
         this.detailsService = userDetailsService;
     }
 
-    //Filtr przechwytujący wszystkie przychodzące żądania i dołączający identyfikator jeżeli użytkownik istnieje
     @Override
-    public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         try {
-            HttpServletRequest httpServletRequest = (HttpServletRequest) arg0;
+            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             String authToken = httpServletRequest.getHeader(this.xAuthTokenHeaderName);
 
-            if (StringUtils.hasText(authToken)) {
-                String username = this.tokenUtils.getUserNameFromToken(authToken);
-
-                UserDetails details = this.detailsService.loadUserByUsername(username);
-
-                if (this.tokenUtils.validateToken(authToken, details)) {
-                    UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(token);
-                }
-            }
-            filterChain.doFilter(arg0, arg1);
+            validateTokenIfNotEmpty(authToken);
+            filterChain.doFilter(request, response);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    private void validateTokenIfNotEmpty(String authToken) {
+        if (StringUtils.hasText(authToken)) {
+            String username = this.tokenUtils.getUserNameFromToken(authToken);
+            UserDetails details = this.detailsService.loadUserByUsername(username);
+
+            setTokenIfValidated(authToken, details);
+        }
+    }
+
+    private void setTokenIfValidated(String authToken, UserDetails details) {
+        if (this.tokenUtils.validateToken(authToken, details)) {
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(token);
         }
     }
 }
