@@ -3,7 +3,7 @@ angular.module('inspigen', ['ui.router', 'ui.bootstrap','mgcrea.ngStrap', 'permi
                             'inspigen.login', 'inspigen.accounts', 'inspigen.users', 'inspigen.persons',
                             'inspigen.addresses', 'inspigen.events', 'inspigen.locations',
                             'inspigen.attachments', 'inspigen.services', 'inspigen.directives',
-                            'inspigen.filters', 'angular-loading-bar'])
+                            'inspigen.filters', 'angular-loading-bar','ngMaterial'])
 
  //Operacje wykonywane podczas działania aplikacji
 .run(function($rootScope, $state, $stateParams) {

@@ -6,6 +6,6 @@ import com.devrebel.inspigen.core.web.AbstractCrudController;
 
 @RestController
 @RequestMapping("/api/v1/events")
-public class EventCrudController extends AbstractCrudController<Event,Long,EventRepository> {
+public class EventCrudController extends AbstractCrudController<Event,EventDto,Long> {
 
 }

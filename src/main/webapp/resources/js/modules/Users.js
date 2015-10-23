@@ -455,9 +455,9 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
   $scope.email = $scope.user.email;
   
   //Role użytkowników
-  $scope.roles = [{key: "Wolontariusz"},
-                  {key: "Koordynator"},
-                  {key: "Administrator"}];
+  $scope.roles = [{key: "ROLE_USER"},
+                  {key: "ROLE_MOD"},
+                  {key: "ROLE_ADMIN"}];
   
   $scope.selectedRole = {key: ""}
   $scope.selectedRole.key = $scope.user.role;
@@ -580,6 +580,7 @@ Users.controller('UsersController', ['$rootScope', '$scope', '$state', '$statePa
 		    	    });
 			  }, function(error) {
 				  $scope.error = error.data;
+				  console.log("ERROR: ",$scope.error);
 				  
 					if($scope.error.description == "duplicateUser") {
 						$scope.duplicateUsername = true;

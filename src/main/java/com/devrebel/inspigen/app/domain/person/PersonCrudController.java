@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/persons")
-public class PersonCrudController extends AbstractCrudController<PersonalData,Long,PersonRepository> {
+public class PersonCrudController extends AbstractCrudController<PersonalData,PersonDto,Long> {
 
 }

@@ -1,6 +1,7 @@
 package com.devrebel.inspigen.app.domain.user;
 
 import com.devrebel.inspigen.core.common.AbstractEntity;
+import org.dozer.Mapping;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,13 +19,18 @@ public class User extends AbstractEntity implements UserDetails {
     private static final long serialVersionUID = 6311364761937265306L;
     public static final String D_USER = "User";
 
+    @Mapping("username")
     private String username;
+    @Mapping("password")
     private String password;
+    @Mapping("email")
     private String email;
 
+    @Mapping("role")
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @Mapping("enabled")
     private  Boolean enabled;
     private Boolean accountNonLocked;
     private Boolean accountNonExpired;
