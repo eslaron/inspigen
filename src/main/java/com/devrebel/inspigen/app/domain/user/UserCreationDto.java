@@ -1,12 +1,23 @@
 package com.devrebel.inspigen.app.domain.user;
 
-public class UserDto {
+import javax.persistence.Entity;
 
+public class UserCreationDto {
+
+    private Long id;
     private String username;
     private String password;
     private String email;
     private String role;
     private Boolean enabled;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
