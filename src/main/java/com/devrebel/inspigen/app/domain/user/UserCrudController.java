@@ -1,36 +1,54 @@
 package com.devrebel.inspigen.app.domain.user;
 
-import com.devrebel.inspigen.core.web.AbstractCrudController;
-import com.google.gson.JsonObject;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserCrudController extends AbstractCrudController<User,UserDto,Long> {
+public class UserCrudController  {
 
     @Autowired
     UserService userService;
 
     @Autowired
+    UserRepository repository;
+
+    @Autowired
     private Mapper dtoMapper;
 
-    @Override
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> create(@RequestBody UserDto userDto) {
-        User userEntity = dtoMapper.map(userDto, User.class);
-
+    public void create(@RequestBody @Valid UserAddDto userAddDto) {
+        User userEntity = dtoMapper.map(userAddDto, User.class);
         userService.createUser(userEntity);
-        message = " Created";
-        JsonObject jsonResponse = new JsonObject();
-        jsonResponse.addProperty("message", message);
-        response = jsonResponse.toString();
+    }
 
-        return new ResponseEntity<String>(response, HTTP_RESPONSE_STATUS_CREATED);
+    @RequestMapping(method = RequestMethod.GET)
+    public List<UserDto> findAll(){
+        List<User> userEntities = repository.findAll();
+        List<UserDto> users = new ArrayList<>();
+        userEntities.forEach(userEntity -> users.add(dtoMapper.map(userEntity, UserDto.class)));
+        return users;
+    }
+
+    @RequestMapping(value ="/{id}", method = RequestMethod.GET)
+    public UserDto findOne(@PathVariable Long id){
+        User userEntity = repository.findOne(id);
+        return dtoMapper.map(userEntity,UserDto.class);
+    }
+
+    @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
+    public void update(@RequestBody @Valid UserAddDto userAddDto) {
+        User userEntity = dtoMapper.map(userAddDto, User.class);
+        repository.saveAndFlush(userEntity);
+    }
+
+    @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long id) {
+        repository.delete(id);
     }
 }

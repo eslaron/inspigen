@@ -6,6 +6,6 @@ import com.devrebel.inspigen.core.web.AbstractCrudController;
 
 @RestController
 @RequestMapping("/api/v1/locations")
-public class LocationCrudController extends AbstractCrudController<Location,LocationDto,Long> {
+public class LocationCrudController extends AbstractCrudController<Location,Long> {
 
 }

@@ -2,9 +2,8 @@ package com.devrebel.inspigen.app.domain.user;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
 
-public class UserDto {
+public class UserAddDto {
 
     @NotNull
     @Size(min = 1, max = 30, message = "error.username.size")
@@ -13,10 +12,6 @@ public class UserDto {
     private String email;
     private String role;
     private Boolean enabled;
-    private Boolean accountNonLocked;
-    private int failedLogins;
-    private Date lastLoginAttempt;
-    private Date lastActive;
 
     public String getUsername() {
         return username;
@@ -24,6 +19,14 @@ public class UserDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -48,37 +51,5 @@ public class UserDto {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public Boolean getAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public void setAccountNonLocked(Boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public int getFailedLogins() {
-        return failedLogins;
-    }
-
-    public void setFailedLogins(int failedLogins) {
-        this.failedLogins = failedLogins;
-    }
-
-    public Date getLastLoginAttempt() {
-        return lastLoginAttempt;
-    }
-
-    public void setLastLoginAttempt(Date lastLoginAttempt) {
-        this.lastLoginAttempt = lastLoginAttempt;
-    }
-
-    public Date getLastActive() {
-        return lastActive;
-    }
-
-    public void setLastActive(Date lastActive) {
-        this.lastActive = lastActive;
     }
 }
