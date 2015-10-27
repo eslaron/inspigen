@@ -1,11 +1,10 @@
-package com.devrebel.inspigen.core.system;
+package com.devrebel.inspigen.core.config;
 
 import com.devrebel.inspigen.core.common.CommonBeansConfig;
-import com.devrebel.inspigen.core.system.email.EmailConfig;
-import com.devrebel.inspigen.core.system.persistence.DatabaseConfig;
-import com.devrebel.inspigen.core.system.security.SecurityConfig;
-import com.devrebel.inspigen.core.system.view.ThymeleafConfig;
-import com.devrebel.inspigen.core.system.webapp.WebAppConfig;
+import com.devrebel.inspigen.core.config.email.EmailConfig;
+import com.devrebel.inspigen.core.persistence.DatabaseConfig;
+import com.devrebel.inspigen.core.config.security.SecurityConfig;
+import com.devrebel.inspigen.core.config.view.ThymeleafConfig;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

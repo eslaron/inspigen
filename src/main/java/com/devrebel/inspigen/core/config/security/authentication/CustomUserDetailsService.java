@@ -1,16 +1,4 @@
-package com.devrebel.inspigen.core.system.security.authentication;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
- 
-
-
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
- 
-
+package com.devrebel.inspigen.core.config.security.authentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +10,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
+
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
 
 //Klasa zawierająca nadpisane metody wykorzystywane przy identyfikacji użytkownika
 public class CustomUserDetailsService extends JdbcDaoImpl implements UserDetailsService {

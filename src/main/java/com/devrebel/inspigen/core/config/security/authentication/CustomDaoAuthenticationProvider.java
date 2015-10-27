@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.core.system.security.authentication;
+package com.devrebel.inspigen.core.config.security.authentication;
 
 import com.devrebel.inspigen.app.domain.user.User;
 import com.devrebel.inspigen.app.domain.user.UserRepository;

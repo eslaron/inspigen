@@ -1,10 +1,10 @@
-package com.devrebel.inspigen.core.system.security;
+package com.devrebel.inspigen.core.config.security;
 
 import com.devrebel.inspigen.app.domain.user.SimpleUserService;
-import com.devrebel.inspigen.core.system.security.authentication.CustomDaoAuthenticationProvider;
-import com.devrebel.inspigen.core.system.security.authentication.CustomUserDetailsService;
-import com.devrebel.inspigen.core.system.security.authentication.XAuthTokenConfigurer;
-import com.devrebel.inspigen.core.system.security.authentication.XAuthTokenFilter;
+import com.devrebel.inspigen.core.config.security.authentication.CustomDaoAuthenticationProvider;
+import com.devrebel.inspigen.core.config.security.authentication.CustomUserDetailsService;
+import com.devrebel.inspigen.core.config.security.authentication.XAuthTokenConfigurer;
+import com.devrebel.inspigen.core.config.security.authentication.XAuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

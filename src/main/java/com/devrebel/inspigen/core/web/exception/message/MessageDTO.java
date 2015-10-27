@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.core.web;
+package com.devrebel.inspigen.core.web.exception.message;
 
 public class MessageDTO {
 

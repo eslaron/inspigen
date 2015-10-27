@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.core.system.persistence;
+package com.devrebel.inspigen.core.persistence;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

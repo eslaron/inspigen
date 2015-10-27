@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.core.system.security.authentication;
+package com.devrebel.inspigen.core.config.security.authentication;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.codec.Hex;

@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.core.system.security;
+package com.devrebel.inspigen.core.config.security;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

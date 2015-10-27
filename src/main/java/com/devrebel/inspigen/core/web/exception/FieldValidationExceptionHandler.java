@@ -1,5 +1,7 @@
-package com.devrebel.inspigen.core.web;
+package com.devrebel.inspigen.core.web.exception;
 
+import com.devrebel.inspigen.core.web.exception.message.MessageDTO;
+import com.devrebel.inspigen.core.web.exception.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Locale;
 
 @ControllerAdvice(annotations = RestController.class)
-public class ControllerValidationHandler {
+public class FieldValidationExceptionHandler {
 
     @Autowired
     private MessageSource msgSource;

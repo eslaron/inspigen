@@ -48,7 +48,7 @@ public class SimpleUserService implements UserService, UserDetailsService {
                 .credentialsNonExpired(true)
                 .build();
 
-        userRepository.save(newUser);
+        userRepository.saveAndFlush(newUser);
 
         if (newUser.getEnabled() == false)
             sendRegistrationEmail(data, activationToken);

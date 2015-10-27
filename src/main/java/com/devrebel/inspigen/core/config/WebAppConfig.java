@@ -1,4 +1,4 @@
-package com.devrebel.inspigen.core.system.webapp;
+package com.devrebel.inspigen.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -10,7 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.devrebel.inspigen"})
+@ComponentScan(basePackages = {"com.devrebel.inspigen.app",
+                                "com.devrebel.inspigen.core.common",
+                                "com.devrebel.inspigen.core.config",
+                                "com.devrebel.inspigen.core.web"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
