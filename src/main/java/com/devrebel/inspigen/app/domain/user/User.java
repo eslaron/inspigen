@@ -5,10 +5,7 @@ import org.dozer.Mapping;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 
@@ -19,10 +16,14 @@ public class User extends AbstractEntity implements UserDetails {
     private static final long serialVersionUID = 6311364761937265306L;
     public static final String D_USER = "User";
 
+    @Column(unique = true)
     @Mapping("username")
     private String username;
+
     @Mapping("password")
     private String password;
+
+    @Column(unique = true)
     @Mapping("email")
     private String email;
 

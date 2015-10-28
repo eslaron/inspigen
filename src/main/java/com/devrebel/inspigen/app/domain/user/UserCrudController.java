@@ -1,9 +1,14 @@
 package com.devrebel.inspigen.app.domain.user;
 
+import com.devrebel.inspigen.core.web.exception.message.MessageDTO;
+import com.devrebel.inspigen.core.web.exception.message.MessageType;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +24,30 @@ public class UserCrudController  {
     UserRepository repository;
 
     @Autowired
+    UserValidator userValidator;
+
+    @Autowired
     private Mapper dtoMapper;
 
     @RequestMapping(method = RequestMethod.POST)
-    public void create(@RequestBody @Valid UserAddDto userAddDto) {
+    public List<MessageDTO> create(@RequestBody @Valid UserAddDto userAddDto, BindingResult result, HttpServletResponse response) {
         User userEntity = dtoMapper.map(userAddDto, User.class);
-        userService.createUser(userEntity);
+        userValidator.validate(userEntity, result);
+        List<MessageDTO> messages = new ArrayList<>();
+        if(result.hasErrors()) {
+            List<FieldError> fieldErrors = result.getFieldErrors();
+            fieldErrors.forEach(error -> {
+                MessageDTO errorMessage = new MessageDTO(MessageType.ERROR, error.getCode());
+                messages.add(errorMessage);
+            });
+            response.setStatus(HttpServletResponse.SC_CONFLICT);
+        } else {
+            MessageDTO successMessage = new MessageDTO(MessageType.SUCCESS,"User successfully added");
+            messages.add(successMessage);
+            userService.createUser(userEntity);
+        }
+
+        return messages;
     }
 
     @RequestMapping(method = RequestMethod.GET)

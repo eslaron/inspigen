@@ -9,6 +9,8 @@ public class UserAddDto {
     @Size(min = 1, max = 30, message = "error.username.size")
     private String username;
     private String password;
+    @NotNull
+    @Size(min = 1, max = 30, message = "error.username.size")
     private String email;
     private String role;
     private Boolean enabled;

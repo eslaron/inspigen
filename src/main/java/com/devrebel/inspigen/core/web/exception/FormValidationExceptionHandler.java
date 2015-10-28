@@ -11,10 +11,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @ControllerAdvice(annotations = RestController.class)
-public class FieldValidationExceptionHandler {
+public class FormValidationExceptionHandler {
 
     @Autowired
     private MessageSource msgSource;
@@ -22,20 +24,22 @@ public class FieldValidationExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public MessageDTO processValidationError(MethodArgumentNotValidException ex) {
+    public List<MessageDTO> processValidationError(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
-        FieldError error = result.getFieldError();
-
-        return processFieldError(error);
+        List<FieldError> errors = result.getFieldErrors();
+        return processFieldErrors(errors);
     }
 
-    private MessageDTO processFieldError(FieldError error) {
-        MessageDTO message = null;
-        if (error != null) {
-            Locale currentLocale = LocaleContextHolder.getLocale();
-            String msg = msgSource.getMessage(error.getDefaultMessage(), null, currentLocale);
-            message = new MessageDTO(MessageType.ERROR, msg);
+    private List<MessageDTO> processFieldErrors(List<FieldError> errors) {
+        List<MessageDTO> errorMessages = new ArrayList<>();
+        if (!errors.isEmpty()) {
+            errors.forEach(error ->{
+                Locale currentLocale = LocaleContextHolder.getLocale();
+                String msg = msgSource.getMessage(error.getDefaultMessage(), null, currentLocale);
+                MessageDTO errorMessage = new MessageDTO(MessageType.ERROR, msg);
+                errorMessages.add(errorMessage);
+            });
         }
-        return message;
+        return errorMessages;
     }
 }
