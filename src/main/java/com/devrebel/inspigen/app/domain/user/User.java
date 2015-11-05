@@ -44,84 +44,128 @@ public class User extends AbstractEntity implements UserDetails {
     private Date lastLoginAttempt;
     private Date lastActive;
 
-    private User() {}
+    public User() {}
 
-    private User(UserBuilder builder) {
-        this.username = builder.username;
-        this.password = builder.password;
-        this.email = builder.email;
-        this.role = builder.role;
-        this.enabled = builder.enabled;
-        this.accountNonLocked = builder.accountNonLocked;
-        this.accountNonExpired = builder.accountNonExpired;
-        this.credentialsNonExpired = builder.credentialsNonExpired;
-        this.passwordToken = builder.passwordToken;
-        this.passwordTokenExpiration = builder.passwordTokenExpiration;
-        this.activationToken = builder.activationToken;
-        this.activationTokenExpiration = builder.activationTokenExpiration;
-        this.failedLogins = builder.failedLogins;
-        this.lastLoginAttempt = builder.lastLoginAttempt;
-        this.lastActive = builder.lastActive;
-    }
-
+    @Override
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public UserRole getRole() {
         return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public Boolean getEnabled() {
         return enabled;
     }
 
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public Boolean getAccountNonLocked() {
         return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
     }
 
     public Boolean getAccountNonExpired() {
         return accountNonExpired;
     }
 
+    public void setAccountNonExpired(Boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
     public Boolean getCredentialsNonExpired() {
         return credentialsNonExpired;
+    }
+
+    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
     }
 
     public String getPasswordToken() {
         return passwordToken;
     }
 
+    public void setPasswordToken(String passwordToken) {
+        this.passwordToken = passwordToken;
+    }
+
     public String getActivationToken() {
         return activationToken;
+    }
+
+    public void setActivationToken(String activationToken) {
+        this.activationToken = activationToken;
     }
 
     public Date getPasswordTokenExpiration() {
         return passwordTokenExpiration;
     }
 
+    public void setPasswordTokenExpiration(Date passwordTokenExpiration) {
+        this.passwordTokenExpiration = passwordTokenExpiration;
+    }
+
     public Date getActivationTokenExpiration() {
         return activationTokenExpiration;
+    }
+
+    public void setActivationTokenExpiration(Date activationTokenExpiration) {
+        this.activationTokenExpiration = activationTokenExpiration;
     }
 
     public int getFailedLogins() {
         return failedLogins;
     }
 
+    public void setFailedLogins(int failedLogins) {
+        this.failedLogins = failedLogins;
+    }
+
     public Date getLastLoginAttempt() {
         return lastLoginAttempt;
     }
 
+    public void setLastLoginAttempt(Date lastLoginAttempt) {
+        this.lastLoginAttempt = lastLoginAttempt;
+    }
+
     public Date getLastActive() {
         return lastActive;
+    }
+
+    public void setLastActive(Date lastActive) {
+        this.lastActive = lastActive;
     }
 
     @Override
@@ -157,122 +201,5 @@ public class User extends AbstractEntity implements UserDetails {
  
         */
         return null;
-    }
-
-    public static class UserBuilder {
-
-        private Long id;
-        private String username;
-        private String password;
-        private String email;
-        private UserRole role;
-        private Boolean enabled;
-        private Boolean accountNonLocked;
-        private Boolean accountNonExpired;
-        private Boolean credentialsNonExpired;
-        private String passwordToken;
-        private String activationToken;
-        private Date passwordTokenExpiration;
-        private Date activationTokenExpiration;
-        private int failedLogins;
-        private Date lastLoginAttempt;
-        private Date lastActive;
-
-        public UserBuilder(String username, UserRole role) {
-            this.username = username;
-            this.role = role;
-        }
-
-        public UserBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public UserBuilder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public UserBuilder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public UserBuilder enabled(Boolean enabled) {
-            this.enabled = enabled;
-            return this;
-        }
-
-        public UserBuilder accountNonLocked(Boolean accountNonLocked) {
-            this.accountNonLocked = accountNonLocked;
-            return this;
-        }
-
-        public UserBuilder accountNonExpired(Boolean accountNonExpired) {
-            this.accountNonExpired = accountNonExpired;
-            return this;
-        }
-
-        public UserBuilder credentialsNonExpired(Boolean credentialsNonExpired) {
-            this.credentialsNonExpired = credentialsNonExpired;
-            return this;
-        }
-
-        public UserBuilder passwordToken(String passwordToken) {
-            this.passwordToken = passwordToken;
-            return this;
-        }
-
-        public UserBuilder activationToken(String activationToken) {
-            this.activationToken = activationToken;
-            return this;
-        }
-
-        public UserBuilder passwordTokenExpiration(Date passwordTokenExpiration) {
-            this.passwordTokenExpiration = passwordTokenExpiration;
-            return this;
-        }
-
-        public UserBuilder activationTokenExpiration(Date activationTokenExpiration) {
-            this.activationTokenExpiration = activationTokenExpiration;
-            return this;
-        }
-
-        public UserBuilder failedLogins(int failedLogins) {
-            this.failedLogins = failedLogins;
-            return this;
-        }
-
-        public UserBuilder lastLoginAttempt(Date lastLoginAttempt) {
-            this.lastLoginAttempt = lastLoginAttempt;
-            return this;
-        }
-
-        public UserBuilder lastActive(Date lastActive) {
-            this.lastActive = lastActive;
-            return this;
-        }
-
-        public User build() {
-            return new User(this);
-        }
-    }
-
-    public UserBuilder toBuilder() {
-        return new UserBuilder(getUsername(), getRole())
-                .id(getId())
-                .password(getPassword())
-                .email(getEmail())
-                .enabled(getEnabled())
-                .accountNonLocked(getAccountNonLocked())
-                .accountNonExpired(getAccountNonExpired())
-                .credentialsNonExpired(getCredentialsNonExpired())
-                .activationToken(getActivationToken())
-                .passwordToken(getPasswordToken())
-                .passwordTokenExpiration(getPasswordTokenExpiration())
-                .activationTokenExpiration(getActivationTokenExpiration())
-                .failedLogins(getFailedLogins())
-                .lastLoginAttempt(getLastLoginAttempt())
-                .lastActive(getLastActive());
     }
 }

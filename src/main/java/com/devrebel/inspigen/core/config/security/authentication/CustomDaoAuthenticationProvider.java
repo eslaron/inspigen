@@ -15,72 +15,71 @@ import java.util.Date;
 
 public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
-	@Autowired
-	UserRepository repository;
+    @Autowired
+    UserRepository repository;
 
-	private String username;
+    private String username;
 
-	private String loginFailureError = "";
+    private String loginFailureError = "";
 
-	public String getLoginFailureError() {
-		return loginFailureError;
-	}
+    public String getLoginFailureError() {
+        return loginFailureError;
+    }
 
-	public void setLoginFailureError(String loginFailureError) {
-		this.loginFailureError = loginFailureError;
-	}
-		@Override
-		public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public void setLoginFailureError(String loginFailureError) {
+        this.loginFailureError = loginFailureError;
+    }
 
-			username = authentication.getName();
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-			User userByName = repository.findByUsername(username);
-			
-		      try {
+        username = authentication.getName();
 
-		    	if (userByName != null) {
+        User userByName = repository.findByUsername(username);
 
-		    		if(userByName.getAccountNonLocked() == true) {
-						userByName.toBuilder().failedLogins(0);
-			    		repository.saveAndFlush(userByName);
-		    		}
+        try {
 
-		    		Date lastAttempt  = userByName.getLastLoginAttempt();
-			  		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			  		format.format(lastAttempt);
+            if (userByName != null) {
 
-			  		Calendar unlockTime = Calendar.getInstance();
-			  		unlockTime = format.getCalendar();
-			  		unlockTime.add(Calendar.MINUTE, 15);
+                if (userByName.getAccountNonLocked() == true) {
+                    userByName.setFailedLogins(0);
+                    repository.saveAndFlush(userByName);
+                }
 
-			  		if(Calendar.getInstance().getTime().after(unlockTime.getTime()) == true) {
-						userByName.toBuilder()
-								.failedLogins(0)
-								.accountNonLocked(true);
-			  			repository.saveAndFlush(userByName);
-			  		}
-		      }
-		    	  	return super.authenticate(authentication);
+                Date lastAttempt = userByName.getLastLoginAttempt();
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                format.format(lastAttempt);
 
-		      } catch (BadCredentialsException e) {	
-		    	  
-		    	  setLoginFailureError("invalidCredentials");
+                Calendar unlockTime = Calendar.getInstance();
+                unlockTime = format.getCalendar();
+                unlockTime.add(Calendar.MINUTE, 15);
 
-		    	  if (userByName != null) {
+                if (Calendar.getInstance().getTime().after(unlockTime.getTime()) == true) {
+                    userByName.setFailedLogins(0);
+                    userByName.setAccountNonLocked(true);
+                    repository.saveAndFlush(userByName);
+                }
+            }
+            return super.authenticate(authentication);
 
-		    		int attempts = userByName.getFailedLogins();
-		    		attempts++;
-		    		userByName.toBuilder()
-							.failedLogins(attempts)
-		    				.lastLoginAttempt(new Date());
+        } catch (BadCredentialsException e) {
 
-		    		if (attempts > 3-1) {
-		    			userByName.toBuilder().accountNonLocked(false);
-		    			setLoginFailureError("accountLocked");
-		    		}
-					  repository.saveAndFlush(userByName);
-		    	  }
-			        throw e;
-		      }
-		}
+            setLoginFailureError("invalidCredentials");
+
+            if (userByName != null) {
+
+                int attempts = userByName.getFailedLogins();
+                attempts++;
+                userByName.setFailedLogins(attempts);
+                userByName.setLastLoginAttempt(new Date());
+
+                if (attempts > 3 - 1) {
+                    userByName.setAccountNonLocked(false);
+                    setLoginFailureError("accountLocked");
+                }
+                repository.saveAndFlush(userByName);
+            }
+            throw e;
+        }
+    }
 }

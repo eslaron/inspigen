@@ -1,10 +1,10 @@
-package com.devrebel.inspigen.app.domain.account;
+package com.devrebel.inspigen.app.domain.user;
 
 import com.devrebel.inspigen.app.domain.user.User;
 
 import java.util.Date;
 
-public interface AccountService {
+public interface UserAccountService {
 
     String encodePassword(User data);
 

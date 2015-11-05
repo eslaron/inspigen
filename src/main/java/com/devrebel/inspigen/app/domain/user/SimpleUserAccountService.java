@@ -1,7 +1,5 @@
-package com.devrebel.inspigen.app.domain.account;
+package com.devrebel.inspigen.app.domain.user;
 
-import com.devrebel.inspigen.app.domain.user.User;
-import com.devrebel.inspigen.app.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -24,7 +22,7 @@ import java.util.Random;
 
 @Service
 @Transactional
-public class SimpleAccountService implements AccountService {
+public class SimpleUserAccountService implements UserAccountService {
 
     @Autowired
     JavaMailSenderImpl mailSender;
@@ -77,14 +75,18 @@ public class SimpleAccountService implements AccountService {
 
     @Override
     public Boolean checkIfTokenExpired(String tokenType, String token) {
-        User userByToken = userRepository.findByActivationToken(token);
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        User userByToken = new User();
 
-        if (tokenType == "activationToken")
+        if (tokenType == "activationToken") {
+            userByToken = userRepository.findByActivationToken(token);
             format.format(userByToken.getActivationTokenExpiration());
+        }
 
-        if (tokenType == "passwordToken")
+        if (tokenType == "passwordToken") {
+            userByToken = userRepository.findByPasswordToken(token);
             format.format(userByToken.getPasswordTokenExpiration());
+        }
 
         Calendar expire = Calendar.getInstance();
         expire = format.getCalendar();
@@ -96,7 +98,7 @@ public class SimpleAccountService implements AccountService {
 
     @Override
     public void sendTokenMail(String email, String tokenType, String token) {
-        String msg = "";
+        /*String msg = "";
         Multipart mp = new MimeMultipart();
         MimeBodyPart mbp = new MimeBodyPart();
         MimeMessage message = mailSender.createMimeMessage();
@@ -134,6 +136,6 @@ public class SimpleAccountService implements AccountService {
             mailSender.send(message);
         } catch (MessagingException e) {
             System.out.println("Error Sending email " + e.getMessage());
-        }
+        }*/
     }
 }

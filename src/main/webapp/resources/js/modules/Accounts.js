@@ -127,6 +127,7 @@ Accounts.controller('AccountActivationController', function($scope, $stateParams
 Accounts.controller('AccountsController', function($scope, $timeout, $state, $stateParams, Restangular) {
 
 	$scope.Accounts = Restangular.all('accounts');
+	$scope.passwordResetEmailCheck = Restangular.all('accounts/passwordReset');
 	$scope.passwordReset = Restangular.one('accounts/passwordReset');
 
 	$scope.userNameUnique = true;
@@ -179,10 +180,10 @@ Accounts.controller('AccountsController', function($scope, $timeout, $state, $st
 	
 	//Funkcja wysyłająca email resetujący hasło
 	$scope.sendResetPasswordEmail = function() { 
-		
+		console.log("Checking");
 		$scope.hideMessage = true;
 		
-		$scope.Accounts.get($scope.reset.email)
+		$scope.passwordResetEmailCheck.post($scope.reset.email)
 			.then(function(response) {			
 				if(response.message == "resetLinkSent") {
 					$scope.messageStyle = "alert alert-success";
