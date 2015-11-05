@@ -92,7 +92,7 @@ var Accounts = angular.module('inspigen.accounts', ['ui.router', 'restangular'])
 //Kontroler aktywacji użytkowników
 Accounts.controller('AccountActivationController', function($scope, $stateParams, Restangular) {
 	
-	var Account = Restangular.one('accounts/accountActivation');
+	var Account = Restangular.one('accounts/activateAccount');
 	
 	Account.activationToken = $stateParams.token;
 	

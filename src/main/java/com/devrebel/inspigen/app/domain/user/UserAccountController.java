@@ -24,7 +24,11 @@ public class UserAccountController extends UserCrudController {
     private static final String INVALID_RESET_LINK_ERROR_CODE = "error.user.account.reset.link.invalid";
     private static final String RESET_LINK_EXPIRED_ERROR_CODE = "error.user.account.reset.link.expired";
     private static final String PASSWORD_CHANGED_SUCCESS_CODE = "success.user.account.password.changed";
-    private static final String RESET_LINK_SENT_SUCCESS_CODE = " success.user.account.reset.link.sent";
+    private static final String RESET_LINK_SENT_SUCCESS_CODE = "success.user.account.reset.link.sent";
+    private static final String ACCOUNT_ACTIVATED_SUCCESS_CODE = "success.user.account.activated";
+    private static final String INVALID_ACTIVATION_LINK_ERROR_CODE = "error.user.account.invalid.activation.link";
+    private static final String ACTIVATION_LINK_EXPIRED_ERROR_CODE = "error.user.account.activation.link.expired";
+    private static final String ACCOUNT_ALREADY_ACTIVATED_ERROR_CODE = "info.user.account.already.activated";
 
     @Autowired
     UserAccountValidator userAccountValidator;
@@ -80,32 +84,28 @@ public class UserAccountController extends UserCrudController {
         return message;
     }
 
-    /*@RequestMapping(value = "/accountActivation", method = RequestMethod.PUT)
-    public ResponseEntity<String> activateAccount(@RequestBody User user) {
-        HttpStatus responseStatus = HttpStatus.NOT_FOUND;
-        message = "invalidActivationLink";
-        User userFoundByActivationToken = userRepository.findByActivationToken(user.getActivationToken());
-        boolean isTokenExpired = userAccountService.checkIfTokenExpired("activationToken", user.getActivationToken());
+    @RequestMapping(value = "/activateAccount", method = RequestMethod.PUT)
+    public MessageDTO activateAccount(@RequestBody User user, HttpServletResponse response) {
+        MessageDTO message = new MessageDTO(MessageType.SUCCESS, ACCOUNT_ACTIVATED_SUCCESS_CODE);
+        User userFoundByActivationToken = repository.findByActivationToken(user.getActivationToken());
+        boolean isTokenExpired = false;
 
-        if (userFoundByActivationToken != null) {
-            if (isTokenExpired == true) {
-                message = "activationLinkExpired";
-                responseStatus = HttpStatus.OK;
-            } else {
-                if (userFoundByActivationToken.getEnabled() == true) {
-                    responseStatus = HttpStatus.OK;
-                    message = "alreadyActivated";
-                } else {
-                    userFoundByActivationToken.toBuilder().enabled(true);
-                    userService.updateUser(userFoundByActivationToken);
-                    responseStatus = HttpStatus.OK;
-                    message = "accountActivated";
-                }
-            }
+        if(userFoundByActivationToken == null) {
+            message = new MessageDTO(MessageType.ERROR, INVALID_ACTIVATION_LINK_ERROR_CODE);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } else {
+            isTokenExpired = userAccountService.checkIfTokenExpired("activationToken", user.getActivationToken());
         }
-        JsonObject jsonResponse = new JsonObject();
-        jsonResponse.addProperty("message", message);
 
-        return new ResponseEntity<>(jsonResponse.toString(), responseStatus);
-    }*/
+        if(isTokenExpired) {
+            message = new MessageDTO(MessageType.ERROR, ACTIVATION_LINK_EXPIRED_ERROR_CODE);
+        } else if(userFoundByActivationToken.getEnabled()){
+            message = new MessageDTO(MessageType.INFO,  ACCOUNT_ALREADY_ACTIVATED_ERROR_CODE);
+        } else {
+            userFoundByActivationToken.setEnabled(true);
+            userService.updateUser(userFoundByActivationToken);
+        }
+
+        return message;
+    }
 }
