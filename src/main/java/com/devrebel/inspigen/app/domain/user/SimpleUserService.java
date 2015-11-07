@@ -30,9 +30,11 @@ public class SimpleUserService implements UserService, UserDetailsService {
         UserRole assignedRole = assignUserRole(data);
 
         User newUser = new User();
+        newUser.setUsername(data.getUsername());
         newUser.setPassword(encodedPassword);
         newUser.setEmail(data.getEmail());
         newUser.setEnabled(userEnabled);
+        newUser.setRole(assignedRole);
         newUser.setPasswordToken(passwordToken);
         newUser.setPasswordTokenExpiration(passwordTokenExpiration);
         newUser.setActivationToken(activationToken);
@@ -48,8 +50,13 @@ public class SimpleUserService implements UserService, UserDetailsService {
     }
 
     private Boolean enableUser(User data) {
-        if (!data.getEnabled()) return false;
-        else return true;
+        if(data.getEnabled() == null) {
+            return false;
+        } else if (!data.getEnabled()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private UserRole assignUserRole(User data) {

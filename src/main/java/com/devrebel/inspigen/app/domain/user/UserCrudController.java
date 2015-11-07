@@ -51,7 +51,7 @@ public class UserCrudController  {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<UserDto> findAll(){
+    private List<UserDto> findAll(){
         List<User> userEntities = repository.findAll();
         List<UserDto> users = new ArrayList<>();
         userEntities.forEach(userEntity -> users.add(dtoMapper.map(userEntity, UserDto.class)));
@@ -59,19 +59,19 @@ public class UserCrudController  {
     }
 
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
-    public UserDto findOne(@PathVariable Long id){
+    private UserDto findOne(@PathVariable Long id){
         User userEntity = repository.findOne(id);
         return dtoMapper.map(userEntity,UserDto.class);
     }
 
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
-    public void update(@RequestBody @Valid UserAddDto userAddDto) {
+    private void update(@RequestBody @Valid UserAddDto userAddDto) {
         User userEntity = dtoMapper.map(userAddDto, User.class);
         repository.saveAndFlush(userEntity);
     }
 
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Long id) {
+    private void delete(@PathVariable Long id) {
         repository.delete(id);
     }
 }

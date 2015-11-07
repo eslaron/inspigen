@@ -9,11 +9,15 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @RestController
@@ -21,17 +25,19 @@ import java.util.Locale;
 public class UserAccountController extends UserCrudController {
 
     private static final String EMAIL_NOT_FOUND_ERROR_CODE = "error.user.account.email.not.found";
-    private static final String INVALID_RESET_LINK_ERROR_CODE = "error.user.account.reset.link.invalid";
-    private static final String RESET_LINK_EXPIRED_ERROR_CODE = "error.user.account.reset.link.expired";
     private static final String PASSWORD_CHANGED_SUCCESS_CODE = "success.user.account.password.changed";
-    private static final String RESET_LINK_SENT_SUCCESS_CODE = "success.user.account.reset.link.sent";
-    private static final String ACCOUNT_ACTIVATED_SUCCESS_CODE = "success.user.account.activated";
-    private static final String INVALID_ACTIVATION_LINK_ERROR_CODE = "error.user.account.invalid.activation.link";
-    private static final String ACTIVATION_LINK_EXPIRED_ERROR_CODE = "error.user.account.activation.link.expired";
-    private static final String ACCOUNT_ALREADY_ACTIVATED_ERROR_CODE = "info.user.account.already.activated";
 
-    @Autowired
-    UserAccountValidator userAccountValidator;
+    private static final String RESET_LINK_INVALID_ERROR_CODE = "error.user.account.reset.link.invalid";
+    private static final String RESET_LINK_EXPIRED_INFO_CODE = "info.user.account.reset.link.expired";
+    private static final String RESET_LINK_SENT_SUCCESS_CODE = "success.user.account.reset.link.sent";
+
+    private static final String ACCOUNT_ACTIVATED_SUCCESS_CODE = "success.user.account.activated";
+    private static final String ACCOUNT_ALREADY_ACTIVATED_INFO_CODE = "info.user.account.already.activated";
+
+    private static final String ACTIVATION_LINK_INVALID_ERROR_CODE = "error.user.account.invalid.activation.link";
+    private static final String ACTIVATION_LINK_EXPIRED_INFO_CODE = "info.user.account.activation.link.expired";
+
+    MessageDTO message;
 
     @Autowired
     UserAccountService userAccountService;
@@ -39,73 +45,131 @@ public class UserAccountController extends UserCrudController {
     @Autowired
     MessageSource messageSource;
 
-    @RequestMapping(value ="/passwordReset", method = RequestMethod.POST)
+    @RequestMapping(value ="/resetPassword", method = RequestMethod.POST)
     public MessageDTO sendResetPasswordMail(@RequestBody String email, HttpServletResponse response) {
-        MessageDTO message = new MessageDTO(MessageType.SUCCESS, RESET_LINK_SENT_SUCCESS_CODE);
         final User userFoundByEmail = repository.findByEmail(email);
+        final boolean emailNotFound = userFoundByEmail == null;
 
-        if(userFoundByEmail == null) {
-            final Locale currentLocale = LocaleContextHolder.getLocale();
-            final String emailNotFoundMessage = messageSource.getMessage(EMAIL_NOT_FOUND_ERROR_CODE , null, currentLocale);
-            message = new MessageDTO(MessageType.ERROR, emailNotFoundMessage);
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        if(emailNotFound) {
+            rejectIfEmailNotFound(response);
         } else {
-            userFoundByEmail.setPasswordTokenExpiration(userAccountService.setTokenExpirationDate());
-            repository.saveAndFlush(userFoundByEmail);
-            userAccountService.sendTokenMail(email, "passwordToken", userFoundByEmail.getPasswordToken());
+            sendPasswordResetEmail(userFoundByEmail);
         }
 
         return message;
     }
 
-    @RequestMapping(value = "/passwordReset", method = RequestMethod.PUT)
-    public MessageDTO resetPassword(@RequestBody User user, HttpServletResponse response) {
-        MessageDTO message = new MessageDTO(MessageType.SUCCESS, PASSWORD_CHANGED_SUCCESS_CODE);
-        User userFoundByPasswordToken = repository.findByPasswordToken(user.getPasswordToken());
-        boolean isTokenExpired = false;
+    private void rejectIfEmailNotFound(HttpServletResponse response) {
+        final Locale currentLocale = LocaleContextHolder.getLocale();
+        final String emailNotFoundMessage =
+                messageSource.getMessage(EMAIL_NOT_FOUND_ERROR_CODE, null, currentLocale);
+        message = new MessageDTO(MessageType.ERROR, emailNotFoundMessage);
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    }
 
-        if(userFoundByPasswordToken == null) {
-            message = new MessageDTO(MessageType.ERROR, INVALID_RESET_LINK_ERROR_CODE);
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    private void sendPasswordResetEmail(User userFoundByEmail) {
+        final Locale currentLocale = LocaleContextHolder.getLocale();
+        final String newToken = userAccountService.generateToken();
+        final Date tokenExpirationDate = userAccountService.setTokenExpirationDate();
+        final String email =  userFoundByEmail.getEmail();
+
+        userFoundByEmail.setPasswordToken(newToken);
+        userFoundByEmail.setPasswordTokenExpiration(tokenExpirationDate);
+        repository.saveAndFlush(userFoundByEmail);
+
+        userAccountService.sendTokenMail(email, "passwordToken", newToken);
+
+        String resetLinkSentMessage =
+                messageSource.getMessage(RESET_LINK_SENT_SUCCESS_CODE, null, currentLocale);
+        message = new MessageDTO(MessageType.SUCCESS, resetLinkSentMessage);
+    }
+
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.PUT)
+    public MessageDTO resetPassword(@RequestBody User user, HttpServletResponse response) {
+        User userFoundByPasswordToken = repository.findByPasswordToken(user.getPasswordToken());
+        boolean tokenNotFound = userFoundByPasswordToken == null;
+
+        if(tokenNotFound) {
+            rejectIfPasswordTokenNotFound(response);
         } else {
-            isTokenExpired = userAccountService.checkIfTokenExpired("passwordToken", user.getPasswordToken());
+            resetPassword(userFoundByPasswordToken);
         }
 
+        return message;
+    }
+
+    private void rejectIfPasswordTokenNotFound(HttpServletResponse response) {
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        String invalidPasswordTokenMessage =
+                messageSource.getMessage(RESET_LINK_INVALID_ERROR_CODE, null, currentLocale);
+        message = new MessageDTO(MessageType.ERROR, invalidPasswordTokenMessage);
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    }
+
+    private void resetPassword(User userFoundByPasswordToken) {
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        boolean isTokenExpired = userAccountService.checkIfTokenExpired("passwordToken",
+                userFoundByPasswordToken.getPasswordToken());
+
         if(isTokenExpired) {
-            message = new MessageDTO(MessageType.ERROR, RESET_LINK_EXPIRED_ERROR_CODE);
+            String passwordTokenExpiredMessage =
+                    messageSource.getMessage(RESET_LINK_EXPIRED_INFO_CODE, null, currentLocale);
+            message = new MessageDTO(MessageType.INFO, passwordTokenExpiredMessage);
         } else {
             String newToken = userAccountService.generateToken();
             String newPassword = userAccountService.encodePassword(userFoundByPasswordToken);
             userFoundByPasswordToken.setPassword(newPassword);
             userFoundByPasswordToken.setPasswordToken(newToken);
             userService.updateUser(userFoundByPasswordToken);
+            String passwordChangedMessage =
+                    messageSource.getMessage(PASSWORD_CHANGED_SUCCESS_CODE, null, currentLocale);
+            message = new MessageDTO(MessageType.SUCCESS, passwordChangedMessage);
+        }
+
+    }
+
+    @RequestMapping(value = "/activateAccount", method = RequestMethod.PUT)
+    public MessageDTO activateAccount(@RequestBody User user, HttpServletResponse response) {
+        User userFoundByActivationToken = repository.findByActivationToken(user.getActivationToken());
+        boolean tokenNotFound = userFoundByActivationToken == null;
+        boolean alreadyActivated = tokenNotFound ? false : userFoundByActivationToken.getEnabled();
+
+        if(tokenNotFound) {
+            rejectIfActivationTokenNotFound(response);
+        }  else {
+            activateAccount(userFoundByActivationToken, alreadyActivated);
         }
 
         return message;
     }
 
-    @RequestMapping(value = "/activateAccount", method = RequestMethod.PUT)
-    public MessageDTO activateAccount(@RequestBody User user, HttpServletResponse response) {
-        MessageDTO message = new MessageDTO(MessageType.SUCCESS, ACCOUNT_ACTIVATED_SUCCESS_CODE);
-        User userFoundByActivationToken = repository.findByActivationToken(user.getActivationToken());
-        boolean isTokenExpired = false;
+    private void rejectIfActivationTokenNotFound(HttpServletResponse response) {
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        String invalidActivationTokenMessage =
+                messageSource.getMessage(ACTIVATION_LINK_INVALID_ERROR_CODE, null, currentLocale);
+        message = new MessageDTO(MessageType.ERROR, invalidActivationTokenMessage);
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    }
 
-        if(userFoundByActivationToken == null) {
-            message = new MessageDTO(MessageType.ERROR, INVALID_ACTIVATION_LINK_ERROR_CODE);
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        } else {
-            isTokenExpired = userAccountService.checkIfTokenExpired("activationToken", user.getActivationToken());
-        }
+    private void activateAccount(User userFoundByActivationToken, boolean alreadyActivated) {
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        boolean isTokenExpired = userAccountService.checkIfTokenExpired("activationToken",
+                userFoundByActivationToken.getActivationToken());
 
         if(isTokenExpired) {
-            message = new MessageDTO(MessageType.ERROR, ACTIVATION_LINK_EXPIRED_ERROR_CODE);
-        } else if(userFoundByActivationToken.getEnabled()){
-            message = new MessageDTO(MessageType.INFO,  ACCOUNT_ALREADY_ACTIVATED_ERROR_CODE);
+            String activationTokenExpiredMessage =
+                    messageSource.getMessage(ACTIVATION_LINK_EXPIRED_INFO_CODE, null, currentLocale);
+            message = new MessageDTO(MessageType.INFO, activationTokenExpiredMessage);
+        } else if(alreadyActivated) {
+            String accountAlreadyActivatedMessage =
+                    messageSource.getMessage(ACCOUNT_ALREADY_ACTIVATED_INFO_CODE, null, currentLocale);
+            message = new MessageDTO(MessageType.INFO, accountAlreadyActivatedMessage);
         } else {
             userFoundByActivationToken.setEnabled(true);
             userService.updateUser(userFoundByActivationToken);
+            String accountActivatedMessage =
+                    messageSource.getMessage(ACCOUNT_ACTIVATED_SUCCESS_CODE, null, currentLocale);
+            message = new MessageDTO(MessageType.SUCCESS, accountActivatedMessage);
         }
-
-        return message;
     }
 }

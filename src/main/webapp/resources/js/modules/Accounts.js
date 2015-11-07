@@ -127,8 +127,8 @@ Accounts.controller('AccountActivationController', function($scope, $stateParams
 Accounts.controller('AccountsController', function($scope, $timeout, $state, $stateParams, Restangular) {
 
 	$scope.Accounts = Restangular.all('accounts');
-	$scope.passwordResetEmailCheck = Restangular.all('accounts/passwordReset');
-	$scope.passwordReset = Restangular.one('accounts/passwordReset');
+	$scope.passwordResetEmailCheck = Restangular.all('accounts/resetPassword');
+	$scope.passwordReset = Restangular.one('accounts/resetPassword');
 
 	$scope.userNameUnique = true;
 	$scope.emailUnique = true;

@@ -1,6 +1,10 @@
 package com.devrebel.inspigen.app.domain.user;
 
+import com.devrebel.inspigen.core.web.exception.message.MessageDTO;
+import com.devrebel.inspigen.core.web.exception.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
@@ -13,16 +17,31 @@ import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.http.HttpServletResponse;
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 @Service
 @Transactional
 public class SimpleUserAccountService implements UserAccountService {
+
+    private static final String EMAIL_NOT_FOUND_ERROR_CODE = "error.user.account.email.not.found";
+    private static final String PASSWORD_CHANGED_SUCCESS_CODE = "success.user.account.password.changed";
+
+    private static final String RESET_LINK_INVALID_ERROR_CODE = "error.user.account.reset.link.invalid";
+    private static final String RESET_LINK_EXPIRED_ERROR_CODE = "error.user.account.reset.link.expired";
+    private static final String RESET_LINK_SENT_SUCCESS_CODE = "success.user.account.reset.link.sent";
+
+    private static final String ACCOUNT_ACTIVATED_SUCCESS_CODE = "success.user.account.activated";
+    private static final String ACCOUNT_ALREADY_ACTIVATED_INFO_CODE = "info.user.account.already.activated";
+
+    private static final String ACTIVATION_LINK_INVALID_ERROR_CODE = "error.user.account.invalid.activation.link";
+    private static final String ACTIVATION_LINK_EXPIRED_INFO_CODE = "error.user.account.activation.link.expired";
 
     @Autowired
     JavaMailSenderImpl mailSender;
@@ -31,10 +50,18 @@ public class SimpleUserAccountService implements UserAccountService {
     UserRepository userRepository;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     Md5PasswordEncoder passwordEncoder;
 
     @Autowired
     ReflectionSaltSource saltSource;
+
+    @Autowired
+    MessageSource messageSource;
+
+    MessageDTO message;
 
     @Override
     public String encodePassword(User data) {

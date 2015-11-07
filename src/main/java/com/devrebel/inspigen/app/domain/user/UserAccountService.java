@@ -2,6 +2,7 @@ package com.devrebel.inspigen.app.domain.user;
 
 import com.devrebel.inspigen.app.domain.user.User;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 public interface UserAccountService {
