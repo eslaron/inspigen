@@ -2,9 +2,8 @@ package com.devrebel.inspigen.app.domain.user;
 
 import com.devrebel.inspigen.app.domain.settings.Settings;
 import com.devrebel.inspigen.app.domain.settings.SettingsRepository;
-import com.devrebel.inspigen.core.web.exception.message.MessageDTO;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
@@ -29,13 +28,7 @@ import java.util.Random;
 public class SimpleUserAccountService implements UserAccountService {
 
     @Autowired
-    JavaMailSenderImpl mailSender;
-
-    @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    UserService userService;
 
     @Autowired
     Md5PasswordEncoder passwordEncoder;
@@ -44,12 +37,10 @@ public class SimpleUserAccountService implements UserAccountService {
     ReflectionSaltSource saltSource;
 
     @Autowired
-    MessageSource messageSource;
-
-    @Autowired
     SettingsRepository settingsRepository;
 
-    MessageDTO message;
+    @Autowired
+    private ObjectFactory<JavaMailSenderImpl> javaMailSenderFactory;
 
     @Override
     public String encodePassword(User data) {
@@ -112,11 +103,13 @@ public class SimpleUserAccountService implements UserAccountService {
 
     @Override
     public void sendTokenMail(String email, String tokenType, String token) {
+        JavaMailSenderImpl mailSenderPrototype = javaMailSenderFactory.getObject();
+
         Settings settings = settingsRepository.findOne(1L);
         String msg = "";
         Multipart mp = new MimeMultipart();
         MimeBodyPart mbp = new MimeBodyPart();
-        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessage message = mailSenderPrototype.createMimeMessage();
         MimeMessageHelper mimeHelper;
 
         try {
@@ -148,7 +141,7 @@ public class SimpleUserAccountService implements UserAccountService {
                 mp.addBodyPart(mbp);
                 message.setContent(mp);
             }
-            mailSender.send(message);
+            mailSenderPrototype.send(message);
         } catch (MessagingException e) {
             System.out.println("Error Sending email " + e.getMessage());
         }

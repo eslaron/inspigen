@@ -6,12 +6,11 @@ import com.devrebel.inspigen.core.config.encryption.TextEncryptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
-@Lazy
 @Configuration
 public class EmailConfig {
 
@@ -24,6 +23,7 @@ public class EmailConfig {
     TextEncryptionService textEncryptionService;
 
 	@Bean
+	@Scope("prototype")
 	JavaMailSenderImpl mailSender() throws Exception {
 		Settings settings = repository.findOne(SYSTEM_SETTINGS_ID);
         String encryptedEmailPassword = settings.getEmailPassword();
@@ -52,5 +52,5 @@ public class EmailConfig {
 		sender.setJavaMailProperties(javaMailProperties);
 		
 		return sender;
-	}	
+	}
 }
