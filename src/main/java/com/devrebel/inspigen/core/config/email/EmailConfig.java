@@ -19,6 +19,8 @@ import javax.crypto.NoSuchPaddingException;
 @Configuration
 public class EmailConfig {
 
+	private static final long SYSTEM_SETTINGS_ID = 1L;
+
 	@Autowired
 	SettingsRepository repository;
 
@@ -27,11 +29,8 @@ public class EmailConfig {
 
 	@Bean
 	JavaMailSenderImpl mailSender() throws Exception {
-
-		byte[] encryptedEmailPassword = textEncryptionService.encrypt("!3xc3ls10r&Fy^)9");
-
-		Settings settings = repository.findOne(1L);
-        //String encryptedEmailPassword = settings.getEmailPassword();
+		Settings settings = repository.findOne(SYSTEM_SETTINGS_ID);
+        String encryptedEmailPassword = settings.getEmailPassword();
         String decryptedEmailPassword = textEncryptionService.decrypt(encryptedEmailPassword);
 
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();

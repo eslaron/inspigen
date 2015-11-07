@@ -2,47 +2,38 @@ package com.devrebel.inspigen.core.config.encryption;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Service;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
-import javax.crypto.*;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.*;
-import java.security.spec.AlgorithmParameterSpec;
+import java.security.Key;
 
 @Service
 public class TextEncryptionService {
 
-    private String encryptionKey = "MZygpewJsCpRrfOr";
+    private static final String ENCRYPTION_ALGORITHM = "AES";
+    private static final String ENCRYPTION_KEY = "MZygpewJsCpRrfOr";
+    private static final int CIPHER_ENCRYPTION_MODE = Cipher.ENCRYPT_MODE;
+    private static final int CIPHER_DECRYPTION_MODE = Cipher.DECRYPT_MODE;
 
-    public Key getAESKey() {
-       return new SecretKeySpec(encryptionKey.getBytes(), "AES");
+    private Key getAESKey() {
+       return new SecretKeySpec(ENCRYPTION_KEY.getBytes(), ENCRYPTION_ALGORITHM);
     }
 
-    public byte[] encrypt(String plainText) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, getAESKey());
-        byte[] encrypted = cipher.doFinal(plainText.getBytes());
-        System.err.println(new String(encrypted));
+    public String encrypt(String plainText) throws Exception {
+        Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGORITHM);
+        cipher.init(CIPHER_ENCRYPTION_MODE, getAESKey());
+        byte[] plainTextAsBytes = plainText.getBytes();
+        byte[] encryptedBytes = cipher.doFinal(plainTextAsBytes);
 
-        return encrypted; //Base64.encodeBase64String(encryptedBytes);
+        return Base64.encodeBase64String(encryptedBytes);
     }
 
-    public String decrypt(byte[] encrypted) throws Exception
+    public String decrypt(String encryptedText) throws Exception
     {
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, getAESKey());
-        String decrypted = new String(cipher.doFinal(encrypted));
-        System.err.println(decrypted);
+        Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGORITHM);
+        cipher.init(CIPHER_DECRYPTION_MODE, getAESKey());
+        byte[] decodedBytes = Base64.decodeBase64(encryptedText);
+        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
 
-       /* byte[] plainBytes = cipher.doFinal(Base64.decodeBase64(encrypted));
-
-        return new String(plainBytes);*/
-
-        return decrypted;
+        return new String(decryptedBytes);
     }
-
-
 }
