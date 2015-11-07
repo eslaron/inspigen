@@ -1,5 +1,7 @@
 package com.devrebel.inspigen.app.domain.user;
 
+import com.devrebel.inspigen.app.domain.settings.Settings;
+import com.devrebel.inspigen.app.domain.settings.SettingsRepository;
 import com.devrebel.inspigen.core.web.exception.message.MessageDTO;
 import com.devrebel.inspigen.core.web.exception.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,13 +63,15 @@ public class SimpleUserAccountService implements UserAccountService {
     @Autowired
     MessageSource messageSource;
 
+    @Autowired
+    SettingsRepository settingsRepository;
+
     MessageDTO message;
 
     @Override
     public String encodePassword(User data) {
         String password = data.getPassword();
         String encodedPassword = passwordEncoder.encodePassword(password, saltSource.getSalt(data));
-
         return encodedPassword;
     }
 
@@ -125,7 +129,8 @@ public class SimpleUserAccountService implements UserAccountService {
 
     @Override
     public void sendTokenMail(String email, String tokenType, String token) {
-        /*String msg = "";
+        Settings settings = settingsRepository.findOne(1L);
+        String msg = "";
         Multipart mp = new MimeMultipart();
         MimeBodyPart mbp = new MimeBodyPart();
         MimeMessage message = mailSender.createMimeMessage();
@@ -134,7 +139,7 @@ public class SimpleUserAccountService implements UserAccountService {
         try {
             mimeHelper = new MimeMessageHelper(message, true);
             mimeHelper.setTo(email);
-            mimeHelper.setFrom("system.inspigen@gmail.com");
+            mimeHelper.setFrom(settings.getEmailAddress());
 
             if (tokenType == "activationToken") {
                 mimeHelper.setSubject("Witamy w systemie Inspigen!");
@@ -153,7 +158,7 @@ public class SimpleUserAccountService implements UserAccountService {
                 mimeHelper.setSubject("Reset hasła - Inspigen");
 
                 msg = "<html><body>Hej :)<br/>Aby zresetować swoje hasło kliknij w poniższy link: <br/>"
-                        + "<a href='http://localhost:8080/inspigen/#/newPassword/"
+                        + "<a href='http://localhost:8080/#/newPassword/"
                         + token + "'>LINK</a></body></html>";
 
                 mbp.setContent(msg, "text/html; charset=UTF-8");
@@ -163,6 +168,6 @@ public class SimpleUserAccountService implements UserAccountService {
             mailSender.send(message);
         } catch (MessagingException e) {
             System.out.println("Error Sending email " + e.getMessage());
-        }*/
+        }
     }
 }
