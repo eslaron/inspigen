@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan(basePackages = {"com.devrebel.inspigen.app",
                                 "com.devrebel.inspigen.core.common",
                                 "com.devrebel.inspigen.core.config",
+                                "com.devrebel.inspigen.core.config.encryption",
                                 "com.devrebel.inspigen.core.web"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 

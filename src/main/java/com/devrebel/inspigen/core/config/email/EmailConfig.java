@@ -1,13 +1,20 @@
 package com.devrebel.inspigen.core.config.email;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 
 import com.devrebel.inspigen.app.domain.settings.Settings;
 import com.devrebel.inspigen.app.domain.settings.SettingsRepository;
+import com.devrebel.inspigen.core.config.encryption.TextEncryptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 @Configuration
 public class EmailConfig {
@@ -15,21 +22,37 @@ public class EmailConfig {
 	@Autowired
 	SettingsRepository repository;
 
+    @Autowired
+    TextEncryptionService textEncryptionService;
+
 	@Bean
-	JavaMailSenderImpl mailSender() {
+	JavaMailSenderImpl mailSender() throws Exception {
+
+		byte[] encryptedEmailPassword = textEncryptionService.encrypt("!3xc3ls10r&Fy^)9");
 
 		Settings settings = repository.findOne(1L);
-		//TODO: Create a encryption/decryption module for given string. In this case for email config passsword.
+        //String encryptedEmailPassword = settings.getEmailPassword();
+        String decryptedEmailPassword = textEncryptionService.decrypt(encryptedEmailPassword);
 
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();
 		sender.setHost(settings.getEmailHost());
 		sender.setPort(settings.getEmailPort());
 		sender.setUsername(settings.getEmailUsername());
-		sender.setPassword(settings.getEmailPassword());
+		sender.setPassword(decryptedEmailPassword);
 
-		Properties javaMailProperties = new Properties();	
-		javaMailProperties.setProperty("mail.smtp.auth", "true");
-		javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
+		Properties javaMailProperties = new Properties();
+
+        //If authentication is required
+        javaMailProperties.setProperty("mail.smtp.auth", "true");
+
+        //TLS support
+        javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
+
+        //SSL support
+        final String sslPort = String.valueOf(settings.getEmailPort());
+        javaMailProperties.setProperty("mail.smtp.socketFactory.port", sslPort);
+        javaMailProperties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        javaMailProperties.setProperty("mail.smtp.socketFactory.fallback", "false");
 
 		sender.setJavaMailProperties(javaMailProperties);
 		

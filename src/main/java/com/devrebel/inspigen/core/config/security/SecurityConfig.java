@@ -1,6 +1,7 @@
 package com.devrebel.inspigen.core.config.security;
 
 import com.devrebel.inspigen.app.domain.user.SimpleUserService;
+import com.devrebel.inspigen.core.config.encryption.TextEncryptionService;
 import com.devrebel.inspigen.core.config.security.authentication.CustomDaoAuthenticationProvider;
 import com.devrebel.inspigen.core.config.security.authentication.CustomUserDetailsService;
 import com.devrebel.inspigen.core.config.security.authentication.XAuthTokenConfigurer;
@@ -20,7 +21,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.sql.DataSource;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 @Configuration
 @EnableWebSecurity
@@ -75,7 +81,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     Md5PasswordEncoder passwordEncoder() {
     	return new Md5PasswordEncoder();
-    } 
+    }
+
+    @Bean
+    TextEncryptionService textEncryptionService() {
+        return new TextEncryptionService();
+    }
 
     @Bean CustomDaoAuthenticationProvider customAuthenticationProvider() {
     	CustomDaoAuthenticationProvider provider = new CustomDaoAuthenticationProvider();

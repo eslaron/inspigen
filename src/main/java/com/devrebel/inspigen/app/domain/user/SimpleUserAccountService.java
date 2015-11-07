@@ -32,19 +32,6 @@ import java.util.Random;
 @Transactional
 public class SimpleUserAccountService implements UserAccountService {
 
-    private static final String EMAIL_NOT_FOUND_ERROR_CODE = "error.user.account.email.not.found";
-    private static final String PASSWORD_CHANGED_SUCCESS_CODE = "success.user.account.password.changed";
-
-    private static final String RESET_LINK_INVALID_ERROR_CODE = "error.user.account.reset.link.invalid";
-    private static final String RESET_LINK_EXPIRED_ERROR_CODE = "error.user.account.reset.link.expired";
-    private static final String RESET_LINK_SENT_SUCCESS_CODE = "success.user.account.reset.link.sent";
-
-    private static final String ACCOUNT_ACTIVATED_SUCCESS_CODE = "success.user.account.activated";
-    private static final String ACCOUNT_ALREADY_ACTIVATED_INFO_CODE = "info.user.account.already.activated";
-
-    private static final String ACTIVATION_LINK_INVALID_ERROR_CODE = "error.user.account.invalid.activation.link";
-    private static final String ACTIVATION_LINK_EXPIRED_INFO_CODE = "error.user.account.activation.link.expired";
-
     @Autowired
     JavaMailSenderImpl mailSender;
 
