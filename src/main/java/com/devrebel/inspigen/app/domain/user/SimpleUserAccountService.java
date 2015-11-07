@@ -3,10 +3,8 @@ package com.devrebel.inspigen.app.domain.user;
 import com.devrebel.inspigen.app.domain.settings.Settings;
 import com.devrebel.inspigen.app.domain.settings.SettingsRepository;
 import com.devrebel.inspigen.core.web.exception.message.MessageDTO;
-import com.devrebel.inspigen.core.web.exception.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
@@ -19,13 +17,11 @@ import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.servlet.http.HttpServletResponse;
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Random;
 
 @Service

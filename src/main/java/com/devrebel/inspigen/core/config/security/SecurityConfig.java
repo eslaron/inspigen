@@ -21,12 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.sql.DataSource;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 @Configuration
 @EnableWebSecurity

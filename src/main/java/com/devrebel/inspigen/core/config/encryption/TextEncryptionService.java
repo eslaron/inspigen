@@ -2,6 +2,7 @@ package com.devrebel.inspigen.core.config.encryption;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Service;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;

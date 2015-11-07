@@ -2,10 +2,9 @@ package com.devrebel.inspigen.core.config;
 
 import com.devrebel.inspigen.core.common.CommonBeansConfig;
 import com.devrebel.inspigen.core.config.email.EmailConfig;
-import com.devrebel.inspigen.core.persistence.DatabaseConfig;
 import com.devrebel.inspigen.core.config.security.SecurityConfig;
 import com.devrebel.inspigen.core.config.view.ThymeleafConfig;
-
+import com.devrebel.inspigen.core.persistence.DatabaseConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 //Klasa inicjalizująca klasy konfiguracyjne

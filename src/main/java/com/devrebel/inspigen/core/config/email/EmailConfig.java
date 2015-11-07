@@ -1,21 +1,17 @@
 package com.devrebel.inspigen.core.config.email;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Properties;
-
 import com.devrebel.inspigen.app.domain.settings.Settings;
 import com.devrebel.inspigen.app.domain.settings.SettingsRepository;
 import com.devrebel.inspigen.core.config.encryption.TextEncryptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import java.util.Properties;
 
+@Lazy
 @Configuration
 public class EmailConfig {
 
