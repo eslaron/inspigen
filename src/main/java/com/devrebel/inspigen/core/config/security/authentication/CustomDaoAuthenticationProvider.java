@@ -47,12 +47,14 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
                 }
 
                 Date lastAttempt = userByName.getLastLoginAttempt();
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                format.format(lastAttempt);
-
                 Calendar unlockTime = Calendar.getInstance();
-                unlockTime = format.getCalendar();
-                unlockTime.add(Calendar.MINUTE, 15);
+
+                if(lastAttempt != null) {
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    format.format(lastAttempt);
+                    unlockTime = format.getCalendar();
+                    unlockTime.add(Calendar.MINUTE, 15);
+                }
 
                 if (Calendar.getInstance().getTime().after(unlockTime.getTime()) == true) {
                     userByName.setFailedLogins(0);

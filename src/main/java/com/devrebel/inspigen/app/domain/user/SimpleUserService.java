@@ -78,8 +78,6 @@ public class SimpleUserService implements UserService, UserDetailsService {
 
     @Override
     public void updateUser(User data) {
-        String encodedPassword = userAccountService.encodePassword(data);
-        data.setPassword(encodedPassword);
 
         userRepository.saveAndFlush(data);
     }

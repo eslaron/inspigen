@@ -2,6 +2,7 @@ package com.devrebel.inspigen.app.domain.user;
 
 import com.devrebel.inspigen.core.web.exception.message.MessageDTO;
 import com.devrebel.inspigen.core.web.exception.message.MessageType;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -38,6 +39,9 @@ public class UserAccountController extends UserCrudController {
 
     @Autowired
     MessageSource messageSource;
+
+    @Autowired
+    private Mapper dtoMapper;
 
     @RequestMapping(value ="/resetPassword", method = RequestMethod.POST)
     public MessageDTO sendResetPasswordMail(@RequestBody String email, HttpServletResponse response) {
@@ -86,7 +90,8 @@ public class UserAccountController extends UserCrudController {
         if(tokenNotFound) {
             rejectIfPasswordTokenNotFound(response);
         } else {
-            resetPassword(userFoundByPasswordToken);
+            String newPassword = user.getPassword();
+            resetPassword(newPassword, userFoundByPasswordToken);
         }
 
         return message;
@@ -100,7 +105,7 @@ public class UserAccountController extends UserCrudController {
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    private void resetPassword(User userFoundByPasswordToken) {
+    private void resetPassword(String newPassword, User userFoundByPasswordToken) {
         Locale currentLocale = LocaleContextHolder.getLocale();
         boolean isTokenExpired = userAccountService.checkIfTokenExpired("passwordToken",
                 userFoundByPasswordToken.getPasswordToken());
@@ -111,10 +116,11 @@ public class UserAccountController extends UserCrudController {
             message = new MessageDTO(MessageType.INFO, passwordTokenExpiredMessage);
         } else {
             String newToken = userAccountService.generateToken();
-            String newPassword = userAccountService.encodePassword(userFoundByPasswordToken);
             userFoundByPasswordToken.setPassword(newPassword);
+            String encodedPassword = userAccountService.encodePassword(userFoundByPasswordToken);
+            userFoundByPasswordToken.setPassword(encodedPassword);
             userFoundByPasswordToken.setPasswordToken(newToken);
-            userService.updateUser(userFoundByPasswordToken);
+            repository.saveAndFlush(userFoundByPasswordToken);
             String passwordChangedMessage =
                     messageSource.getMessage(PASSWORD_CHANGED_SUCCESS_CODE, null, currentLocale);
             message = new MessageDTO(MessageType.SUCCESS, passwordChangedMessage);
@@ -160,7 +166,7 @@ public class UserAccountController extends UserCrudController {
             message = new MessageDTO(MessageType.INFO, accountAlreadyActivatedMessage);
         } else {
             userFoundByActivationToken.setEnabled(true);
-            userService.updateUser(userFoundByActivationToken);
+            repository.saveAndFlush(userFoundByActivationToken);
             String accountActivatedMessage =
                     messageSource.getMessage(ACCOUNT_ACTIVATED_SUCCESS_CODE, null, currentLocale);
             message = new MessageDTO(MessageType.SUCCESS, accountActivatedMessage);

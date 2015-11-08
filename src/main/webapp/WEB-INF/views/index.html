@@ -6,84 +6,91 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.indigo-pink.min.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
-	<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
-    <link type="text/css" rel="stylesheet" href="resources/css/bootstrap/css/bootstrap.min.css" />
-	<link type="text/css" rel="stylesheet" href="resources/css/angular-material.min.css" />
-    <link type="text/css" rel="stylesheet" href="resources/css/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
+    <link type="text/css" rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="resources/css/angular-material.min.css" />
+    <link type="text/css" rel="stylesheet" href="resources/font-awesome/css/font-awesome.min.css" />
     <link type="text/css" rel="stylesheet" href="resources/js/lib/ng-table/ng-table.min.css" />
     <link type="text/css" rel="stylesheet" href="resources/js/lib/loading-bar.min.css" />
-    <link type="text/css" rel="stylesheet" href="resources/css/app.css" />    
-    
+    <link type="text/css" rel="stylesheet" href="resources/css/app.css" />
+    <link type="text/css" rel="stylesheet" href="resources/AdminLTE/css/AdminLTE.min.css" />
+    <link type="text/css" rel="stylesheet" href="resources/AdminLTE/plugins/iCheck/square/blue.css" />
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+
     <title ng-bind="'InspiGen - ' + $state.current.title">InspiGen</title>
 </head>
 
-<body>
-<div class="relative" ui-view="navbar"></div>
-<div class="relative" ui-view="sidebar"></div>
-<div class="relative" ui-view="content"></div>
-    
-    <!-- jQuery -->
-    <script src="resources/js/lib/jquery/jquery-2.1.1.min.js"></script>
+<body class="hold-transition skin-blue layout-top-nav">
+<div class="wrapper">
+    <nav class="navbar navbar-static-top" ui-view="navbar"></nav>
+    <div class="sidebar-wrapper" ui-view="sidebar"></div>
+    <div class="content-wrapper" ui-view="content"></div>
+</div>
 
-	<!-- Semantic UI -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
-	<script src="resources/js/lib/semantic.js"></script>
-	<script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+<!-- jQuery -->
+<script src="resources/js/lib/jquery/jquery-2.1.1.min.js"></script>
 
-    <!-- Bootstrap JS -->
-    <script src="resources/css/bootstrap/js/bootstrap.min.js"></script>
-    
-    <!-- lodash -->
-    <script src="resources/js/lib/lodash/lodash.min.js"></script>   
-    
-    <!-- AngularJS -->
-	<script src="resources/js/lib/angularjs/angular.js"></script>
-	<script src="resources/js/lib/angularjs/angular-global-injector.js"></script>
-	<script src="resources/js/lib/angularjs/angular-locale_pl-pl.js"></script>
-	<script src="resources/js/lib/angularjs/angular-resource.min.js"></script>
-	<script src="resources/js/lib/angularjs/angular-ui-router.min.js"></script>
-	<script src="resources/js/lib/angularjs/angular-local-storage.min.js"></script>
-	<script src="resources/js/lib/angularjs/angular-permission.js"></script>
-	<script src="resources/js/lib/angularjs/restangular.min.js"></script>
-	<script src="resources/js/lib/loading-bar.min.js"></script>
-	<script src="resources/js/lib/angular-base64.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-aria.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.4/angular-material.min.js"></script>
-	
-	<!-- UI-Boostrap -->
-	<script src="resources/js/lib/ui-bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
-	
-	<!-- Angular-Strap -->
-	<script src="resources/js/lib/angular-strap/angular-strap.min.js"></script>
-	<script src="resources/js/lib/angular-strap/angular-strap.tpl.min.js"></script>
-	
-	<!-- Angular - główne skrypty -->
-	<script src="resources/js/modules/App.js"></script>
-	<script src="resources/js/modules/Login.js"></script>
-	<script src="resources/js/modules/Accounts.js"></script>
-	<script src="resources/js/modules/Users.js"></script>
-	<script src="resources/js/modules/Persons.js"></script>
-	<script src="resources/js/modules/Addresses.js"></script>
-	<script src="resources/js/modules/Events.js"></script>
-	<script src="resources/js/modules/Locations.js"></script>
-	<script src="resources/js/modules/Attachments.js"></script>
-	<script src="resources/js/services.js"></script>
-	<script src="resources/js/contextService.js"></script>
-	<script src="resources/js/factories/userFactory.js"></script>
-	<script src="resources/js/factories/personFactory.js"></script>
-	<script src="resources/js/factories/addressFactory.js"></script>
-	<script src="resources/js/factories/eventFactory.js"></script>
-	<script src="resources/js/factories/locationFactory.js"></script>
-	<script src="resources/js/factories/attachmentFactory.js"></script>
-	<script src="resources/js/directives.js"></script>
-	<script src="resources/js/filters.js"></script>
-	
-	<!-- ng-table -->
-	<script src="resources/js/lib/ng-table/ng-table.min.js"></script>
-	
+<!-- Semantic UI -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
+<script src="resources/js/lib/semantic.js"></script>
+<script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- iCheck -->
+<script src="resources/AdminLTE/plugins/iCheck/icheck.min.js"></script>
+
+<!-- lodash -->
+<script src="resources/js/lib/lodash/lodash.min.js"></script>
+
+<!-- AngularJS -->
+<script src="resources/js/lib/angularjs/angular.js"></script>
+<script src="resources/js/lib/angularjs/angular-global-injector.js"></script>
+<script src="resources/js/lib/angularjs/angular-locale_pl-pl.js"></script>
+<script src="resources/js/lib/angularjs/angular-resource.min.js"></script>
+<script src="resources/js/lib/angularjs/angular-ui-router.min.js"></script>
+<script src="resources/js/lib/angularjs/angular-local-storage.min.js"></script>
+<script src="resources/js/lib/angularjs/angular-permission.js"></script>
+<script src="resources/js/lib/angularjs/restangular.min.js"></script>
+<script src="resources/js/lib/loading-bar.min.js"></script>
+<script src="resources/js/lib/angular-base64.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.4/angular-material.min.js"></script>
+
+<!-- UI-Boostrap -->
+<script src="resources/js/lib/ui-bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
+
+<!-- Angular-Strap -->
+<script src="resources/js/lib/angular-strap/angular-strap.min.js"></script>
+<script src="resources/js/lib/angular-strap/angular-strap.tpl.min.js"></script>
+
+<!-- Angular - główne skrypty -->
+<script src="resources/js/modules/App.js"></script>
+<script src="resources/js/modules/Login.js"></script>
+<script src="resources/js/modules/Accounts.js"></script>
+<script src="resources/js/modules/Users.js"></script>
+<script src="resources/js/modules/Persons.js"></script>
+<script src="resources/js/modules/Addresses.js"></script>
+<script src="resources/js/modules/Events.js"></script>
+<script src="resources/js/modules/Locations.js"></script>
+<script src="resources/js/modules/Attachments.js"></script>
+<script src="resources/js/services.js"></script>
+<script src="resources/js/contextService.js"></script>
+<script src="resources/js/factories/userFactory.js"></script>
+<script src="resources/js/factories/personFactory.js"></script>
+<script src="resources/js/factories/addressFactory.js"></script>
+<script src="resources/js/factories/eventFactory.js"></script>
+<script src="resources/js/factories/locationFactory.js"></script>
+<script src="resources/js/factories/attachmentFactory.js"></script>
+<script src="resources/js/directives.js"></script>
+<script src="resources/js/filters.js"></script>
+
+<!-- ng-table -->
+<script src="resources/js/lib/ng-table/ng-table.min.js"></script>
 </body>
 </html>
