@@ -1,11 +1,11 @@
-InspiGen 
+PowerLib
 ========================================================================================
 
-Description: Web application that manages a voluntary work organization.
+Description: Web application that manages a city library. Educational project for University of Technology in Wroclaw
 
 Type - Web Application
 
-Methodology - REST, SPA, DDD
+Methodology - REST, SPA
 
 Stack:
 
@@ -15,12 +15,3 @@ Stack:
 - AngularJS 1.3.x
 - Bootstrap 3.2.x
 
-Progress: 
-
-- Redesigning the business logic and project structure,
-- Code reduction and refactoring,
-- Rewriting current features.
-
-Goal:
-
-Full feature REST API structured according to DDD pattern consumed by a SPA frontend.
