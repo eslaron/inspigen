@@ -3,10 +3,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.devrebel</groupId>
-    <artifactId>inspigen</artifactId>
-    <name>InspiGen</name>
+    <artifactId>powerlib</artifactId>
+    <name>PowerLib</name>
     <packaging>war</packaging>
-    <version>1.2-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
 
     <dependencyManagement>
         <dependencies>
@@ -290,7 +290,7 @@
     </dependencies>
 
     <build>
-        <finalName>ROOT</finalName>
+        <finalName>PowerLib</finalName>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -392,7 +392,7 @@
                         </systemProperty>
                     </systemProperties>
                     <webAppConfig>
-                        <war>${project.basedir}/target/ROOT.war</war>
+                        <war>${project.basedir}/target/powerlib.war</war>
                         <contextPath>/</contextPath>
                         <resourceBases>
                             <resourceBase>${project.basedir}/src/main/webapp</resourceBase>
